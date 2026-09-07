@@ -1,0 +1,908 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kế hoạch — Homestay TVH</title>
+<style>
+:root{
+  --paper:#faf7f2; --panel:#f0ebe1; --panel-2:#e8e1d4;
+  --ink:#0a0a0a; --muted:#6b6258; --accent:#b8232c;
+  --line:rgba(10,10,10,.14); --line-strong:rgba(10,10,10,.3);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{
+  margin:0;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:16px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.5;
+  background-image:radial-gradient(rgba(10,10,10,.035) 1px,transparent 1px);
+  background-size:3px 3px;
+}
+.wrap{position:relative;z-index:1;max-width:1140px;margin:0 auto;padding:0 24px}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;margin:0}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent)}
+.folio{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+em.hl{font-family:var(--serif);font-style:italic;color:var(--accent);font-weight:600}
+a{color:var(--accent)}
+hr.rule{border:0;border-top:1px solid var(--line);margin:0}
+
+/* nav */
+.topbar{position:sticky;top:0;z-index:40;background:rgba(250,247,242,.93);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex;gap:20px;align-items:center;height:52px;overflow-x:auto;scrollbar-width:none}
+.topbar .wrap::-webkit-scrollbar{display:none}
+.topbar .brand{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
+.topbar nav{display:flex;gap:18px}
+.topbar nav a{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);text-decoration:none;white-space:nowrap;padding:4px 0;border-bottom:1px solid transparent}
+.topbar nav a:hover,.topbar nav a:focus-visible{color:var(--ink);border-bottom-color:var(--accent)}
+
+/* cover */
+.cover{padding:76px 0 56px;border-bottom:1px solid var(--line)}
+.cover h1{font-size:clamp(38px,7vw,74px);line-height:1.02;margin:18px 0 0;max-width:16ch}
+.cover .lede{font-family:var(--serif);font-size:clamp(17px,2.2vw,21px);color:#2c2822;max-width:62ch;margin:22px 0 0}
+.metaband{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin-top:40px}
+.metaband div{background:var(--paper);padding:16px 18px}
+.metaband .k{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.metaband .v{font-family:var(--serif);font-size:22px;margin-top:4px}
+.metaband .v small{font-size:13px;color:var(--muted);font-family:var(--sans)}
+
+section{padding:64px 0;border-bottom:1px solid var(--line)}
+.sechead{display:flex;align-items:baseline;gap:16px;margin-bottom:32px;flex-wrap:wrap}
+.sechead h2{font-size:clamp(26px,4vw,40px)}
+.sechead .folio{margin-left:auto}
+.intro{font-family:var(--serif);font-size:18px;color:#2c2822;max-width:68ch;margin:-14px 0 34px}
+
+/* contract grid */
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.grid4 article{background:var(--paper);padding:24px}
+.grid4 h3{font-size:19px;margin-bottom:12px;padding-left:12px;border-left:3px solid var(--accent)}
+.grid4 ul{margin:0;padding-left:18px;font-size:14.5px;color:#332f28}
+.grid4 li{margin-bottom:7px}
+
+/* figure */
+figure{margin:0}
+figure .cap{font-family:var(--mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-top:12px}
+.svgbox{border:1px solid var(--line);background:var(--panel);padding:8px;overflow-x:auto}
+.svgbox svg{display:block;min-width:680px;width:100%;height:auto}
+
+/* code */
+pre{background:#151310;color:#f2ece1;padding:16px 18px;overflow-x:auto;font-family:var(--mono);font-size:13px;line-height:1.6;border-left:3px solid var(--accent);margin:0}
+code{font-family:var(--mono);font-size:.92em}
+:not(pre)>code{background:var(--panel-2);padding:1px 5px;border-radius:2px}
+
+.callout{border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--panel);padding:22px 24px;margin-top:28px}
+.callout h3{font-size:20px;margin-bottom:10px}
+.callout p{margin:0 0 10px;font-size:15px;color:#332f28}
+.callout ol{margin:10px 0 0;padding-left:20px;font-size:15px}
+.callout li{margin-bottom:8px}
+
+/* phase cards */
+.phases{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1px;background:var(--line);border:1px solid var(--line)}
+.pcard{background:var(--paper);padding:24px;text-align:left;border:0;font:inherit;color:inherit;cursor:pointer;display:flex;flex-direction:column;gap:12px;position:relative}
+.pcard:hover,.pcard:focus-visible{background:var(--panel);outline:none}
+.pcard:focus-visible{box-shadow:inset 0 0 0 2px var(--accent)}
+.pcard .num{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--accent)}
+.pcard h3{font-size:21px;line-height:1.25}
+.pcard .obj{font-size:14px;color:#3a352d;margin:0}
+.pcard ul{margin:0;padding-left:17px;font-size:13.5px;color:var(--muted)}
+.pcard ul li{margin-bottom:5px}
+.pcard .foot{margin-top:auto;padding-top:12px;border-top:1px solid var(--line);display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.chip{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--line-strong);padding:3px 8px;color:var(--muted)}
+.chip.accent{border-color:var(--accent);color:var(--accent)}
+.pcard .more{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-left:auto}
+
+/* mockups */
+.mock{border:1px solid var(--line-strong);background:#fff;position:relative;font-family:var(--sans);overflow:hidden}
+.mock .chrome{height:26px;background:var(--panel-2);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:5px;padding:0 10px}
+.mock .chrome i{width:8px;height:8px;border-radius:50%;background:var(--line-strong);display:block}
+.mock .chrome span{font-family:var(--mono);font-size:9.5px;color:var(--muted);margin-left:10px}
+.badge{position:absolute;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-family:var(--mono);font-size:11px;display:flex;align-items:center;justify-content:center;z-index:5;box-shadow:0 0 0 2px var(--paper)}
+.annots{margin-top:16px;display:grid;gap:8px}
+.annots li{display:flex;gap:10px;font-size:13.5px;color:#332f28;list-style:none}
+.annots li>b:first-child{background:var(--accent);color:#fff;font-family:var(--mono);font-size:10.5px;width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 19px;margin-top:2px}
+.annots code{font-size:12px}
+.mockrow{display:grid;grid-template-columns:minmax(0,1fr);gap:36px}
+.mockrow figure{min-width:0}
+.mockscroll{overflow-x:auto}
+.mock{min-width:430px}
+.annots li>span{min-width:0;overflow-wrap:anywhere}
+@media(min-width:900px){.mockrow.two{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
+
+/* mock internals */
+.m-hero{background:linear-gradient(180deg,#5b6b5f,#3d4a41);color:#fff;padding:26px 22px 20px;position:relative}
+.m-nav{display:flex;align-items:center;gap:14px;font-size:10.5px;opacity:.95}
+.m-nav .logo{font-family:var(--serif);font-size:14px;font-weight:600;margin-right:auto}
+.m-nav .cta{background:var(--accent);padding:4px 10px;border-radius:2px;font-size:10px}
+.m-hero h4{font-family:var(--serif);font-size:22px;margin:22px 0 6px;font-weight:600}
+.m-hero p{font-size:11px;opacity:.85;margin:0 0 20px}
+.m-search{background:#fff;color:var(--ink);display:grid;grid-template-columns:1fr 1fr .8fr auto;gap:1px;background:var(--line);border:1px solid var(--line)}
+.m-search div{background:#fff;padding:8px 10px}
+.m-search .lbl{font-family:var(--mono);font-size:8px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.m-search .val{font-size:11.5px;margin-top:2px}
+.m-search .btn{background:var(--accent);color:#fff;display:flex;align-items:center;padding:0 16px;font-size:11px;font-weight:600}
+.m-body{padding:18px 22px 22px;background:#fff}
+.m-secttl{font-family:var(--serif);font-size:15px;margin:0 0 10px}
+.m-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.m-card{border:1px solid var(--line)}
+.m-card .img{height:44px;background:var(--panel-2)}
+.m-card .txt{padding:7px 8px}
+.m-card .t{font-size:11px;font-family:var(--serif)}
+.m-card .p{font-size:10.5px;color:var(--accent);font-weight:600;margin-top:2px}
+.m-card .s{font-size:9px;color:var(--muted);margin-top:2px}
+
+.m-form{padding:18px 20px;background:#fff}
+.m-step{display:flex;gap:6px;margin-bottom:16px}
+.m-step div{flex:1;height:3px;background:var(--panel-2)}
+.m-step div.on{background:var(--accent)}
+.m-field{margin-bottom:10px}
+.m-field .lbl{font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:3px}
+.m-field .inp{border:1px solid var(--line-strong);padding:6px 8px;font-size:11px;color:#333}
+.m-field .inp.err{border-color:var(--accent)}
+.m-field .msg{font-size:9.5px;color:var(--accent);margin-top:3px}
+.m-sum{background:var(--panel);border:1px solid var(--line);padding:12px;font-size:11px}
+.m-sum .row{display:flex;justify-content:space-between;margin-bottom:5px}
+.m-sum .row.tot{border-top:1px solid var(--line);padding-top:6px;margin-top:8px;font-weight:700}
+.m-sum .row .neg{color:var(--accent)}
+.m-btn{background:var(--accent);color:#fff;text-align:center;padding:9px;font-size:11.5px;font-weight:600;margin-top:12px}
+
+.m-qr{padding:22px 20px;text-align:center;background:#fff}
+.m-qr .amt{font-family:var(--serif);font-size:24px;color:var(--accent)}
+.m-qr .qrimg{width:104px;height:104px;margin:12px auto;background:
+  repeating-conic-gradient(var(--ink) 0 25%,#fff 0 50%) 0 0/13px 13px;border:5px solid #fff;outline:1px solid var(--line)}
+.m-qr .cd{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.m-qr .cd b{color:var(--accent)}
+.m-qr .cp{border:1px dashed var(--line-strong);padding:7px;font-family:var(--mono);font-size:10.5px;margin-top:12px;display:flex;justify-content:space-between;align-items:center}
+.m-qr .cp span{color:var(--accent)}
+.m-qr .wait{font-size:10px;color:var(--muted);margin-top:12px}
+
+.m-admin{display:grid;grid-template-columns:96px 1fr;min-height:270px}
+.m-side{background:#232019;color:#e8e1d4;padding:14px 10px}
+.m-side .lg{font-family:var(--serif);font-size:12px;margin-bottom:14px}
+.m-side a{display:block;font-size:9.5px;padding:5px 6px;color:#b9b1a4;text-decoration:none}
+.m-side a.on{background:var(--accent);color:#fff}
+.m-main{padding:14px 16px;background:#fff}
+.m-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-bottom:14px}
+.m-kpi{background:#fff;padding:8px 9px}
+.m-kpi .k{font-family:var(--mono);font-size:7.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.m-kpi .v{font-family:var(--serif);font-size:16px;margin-top:2px}
+.m-kpi .d{font-size:8.5px;color:#2f7a4a}
+.m-chart{display:flex;align-items:flex-end;gap:5px;height:62px;border-bottom:1px solid var(--line);margin-bottom:14px;padding:0 2px}
+.m-chart i{flex:1;background:var(--accent);opacity:.82;display:block}
+.m-tbl{width:100%;border-collapse:collapse;font-size:9.5px}
+.m-tbl th{font-family:var(--mono);font-size:8px;letter-spacing:.09em;text-transform:uppercase;color:var(--muted);text-align:left;border-bottom:1px solid var(--line-strong);padding:5px 4px}
+.m-tbl td{padding:5px 4px;border-bottom:1px solid var(--line)}
+.st{font-family:var(--mono);font-size:7.5px;padding:2px 5px;border:1px solid;letter-spacing:.06em}
+.st.c{color:#2f7a4a;border-color:#2f7a4a}
+.st.p{color:#a9761b;border-color:#a9761b}
+.st.i{color:#1f5d94;border-color:#1f5d94}
+
+/* risks */
+.risks{border:1px solid var(--line)}
+.risk{border-bottom:1px solid var(--line)}
+.risk:last-child{border-bottom:0}
+.risk summary{cursor:pointer;padding:16px 20px;list-style:none;display:flex;gap:14px;align-items:baseline;font-family:var(--serif);font-size:17px;background:var(--paper)}
+.risk summary::-webkit-details-marker{display:none}
+.risk summary::after{content:"+";margin-left:auto;font-family:var(--mono);color:var(--accent);font-size:18px}
+.risk[open] summary::after{content:"–"}
+.risk summary:hover,.risk summary:focus-visible{background:var(--panel)}
+.risk .sev{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);flex:0 0 auto}
+.risk .rbody{padding:0 20px 18px 20px;background:var(--panel);font-size:14.5px;color:#332f28}
+.risk .rbody p{margin:10px 0 0}
+.risk .rbody b{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-top:12px}
+
+/* questions */
+.q{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+.q div{background:var(--paper);padding:20px 22px;display:flex;gap:16px}
+.q .n{font-family:var(--serif);font-size:26px;color:var(--accent);line-height:1;flex:0 0 auto}
+.q p{margin:0;font-size:15px}
+.q p small{display:block;color:var(--muted);font-size:13px;margin-top:5px}
+
+footer{padding:44px 0 60px;font-size:13px;color:var(--muted)}
+footer a{color:var(--accent)}
+footer .src{font-family:var(--mono);font-size:11px;word-break:break-all}
+
+/* modal */
+.modal[hidden]{display:none}
+.modal{position:fixed;inset:0;z-index:100;display:flex;align-items:flex-start;justify-content:center;padding:0}
+.modal .scrim{position:absolute;inset:0;background:rgba(10,10,10,.55)}
+.modal .sheet{position:relative;background:var(--paper);max-width:900px;width:100%;height:100%;overflow-y:auto;box-shadow:0 0 60px rgba(0,0,0,.3)}
+.modal .sheethead{position:sticky;top:0;background:rgba(250,247,242,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:16px 28px;display:flex;align-items:center;gap:14px;z-index:2}
+.modal .sheethead h3{font-size:20px;margin-right:auto}
+.modal .close{background:none;border:1px solid var(--line-strong);font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;padding:6px 12px;cursor:pointer;color:var(--ink)}
+.modal .close:hover,.modal .close:focus-visible{background:var(--accent);color:#fff;border-color:var(--accent)}
+.md{padding:24px 28px 80px}
+.md h1{font-size:28px;margin:26px 0 12px}
+.md h2{font-size:21px;margin:30px 0 10px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.md h3{font-size:17px;margin:22px 0 8px}
+.md p{font-size:15px;color:#332f28;margin:10px 0}
+.md ul,.md ol{font-size:15px;color:#332f28;padding-left:22px}
+.md li{margin:5px 0}
+.md li.task{list-style:none;margin-left:-22px;display:flex;gap:9px;align-items:flex-start}
+.md li.task .box{width:13px;height:13px;border:1px solid var(--line-strong);flex:0 0 13px;margin-top:4px}
+.md table{width:100%;border-collapse:collapse;font-size:13.5px;margin:14px 0;display:block;overflow-x:auto}
+.md th{background:var(--panel-2);text-align:left;padding:8px 10px;border:1px solid var(--line);font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase}
+.md td{padding:8px 10px;border:1px solid var(--line);vertical-align:top}
+.md blockquote{border-left:3px solid var(--accent);margin:14px 0;padding:2px 0 2px 16px;color:var(--muted);font-family:var(--serif);font-style:italic}
+.md hr{border:0;border-top:1px solid var(--line);margin:22px 0}
+.md pre{margin:12px 0}
+.md .fmatter{background:var(--panel);border:1px solid var(--line);padding:12px 16px;font-family:var(--mono);font-size:11.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:16px}
+.md .fmatter span b{color:var(--ink);font-weight:600}
+.md .mermaid-note{font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--panel);border:1px solid var(--line);border-bottom:0;padding:5px 12px}
+@media print{.topbar,.pcard .more{display:none}.modal{display:none!important}}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="wrap">
+  <span class="brand">Homestay TVH</span>
+  <nav>
+    <a href="#contract">Hợp đồng</a>
+    <a href="#kientruc">Kiến trúc</a>
+    <a href="#quytrinh">Quy trình</a>
+    <a href="#cotloi">Điểm cốt lõi</a>
+    <a href="#lotrinh">Lộ trình</a>
+    <a href="#mockup">Giao diện</a>
+    <a href="#ruiro">Rủi ro</a>
+    <a href="#cauhoi">Câu hỏi</a>
+  </nav>
+</div></div>
+
+<header class="cover"><div class="wrap">
+  <div class="eyebrow">Kế hoạch triển khai · Đồ án tốt nghiệp</div>
+  <h1>Website giới thiệu &amp; đặt phòng <em class="hl">Homestay TVH</em></h1>
+  <p class="lede">Angular + Tailwind cho landing page và trang quản trị, Spring Boot 3 + PostgreSQL cho backend, đặt cọc qua QR VietQR/SePay. Điểm kỹ thuật cốt lõi: chống đặt trùng phòng được khoá ở tầng cơ sở dữ liệu, không phải ở tầng ứng dụng.</p>
+  <div class="metaband">
+    <div><div class="k">Phase</div><div class="v">8 <small>tuần tự + 2 nhánh song song</small></div></div>
+    <div><div class="k">Đầu việc</div><div class="v">145 <small>checklist</small></div></div>
+    <div><div class="k">Công sức</div><div class="v">~66h</div></div>
+    <div><div class="k">Nhánh</div><div class="v" style="font-size:13px;font-family:var(--mono);word-break:break-all">claude/homestay-tvh-booking-site-bew1pw</div></div>
+    <div><div class="k">Ngày lập</div><div class="v">07.09.2026</div></div>
+  </div>
+</div></header>
+
+<section id="contract"><div class="wrap">
+  <div class="sechead"><h2>Hợp đồng giao việc</h2><span class="folio">01 / Ranh giới</span></div>
+  <p class="intro">Bốn ô dưới đây là ranh giới của toàn bộ dự án. Mọi thứ nằm ngoài chúng đều là phạm vi phát sinh và phải được thống nhất lại trước khi làm.</p>
+  <div class="grid4">
+    <article>
+      <h3>Kết quả</h3>
+      <ul>
+        <li>Landing page giới thiệu + luồng đặt phòng 3 bước cho khách</li>
+        <li>Trang admin quản lý phòng, booking, khuyến mãi, đánh giá, nội dung</li>
+        <li>REST API Spring Boot 3 + PostgreSQL, có Swagger</li>
+        <li>Đặt cọc QR VietQR/SePay, webhook tự xác nhận, email xác nhận</li>
+        <li>Tài liệu kỹ thuật tiếng Việt trong <code>docs/</code></li>
+      </ul>
+    </article>
+    <article>
+      <h3>Ràng buộc</h3>
+      <ul>
+        <li>Angular standalone + signals, Tailwind, <b>tự viết component</b></li>
+        <li>Java 21 + Spring Boot 3.5, Flyway làm chủ schema</li>
+        <li>1 cơ sở → nhiều loại phòng → mỗi loại nhiều phòng vật lý</li>
+        <li>Chống trùng lịch <b>bắt buộc</b> khoá ở tầng DB</li>
+        <li>Mọi secret qua biến môi trường, không commit</li>
+      </ul>
+    </article>
+    <article>
+      <h3>Không làm</h3>
+      <ul>
+        <li>Mobile app</li>
+        <li>Đa chi nhánh / multi-tenant</li>
+        <li>Đồng bộ Booking.com, Agoda</li>
+        <li>Kế toán, hoá đơn điện tử</li>
+        <li>Chat realtime, song ngữ Việt–Anh</li>
+      </ul>
+    </article>
+    <article>
+      <h3>Nghiệm thu</h3>
+      <ul>
+        <li>Tìm phòng chỉ trả về loại phòng thực sự còn trống</li>
+        <li>Webhook về → booking <code>CONFIRMED</code> + email gửi đi</li>
+        <li>2 request song song cùng phòng → đúng 1 thành công, có test</li>
+        <li>Dashboard khớp tuyệt đối với SQL đối chiếu</li>
+        <li><code>docker compose up</code> là đủ để chạy toàn bộ</li>
+      </ul>
+    </article>
+  </div>
+</div></section>
+
+<section id="kientruc"><div class="wrap">
+  <div class="sechead"><h2>Kiến trúc hệ thống</h2><span class="folio">02 / Thành phần</span></div>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 940 400" role="img" aria-label="Sơ đồ kiến trúc: Angular gọi REST API Spring Boot, API kết nối PostgreSQL, SePay gọi webhook, API gửi mail SMTP và upload ảnh Cloudinary">
+        <defs>
+          <marker id="ah" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+            <path d="M0,0 L9,4.5 L0,9 z" fill="#b8232c"/>
+          </marker>
+          <marker id="ahg" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+            <path d="M0,0 L9,4.5 L0,9 z" fill="#6b6258"/>
+          </marker>
+        </defs>
+        <g font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#6b6258" letter-spacing="1.4">
+          <text x="22" y="26">CLIENT</text>
+          <text x="300" y="26">SPRING BOOT 3 API</text>
+          <text x="742" y="26">DỮ LIỆU &amp; DỊCH VỤ NGOÀI</text>
+        </g>
+        <rect x="18" y="38" width="230" height="330" fill="none" stroke="#0a0a0a" stroke-opacity=".18" stroke-dasharray="3 3"/>
+        <rect x="296" y="38" width="378" height="330" fill="none" stroke="#0a0a0a" stroke-opacity=".18" stroke-dasharray="3 3"/>
+
+        <g font-family="Georgia,serif" font-size="14" fill="#0a0a0a">
+          <rect x="40" y="76" width="186" height="70" fill="#f0ebe1" stroke="#0a0a0a" stroke-opacity=".3"/>
+          <text x="56" y="102">Landing Page</text>
+          <text x="56" y="122" font-size="10.5" font-family="ui-monospace,Menlo,monospace" fill="#6b6258">Angular · Tailwind</text>
+
+          <rect x="40" y="176" width="186" height="70" fill="#f0ebe1" stroke="#0a0a0a" stroke-opacity=".3"/>
+          <text x="56" y="202">Trang Admin</text>
+          <text x="56" y="222" font-size="10.5" font-family="ui-monospace,Menlo,monospace" fill="#6b6258">Angular · Tailwind</text>
+
+          <rect x="40" y="276" width="186" height="70" fill="#faf7f2" stroke="#0a0a0a" stroke-opacity=".3" stroke-dasharray="4 3"/>
+          <text x="56" y="302">Ngân hàng / SePay</text>
+          <text x="56" y="322" font-size="10.5" font-family="ui-monospace,Menlo,monospace" fill="#6b6258">gọi webhook vào API</text>
+        </g>
+
+        <rect x="320" y="70" width="330" height="46" fill="#b8232c" fill-opacity=".1" stroke="#b8232c"/>
+        <text x="336" y="98" font-family="Georgia,serif" font-size="14" fill="#b8232c">Spring Security · JWT · CUSTOMER | ADMIN | guest</text>
+
+        <g font-family="Georgia,serif" font-size="12.5" fill="#0a0a0a">
+          <rect x="320" y="136" width="155" height="52" fill="#f0ebe1" stroke="#0a0a0a" stroke-opacity=".3"/>
+          <text x="334" y="158">Booking Service</text>
+          <text x="334" y="175" font-size="10" font-family="ui-monospace,Menlo,monospace" fill="#6b6258">RoomAllocator</text>
+
+          <rect x="495" y="136" width="155" height="52" fill="#f0ebe1" stroke="#0a0a0a" stroke-opacity=".3"/>
+          <text x="509" y="158">Payment Service</text>
+          <text x="509" y="175" font-size="10" font-family="ui-monospace,Menlo,monospace" fill="#6b6258">VietQR · webhook</text>
+
+          <rect x="320" y="204" width="155" height="52" fill="#f0ebe1" stroke="#0a0a0a" stroke-opacity=".3"/>
+          <text x="334" y="226">Content Service</text>
+          <text x="334" y="243" font-size="10" font-family="ui-monospace,Menlo,monospace" fill="#6b6258">CMS · sanitize HTML</text>
+
+          <rect x="495" y="204" width="155" height="52" fill="#f0ebe1" stroke="#0a0a0a" stroke-opacity=".3"/>
+          <text x="509" y="226">Report Service</text>
+          <text x="509" y="243" font-size="10" font-family="ui-monospace,Menlo,monospace" fill="#6b6258">doanh thu · lấp đầy</text>
+
+          <rect x="320" y="272" width="155" height="52" fill="#f0ebe1" stroke="#0a0a0a" stroke-opacity=".3"/>
+          <text x="334" y="294">Mail Service</text>
+          <text x="334" y="311" font-size="10" font-family="ui-monospace,Menlo,monospace" fill="#6b6258">SMTP · fallback log</text>
+
+          <rect x="495" y="272" width="155" height="52" fill="#f0ebe1" stroke="#0a0a0a" stroke-opacity=".3"/>
+          <text x="509" y="294">Image Storage</text>
+          <text x="509" y="311" font-size="10" font-family="ui-monospace,Menlo,monospace" fill="#6b6258">Cloudinary · local</text>
+        </g>
+
+        <rect x="720" y="120" width="196" height="94" fill="#151310" stroke="#151310"/>
+        <text x="740" y="152" font-family="Georgia,serif" font-size="15" fill="#f2ece1">PostgreSQL 16</text>
+        <text x="740" y="173" font-family="ui-monospace,Menlo,monospace" font-size="10" fill="#b9b1a4">btree_gist + daterange</text>
+        <text x="740" y="190" font-family="ui-monospace,Menlo,monospace" font-size="10" fill="#b8232c">EXCLUDE USING gist</text>
+        <text x="740" y="205" font-family="ui-monospace,Menlo,monospace" font-size="9.5" fill="#b9b1a4">Flyway làm chủ schema</text>
+
+        <g font-family="Georgia,serif" font-size="12.5" fill="#0a0a0a">
+          <rect x="720" y="248" width="196" height="42" fill="#faf7f2" stroke="#0a0a0a" stroke-opacity=".3"/>
+          <text x="736" y="274">Cloudinary · SMTP</text>
+        </g>
+
+        <g stroke="#b8232c" stroke-width="1.4" fill="none" marker-end="url(#ah)">
+          <path d="M226,105 L316,90"/>
+          <path d="M226,205 L316,100"/>
+          <path d="M226,305 L491,300 L491,180 L495,166" stroke="#6b6258" marker-end="url(#ahg)"/>
+        </g>
+        <g stroke="#6b6258" stroke-width="1.2" fill="none" marker-end="url(#ahg)">
+          <path d="M475,162 L716,160"/>
+          <path d="M650,162 L716,163"/>
+          <path d="M475,230 L716,180"/>
+          <path d="M650,230 L716,175"/>
+          <path d="M475,298 L716,266"/>
+          <path d="M650,298 L716,270"/>
+        </g>
+        <text x="238" y="82" font-family="ui-monospace,Menlo,monospace" font-size="9" fill="#b8232c">REST /api</text>
+        <text x="238" y="292" font-family="ui-monospace,Menlo,monospace" font-size="9" fill="#6b6258">POST /webhook/sepay</text>
+      </svg>
+    </div>
+    <figcaption class="cap">Hình 1 — Thành phần hệ thống và hướng phụ thuộc. Webhook đi từ ngoài vào, không phải API gọi ra.</figcaption>
+  </figure>
+</div></section>
+
+<section id="quytrinh"><div class="wrap">
+  <div class="sechead"><h2>Quy trình triển khai</h2><span class="folio">03 / 8 phase</span></div>
+  <p class="intro">Thứ tự phase bám theo phụ thuộc dữ liệu, không theo cảm giác "làm cái dễ trước". Schema phải xong trước tất cả; hai cặp phase có thể chạy song song nếu chia người.</p>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 940 330" role="img" aria-label="Sơ đồ phụ thuộc 8 phase: Bootstrap tới Schema; Schema tách sang Auth và Booking core chạy song song; Booking core tới Payment; Auth và Booking core tới Admin; Booking core và Payment tới Landing; Admin và Landing tới Đóng gói">
+        <defs>
+          <marker id="ph" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 z" fill="#6b6258"/></marker>
+        </defs>
+        <g stroke="#6b6258" stroke-width="1.3" fill="none" marker-end="url(#ph)">
+          <path d="M138,155 L166,155"/>
+          <path d="M284,148 C300,148 300,92 316,92"/>
+          <path d="M284,162 C300,162 300,218 316,218"/>
+          <path d="M434,92 L566,92"/>
+          <path d="M434,218 L462,218"/>
+          <path d="M434,206 C500,206 500,104 566,104"/>
+          <path d="M375,246 C375,290 500,290 566,246 L566,232" stroke-dasharray="4 3"/>
+          <path d="M580,218 L604,218"/>
+          <path d="M722,92 C760,92 760,142 782,148"/>
+          <path d="M722,218 C760,218 760,168 782,162"/>
+        </g>
+        <g font-family="Georgia,serif" font-size="13.5">
+          <g>
+            <rect x="24" y="128" width="114" height="54" fill="#f0ebe1" stroke="#0a0a0a" stroke-opacity=".3"/>
+            <text x="38" y="150" font-family="ui-monospace,Menlo,monospace" font-size="9" fill="#b8232c">PHASE 1</text>
+            <text x="38" y="168">Bootstrap</text>
+          </g>
+          <g>
+            <rect x="166" y="128" width="118" height="54" fill="#151310" stroke="#151310"/>
+            <text x="180" y="150" font-family="ui-monospace,Menlo,monospace" font-size="9" fill="#e8a0a4">PHASE 2</text>
+            <text x="180" y="168" fill="#f2ece1">Schema</text>
+          </g>
+          <g>
+            <rect x="316" y="66" width="118" height="52" fill="#f0ebe1" stroke="#0a0a0a" stroke-opacity=".3"/>
+            <text x="330" y="87" font-family="ui-monospace,Menlo,monospace" font-size="9" fill="#b8232c">PHASE 3</text>
+            <text x="330" y="105">Auth</text>
+          </g>
+          <g>
+            <rect x="316" y="192" width="118" height="54" fill="#151310" stroke="#151310"/>
+            <text x="330" y="214" font-family="ui-monospace,Menlo,monospace" font-size="9" fill="#e8a0a4">PHASE 4</text>
+            <text x="330" y="232" fill="#f2ece1">Booking core</text>
+          </g>
+          <g>
+            <rect x="462" y="192" width="118" height="52" fill="#f0ebe1" stroke="#0a0a0a" stroke-opacity=".3"/>
+            <text x="476" y="213" font-family="ui-monospace,Menlo,monospace" font-size="9" fill="#b8232c">PHASE 5</text>
+            <text x="476" y="231">Thanh toán QR</text>
+          </g>
+          <g>
+            <rect x="604" y="66" width="118" height="52" fill="#f0ebe1" stroke="#0a0a0a" stroke-opacity=".3"/>
+            <text x="618" y="87" font-family="ui-monospace,Menlo,monospace" font-size="9" fill="#b8232c">PHASE 6</text>
+            <text x="618" y="105">Admin</text>
+          </g>
+          <g>
+            <rect x="604" y="192" width="118" height="52" fill="#f0ebe1" stroke="#0a0a0a" stroke-opacity=".3"/>
+            <text x="618" y="213" font-family="ui-monospace,Menlo,monospace" font-size="9" fill="#b8232c">PHASE 7</text>
+            <text x="618" y="231">Landing + CMS</text>
+          </g>
+          <g>
+            <rect x="782" y="128" width="126" height="54" fill="#f0ebe1" stroke="#b8232c" stroke-width="1.4"/>
+            <text x="796" y="150" font-family="ui-monospace,Menlo,monospace" font-size="9" fill="#b8232c">PHASE 8</text>
+            <text x="796" y="168">Đóng gói + Docs</text>
+          </g>
+        </g>
+        <g font-family="ui-monospace,Menlo,monospace" font-size="9" fill="#6b6258">
+          <text x="316" y="46">song song ↕</text>
+          <text x="604" y="46">song song ↕</text>
+          <text x="24" y="300">■ nền đen = phase chặn đường tới hạn (critical path)</text>
+          <text x="24" y="316">− − − ràng buộc: chốt thư viện shared/ ở cuối Phase 4 rồi mới tách nhánh 6 ∥ 7</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption class="cap">Hình 2 — Đồ thị phụ thuộc phase. Phase 2 và Phase 4 nằm trên đường tới hạn; trượt ở đó là trượt toàn dự án.</figcaption>
+  </figure>
+</div></section>
+
+<section id="cotloi"><div class="wrap">
+  <div class="sechead"><h2>Điểm kỹ thuật cốt lõi</h2><span class="folio">04 / Chống trùng lịch</span></div>
+  <p class="intro">Đây là câu hỏi dễ bị hội đồng vặn nhất: <em class="hl">làm sao chắc chắn hai người không đặt trùng một phòng?</em> Câu trả lời không nằm ở tầng Java.</p>
+  <pre><code>CREATE EXTENSION IF NOT EXISTS btree_gist;
+
+ALTER TABLE booking_rooms
+  ADD COLUMN stay daterange
+  GENERATED ALWAYS AS (daterange(check_in, check_out, '[)')) STORED;
+
+ALTER TABLE booking_rooms
+  ADD CONSTRAINT booking_rooms_no_overlap
+  EXCLUDE USING gist (room_id WITH =, stay WITH &amp;&amp;)
+  WHERE (status = 'ACTIVE');</code></pre>
+  <div class="callout">
+    <h3>Ba điều ràng buộc này bảo đảm mà kiểm tra ở tầng service không bảo đảm được</h3>
+    <ol>
+      <li><b>Không có khe hở race condition.</b> Kiểm tra ở service luôn có khoảng trống giữa lúc "SELECT xem còn trống" và lúc "INSERT". Hai request lọt vào cùng khoảng đó sẽ cùng thấy trống và cùng ghi. Ràng buộc <code>EXCLUDE</code> đặt phán quyết vào chính thời điểm ghi — Postgres bác một trong hai với mã <code>23P01</code>.</li>
+      <li><b>Khoảng nửa mở <code>[)</code> đúng nghiệp vụ khách sạn.</b> Khách A trả phòng ngày 10/03, khách B nhận phòng ngày 10/03 — hai khoảng <code>[08/03,10/03)</code> và <code>[10/03,12/03)</code> không chồng nhau, hệ thống cho đặt. Nếu dùng khoảng đóng, homestay mất một đêm doanh thu mỗi lần đổi khách.</li>
+      <li><b>Huỷ phòng nhả slot tức thì.</b> Mệnh đề <code>WHERE status = 'ACTIVE'</code> khiến dòng chuyển sang <code>RELEASED</code> biến mất khỏi phạm vi ràng buộc — phòng bán lại được ngay, nhưng lịch sử vẫn nguyên để tra cứu và báo cáo.</li>
+    </ol>
+    <p style="margin-top:14px"><b>Bằng chứng, không phải lời hứa:</b> <code>BookingConcurrencyIT</code> bắn 20 luồng cùng đặt phòng cuối cùng trên Postgres thật (Testcontainers) và khẳng định đúng 1 thành công, 19 nhận 409, DB còn đúng 1 dòng <code>ACTIVE</code>. Không dùng H2 — H2 không có <code>daterange</code> lẫn <code>EXCLUDE</code>, test trên H2 sẽ xanh giả.</p>
+  </div>
+</div></section>
+
+<section id="lotrinh"><div class="wrap">
+  <div class="sechead"><h2>Lộ trình 8 phase</h2><span class="folio">05 / Bấm để mở chi tiết</span></div>
+  <p class="intro">Mỗi thẻ mở ra toàn văn phase: kiến trúc, danh sách file sẽ tạo, các bước, lệnh kiểm chứng, checklist, tiêu chí hoàn thành và bảng rủi ro.</p>
+  <div class="phases" id="phaseGrid"></div>
+</div></section>
+
+<section id="mockup"><div class="wrap">
+  <div class="sechead"><h2>Giao diện dự kiến</h2><span class="folio">06 / Mockup có chú giải</span></div>
+  <p class="intro">Ba màn hình quyết định trải nghiệm. Xem trước ở đây để chốt hướng thiết kế <em class="hl">trước khi</em> viết code, không phải sau.</p>
+
+  <div class="mockrow" style="margin-bottom:52px">
+    <figure>
+      <div class="mockscroll"><div class="mock">
+        <div class="chrome"><i></i><i></i><i></i><span>homestay-tvh.vn</span></div>
+        <span class="badge" style="top:44px;right:18px">1</span>
+        <span class="badge" style="top:150px;left:18px">2</span>
+        <span class="badge" style="top:150px;right:46px">3</span>
+        <span class="badge" style="bottom:120px;left:6px">4</span>
+        <div class="m-hero">
+          <div class="m-nav">
+            <span class="logo">Homestay TVH</span>
+            <span>Trang chủ</span><span>Phòng</span><span>Tin tức</span><span>Tra cứu</span>
+            <span class="cta">Đặt phòng</span>
+          </div>
+          <h4>Nghỉ dưỡng giữa lòng Trà Vinh</h4>
+          <p>4 loại phòng · 15 phòng · cách trung tâm 2km</p>
+          <div class="m-search">
+            <div><div class="lbl">Nhận phòng</div><div class="val">01/10/2026</div></div>
+            <div><div class="lbl">Trả phòng</div><div class="val">04/10/2026</div></div>
+            <div><div class="lbl">Khách</div><div class="val">2 người lớn</div></div>
+            <div class="btn">Tìm phòng</div>
+          </div>
+        </div>
+        <div class="m-body">
+          <div class="m-secttl">Loại phòng còn trống</div>
+          <div class="m-cards">
+            <div class="m-card"><div class="img"></div><div class="txt"><div class="t">Deluxe</div><div class="p">750.000đ / đêm</div><div class="s">Còn 3 phòng</div></div></div>
+            <div class="m-card"><div class="img"></div><div class="txt"><div class="t">Family</div><div class="p">1.200.000đ / đêm</div><div class="s">Còn 2 phòng</div></div></div>
+            <div class="m-card"><div class="img"></div><div class="txt"><div class="t">Bungalow</div><div class="p">1.500.000đ / đêm</div><div class="s">Còn 1 phòng</div></div></div>
+          </div>
+        </div>
+      </div></div>
+      <figcaption class="cap">Hình 3 — Trang chủ, khung 1440px</figcaption>
+      <ul class="annots">
+        <li><b>1</b><span>Nút <b>Đặt phòng</b> là hành động chính duy nhất trên header — nền <code>--accent #b8232c</code>. Mọi nút khác dùng viền, tránh cạnh tranh sự chú ý.</span></li>
+        <li><b>2</b><span>Thanh tìm phòng đè lên hero, dùng lại <code>date-range-picker</code> chốt ở Phase 4. Trạng thái: ngày quá khứ bị vô hiệu hoá, hover ngày hiện giá đêm đó.</span></li>
+        <li><b>3</b><span>Chọn ngày xong mới hiện "Còn N phòng" — số này lấy từ <code>GET /api/availability</code>, không phải số cứng. <i>Nghiệm thu #1.</i></span></li>
+        <li><b>4</b><span>Thẻ loại phòng: ảnh <code>loading="lazy"</code>, giá dùng <code>--accent</code>, mô tả dùng <code>--muted</code>. Hết phòng thì thẻ mờ 60% và không bấm được.</span></li>
+      </ul>
+    </figure>
+  </div>
+
+  <div class="mockrow two" style="margin-bottom:52px">
+    <figure>
+      <div class="mockscroll"><div class="mock">
+        <div class="chrome"><i></i><i></i><i></i><span>/dat-phong — bước 3/3</span></div>
+        <span class="badge" style="top:40px;left:18px">5</span>
+        <span class="badge" style="top:150px;left:18px">6</span>
+        <span class="badge" style="bottom:106px;right:6px">7</span>
+        <div class="m-form">
+          <div class="m-step"><div class="on"></div><div class="on"></div><div class="on"></div></div>
+          <div class="m-field"><span class="lbl">Họ và tên</span><div class="inp">Nguyễn Văn A</div></div>
+          <div class="m-field"><span class="lbl">Số điện thoại</span><div class="inp err">090000</div><div class="msg">Số điện thoại không hợp lệ</div></div>
+          <div class="m-field"><span class="lbl">Email</span><div class="inp">a@example.com</div></div>
+          <div class="m-field"><span class="lbl">Mã giảm giá</span><div class="inp">TVH10 &nbsp;✓ giảm 10%</div></div>
+          <div class="m-sum">
+            <div class="row"><span>Deluxe × 1 phòng × 3 đêm</span><span>2.250.000đ</span></div>
+            <div class="row"><span>Giảm giá TVH10</span><span class="neg">−225.000đ</span></div>
+            <div class="row tot"><span>Tổng cộng</span><span>2.025.000đ</span></div>
+            <div class="row"><span>Đặt cọc 30%</span><span>608.000đ</span></div>
+          </div>
+          <div class="m-btn">Xác nhận &amp; thanh toán cọc</div>
+        </div>
+      </div></div>
+      <figcaption class="cap">Hình 4 — Bước 3: thông tin khách</figcaption>
+      <ul class="annots">
+        <li><b>5</b><span>Stepper 3 vạch, vạch đã qua dùng <code>--accent</code>. Trạng thái bước lưu trong signal store và đồng bộ query param — F5 không mất dữ liệu. <i>Nghiệm thu Phase 7.</i></span></li>
+        <li><b>6</b><span>Lỗi hiện ngay dưới ô nhập, viền ô đổi sang <code>--accent</code>, kèm <code>aria-live="polite"</code>. Regex SĐT Việt Nam <code>^0[35789]\d{8}$</code>.</span></li>
+        <li><b>7</b><span>Bảng giá tính lại mỗi lần đổi mã giảm giá; số tiền cọc do <b>backend</b> trả về, frontend không tự tính — chống sửa giá phía client.</span></li>
+      </ul>
+    </figure>
+    <figure>
+      <div class="mockscroll"><div class="mock">
+        <div class="chrome"><i></i><i></i><i></i><span>/dat-phong/thanh-toan/TVH8F3K2Q</span></div>
+        <span class="badge" style="top:96px;right:18px">8</span>
+        <span class="badge" style="bottom:96px;left:18px">9</span>
+        <span class="badge" style="bottom:34px;right:18px">10</span>
+        <div class="m-qr">
+          <div class="lbl" style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase">Số tiền cần chuyển</div>
+          <div class="amt">608.000đ</div>
+          <div class="qrimg" role="img" aria-label="Mã QR VietQR minh hoạ"></div>
+          <div class="cd">Giữ chỗ còn <b>12:47</b></div>
+          <div class="cp"><span>Nội dung CK</span><span>TVH8F3K2Q</span></div>
+          <div class="wait">Đang chờ xác nhận từ ngân hàng…</div>
+        </div>
+      </div></div>
+      <figcaption class="cap">Hình 5 — Màn hình thanh toán QR</figcaption>
+      <ul class="annots">
+        <li><b>8</b><span>Ảnh QR sinh từ <code>VietQrGenerator</code> đã điền sẵn số tiền và nội dung — khách không phải gõ gì.</span></li>
+        <li><b>9</b><span>Đồng hồ đếm ngược tới <code>hold_expires_at</code> (15 phút). Hết giờ → booking <code>EXPIRED</code>, màn hình đổi sang thông báo kèm nút đặt lại, không để người dùng kẹt.</span></li>
+        <li><b>10</b><span>Hỏi <code>GET /payment-status</code> mỗi 3 giây, dừng khi <code>CONFIRMED</code> / hết hạn / rời trang (<code>ngOnDestroy</code>). Nội dung CK luôn hiện dạng chữ để copy tay khi app ngân hàng không quét được.</span></li>
+      </ul>
+    </figure>
+  </div>
+
+  <div class="mockrow">
+    <figure>
+      <div class="mockscroll"><div class="mock">
+        <div class="chrome"><i></i><i></i><i></i><span>/admin — Dashboard</span></div>
+        <span class="badge" style="top:50px;left:102px">11</span>
+        <span class="badge" style="top:150px;right:18px">12</span>
+        <span class="badge" style="bottom:46px;right:18px">13</span>
+        <div class="m-admin">
+          <div class="m-side">
+            <div class="lg">TVH Admin</div>
+            <a class="on">Dashboard</a><a>Đặt phòng</a><a>Loại phòng</a><a>Phòng</a><a>Khuyến mãi</a><a>Đánh giá</a><a>Nội dung</a>
+          </div>
+          <div class="m-main">
+            <div class="m-kpis">
+              <div class="m-kpi"><div class="k">Doanh thu tháng</div><div class="v">48,6tr</div><div class="d">▲ 12%</div></div>
+              <div class="m-kpi"><div class="k">Tỉ lệ lấp đầy</div><div class="v">72%</div><div class="d">▲ 5%</div></div>
+              <div class="m-kpi"><div class="k">Booking mới</div><div class="v">37</div><div class="d">▲ 8</div></div>
+              <div class="m-kpi"><div class="k">Tỉ lệ huỷ</div><div class="v">6%</div><div class="d" style="color:#b8232c">▼ 1%</div></div>
+            </div>
+            <div class="m-chart"><i style="height:38%"></i><i style="height:52%"></i><i style="height:44%"></i><i style="height:66%"></i><i style="height:58%"></i><i style="height:74%"></i><i style="height:62%"></i><i style="height:88%"></i><i style="height:70%"></i><i style="height:94%"></i><i style="height:80%"></i><i style="height:100%"></i></div>
+            <table class="m-tbl">
+              <tr><th>Mã</th><th>Khách</th><th>Loại phòng</th><th>Nhận / Trả</th><th>Trạng thái</th><th>Tổng</th></tr>
+              <tr><td>TVH8F3K2Q</td><td>Nguyễn Văn A</td><td>Deluxe · P.203</td><td>01/10 → 04/10</td><td><span class="st c">CONFIRMED</span></td><td>2.025.000đ</td></tr>
+              <tr><td>TVH2M9X7B</td><td>Trần Thị B</td><td>Family · P.301</td><td>02/10 → 05/10</td><td><span class="st p">PENDING</span></td><td>3.600.000đ</td></tr>
+              <tr><td>TVH7K1D4E</td><td>Lê Văn C</td><td>Bungalow · B.02</td><td>28/09 → 01/10</td><td><span class="st i">CHECKED_IN</span></td><td>4.500.000đ</td></tr>
+            </table>
+          </div>
+        </div>
+      </div></div>
+      <figcaption class="cap">Hình 6 — Dashboard quản trị</figcaption>
+      <ul class="annots">
+        <li><b>11</b><span>Bốn thẻ chỉ số lấy từ một request <code>GET /api/admin/dashboard</code> duy nhất; mọi phép tổng hợp chạy bằng SQL trong DB, không tải dữ liệu về app.</span></li>
+        <li><b>12</b><span>Biểu đồ vẽ bằng SVG thuần, không thêm thư viện. Mỗi cột có <code>aria-label</code> "Tháng 9: 48,6 triệu" để đọc màn hình dùng được.</span></li>
+        <li><b>13</b><span>Bảng booking hiện <b>số phòng vật lý đã gán</b> (P.203), không chỉ loại phòng — bằng chứng trực quan rằng <code>RoomAllocator</code> đã chạy. Trạng thái dùng nhãn viền, mỗi trạng thái một màu cố định. <i>Nghiệm thu #4.</i></span></li>
+      </ul>
+    </figure>
+  </div>
+</div></section>
+
+<section id="ruiro"><div class="wrap">
+  <div class="sechead"><h2>Rủi ro then chốt</h2><span class="folio">07 / Dấu hiệu &amp; phản ứng</span></div>
+  <p class="intro">Mỗi rủi ro ghi sẵn <em class="hl">dấu hiệu nhận biết</em> và <em class="hl">phản ứng đã định</em> — để lúc gặp chuyện không phải ngồi nghĩ lại từ đầu. Bảng đầy đủ theo từng phase nằm trong chi tiết phase.</p>
+  <div class="risks">
+    <details class="risk" open>
+      <summary><span class="sev">Cao</span> Image Postgres không cài được <code>btree_gist</code></summary>
+      <div class="rbody">
+        <p>Toàn bộ cơ chế chống trùng lịch dựa vào extension này. Không có nó thì Phase 4 phải thiết kế lại.</p>
+        <b>Dấu hiệu</b><p><code>CREATE EXTENSION btree_gist</code> báo lỗi ngay ở Phase 1.</p>
+        <b>Phản ứng</b><p>Đổi sang image <code>postgres:16</code> bản đầy đủ thay vì alpine. Nếu vẫn lỗi → chuyển sang khoá bi quan <code>SELECT … FOR UPDATE</code> trên hàng phòng và ghi rõ đánh đổi vào <code>docs/</code>. Phát hiện ở Phase 1 nên còn nguyên thời gian xoay xở — đó là lý do bước kiểm tra này nằm ở phase đầu tiên chứ không phải phase 4.</p>
+      </div>
+    </details>
+    <details class="risk">
+      <summary><span class="sev">Cao</span> Chưa có tài khoản SePay thật lúc bảo vệ</summary>
+      <div class="rbody">
+        <p>Không có webhook thật thì không demo được luồng thanh toán trước hội đồng.</p>
+        <b>Dấu hiệu</b><p>Đến Phase 5 vẫn chưa có API key và số tài khoản đối soát.</p>
+        <b>Phản ứng</b><p>Endpoint mô phỏng <code>POST /api/dev/payments/{content}/simulate-transfer</code> đã nằm sẵn trong phạm vi Phase 5, chỉ bật ở profile <code>dev</code>. Demo trọn luồng bằng nó; cắm key thật vào là chạy ngay, không phải sửa code. Có test khẳng định endpoint này không tồn tại ở profile <code>prod</code>.</p>
+      </div>
+    </details>
+    <details class="risk">
+      <summary><span class="sev">Trung bình</span> Bắt nhầm mọi lỗi ràng buộc thành "hết phòng"</summary>
+      <div class="rbody">
+        <p><code>DataIntegrityViolationException</code> bao gồm cả lỗi khoá ngoại, lỗi NOT NULL… Bắt chung sẽ che bug thật dưới thông báo "hết phòng".</p>
+        <b>Dấu hiệu</b><p>Khách báo hết phòng trong khi phòng còn trống; log không có gì bất thường.</p>
+        <b>Phản ứng</b><p>Chỉ bắt đúng SQLSTATE <code>23P01</code> đọc từ <code>PSQLException.getSQLState()</code>; mọi mã khác ném nguyên trạng lên <code>GlobalExceptionHandler</code>.</p>
+      </div>
+    </details>
+    <details class="risk">
+      <summary><span class="sev">Trung bình</span> Tỉ lệ lấp đầy vượt 100%</summary>
+      <div class="rbody">
+        <p>Booking vắt qua ranh giới tháng bị tính trọn vào cả hai tháng.</p>
+        <b>Dấu hiệu</b><p>Dashboard hiện lấp đầy 112% — con số vô lý sẽ bị hội đồng bắt ngay.</p>
+        <b>Phản ứng</b><p>Cắt khoảng bằng <code>LEAST(check_out, :end) − GREATEST(check_in, :start)</code>; test riêng với booking 27/09 → 03/10.</p>
+      </div>
+    </details>
+    <details class="risk">
+      <summary><span class="sev">Trung bình</span> Phase 7 tràn thời gian vì tự viết toàn bộ giao diện</summary>
+      <div class="rbody">
+        <p>Chọn Tailwind + component tự viết đổi lấy thẩm mỹ riêng, cái giá là thời gian.</p>
+        <b>Dấu hiệu</b><p>Hết tuần thứ hai của Phase 7 mà luồng đặt phòng vẫn chưa xong.</p>
+        <b>Phản ứng</b><p>Thứ tự ưu tiên đã chốt trước: luồng đặt phòng &gt; trang chủ &gt; tin tức. Nếu phải cắt thì cắt tin tức và <b>nói rõ với người dùng</b>, không tự lược trong im lặng.</p>
+      </div>
+    </details>
+    <details class="risk">
+      <summary><span class="sev">Thấp</span> XSS lưu trữ qua nội dung CMS</summary>
+      <div class="rbody">
+        <p>Admin dán bài viết chứa <code>&lt;script&gt;</code> hoặc <code>&lt;img onerror&gt;</code>, mã chạy trên trang công khai.</p>
+        <b>Dấu hiệu</b><p>Nội dung bài viết thực thi được JavaScript trên landing.</p>
+        <b>Phản ứng</b><p>Sanitize ở <b>backend</b> trước khi lưu theo danh sách thẻ cho phép, không chỉ chặn ở frontend. Test khẳng định với cả hai payload trên.</p>
+      </div>
+    </details>
+  </div>
+</div></section>
+
+<section id="cauhoi"><div class="wrap">
+  <div class="sechead"><h2>Câu hỏi còn treo</h2><span class="folio">08 / Cần bạn trả lời</span></div>
+  <p class="intro">Bốn câu này không chặn việc bắt đầu — kế hoạch đã có đường mặc định cho từng câu. Nhưng trả lời sớm thì đỡ phải làm lại.</p>
+  <div class="q">
+    <div><span class="n">1</span><p>Có tài khoản SePay và tài khoản ngân hàng để đối soát thật không?<small>Chưa có → dùng luồng mô phỏng ở profile <code>dev</code> (Phase 5), cắm key sau là chạy.</small></p></div>
+    <div><span class="n">2</span><p>Có Cloudinary cloud name và API key chưa?<small>Chưa có → <code>LocalImageStorage</code> ghi vào <code>uploads/</code>, mount volume trong compose.</small></p></div>
+    <div><span class="n">3</span><p>Dùng SMTP Gmail app password, hay Mailtrap, hay chỉ ghi log?<small>Chưa quyết → Mailpit trong <code>docker-compose.dev.yml</code> để xem mail lúc dev; production đọc từ env.</small></p></div>
+    <div><span class="n">4</span><p>Homestay TVH thực tế có bao nhiêu loại phòng, mỗi loại mấy phòng, giá bao nhiêu?<small>Chưa có → seed 4 loại × 3–5 phòng, giá 500k–1,5tr. Sửa lại một file SQL là xong, không đụng code.</small></p></div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <p><strong>Nguồn dữ liệu của bản kế hoạch này.</strong> Toàn bộ nội dung dựng từ hợp đồng brainstorm đã chốt với người dùng và từ khảo sát repo — không tham chiếu tài liệu bên ngoài nào.</p>
+  <p class="src">
+    Repo: https://github.com/nhquan403/Project-Final-TVU<br>
+    Nhánh: claude/homestay-tvh-booking-site-bew1pw<br>
+    Thư mục kế hoạch: plans/260907-1304-homestay-tvh-booking/ — <code>plan.md</code> + 8 file <code>phase-*.md</code> là bản gốc; trang HTML này là bản trình bày của cùng nội dung đó.<br>
+    PostgreSQL range types &amp; exclusion constraints: https://www.postgresql.org/docs/16/rangetypes.html
+  </p>
+  <p style="margin-top:22px"><span class="folio">Lập ngày 07.09.2026 · 8 phase · 145 đầu việc · ~66 giờ</span></p>
+</div></footer>
+
+<div class="modal" id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="scrim" data-close></div>
+  <div class="sheet">
+    <div class="sheethead">
+      <h3 id="modalTitle"></h3>
+      <button class="close" data-close type="button">Đóng · Esc</button>
+    </div>
+    <div class="md" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+window.__PLAN__ = {"phases":[{"n":1,"file":"phase-01-bootstrap.md","effort":"4h","deps":[],"critical":false,"parallel":"","objective":"Dựng khung monorepo chạy được: Spring Boot nối Postgres trong Docker, Angular chạy với Tailwind, hai đầu nói chuyện qua endpoint health.","bullets":["Maven skeleton Java 21 + Spring Boot 3.5, đủ dependency","docker-compose.dev.yml: Postgres 16 + Mailpit","Angular workspace + Tailwind + design token dùng chung","Kiểm tra btree_gist cài được — cửa ải quyết định Phase 4"],"title":"Khởi tạo monorepo & hạ tầng dev","tasks":13,"md":"---\ntitle: \"Phase 1: Khởi tạo monorepo & hạ tầng dev\"\nstatus: todo\nphase: 1\npriority: P1\neffort: \"4h\"\ndependencies: []\n---\n\n# Phase 1: Khởi tạo monorepo & hạ tầng dev\n\n## Overview\n\nDựng bộ khung monorepo chạy được: Spring Boot khởi động và kết nối Postgres trong Docker, Angular dev server chạy với Tailwind, hai bên nói chuyện được qua một endpoint health. Chưa có nghiệp vụ nào.\n\n## Requirements\n\n- Functional: `GET /api/health` trả `{\"status\":\"UP\"}`; trang Angular gốc gọi được endpoint đó qua proxy.\n- Non-functional: Postgres chạy trong Docker với `btree_gist` sẵn sàng; mọi cấu hình nhạy cảm đọc từ biến môi trường.\n\n## Architecture\n\nMonorepo hai thư mục độc lập, không chia sẻ build tool:\n\n```\nProject-Final-TVU/\n├── backend/          # Maven, Java 21, Spring Boot 3.5\n├── frontend/         # Angular CLI workspace + Tailwind\n├── docs/             # tài liệu tiếng Việt\n├── plans/            # kế hoạch (đã có)\n├── docker-compose.yml\n├── docker-compose.dev.yml   # chỉ Postgres + Mailpit cho dev\n├── .env.example\n├── .gitignore\n└── README.md\n```\n\nDev chạy `docker compose -f docker-compose.dev.yml up -d` (chỉ hạ tầng), rồi `mvn spring-boot:run` và `ng serve` ở máy host để có hot reload. Compose đầy đủ (đóng gói cả API + web) để ở Phase 8.\n\n## Related Code Files\n\n- Create: `backend/pom.xml` — Spring Boot 3.5.x parent; dependency: `web`, `data-jpa`, `security`, `validation`, `mail`, `postgresql`, `flyway-core`, `springdoc-openapi-starter-webmvc-ui`, `lombok`, `mapstruct`, `testcontainers` (test scope)\n- Create: `backend/src/main/java/com/tvh/homestay/HomestayApplication.java`\n- Create: `backend/src/main/java/com/tvh/homestay/common/HealthController.java`\n- Create: `backend/src/main/resources/application.yml`, `application-dev.yml`, `application-prod.yml`\n- Create: `frontend/` qua `ng new frontend --standalone --style=css --routing --ssr=false`\n- Create: `frontend/tailwind.config.js`, `frontend/src/styles.css`, `frontend/proxy.conf.json`\n- Create: `docker-compose.dev.yml`, `.env.example`, `.gitignore`, `README.md`\n- Create: `docs/.gitkeep`\n\n## Implementation Steps\n\n1. Ở branch `claude/homestay-tvh-booking-site-bew1pw`, commit `.gitignore` + `README.md` khung.\n2. Sinh backend: Maven project `com.tvh:homestay`, Java 21. Thêm dependency như trên vào `pom.xml`.\n3. `application.yml`: datasource đọc `${DB_URL}`, `${DB_USER}`, `${DB_PASSWORD}`; `spring.jpa.hibernate.ddl-auto: validate` (Flyway là chủ schema, **không bao giờ** để `update`); `spring.jackson.time-zone: Asia/Ho_Chi_Minh`.\n4. Viết `HealthController` trả `{\"status\":\"UP\",\"time\":...}` tại `GET /api/health`; tạm mở toàn bộ security bằng `SecurityConfig` permitAll (Phase 3 siết lại).\n5. `docker-compose.dev.yml`: service `db` (`postgres:16-alpine`, port 5432, volume `pgdata`, `POSTGRES_DB=homestay`) và `mailpit` (port 8025 để xem mail dev).\n6. Sinh frontend bằng Angular CLI; cài Tailwind (`npm i -D tailwindcss postcss autoprefixer` + `npx tailwindcss init`); cấu hình `content` trỏ `./src/**/*.{html,ts}`.\n7. Khai báo design token trong `tailwind.config.js` (màu thương hiệu, font, spacing) để Phase 6/7 dùng chung, tránh hard-code màu rải rác.\n8. `proxy.conf.json` map `/api` → `http://localhost:8080`; sửa `angular.json` để `ng serve` dùng proxy.\n9. Trang `app.component` gọi `/api/health` và hiển thị trạng thái — bằng chứng hai đầu đã nối.\n10. Viết `.env.example` liệt kê đủ biến (DB, JWT, SEPAY, CLOUDINARY, SMTP) với giá trị rỗng.\n11. Viết `README.md`: yêu cầu môi trường (JDK 21, Node 20+, Docker), lệnh chạy dev.\n\n## Verify\n\n```bash\ndocker compose -f docker-compose.dev.yml up -d\ndocker exec -it homestay-db psql -U postgres -d homestay \\\n  -c \"CREATE EXTENSION IF NOT EXISTS btree_gist; SELECT extname FROM pg_extension;\"\n\ncd backend && ./mvnw -q clean verify && ./mvnw spring-boot:run &\ncurl -s localhost:8080/api/health          # => {\"status\":\"UP\",...}\n\ncd ../frontend && npm ci && npm run build  # build production phải sạch\nnpm start                                   # localhost:4200 hiển thị \"API: UP\"\n\ngit status --porcelain | grep -E '\\.env$' && echo \"LOI: .env bi track\" || echo \"OK\"\n```\n\n## Todo\n\n- [ ] `.gitignore` (thư mục build Maven, `node_modules/`, `.env`, `uploads/`) + README khung\n- [ ] Backend Maven skeleton + dependency đầy đủ\n- [ ] `application.yml` đọc toàn bộ config từ env\n- [ ] `HealthController` + `SecurityConfig` tạm\n- [ ] `docker-compose.dev.yml` (Postgres 16 + Mailpit)\n- [ ] Angular workspace + Tailwind + design token\n- [ ] `proxy.conf.json` + trang health hiển thị trạng thái API\n- [ ] `.env.example` đủ biến\n\n## Success Criteria\n\n- [ ] `./mvnw verify` xanh, app khởi động và kết nối được Postgres trong Docker\n- [ ] `npm run build` của Angular không lỗi, không cảnh báo budget\n- [ ] `localhost:4200` hiển thị trạng thái lấy từ `localhost:8080/api/health`\n- [ ] `psql` xác nhận extension `btree_gist` cài được (điều kiện bắt buộc cho Phase 2)\n- [ ] `git status` sạch, không track `.env`, thư mục build, `node_modules`\n\n## Risk Assessment\n\n| Rủi ro | Dấu hiệu | Phản ứng đã định |\n|---|---|---|\n| Image Postgres không cho tạo `btree_gist` | Lệnh `CREATE EXTENSION` báo lỗi | Đổi sang image `postgres:16` bản đầy đủ (không alpine); nếu vẫn lỗi → replan Phase 4 sang khoá bi quan `SELECT ... FOR UPDATE` và ghi rõ đánh đổi vào docs |\n| `ddl-auto` vô tình để `update` phá schema Flyway | Bảng có cột lạ không nằm trong migration | Chốt `validate` ngay từ Phase 1; thêm test khởi động context để phát hiện sớm |\n| Tailwind bản mới đổi cách cấu hình | `npx tailwindcss init` không sinh file | Theo đúng hướng dẫn của bản CLI vừa cài, không copy config từ trí nhớ |\n\n**Rollback:** phase này chỉ tạo file mới, `git reset --hard` về commit trước là sạch.\n"},{"n":2,"file":"phase-02-database-schema.md","effort":"6h","deps":[1],"critical":true,"parallel":"","objective":"16 bảng, ERD đầy đủ, và ràng buộc EXCLUDE chống trùng phòng — nền móng của mọi phase sau.","bullets":["6 file Flyway migration, migration làm chủ schema (ddl-auto=validate)","Cột generated stay daterange + EXCLUDE USING gist","Snapshot giá và tên loại phòng trong booking để lịch sử không đổi","Test Testcontainers khẳng định lỗi 23P01 khi chồng ngày"],"title":"Schema cơ sở dữ liệu & Flyway migration","tasks":15,"md":"---\ntitle: \"Phase 2: Schema cơ sở dữ liệu & Flyway migration\"\nstatus: todo\nphase: 2\npriority: P1\neffort: \"6h\"\ndependencies: [1]\n---\n\n# Phase 2: Schema cơ sở dữ liệu & Flyway migration\n\n## Overview\n\nĐịnh nghĩa toàn bộ schema PostgreSQL bằng Flyway migration và ánh xạ sang JPA entity. Đây là phase nền — mọi phase sau phụ thuộc vào nó, nên schema phải đúng ngay từ đầu, đặc biệt là ràng buộc chống trùng lịch.\n\n## Requirements\n\n- Functional: 16 bảng, đủ ràng buộc khoá ngoại, CHECK, UNIQUE và ràng buộc `EXCLUDE` chống trùng phòng.\n- Non-functional: `ddl-auto=validate` phải pass — entity và migration khớp tuyệt đối. Migration bất biến, không sửa file đã chạy.\n\n## ERD\n\n```mermaid\nerDiagram\n    users ||--o{ refresh_tokens : \"có\"\n    users ||--o{ bookings : \"đặt (nullable = guest)\"\n    users ||--o{ reviews : \"viết\"\n\n    room_types ||--o{ rooms : \"gồm nhiều phòng vật lý\"\n    room_types ||--o{ room_type_images : \"có ảnh\"\n    room_types ||--o{ bookings : \"được đặt\"\n    room_types }o--o{ amenities : \"room_type_amenities\"\n\n    bookings ||--|{ booking_rooms : \"gán phòng\"\n    bookings ||--o{ payments : \"thanh toán\"\n    bookings ||--o| reviews : \"đánh giá (1-1)\"\n    bookings ||--o{ booking_status_history : \"lịch sử trạng thái\"\n    rooms ||--o{ booking_rooms : \"bị chiếm\"\n    promotions ||--o{ bookings : \"áp dụng\"\n    payments ||--o{ payment_webhook_events : \"đối soát\"\n\n    users {\n        bigserial id PK\n        varchar email UK\n        varchar password_hash\n        varchar full_name\n        varchar phone\n        varchar role \"CUSTOMER|ADMIN\"\n        boolean enabled\n        timestamptz created_at\n    }\n    room_types {\n        bigserial id PK\n        varchar code UK\n        varchar slug UK\n        varchar name\n        text description\n        numeric base_price \"VND/đêm\"\n        int capacity_adults\n        int capacity_children\n        numeric area_sqm\n        int display_order\n        boolean active\n    }\n    rooms {\n        bigserial id PK\n        bigint room_type_id FK\n        varchar room_number UK\n        int floor\n        varchar status \"AVAILABLE|MAINTENANCE|OUT_OF_SERVICE\"\n    }\n    bookings {\n        bigserial id PK\n        varchar code UK \"mã tra cứu\"\n        bigint user_id FK \"NULL = guest\"\n        varchar guest_name\n        varchar guest_email\n        varchar guest_phone\n        date check_in\n        date check_out\n        int adults\n        int children\n        bigint room_type_id FK\n        varchar room_type_name_snapshot\n        numeric unit_price_snapshot\n        int room_quantity\n        numeric subtotal_amount\n        numeric discount_amount\n        numeric total_amount\n        numeric deposit_amount\n        bigint promotion_id FK\n        varchar status\n        varchar payment_status\n        timestamptz hold_expires_at\n        text special_request\n    }\n    booking_rooms {\n        bigserial id PK\n        bigint booking_id FK\n        bigint room_id FK\n        date check_in\n        date check_out\n        daterange stay \"GENERATED [check_in, check_out)\"\n        varchar status \"ACTIVE|RELEASED\"\n    }\n    payments {\n        bigserial id PK\n        bigint booking_id FK\n        varchar provider\n        numeric amount\n        text qr_content\n        varchar transfer_content UK\n        varchar provider_txn_id UK\n        varchar status\n        timestamptz paid_at\n        timestamptz expires_at\n        jsonb raw_payload\n    }\n    promotions {\n        bigserial id PK\n        varchar code UK\n        varchar discount_type \"PERCENT|FIXED\"\n        numeric discount_value\n        numeric max_discount_amount\n        int min_nights\n        numeric min_total_amount\n        timestamptz starts_at\n        timestamptz ends_at\n        int usage_limit\n        int used_count\n        boolean active\n    }\n    reviews {\n        bigserial id PK\n        bigint booking_id FK,UK\n        smallint rating \"1..5\"\n        varchar title\n        text content\n        varchar status \"PENDING|APPROVED|REJECTED\"\n        text admin_reply\n    }\n    site_contents {\n        bigserial id PK\n        varchar section_key UK\n        varchar title\n        text body\n        jsonb data\n    }\n    banners {\n        bigserial id PK\n        varchar title\n        varchar image_url\n        varchar link_url\n        int display_order\n        boolean active\n    }\n    gallery_images {\n        bigserial id PK\n        varchar url\n        varchar caption\n        varchar category\n        int display_order\n    }\n    posts {\n        bigserial id PK\n        varchar slug UK\n        varchar title\n        text content\n        boolean published\n        timestamptz published_at\n    }\n```\n\n## Architecture — điểm mấu chốt: chống trùng lịch ở tầng DB\n\nMột `booking` gắn với một **loại phòng** và số lượng phòng. Mỗi phòng vật lý được gán tạo ra một dòng `booking_rooms`. Ràng buộc sống còn nằm trên bảng đó:\n\n```sql\nCREATE EXTENSION IF NOT EXISTS btree_gist;\n\nALTER TABLE booking_rooms\n  ADD COLUMN stay daterange\n  GENERATED ALWAYS AS (daterange(check_in, check_out, '[)')) STORED;\n\nALTER TABLE booking_rooms\n  ADD CONSTRAINT booking_rooms_no_overlap\n  EXCLUDE USING gist (room_id WITH =, stay WITH &&)\n  WHERE (status = 'ACTIVE');\n```\n\nBa điều nó bảo đảm mà tầng service không bảo đảm được:\n\n1. **Chống race condition thật.** Hai transaction song song cùng chèn phòng 101 cho khoảng ngày chồng nhau → Postgres bác một cái với SQLSTATE `23P01`. Không có khe hở giữa lúc \"kiểm tra\" và lúc \"ghi\".\n2. **Khoảng nửa mở `[)`.** Khách A trả phòng 10/03, khách B nhận phòng 10/03 → `[08/03,10/03)` và `[10/03,12/03)` **không** chồng nhau → hợp lệ. Đúng nghiệp vụ khách sạn.\n3. **`WHERE status = 'ACTIVE'`.** Booking bị huỷ chuyển dòng sang `RELEASED`, slot mở lại ngay, nhưng lịch sử vẫn còn để tra cứu.\n\nCần `btree_gist` vì `room_id` là số nguyên — GiST mặc định không có toán tử `=` cho kiểu này.\n\n## Related Code Files\n\n- Create: `backend/src/main/resources/db/migration/V1__extensions_and_users.sql`\n- Create: `backend/src/main/resources/db/migration/V2__rooms_and_amenities.sql`\n- Create: `backend/src/main/resources/db/migration/V3__bookings_and_exclusion.sql`\n- Create: `backend/src/main/resources/db/migration/V4__payments.sql`\n- Create: `backend/src/main/resources/db/migration/V5__promotions_and_reviews.sql`\n- Create: `backend/src/main/resources/db/migration/V6__cms_content.sql`\n- Create: `backend/src/main/java/com/tvh/homestay/**/entity/*.java` (16 entity)\n- Create: `backend/src/main/java/com/tvh/homestay/common/BaseAuditEntity.java` (`created_at`, `updated_at` qua `@MappedSuperclass` + `@EntityListeners(AuditingEntityListener.class)`)\n- Create: `backend/src/main/java/com/tvh/homestay/**/repository/*.java`\n- Create: `backend/src/test/java/com/tvh/homestay/SchemaMigrationTest.java`\n- Create: `backend/src/test/resources/application-test.yml`\n- Modify: `backend/pom.xml` (thêm `testcontainers:postgresql`, `junit-jupiter`)\n\n## Implementation Steps\n\n1. **V1** — `CREATE EXTENSION btree_gist`; bảng `users` (CHECK role IN CUSTOMER/ADMIN, email UNIQUE lowercase), `refresh_tokens` (lưu `token_hash`, không lưu token gốc).\n2. **V2** — `amenities`, `room_types`, `rooms`, `room_type_images`, `room_type_amenities`. Ràng buộc: `base_price > 0`, `room_number` UNIQUE, `rooms.status` CHECK.\n3. **V3** — `bookings` + `booking_rooms` + `booking_status_history`. Trên `bookings`: `CHECK (check_out > check_in)`, `CHECK (total_amount >= 0)`, `CHECK (adults >= 1)`, `code` UNIQUE. Trên `booking_rooms`: cột generated `stay` + ràng buộc `EXCLUDE` như trên + FK `ON DELETE CASCADE` về booking.\n4. **V4** — `payments` (`transfer_content` UNIQUE — đây là khoá đối soát; `provider_txn_id` UNIQUE NULL — đây là khoá idempotency webhook), `payment_webhook_events` (`external_id` UNIQUE).\n5. **V5** — `promotions` (CHECK `ends_at > starts_at`, CHECK discount_type, `used_count >= 0`), `reviews` (`booking_id` UNIQUE để 1 booking chỉ 1 đánh giá, `rating BETWEEN 1 AND 5`).\n6. **V6** — `site_contents`, `banners`, `gallery_images`, `posts`.\n7. Tạo index phục vụ truy vấn nóng:\n   ```sql\n   CREATE INDEX idx_bookings_status_checkin ON bookings(status, check_in);\n   CREATE INDEX idx_bookings_guest_phone   ON bookings(guest_phone);\n   CREATE INDEX idx_bookings_user          ON bookings(user_id) WHERE user_id IS NOT NULL;\n   CREATE INDEX idx_booking_rooms_booking  ON booking_rooms(booking_id);\n   CREATE INDEX idx_rooms_type_status      ON rooms(room_type_id, status);\n   CREATE INDEX idx_payments_transfer      ON payments(transfer_content);\n   ```\n   (Ràng buộc `EXCLUDE` đã tự tạo index GiST cho `booking_rooms`, không tạo thêm.)\n8. Viết entity JPA khớp từng cột. `stay` là cột generated → map `@Column(insertable=false, updatable=false)` hoặc bỏ khỏi entity; **không** để Hibernate ghi vào nó.\n9. Dùng `NUMERIC(12,2)` ↔ `BigDecimal`, `TIMESTAMPTZ` ↔ `OffsetDateTime`, `DATE` ↔ `LocalDate`, `JSONB` ↔ `@JdbcTypeCode(SqlTypes.JSON)`.\n10. Viết `SchemaMigrationTest` dùng Testcontainers: khởi động Postgres 16 thật, chạy Flyway, khởi động Spring context với `ddl-auto=validate`.\n11. Viết test chèn trực tiếp hai dòng `booking_rooms` chồng ngày cùng `room_id` → khẳng định ném `23P01`.\n\n## Verify\n\n```bash\ncd backend\n./mvnw -q test -Dtest=SchemaMigrationTest\n\n# Kiểm tra ràng buộc bằng tay\ndocker exec -it homestay-db psql -U postgres -d homestay <<'SQL'\nINSERT INTO booking_rooms(booking_id, room_id, check_in, check_out, status)\nVALUES (1, 1, '2026-10-01', '2026-10-05', 'ACTIVE');\n-- Dòng dưới PHẢI lỗi 23P01:\nINSERT INTO booking_rooms(booking_id, room_id, check_in, check_out, status)\nVALUES (2, 1, '2026-10-03', '2026-10-07', 'ACTIVE');\n-- Dòng dưới PHẢI thành công (nửa mở, không chồng):\nINSERT INTO booking_rooms(booking_id, room_id, check_in, check_out, status)\nVALUES (3, 1, '2026-10-05', '2026-10-08', 'ACTIVE');\nSQL\n\n./mvnw flyway:info   # tất cả migration Success, không có Pending/Failed\n```\n\n## Todo\n\n- [ ] V1 extensions + users + refresh_tokens\n- [ ] V2 amenities + room_types + rooms + images\n- [ ] V3 bookings + booking_rooms + ràng buộc EXCLUDE + status history\n- [ ] V4 payments + payment_webhook_events\n- [ ] V5 promotions + reviews\n- [ ] V6 site_contents + banners + gallery + posts\n- [ ] Index cho truy vấn nóng\n- [ ] 16 entity JPA + repository\n- [ ] `SchemaMigrationTest` (Testcontainers, ddl-auto=validate)\n- [ ] Test khẳng định `23P01` khi chèn chồng ngày\n\n## Success Criteria\n\n- [ ] `./mvnw test` xanh với Testcontainers Postgres thật (không dùng H2 — H2 không có `EXCLUDE`/`daterange`)\n- [ ] Spring context khởi động với `ddl-auto=validate` mà không sai lệch entity/schema\n- [ ] Chèn hai khoảng ngày chồng nhau cùng phòng bị DB bác với `23P01`\n- [ ] Chèn khoảng nửa mở liền kề (`10/05` nối `10/05`) thành công\n- [ ] `flyway:info` báo mọi migration Success\n\n## Risk Assessment\n\n| Rủi ro | Dấu hiệu | Phản ứng đã định |\n|---|---|---|\n| Hibernate cố ghi cột generated `stay` | Lỗi `cannot insert into generated column` lúc chạy | Đánh dấu `insertable=false, updatable=false` ngay từ đầu; test chèn qua JPA (không chỉ qua SQL thô) ở Phase 4 |\n| `ddl-auto=validate` fail vì lệch kiểu nhỏ (VD `varchar` vs `text`) | App không khởi động, log \"wrong column type\" | Sửa entity theo migration (migration là chủ), không bao giờ sửa ngược |\n| Sửa migration đã chạy làm lệch checksum | Flyway báo `Migration checksum mismatch` | Không bao giờ sửa file V đã chạy — luôn thêm file V mới. Dev muốn làm lại: `docker compose down -v` |\n| Snapshot giá trong booking bị quên | Đổi giá loại phòng làm đổi doanh thu lịch sử | Cột `unit_price_snapshot`, `room_type_name_snapshot` bắt buộc NOT NULL ngay từ V3 |\n\n**Rollback:** `docker compose -f docker-compose.dev.yml down -v` xoá volume và chạy lại migration từ đầu (chưa có dữ liệu thật ở phase này).\n"},{"n":3,"file":"phase-03-auth.md","effort":"6h","deps":[2],"critical":false,"parallel":"song song với 4","objective":"JWT access + refresh có xoay vòng cho ba lớp người dùng: guest, CUSTOMER, ADMIN.","bullets":["Refresh token lưu hash, xoay vòng, phát hiện tái sử dụng","Ma trận phân quyền cho từng nhóm endpoint","Rate limit chống dò mã booking và brute force login","Interceptor Angular tự refresh, có chống vòng lặp"],"title":"Xác thực & phân quyền (JWT)","tasks":16,"md":"---\ntitle: \"Phase 3: Xác thực & phân quyền (JWT)\"\nstatus: todo\nphase: 3\npriority: P1\neffort: \"6h\"\ndependencies: [2]\n---\n\n# Phase 3: Xác thực & phân quyền (JWT)\n\n## Overview\n\nBa lớp người dùng cùng tồn tại: **guest** (không tài khoản, tra cứu bằng mã booking + SĐT), **CUSTOMER** (đăng ký/đăng nhập, xem lịch sử, đánh giá), **ADMIN** (toàn quyền quản trị). Phase này dựng JWT access + refresh token có xoay vòng, và khoá đúng từng nhóm endpoint.\n\n**Chạy song song được với Phase 4** — không chạm cùng file.\n\n## Requirements\n\n- Functional: đăng ký, đăng nhập, làm mới token, đăng xuất, đổi mật khẩu, `GET /api/me`.\n- Non-functional: mật khẩu băm BCrypt cost 10+; refresh token lưu **hash** trong DB, xoay vòng mỗi lần dùng; endpoint tra cứu guest có giới hạn tần suất chống dò mã booking.\n\n## Architecture\n\n```mermaid\nsequenceDiagram\n    participant FE as Angular\n    participant API as Spring Security\n    participant DB as PostgreSQL\n\n    FE->>API: POST /api/auth/login {email, password}\n    API->>DB: tìm user, so BCrypt\n    API->>DB: lưu hash(refreshToken), TTL 7 ngày\n    API-->>FE: {accessToken (15p), refreshToken (7d), user}\n    Note over FE: accessToken giữ trong memory<br/>refreshToken trong httpOnly cookie hoặc localStorage\n    FE->>API: GET /api/me/bookings + Bearer accessToken\n    API-->>FE: 200\n    FE->>API: (access hết hạn) POST /api/auth/refresh\n    API->>DB: đối chiếu hash, thu hồi token cũ, phát token mới\n    API-->>FE: cặp token mới\n```\n\n**Ma trận phân quyền**\n\n| Nhóm endpoint | Quyền |\n|---|---|\n| `GET /api/room-types`, `/api/availability`, `/api/content/**`, `/api/reviews` (đã duyệt) | Công khai |\n| `POST /api/bookings`, `POST /api/bookings/lookup` | Công khai (có rate limit) |\n| `POST /api/payments/webhook/sepay` | Công khai + xác thực chữ ký/API key của SePay |\n| `/api/auth/**` | Công khai |\n| `/api/me/**` | `CUSTOMER` hoặc `ADMIN` |\n| `/api/admin/**` | Chỉ `ADMIN` |\n| `/swagger-ui/**`, `/v3/api-docs/**` | Chỉ bật ở profile `dev` |\n\n## Related Code Files\n\n- Create: `backend/src/main/java/com/tvh/homestay/auth/JwtService.java` (ký/giải HS256, đọc `${JWT_SECRET}`)\n- Create: `backend/src/main/java/com/tvh/homestay/auth/JwtAuthenticationFilter.java`\n- Create: `backend/src/main/java/com/tvh/homestay/auth/AuthController.java`, `AuthService.java`\n- Create: `backend/src/main/java/com/tvh/homestay/auth/dto/` (RegisterRequest, LoginRequest, TokenResponse, MeResponse)\n- Create: `backend/src/main/java/com/tvh/homestay/auth/RefreshTokenService.java`\n- Create: `backend/src/main/java/com/tvh/homestay/user/UserDetailsServiceImpl.java`\n- Create: `backend/src/main/java/com/tvh/homestay/common/RateLimitFilter.java` (Bucket4j in-memory theo IP)\n- Modify: `backend/src/main/java/com/tvh/homestay/config/SecurityConfig.java` (thay permitAll tạm của Phase 1)\n- Create: `frontend/src/app/core/services/auth.service.ts` (signal `currentUser`)\n- Create: `frontend/src/app/core/services/token-storage.service.ts`\n- Create: `frontend/src/app/core/interceptors/auth.interceptor.ts` (gắn Bearer + tự refresh khi 401, chống refresh lặp)\n- Create: `frontend/src/app/core/guards/auth.guard.ts`, `admin.guard.ts`\n- Create: `backend/src/test/java/com/tvh/homestay/auth/AuthFlowIT.java`\n\n## Implementation Steps\n\n1. `JwtService`: ký HS256, claim `sub` = user id, `role`, `exp`. Access 15 phút, refresh 7 ngày. Secret ≥ 32 byte đọc từ `JWT_SECRET`; **fail fast** khi thiếu, không dùng giá trị mặc định.\n2. `RefreshTokenService`: sinh token ngẫu nhiên 256-bit, lưu `SHA-256(token)` vào `refresh_tokens`. Khi refresh: đối chiếu hash → thu hồi dòng cũ (`revoked_at`) → phát cặp mới (rotation). Nếu gặp token đã thu hồi → thu hồi toàn bộ token của user đó (dấu hiệu bị đánh cắp).\n3. `JwtAuthenticationFilter`: đọc header `Authorization: Bearer`, nạp `SecurityContext`. Token hỏng/hết hạn → 401 dạng `problem+json`, không stack trace.\n4. `SecurityConfig`: `SessionCreationPolicy.STATELESS`, tắt CSRF (API thuần token), bật CORS cho origin của frontend (đọc từ env), khai báo ma trận phân quyền ở trên.\n5. `AuthController`: `POST /register`, `POST /login`, `POST /refresh`, `POST /logout`, `POST /change-password`, `GET /api/me`.\n6. Đăng ký: chuẩn hoá email về chữ thường, kiểm tra trùng, validate mật khẩu ≥ 8 ký tự. Vai trò mặc định `CUSTOMER` — **không cho phép** client tự truyền `role`.\n7. `RateLimitFilter`: giới hạn `POST /api/auth/login` và `POST /api/bookings/lookup` ở 10 request/phút/IP; vượt → 429.\n8. Frontend `auth.service.ts`: signal `currentUser`, `login()`, `logout()`, `register()`; lưu access token trong bộ nhớ, refresh token trong `localStorage`.\n9. `auth.interceptor.ts`: gắn Bearer; bắt 401 → gọi refresh một lần → phát lại request. Dùng cờ chống vòng lặp vô hạn khi refresh cũng 401.\n10. `auth.guard.ts` chặn `/tai-khoan/**`; `admin.guard.ts` chặn `/admin/**` (kiểm tra role, không chỉ kiểm tra \"có token\").\n11. `AuthFlowIT`: đăng ký → đăng nhập → gọi `/api/me` → refresh → gọi lại → logout → khẳng định token cũ bị từ chối.\n\n## Verify\n\n```bash\ncd backend && ./mvnw -q test -Dtest=AuthFlowIT\n\n# Kiểm tra thủ công\nTOKEN=$(curl -s -X POST localhost:8080/api/auth/login \\\n  -H 'Content-Type: application/json' \\\n  -d '{\"email\":\"admin@tvh.local\",\"password\":\"Admin@123\"}' | jq -r .accessToken)\n\ncurl -s localhost:8080/api/me -H \"Authorization: Bearer $TOKEN\"      # 200\ncurl -s -o /dev/null -w '%{http_code}\\n' localhost:8080/api/admin/bookings   # 401\ncurl -s -o /dev/null -w '%{http_code}\\n' localhost:8080/api/admin/bookings \\\n  -H \"Authorization: Bearer $TOKEN\"                                          # 200 nếu ADMIN\n\n# Rate limit: request thứ 11 trong 1 phút phải trả 429\nfor i in $(seq 1 11); do curl -s -o /dev/null -w '%{http_code} ' \\\n  -X POST localhost:8080/api/auth/login -H 'Content-Type: application/json' \\\n  -d '{\"email\":\"x@y.z\",\"password\":\"sai\"}'; done; echo\n```\n\n## Todo\n\n- [ ] `JwtService` + fail fast khi thiếu `JWT_SECRET`\n- [ ] `RefreshTokenService` lưu hash + xoay vòng + phát hiện tái sử dụng\n- [ ] `JwtAuthenticationFilter` + lỗi dạng `problem+json`\n- [ ] `SecurityConfig` với ma trận phân quyền đầy đủ\n- [ ] `AuthController` 6 endpoint + validate đăng ký\n- [ ] `RateLimitFilter` cho login và lookup\n- [ ] Frontend: auth service (signal), token storage, interceptor tự refresh\n- [ ] `auth.guard` + `admin.guard`\n- [ ] `AuthFlowIT` chạy hết vòng đời token\n\n## Success Criteria\n\n- [ ] Đăng ký → đăng nhập → `/api/me` trả đúng thông tin user\n- [ ] Access token hết hạn được interceptor tự làm mới, người dùng không bị đá ra\n- [ ] `/api/admin/**` trả 403 với token `CUSTOMER`, 401 khi không token\n- [ ] Client gửi `\"role\":\"ADMIN\"` lúc đăng ký vẫn chỉ tạo được `CUSTOMER`\n- [ ] Refresh token đã dùng lại lần hai bị từ chối và thu hồi cả họ token\n- [ ] Login sai 11 lần trong 1 phút → 429\n- [ ] Không có secret nào nằm trong `application.yml`\n\n## Risk Assessment\n\n| Rủi ro | Dấu hiệu | Phản ứng đã định |\n|---|---|---|\n| Interceptor refresh gây vòng lặp vô hạn khi refresh token cũng hết hạn | Trình duyệt bắn liên tục `/auth/refresh`, tab treo | Cờ `isRefreshing` + hàng đợi request; refresh fail → logout ngay, chuyển về trang đăng nhập |\n| JWT secret yếu hoặc bị commit | Secret nằm trong file yml/git | Đọc từ env, fail fast lúc khởi động; quét secret trước mỗi commit |\n| Rate limit in-memory mất tác dụng khi chạy nhiều instance | Dò mã booking vẫn thành công dù có giới hạn | Chấp nhận trong phạm vi đồ án (chạy 1 instance); ghi rõ giới hạn này trong `docs/`. Nếu cần scale → chuyển sang Redis |\n| CORS cấu hình `*` kèm credentials | Trình duyệt báo lỗi CORS hoặc bảo mật lỏng | Liệt kê tường minh origin từ env, không dùng `*` |\n\n**Rollback:** revert commit của phase; Phase 4 không phụ thuộc auth nên vẫn chạy tiếp được.\n"},{"n":4,"file":"phase-04-booking-core.md","effort":"10h","deps":[2],"critical":true,"parallel":"song song với 3","objective":"Truy vấn phòng trống, thuật toán gán phòng vật lý, vòng đời booking và giữ chỗ 15 phút.","bullets":["RoomAllocator thử lần lượt phòng ứng viên, bắt đúng SQLSTATE 23P01","Giữ chỗ 15 phút + job tự hết hạn nhả phòng","State machine 7 trạng thái, ghi lịch sử mỗi lần chuyển","BookingConcurrencyIT: 20 luồng, đúng 1 thành công"],"title":"Lõi đặt phòng & chống trùng lịch","tasks":21,"md":"---\ntitle: \"Phase 4: Lõi đặt phòng & chống trùng lịch\"\nstatus: todo\nphase: 4\npriority: P1\neffort: \"10h\"\ndependencies: [2]\n---\n\n# Phase 4: Lõi đặt phòng & chống trùng lịch\n\n## Overview\n\nPhase quan trọng nhất của đồ án. Xây truy vấn phòng trống, thuật toán gán phòng vật lý, vòng đời booking và cơ chế giữ chỗ. Đây cũng là nơi chứng minh bằng test rằng hệ thống không thể đặt trùng.\n\n**Chạy song song được với Phase 3.**\n\n## Requirements\n\n- Functional: tìm phòng trống theo khoảng ngày; tạo booking (guest hoặc user); tra cứu bằng mã + SĐT; huỷ booking; tự hết hạn giữ chỗ.\n- Non-functional: hai request đồng thời cùng phòng cùng ngày → đúng một thành công. Truy vấn phòng trống dưới 200ms với dữ liệu mẫu.\n\n## Architecture\n\n### Truy vấn phòng trống\n\n```sql\nSELECT rt.id, rt.name, rt.base_price,\n       (SELECT count(*) FROM rooms r\n         WHERE r.room_type_id = rt.id AND r.status = 'AVAILABLE')\n     - (SELECT count(*) FROM booking_rooms br\n          JOIN rooms r2 ON r2.id = br.room_id\n         WHERE r2.room_type_id = rt.id\n           AND br.status = 'ACTIVE'\n           AND br.stay && daterange(:checkIn, :checkOut, '[)')\n       ) AS available_count\n  FROM room_types rt\n WHERE rt.active\n   AND rt.capacity_adults >= :adults\nHAVING available_count > 0;\n```\n\nToán tử `&&` chạy trên index GiST mà ràng buộc `EXCLUDE` đã tạo — không cần index thêm.\n\n### Thuật toán gán phòng (lạc quan + dựa vào DB)\n\n```mermaid\nflowchart TD\n    A[POST /api/bookings] --> B{Validate: ngày, sức chứa, mã giảm giá}\n    B -->|sai| E1[400 problem+json]\n    B -->|đúng| C[Lấy danh sách phòng ứng viên<br/>của loại phòng, status AVAILABLE]\n    C --> D{Còn phòng ứng viên?}\n    D -->|hết| E2[409 ROOM_NOT_AVAILABLE]\n    D -->|còn| F[BEGIN TRANSACTION]\n    F --> G[INSERT bookings status=PENDING_PAYMENT<br/>hold_expires_at = now + 15 phút]\n    G --> H[INSERT booking_rooms cho từng phòng cần]\n    H --> I{DB ném 23P01?}\n    I -->|có| J[ROLLBACK, bỏ phòng vừa đụng<br/>khỏi danh sách ứng viên]\n    J --> D\n    I -->|không| K[COMMIT, sinh mã booking]\n    K --> L[201 + booking + hạn giữ chỗ]\n```\n\nKhông dùng `LOCK TABLE`, không dùng `SELECT FOR UPDATE` toàn bảng. Ràng buộc `EXCLUDE` là trọng tài duy nhất; service chỉ thử lần lượt các phòng ứng viên. Số lần thử tối đa = số phòng của loại đó.\n\n### Vòng đời booking\n\n```mermaid\nstateDiagram-v2\n    [*] --> PENDING_PAYMENT: khách đặt (giữ chỗ 15 phút)\n    PENDING_PAYMENT --> CONFIRMED: webhook báo đã nhận cọc\n    PENDING_PAYMENT --> EXPIRED: quá hạn giữ chỗ (job mỗi phút)\n    PENDING_PAYMENT --> CANCELLED: khách/admin huỷ\n    CONFIRMED --> CHECKED_IN: admin nhận phòng\n    CONFIRMED --> CANCELLED: huỷ trước ngày nhận\n    CONFIRMED --> NO_SHOW: quá ngày nhận không đến\n    CHECKED_IN --> CHECKED_OUT: admin trả phòng\n    CHECKED_OUT --> [*]\n    EXPIRED --> [*]\n    CANCELLED --> [*]\n    NO_SHOW --> [*]\n```\n\nMọi trạng thái kết thúc (`EXPIRED`, `CANCELLED`, `NO_SHOW`) đều kéo theo `booking_rooms.status = 'RELEASED'` → slot mở lại tức thì. Mọi lần chuyển trạng thái ghi một dòng `booking_status_history`.\n\n## Related Code Files\n\n- Create: `backend/src/main/java/com/tvh/homestay/availability/AvailabilityService.java`, `AvailabilityController.java`, `dto/AvailabilityResponse.java`\n- Create: `backend/src/main/java/com/tvh/homestay/booking/BookingService.java` — điều phối\n- Create: `backend/src/main/java/com/tvh/homestay/booking/RoomAllocator.java` — vòng thử phòng, bắt `23P01`\n- Create: `backend/src/main/java/com/tvh/homestay/booking/BookingPricingService.java` — tính tiền + áp mã giảm giá\n- Create: `backend/src/main/java/com/tvh/homestay/booking/BookingCodeGenerator.java` — `TVH` + 6 ký tự Crockford Base32\n- Create: `backend/src/main/java/com/tvh/homestay/booking/BookingStatus.java`, `BookingStateMachine.java`\n- Create: `backend/src/main/java/com/tvh/homestay/booking/BookingExpiryScheduler.java` — `@Scheduled(fixedDelay=60000)`\n- Create: `backend/src/main/java/com/tvh/homestay/booking/BookingController.java` (công khai), `MyBookingController.java` (`/api/me/bookings`)\n- Create: `backend/src/main/java/com/tvh/homestay/promotion/PromotionService.java` — validate + tăng `used_count`\n- Create: `backend/src/main/java/com/tvh/homestay/common/GlobalExceptionHandler.java` — RFC 7807\n- Create: `frontend/src/app/core/services/booking.service.ts`, `availability.service.ts`\n- Create: `frontend/src/app/shared/` — date-range-picker, button, input, modal, badge, spinner, pagination, currency pipe\n- Create: `backend/src/test/java/com/tvh/homestay/booking/BookingConcurrencyIT.java`\n- Create: `backend/src/test/java/com/tvh/homestay/booking/AvailabilityQueryIT.java`\n- Create: `backend/src/test/java/com/tvh/homestay/booking/BookingLifecycleIT.java`\n\n## Implementation Steps\n\n1. `AvailabilityService` chạy truy vấn trên qua native query, trả về danh sách loại phòng kèm `availableCount` và tổng tiền dự tính.\n2. Validate đầu vào: `check_in >= hôm nay`, `check_out > check_in`, số đêm ≤ 30, `adults >= 1`, sức chứa đủ.\n3. `BookingPricingService`: `subtotal = base_price × số đêm × số phòng`; áp khuyến mãi (PERCENT có trần `max_discount_amount`, FIXED không vượt subtotal); `deposit = 30% total`, làm tròn tới nghìn đồng.\n4. `PromotionService.validate()`: còn hiệu lực, chưa vượt `usage_limit`, đủ `min_nights`/`min_total_amount`. Tăng `used_count` bằng `UPDATE ... SET used_count = used_count + 1 WHERE id = ? AND used_count < usage_limit` rồi kiểm tra số dòng bị ảnh hưởng — tránh race, không đọc-rồi-ghi.\n5. `RoomAllocator.allocate(roomTypeId, dates, quantity)`: lấy phòng ứng viên sắp xếp theo `room_number`, thử chèn; bắt `DataIntegrityViolationException` có SQLSTATE `23P01` → loại phòng đó ra, thử tiếp; hết ứng viên → ném `RoomNotAvailableException` (409).\n6. `BookingCodeGenerator`: Crockford Base32 6 ký tự (bỏ I, L, O, U tránh nhầm) → `TVH8F3K2Q`; đụng UNIQUE thì sinh lại, tối đa 5 lần.\n7. `BookingService.create()`: `@Transactional`, thứ tự — validate → tính tiền → insert booking → allocate → commit. Đặt `hold_expires_at = now + 15 phút`.\n8. `BookingController`:\n   - `POST /api/bookings` — tạo (guest hoặc user đã đăng nhập, lấy `user_id` từ token nếu có)\n   - `POST /api/bookings/lookup` — body `{code, phone}`, so khớp cả hai, trả booking (có rate limit từ Phase 3)\n   - `POST /api/bookings/{code}/cancel` — body `{phone}` để xác thực guest\n9. `MyBookingController`: `GET /api/me/bookings` phân trang, `GET /api/me/bookings/{code}` — lọc theo `user_id` trong token, **không** tin `userId` client gửi.\n10. `BookingStateMachine`: bảng chuyển trạng thái hợp lệ; chuyển sai → 409 `INVALID_STATE_TRANSITION`. Ghi `booking_status_history` mỗi lần chuyển.\n11. `BookingExpiryScheduler`: mỗi phút tìm `PENDING_PAYMENT` có `hold_expires_at < now` → `EXPIRED` + `booking_rooms` → `RELEASED` (một câu `UPDATE ... FROM`, tránh N+1).\n12. `GlobalExceptionHandler`: map từng exception nghiệp vụ sang mã lỗi ổn định (`ROOM_NOT_AVAILABLE`, `INVALID_PROMOTION`, `BOOKING_NOT_FOUND`, `INVALID_STATE_TRANSITION`) — frontend hiển thị thông báo tiếng Việt theo mã, không parse chuỗi.\n13. Frontend: `availability.service.ts` + `booking.service.ts` gọi API; dựng thư viện `shared/` (date-range-picker tự viết, chặn ngày quá khứ và ngày đã kín).\n14. **Chốt `shared/` ở cuối phase này** để Phase 6 và Phase 7 tách nhánh song song mà không đụng nhau.\n\n## Verify\n\n```bash\ncd backend\n./mvnw -q test -Dtest='Booking*IT,Availability*IT'\n\n# BookingConcurrencyIT phải khẳng định: 20 thread đặt cùng loại phòng chỉ có 1 phòng\n# => đúng 1 thành công, 19 nhận 409, và DB chỉ có 1 dòng booking_rooms ACTIVE.\n\n# Kiểm tra thủ công\ncurl -s \"localhost:8080/api/availability?checkIn=2026-10-01&checkOut=2026-10-04&adults=2\" | jq\ncurl -s -X POST localhost:8080/api/bookings -H 'Content-Type: application/json' -d '{\n  \"roomTypeId\":1,\"checkIn\":\"2026-10-01\",\"checkOut\":\"2026-10-04\",\"roomQuantity\":1,\n  \"adults\":2,\"children\":0,\"guestName\":\"Nguyen Van A\",\n  \"guestEmail\":\"a@example.com\",\"guestPhone\":\"0900000001\"}' | jq\n\n# Đặt lại y hệt khi chỉ còn 1 phòng => 409 ROOM_NOT_AVAILABLE\n# Chờ quá 15 phút (hoặc hạ hold xuống 1 phút ở profile test) => booking EXPIRED, phòng trống lại\ncurl -s -X POST localhost:8080/api/bookings/lookup -H 'Content-Type: application/json' \\\n  -d '{\"code\":\"TVH8F3K2Q\",\"phone\":\"0900000001\"}' | jq\n```\n\n## Todo\n\n- [ ] `AvailabilityService` + native query + validate ngày\n- [ ] `BookingPricingService` (giá, khuyến mãi, cọc 30%)\n- [ ] `PromotionService` tăng `used_count` an toàn race\n- [ ] `RoomAllocator` bắt `23P01` và thử phòng kế tiếp\n- [ ] `BookingCodeGenerator` Crockford Base32\n- [ ] `BookingService.create()` transactional + giữ chỗ 15 phút\n- [ ] `BookingController` (tạo / lookup / cancel)\n- [ ] `MyBookingController` lọc theo token\n- [ ] `BookingStateMachine` + ghi `booking_status_history`\n- [ ] `BookingExpiryScheduler` mỗi phút\n- [ ] `GlobalExceptionHandler` RFC 7807 + mã lỗi ổn định\n- [ ] Thư viện `shared/` Angular (chốt trước khi tách Phase 6/7)\n- [ ] `BookingConcurrencyIT`, `AvailabilityQueryIT`, `BookingLifecycleIT`\n\n## Success Criteria\n\n- [ ] 20 thread đặt song song 1 phòng cuối cùng → đúng 1 thành công, 19 nhận 409, DB có đúng 1 dòng ACTIVE\n- [ ] Loại phòng hết sạch không xuất hiện trong kết quả tìm kiếm\n- [ ] Khách A trả phòng 10/03, khách B nhận phòng 10/03 → cả hai đặt được cùng phòng\n- [ ] Booking `PENDING_PAYMENT` quá hạn tự chuyển `EXPIRED` và trả phòng về trạng thái trống\n- [ ] Huỷ booking → slot mở lại ngay, lịch sử vẫn tra cứu được\n- [ ] Tra cứu sai SĐT → 404, không rò rỉ thông tin booking\n- [ ] Chuyển trạng thái sai (VD `CHECKED_OUT` → `CHECKED_IN`) → 409\n- [ ] Mọi lỗi trả `application/problem+json` có `code` ổn định\n\n## Risk Assessment\n\n| Rủi ro | Dấu hiệu | Phản ứng đã định |\n|---|---|---|\n| Bắt nhầm mọi `DataIntegrityViolationException` thành \"hết phòng\" | Lỗi khoá ngoại bị báo là hết phòng, che bug thật | Kiểm tra đúng SQLSTATE `23P01` (lấy từ `PSQLException.getSQLState()`), lỗi khác ném nguyên trạng |\n| Vòng thử phòng chậm khi loại phòng có nhiều phòng và gần kín | Thời gian tạo booking tăng vọt lúc cao điểm | Giới hạn 20 lần thử; lấy phòng ứng viên đã loại sẵn phòng bận bằng truy vấn `NOT EXISTS` trước khi thử |\n| Giữ chỗ 15 phút quá ngắn/dài | Khách thanh toán xong thì booking đã hết hạn, hoặc phòng bị giam vô ích | Đưa vào `application.yml` (`booking.hold-minutes`) để chỉnh không cần build lại; test chạy với 1 phút |\n| `used_count` của khuyến mãi bị vượt do race | Mã giới hạn 10 lượt nhưng dùng được 12 | Cập nhật có điều kiện (`WHERE used_count < usage_limit`) và kiểm tra số dòng ảnh hưởng, không đọc-rồi-ghi |\n| Booking bị huỷ nhưng `booking_rooms` quên `RELEASED` | Phòng bị giam vĩnh viễn, tìm kiếm báo hết phòng sai | Đưa việc nhả phòng vào cùng transaction của `BookingStateMachine`, không rải rác ở controller; test khẳng định |\n\n**Rollback:** revert commit; schema không đổi nên không cần migration hoàn tác.\n"},{"n":5,"file":"phase-05-payment-qr.md","effort":"8h","deps":[4],"critical":false,"parallel":"","objective":"QR VietQR đúng số tiền cọc, webhook SePay idempotent tự xác nhận booking, email xác nhận.","bullets":["Ba lớp bảo vệ webhook: xác thực key, idempotency, đối chiếu số tiền","Gửi mail sau khi commit, mail hỏng không rollback thanh toán","Fallback: thiếu SMTP thì ghi log, vẫn demo được","Endpoint mô phỏng chuyển khoản chỉ bật ở profile dev"],"title":"Thanh toán QR, webhook & email","tasks":19,"md":"---\ntitle: \"Phase 5: Thanh toán QR, webhook & email\"\nstatus: todo\nphase: 5\npriority: P1\neffort: \"8h\"\ndependencies: [4]\n---\n\n# Phase 5: Thanh toán QR, webhook & email\n\n## Overview\n\nKhách đặt xong nhận mã QR VietQR đúng số tiền cọc kèm nội dung chuyển khoản duy nhất. SePay gọi webhook khi tiền về → booking tự chuyển `CONFIRMED` → gửi email xác nhận. Có đường mô phỏng cho môi trường dev khi chưa có tài khoản SePay thật.\n\n## Requirements\n\n- Functional: sinh QR; nhận webhook; đối soát theo nội dung chuyển khoản; gửi email xác nhận/huỷ; frontend hỏi trạng thái để tự chuyển trang khi tiền về.\n- Non-functional: webhook **idempotent** (gọi lại nhiều lần không cộng tiền hai lần), có xác thực, và không bao giờ tin số tiền do client gửi.\n\n## Architecture\n\n```mermaid\nsequenceDiagram\n    participant KH as Khách\n    participant FE as Angular\n    participant API as Spring Boot\n    participant DB as PostgreSQL\n    participant SP as SePay\n    participant NH as Ngân hàng\n\n    FE->>API: POST /api/bookings\n    API->>DB: booking PENDING_PAYMENT + payment PENDING<br/>transfer_content = \"TVH8F3K2Q\"\n    API-->>FE: bookingCode + ảnh QR + số tiền cọc + hạn 15 phút\n    FE-->>KH: hiện QR, đếm ngược\n    KH->>NH: quét QR, chuyển khoản (nội dung tự điền)\n    NH-->>SP: biến động số dư\n    SP->>API: POST /api/payments/webhook/sepay<br/>Authorization: Apikey ***\n    API->>DB: đã xử lý external_id này chưa?\n    alt Đã xử lý\n        API-->>SP: 200 (bỏ qua, idempotent)\n    else Lần đầu\n        API->>DB: khớp transfer_content, kiểm tra số tiền >= cọc\n        API->>DB: payment SUCCEEDED, booking CONFIRMED,<br/>payment_status DEPOSIT_PAID\n        API->>KH: email xác nhận (mã, ngày, phòng, số tiền)\n        API-->>SP: 200\n    end\n    loop mỗi 3 giây, tối đa 15 phút\n        FE->>API: GET /api/bookings/{code}/payment-status\n    end\n    API-->>FE: CONFIRMED → chuyển trang cảm ơn\n```\n\n**Ba lớp bảo vệ webhook**\n\n1. **Xác thực** — so header `Authorization: Apikey <SEPAY_WEBHOOK_API_KEY>` bằng so sánh chống timing attack. Sai → 401, ghi log.\n2. **Idempotency** — `payment_webhook_events.external_id` UNIQUE. Chèn trước, chèn trùng → trả 200 ngay, không xử lý lại.\n3. **Đối chiếu số tiền** — số tiền lấy từ payload của SePay so với `payments.amount` trong DB. Thiếu tiền → ghi nhận `PARTIAL`, giữ `PENDING_PAYMENT`, báo admin; thừa tiền → vẫn xác nhận và đánh dấu để admin hoàn lại.\n\n## Related Code Files\n\n- Create: `backend/src/main/java/com/tvh/homestay/payment/PaymentService.java`\n- Create: `backend/src/main/java/com/tvh/homestay/payment/VietQrGenerator.java` — dựng URL `https://qr.sepay.vn/img?acc=&bank=&amount=&des=`\n- Create: `backend/src/main/java/com/tvh/homestay/payment/SepayWebhookController.java`\n- Create: `backend/src/main/java/com/tvh/homestay/payment/dto/SepayWebhookPayload.java`\n- Create: `backend/src/main/java/com/tvh/homestay/payment/PaymentStatusController.java` — `GET /api/bookings/{code}/payment-status`\n- Create: `backend/src/main/java/com/tvh/homestay/payment/DevPaymentSimulatorController.java` — `@Profile(\"dev\")`\n- Create: `backend/src/main/java/com/tvh/homestay/mail/MailService.java` (interface), `SmtpMailService.java`, `LoggingMailService.java` (fallback)\n- Create: `backend/src/main/resources/templates/mail/booking-confirmed.html`, `booking-cancelled.html`, `booking-pending.html` (Thymeleaf, tiếng Việt)\n- Create: `backend/src/main/java/com/tvh/homestay/config/MailConfig.java` — chọn bean theo `spring.mail.host` có mặt hay không\n- Create: `frontend/src/app/features/landing/booking/payment-qr.component.ts` — hiện QR + đếm ngược + hỏi trạng thái\n- Create: `backend/src/test/java/com/tvh/homestay/payment/SepayWebhookIT.java`\n- Modify: `backend/src/main/java/com/tvh/homestay/booking/BookingService.java` — tạo payment kèm booking\n- Modify: `backend/src/main/java/com/tvh/homestay/config/SecurityConfig.java` — mở đường webhook\n\n## Implementation Steps\n\n1. `VietQrGenerator`: dựng URL ảnh QR từ `SEPAY_ACCOUNT_NUMBER`, `SEPAY_BANK_CODE`, số tiền cọc, nội dung `transfer_content`. Nội dung chuyển khoản = mã booking không dấu gạch (`TVH8F3K2Q`) — ngắn, khách gõ tay được nếu app ngân hàng không quét được.\n2. `PaymentService.createForBooking()`: tạo `payments` trạng thái `PENDING`, `transfer_content` UNIQUE, `expires_at` = `hold_expires_at` của booking.\n3. `SepayWebhookController` `POST /api/payments/webhook/sepay`:\n   - xác thực API key (`MessageDigest.isEqual`, không dùng `equals`)\n   - chèn `payment_webhook_events` với `external_id` = `id` của SePay; đụng UNIQUE → 200 và dừng\n   - tìm payment theo `transfer_content` xuất hiện trong trường `content`/`description` của payload (dùng regex `TVH[0-9A-Z]{6}`)\n   - so số tiền, chuyển `payment` → `SUCCEEDED`, `booking` → `CONFIRMED`, `payment_status` → `DEPOSIT_PAID` (qua `BookingStateMachine` để ghi lịch sử)\n   - lưu nguyên payload vào `raw_payload` (JSONB) phục vụ đối soát\n   - luôn trả 200 cho trường hợp đã xử lý/không khớp (tránh SePay retry vô hạn); chỉ 401 khi sai key\n4. Gửi mail **sau khi transaction commit** (`@TransactionalEventListener(AFTER_COMMIT)`) — mail hỏng không được rollback thanh toán.\n5. `MailConfig`: có `MAIL_HOST` → `SmtpMailService`; không có → `LoggingMailService` ghi đầy đủ nội dung ra log (đủ để demo).\n6. Mẫu email Thymeleaf tiếng Việt: mã booking, loại phòng, ngày nhận/trả, số phòng, tổng tiền, đã cọc, còn lại, thông tin liên hệ homestay.\n7. `PaymentStatusController`: `GET /api/bookings/{code}/payment-status` trả `{status, paymentStatus, expiresAt}` — công khai nhưng chỉ lộ đúng ba trường này.\n8. `DevPaymentSimulatorController` (`@Profile(\"dev\")`): `POST /api/dev/payments/{transferContent}/simulate-transfer` dựng payload SePay giả rồi gọi thẳng handler — demo trọn luồng khi chưa có tài khoản thật. **Không** được nạp ở profile `prod`.\n9. Frontend `payment-qr.component`: hiện ảnh QR, số tài khoản/nội dung để copy thủ công, đồng hồ đếm ngược tới `expiresAt`, hỏi trạng thái mỗi 3 giây (dừng khi `CONFIRMED`, khi hết hạn, hoặc khi rời trang — nhớ `ngOnDestroy`).\n10. Hết giờ chưa trả tiền → hiện thông báo booking đã hết hạn kèm nút đặt lại.\n11. `SepayWebhookIT`: đúng key + đúng nội dung → CONFIRMED; gọi lại lần hai → vẫn 1 payment SUCCEEDED; sai key → 401; thiếu tiền → giữ `PENDING_PAYMENT`.\n\n## Verify\n\n```bash\ncd backend && ./mvnw -q test -Dtest=SepayWebhookIT\n\n# Demo trọn luồng ở profile dev (không cần tài khoản SePay)\nCODE=$(curl -s -X POST localhost:8080/api/bookings -H 'Content-Type: application/json' \\\n  -d '{\"roomTypeId\":1,\"checkIn\":\"2026-11-01\",\"checkOut\":\"2026-11-03\",\"roomQuantity\":1,\n       \"adults\":2,\"guestName\":\"Tran B\",\"guestEmail\":\"b@example.com\",\"guestPhone\":\"0900000002\"}' \\\n  | jq -r .code)\n\ncurl -s \"localhost:8080/api/bookings/$CODE/payment-status\" | jq   # PENDING_PAYMENT\ncurl -s -X POST \"localhost:8080/api/dev/payments/TVH$CODE/simulate-transfer\"\ncurl -s \"localhost:8080/api/bookings/$CODE/payment-status\" | jq   # CONFIRMED\nopen http://localhost:8025                                        # Mailpit: có mail xác nhận\n\n# Idempotency: gọi webhook hai lần cùng external_id\ncurl -s -X POST localhost:8080/api/payments/webhook/sepay \\\n  -H \"Authorization: Apikey $SEPAY_WEBHOOK_API_KEY\" -H 'Content-Type: application/json' \\\n  -d '{\"id\":\"evt_1\",\"content\":\"TVH'\"$CODE\"'\",\"transferAmount\":500000}' -w '\\n%{http_code}\\n'\n# lần hai => 200, và trong DB vẫn chỉ có 1 payment SUCCEEDED\n\n# Sai key => 401\ncurl -s -o /dev/null -w '%{http_code}\\n' -X POST localhost:8080/api/payments/webhook/sepay \\\n  -H 'Authorization: Apikey sai' -d '{}'\n```\n\n## Todo\n\n- [ ] `VietQrGenerator` + nội dung chuyển khoản duy nhất\n- [ ] `PaymentService.createForBooking()` gắn vào luồng tạo booking\n- [ ] `SepayWebhookController` + xác thực API key chống timing attack\n- [ ] Idempotency qua `payment_webhook_events.external_id`\n- [ ] Đối chiếu số tiền (thiếu/đủ/thừa xử lý khác nhau)\n- [ ] Gửi mail sau commit (`AFTER_COMMIT`)\n- [ ] `MailService` + fallback ghi log khi thiếu SMTP\n- [ ] 3 mẫu email Thymeleaf tiếng Việt\n- [ ] `GET /payment-status` + polling frontend có dọn dẹp\n- [ ] `DevPaymentSimulatorController` chỉ ở profile dev\n- [ ] `SepayWebhookIT` phủ 4 tình huống\n\n## Success Criteria\n\n- [ ] Đặt phòng → QR hiện đúng số tiền cọc và nội dung chuyển khoản khớp mã booking\n- [ ] Webhook hợp lệ → booking `CONFIRMED`, `payment_status` `DEPOSIT_PAID`, email đã gửi\n- [ ] Gọi webhook lại cùng `external_id` → 200, dữ liệu không đổi, không gửi mail lần hai\n- [ ] Sai API key → 401 và không có thay đổi nào trong DB\n- [ ] Chuyển thiếu tiền → booking vẫn `PENDING_PAYMENT`, admin thấy cảnh báo\n- [ ] Thiếu cấu hình SMTP → app vẫn chạy, nội dung mail nằm trong log\n- [ ] Profile `prod` không nạp endpoint mô phỏng (test khẳng định)\n- [ ] Hết 15 phút chưa trả tiền → trang QR báo hết hạn, booking `EXPIRED`\n\n## Risk Assessment\n\n| Rủi ro | Dấu hiệu | Phản ứng đã định |\n|---|---|---|\n| Chưa có tài khoản SePay lúc bảo vệ đồ án | Không có webhook thật để demo | Endpoint mô phỏng ở profile dev đã nằm trong phạm vi phase; demo bằng nó, cắm key thật sau là chạy ngay |\n| Endpoint mô phỏng lọt lên production | Ai cũng xác nhận được booking mà không trả tiền | `@Profile(\"dev\")` + test khẳng định bean không tồn tại ở profile `prod` |\n| SePay đổi tên trường payload | Webhook trả 200 nhưng không khớp được booking | Lưu `raw_payload` JSONB mọi sự kiện; dò mã bằng regex trên nhiều trường (`content`, `description`); log rõ khi không khớp |\n| Gửi mail chậm làm treo webhook | SePay timeout rồi gửi lại liên tục | Gửi mail bất đồng bộ sau commit (`@Async` + `AFTER_COMMIT`); webhook trả 200 ngay |\n| Polling 3 giây chạy mãi sau khi rời trang | Rò rỉ bộ nhớ, API bị gọi vô ích | Huỷ trong `ngOnDestroy`; dừng khi đạt trạng thái cuối hoặc hết hạn |\n| Tin số tiền do client gửi | Trả 1.000đ vẫn được xác nhận | Số tiền chỉ lấy từ payload webhook đối chiếu với `payments.amount` trong DB; client không có đường nào tác động |\n\n**Rollback:** revert commit; booking vẫn tạo được (chỉ mất bước thanh toán), admin có thể xác nhận thủ công ở Phase 6.\n"},{"n":6,"file":"phase-06-admin-dashboard.md","effort":"12h","deps":[3,4],"critical":false,"parallel":"song song với 7","objective":"Toàn bộ khu quản trị: CRUD phòng, xử lý booking theo vòng đời, khuyến mãi, đánh giá, dashboard doanh thu.","bullets":["6 chỉ số dashboard tính bằng SQL tổng hợp, không tải dữ liệu về app","Tỉ lệ lấp đầy cắt theo LEAST/GREATEST — không bao giờ vượt 100%","Upload ảnh Cloudinary + fallback local, kiểm MIME thật","AdminAuthorizationIT quét toàn bộ endpoint admin"],"title":"Trang admin & dashboard","tasks":21,"md":"---\ntitle: \"Phase 6: Trang admin & dashboard\"\nstatus: todo\nphase: 6\npriority: P1\neffort: \"12h\"\ndependencies: [3, 4]\n---\n\n# Phase 6: Trang admin & dashboard\n\n## Overview\n\nToàn bộ khu vực quản trị: đăng nhập, CRUD loại phòng/phòng/ảnh/giá, xử lý booking theo vòng đời, quản lý khuyến mãi, duyệt đánh giá, và dashboard doanh thu + tỉ lệ lấp đầy.\n\n**Chạy song song được với Phase 7** sau khi `shared/` đã chốt ở cuối Phase 4.\n\n## Requirements\n\n- Functional: 6 màn hình quản trị + dashboard; upload ảnh; đổi trạng thái booking; xuất CSV.\n- Non-functional: mọi endpoint dưới `/api/admin/**` chỉ `ADMIN` truy cập; danh sách phân trang phía server; dashboard truy vấn tổng hợp bằng SQL, không tải hết dữ liệu về app.\n\n## Architecture\n\n### Bố cục admin\n\n```\n/admin/login\n/admin                      → Dashboard\n/admin/bookings             → Danh sách + lọc trạng thái/ngày/mã + chi tiết\n/admin/room-types           → CRUD loại phòng + ảnh + tiện ích\n/admin/rooms                → CRUD phòng vật lý + lịch phòng\n/admin/promotions           → CRUD mã giảm giá\n/admin/reviews              → Duyệt / ẩn / trả lời đánh giá\n/admin/content              → (Phase 7) banner, thư viện ảnh, tin tức, nội dung trang\n```\n\n### Chỉ số dashboard (tính bằng SQL, không tính ở tầng Java)\n\n| Chỉ số | Công thức |\n|---|---|\n| Doanh thu theo tháng | `SUM(total_amount)` các booking `CONFIRMED/CHECKED_IN/CHECKED_OUT`, gom theo `date_trunc('month', check_in)` |\n| Đã thu cọc | `SUM(amount)` các payment `SUCCEEDED` trong kỳ |\n| Tỉ lệ lấp đầy | (số đêm-phòng đã bán trong kỳ) ÷ (số phòng khả dụng × số đêm của kỳ) |\n| Booking mới | `COUNT(*)` theo `created_at` trong kỳ |\n| Tỉ lệ huỷ | `COUNT(CANCELLED + NO_SHOW) ÷ COUNT(*)` |\n| Top loại phòng | `COUNT(*)` booking gom theo `room_type_id`, sắp giảm dần |\n\nSố đêm-phòng đã bán:\n\n```sql\nSELECT SUM(\n  LEAST(br.check_out, :periodEnd) - GREATEST(br.check_in, :periodStart)\n) AS room_nights\nFROM booking_rooms br\nJOIN bookings b ON b.id = br.booking_id\nWHERE br.status = 'ACTIVE'\n  AND b.status IN ('CONFIRMED','CHECKED_IN','CHECKED_OUT')\n  AND br.stay && daterange(:periodStart, :periodEnd, '[)');\n```\n\nCắt theo `LEAST`/`GREATEST` để booking vắt qua ranh giới tháng chỉ tính phần nằm trong kỳ — nếu bỏ qua bước này, tỉ lệ lấp đầy sẽ vượt 100%.\n\n## Related Code Files\n\n**Backend**\n- Create: `admin/AdminBookingController.java` — danh sách lọc, chi tiết, đổi trạng thái, ghi chú\n- Create: `admin/AdminRoomTypeController.java`, `AdminRoomController.java`\n- Create: `admin/AdminPromotionController.java`, `AdminReviewController.java`\n- Create: `report/DashboardController.java`, `DashboardService.java`, `dto/DashboardSummary.java`\n- Create: `report/RevenueReportRepository.java` (native query tổng hợp)\n- Create: `storage/ImageStorageService.java` (interface), `CloudinaryImageStorage.java`, `LocalImageStorage.java`\n- Create: `storage/ImageUploadController.java` — `POST /api/admin/images` (multipart)\n- Create: `config/StorageConfig.java` — chọn bean theo `CLOUDINARY_URL` có mặt hay không\n- Modify: `pom.xml` — thêm `cloudinary-http44`\n\n**Frontend**\n- Create: `features/admin/admin.routes.ts` (lazy, bọc `adminGuard`)\n- Create: `layouts/admin-layout/` — sidebar, topbar, breadcrumb\n- Create: `features/admin/login/`, `dashboard/`, `bookings/`, `room-types/`, `rooms/`, `promotions/`, `reviews/`\n- Create: `shared/ui/data-table/` — bảng phân trang + sắp xếp + lọc, tự viết\n- Create: `shared/ui/image-uploader/` — kéo thả, xem trước, sắp thứ tự\n- Create: `shared/ui/chart/` — biểu đồ cột + đường bằng SVG thuần (không thêm thư viện)\n- Create: `features/admin/bookings/booking-detail.component.ts` — dòng thời gian trạng thái\n\n**Test**\n- Create: `backend/src/test/java/com/tvh/homestay/report/DashboardServiceIT.java`\n- Create: `backend/src/test/java/com/tvh/homestay/admin/AdminAuthorizationIT.java`\n\n## Implementation Steps\n\n1. `AdminBookingController`: `GET /api/admin/bookings` phân trang + lọc (`status`, `from`, `to`, `q` theo mã/tên/SĐT); `GET /{id}`; `POST /{id}/transition` body `{toStatus, note}` chạy qua `BookingStateMachine`; `POST /{id}/note`.\n2. Chi tiết booking hiển thị: thông tin khách, ngày, phòng được gán (số phòng cụ thể), lịch sử trạng thái, lịch sử thanh toán, mã giảm giá đã dùng.\n3. `AdminRoomTypeController`: CRUD + gắn tiện ích + sắp thứ tự ảnh + đặt ảnh bìa. Xoá loại phòng đang có booking → 409, gợi ý dùng `active = false` thay vì xoá.\n4. `AdminRoomController`: CRUD phòng; đổi `status` sang `MAINTENANCE` cho phòng đang có booking `ACTIVE` trong tương lai → cảnh báo và liệt kê booking bị ảnh hưởng, không tự huỷ.\n5. `ImageStorageService`: có `CLOUDINARY_URL` → upload Cloudinary (lưu `public_id` để xoá được); không có → `LocalImageStorage` ghi vào `uploads/` và serve qua `/uploads/**`. Chặn theo MIME thật (đọc magic bytes, không tin phần mở rộng), giới hạn 5MB.\n6. `AdminPromotionController`: CRUD; không cho sửa `code` khi đã có booking dùng; hiển thị `used_count / usage_limit`.\n7. `AdminReviewController`: danh sách theo trạng thái, duyệt/từ chối, trả lời. Chỉ review `APPROVED` hiện ra landing.\n8. `DashboardService`: gom các truy vấn tổng hợp trên, nhận tham số kỳ (mặc định 12 tháng gần nhất). Trả một DTO duy nhất để trang dashboard chỉ gọi một request.\n9. `GET /api/admin/reports/bookings.csv` — xuất CSV có BOM UTF-8 để Excel tiếng Việt không lỗi font.\n10. Frontend `admin-layout` + `data-table` dùng chung cho 5 màn hình danh sách (DRY: một component bảng, cấu hình cột theo input).\n11. Trang dashboard: 4 thẻ chỉ số + biểu đồ cột doanh thu 12 tháng + biểu đồ đường tỉ lệ lấp đầy + bảng top loại phòng — vẽ bằng SVG thuần, có `aria-label` cho từng cột.\n12. Màn hình booking: bộ lọc trên thanh URL (query param) để admin bookmark/chia sẻ được đường dẫn đã lọc.\n13. `AdminAuthorizationIT`: quét toàn bộ endpoint `/api/admin/**`, khẳng định 401 khi không token và 403 với token `CUSTOMER`.\n\n## Verify\n\n```bash\ncd backend && ./mvnw -q test -Dtest='Dashboard*IT,AdminAuthorizationIT'\n\n# Đối chiếu dashboard với dữ liệu thô\ndocker exec -it homestay-db psql -U postgres -d homestay -c \"\nSELECT date_trunc('month', check_in) AS thang, SUM(total_amount)\nFROM bookings WHERE status IN ('CONFIRMED','CHECKED_IN','CHECKED_OUT')\nGROUP BY 1 ORDER BY 1;\"\ncurl -s localhost:8080/api/admin/dashboard -H \"Authorization: Bearer $ADMIN_TOKEN\" | jq\n# Hai con số phải khớp tuyệt đối\n\n# Phân quyền\ncurl -s -o /dev/null -w '%{http_code}\\n' localhost:8080/api/admin/bookings                     # 401\ncurl -s -o /dev/null -w '%{http_code}\\n' localhost:8080/api/admin/bookings \\\n  -H \"Authorization: Bearer $CUSTOMER_TOKEN\"                                                    # 403\n\ncd ../frontend && npm run build && npx ng lint\n```\n\nKiểm tra thủ công: đặt một booking ở landing → mở `/admin/bookings` → thấy đúng booking đó → `CONFIRMED` → `CHECKED_IN` → `CHECKED_OUT` → dashboard cộng thêm đúng số tiền.\n\n## Todo\n\n- [ ] `AdminBookingController` (lọc, chi tiết, chuyển trạng thái, ghi chú)\n- [ ] `AdminRoomTypeController` + tiện ích + thứ tự ảnh + ảnh bìa\n- [ ] `AdminRoomController` + cảnh báo booking bị ảnh hưởng khi bảo trì\n- [ ] `ImageStorageService` + Cloudinary + fallback local + kiểm MIME thật\n- [ ] `AdminPromotionController`\n- [ ] `AdminReviewController`\n- [ ] `DashboardService` (6 chỉ số bằng SQL tổng hợp)\n- [ ] Xuất CSV có BOM UTF-8\n- [ ] `admin-layout` + `data-table` + `image-uploader` dùng chung\n- [ ] Dashboard với biểu đồ SVG tự vẽ\n- [ ] Bộ lọc booking gắn vào query param\n- [ ] `AdminAuthorizationIT` quét toàn bộ endpoint admin\n\n## Success Criteria\n\n- [ ] Admin đăng nhập thấy booking vừa tạo ở landing, đổi được trạng thái theo đúng vòng đời\n- [ ] Chuyển trạng thái sai luồng bị chặn với thông báo tiếng Việt rõ ràng\n- [ ] Dashboard khớp tuyệt đối với truy vấn SQL thô đối chiếu\n- [ ] Tỉ lệ lấp đầy không bao giờ vượt 100%, kể cả với booking vắt qua hai tháng\n- [ ] Mọi `/api/admin/**` trả 403 với token `CUSTOMER`\n- [ ] Upload ảnh chạy được cả khi có và không có Cloudinary\n- [ ] Upload file `.jpg` giả (thực chất là `.exe`) bị từ chối\n- [ ] CSV mở trong Excel không lỗi font tiếng Việt\n- [ ] `npm run build` sạch, không cảnh báo budget\n\n## Risk Assessment\n\n| Rủi ro | Dấu hiệu | Phản ứng đã định |\n|---|---|---|\n| Tỉ lệ lấp đầy vượt 100% | Booking dài ngày vắt qua ranh giới tháng bị tính trọn | Cắt bằng `LEAST`/`GREATEST` như công thức trên; test riêng với booking 27/09→03/10 |\n| Dashboard chậm khi dữ liệu lớn | Trang tải trên 2 giây | Tổng hợp bằng SQL (không tải hết về app), index `bookings(status, check_in)` đã có từ Phase 2; nếu vẫn chậm → bảng tổng hợp theo ngày |\n| Cloudinary hết quota giữa buổi bảo vệ | Upload lỗi 4xx | Fallback local đã nằm trong phase; ảnh seed nhúng sẵn trong repo, không phụ thuộc mạng |\n| Xoá loại phòng làm mồ côi booking cũ | Lỗi khoá ngoại hoặc mất dữ liệu lịch sử | Chặn xoá cứng khi còn booking; dùng `active = false`. Booking đã snapshot tên và giá nên lịch sử vẫn đọc được |\n| Va chạm với Phase 7 ở `shared/` | Conflict git khi merge | `shared/` chốt cuối Phase 4; phát sinh mới thì thêm file mới, không sửa file `shared/` đang có |\n\n**Rollback:** revert commit của phase; landing (Phase 7) không phụ thuộc admin nên vẫn chạy.\n"},{"n":7,"file":"phase-07-landing-cms.md","effort":"14h","deps":[4,5],"critical":false,"parallel":"song song với 6","objective":"Bộ mặt của đồ án: landing page, luồng đặt phòng 3 bước, CMS nội dung và đánh giá có kiểm duyệt.","bullets":["Luồng 3 bước giữ trạng thái qua query param — F5 không mất dữ liệu","Kiểm tra lại phòng trống ở bước cuối, xử lý 409 êm ái","Admin sửa hero, banner, thư viện ảnh, tin tức không cần build lại","Sanitize HTML ở backend chống XSS lưu trữ"],"title":"Landing page, CMS nội dung & đánh giá","tasks":20,"md":"---\ntitle: \"Phase 7: Landing page, CMS nội dung & đánh giá\"\nstatus: todo\nphase: 7\npriority: P1\neffort: \"14h\"\ndependencies: [4, 5]\n---\n\n# Phase 7: Landing page, CMS nội dung & đánh giá\n\n## Overview\n\nBộ mặt của đồ án: trang giới thiệu homestay và toàn bộ luồng đặt phòng cho khách, cộng với lớp CMS để admin sửa nội dung mà không cần đụng code, và tính năng đánh giá sau khi trả phòng.\n\n**Chạy song song được với Phase 6.**\n\n## Requirements\n\n- Functional: 8 màn hình công khai; 4 màn hình CMS trong admin; đánh giá có kiểm duyệt.\n- Non-functional: responsive từ 360px; điểm Lighthouse Accessibility ≥ 90; ảnh lazy-load; không có văn bản cứng nào thuộc nhóm nội dung mà admin phải sửa được.\n\n## Architecture\n\n### Sơ đồ trang công khai\n\n```\n/                          Trang chủ: hero + tìm phòng + giới thiệu + loại phòng\n                           + tiện ích + thư viện ảnh + đánh giá + tin tức + liên hệ\n/phong                     Danh sách loại phòng (lọc theo ngày, số khách, giá)\n/phong/:slug               Chi tiết loại phòng: ảnh, tiện ích, giá, nút đặt\n/dat-phong                 Luồng 3 bước\n/dat-phong/thanh-toan/:code  QR + đếm ngược (Phase 5)\n/dat-phong/hoan-tat/:code    Trang cảm ơn\n/tra-cuu                   Tra cứu bằng mã + SĐT\n/tai-khoan/dat-phong       Lịch sử đặt phòng (cần đăng nhập)\n/danh-gia/:code            Form đánh giá sau khi trả phòng\n/tin-tuc, /tin-tuc/:slug   Tin tức & khuyến mãi\n```\n\n### Luồng đặt phòng 3 bước\n\n```mermaid\nflowchart LR\n    A[\"Bước 1<br/>Chọn ngày + số khách<br/>→ danh sách loại phòng còn trống\"]\n      --> B[\"Bước 2<br/>Chọn loại phòng + số lượng<br/>→ xem bảng giá chi tiết\"]\n      --> C[\"Bước 3<br/>Thông tin khách + mã giảm giá<br/>→ xác nhận\"]\n      --> D[\"QR thanh toán<br/>(Phase 5)\"]\n      --> E[\"Trang cảm ơn<br/>+ email xác nhận\"]\n```\n\nTrạng thái từng bước giữ trong một signal store (`BookingFlowStore`) và đồng bộ lên query param, để người dùng F5 không mất dữ liệu đã nhập.\n\n### Lớp CMS\n\n| Khối trên landing | Nguồn dữ liệu | Màn hình admin |\n|---|---|---|\n| Hero (tiêu đề, phụ đề, ảnh nền) | `site_contents` key `hero` | `/admin/content/sections` |\n| Giới thiệu, liên hệ, bản đồ | `site_contents` | `/admin/content/sections` |\n| Băng-rôn khuyến mãi | `banners` | `/admin/content/banners` |\n| Thư viện ảnh | `gallery_images` | `/admin/content/gallery` |\n| Tiện ích homestay | `amenities` (category `PROPERTY`) | `/admin/room-types` |\n| Tin tức / khuyến mãi | `posts` | `/admin/content/posts` |\n| Đánh giá hiện trên trang chủ | `reviews` đã `APPROVED` | `/admin/reviews` (Phase 6) |\n\n## Related Code Files\n\n**Backend**\n- Create: `content/PublicContentController.java` — `GET /api/content/sections`, `/banners`, `/gallery`, `/posts`, `/posts/{slug}`\n- Create: `content/AdminContentController.java` — CRUD 4 nhóm nội dung\n- Create: `content/ContentService.java`, `HtmlSanitizer.java` (lọc HTML bằng danh sách cho phép)\n- Create: `review/ReviewController.java` — `POST /api/bookings/{code}/review`, `GET /api/reviews` (đã duyệt, phân trang)\n- Create: `review/ReviewService.java` — chỉ cho đánh giá khi booking `CHECKED_OUT` và chưa có review\n- Modify: `pom.xml` — thêm thư viện sanitize HTML\n\n**Frontend**\n- Create: `layouts/public-layout/` — header trong suốt chuyển nền khi cuộn, footer, menu mobile\n- Create: `features/landing/home/` + các section component (hero, search-bar, about, room-types, amenities, gallery, reviews, news, contact)\n- Create: `features/landing/room-types/room-type-list.component.ts`, `room-type-detail.component.ts`\n- Create: `features/landing/booking/booking-flow.component.ts` + 3 component bước + `booking-flow.store.ts`\n- Create: `features/landing/booking/booking-success.component.ts`\n- Create: `features/landing/lookup/booking-lookup.component.ts`\n- Create: `features/landing/account/my-bookings.component.ts`\n- Create: `features/landing/review/review-form.component.ts`\n- Create: `features/landing/news/`\n- Create: `features/admin/content/` — sections, banners, gallery, posts\n- Create: `shared/ui/` — image-gallery-lightbox, star-rating, stepper, empty-state, skeleton-loader\n- Create: `core/services/content.service.ts`, `review.service.ts`\n\n## Implementation Steps\n\n1. `public-layout`: header dính, logo, menu (Trang chủ / Phòng / Tin tức / Tra cứu / Liên hệ), nút \"Đặt phòng\" nổi bật, menu mobile dạng trượt.\n2. Trang chủ, các section theo thứ tự: hero + thanh tìm phòng nổi lên trên ảnh → giới thiệu → loại phòng nổi bật → tiện ích → thư viện ảnh (lightbox) → đánh giá khách → tin tức → liên hệ + bản đồ nhúng.\n3. Thanh tìm phòng dùng lại `date-range-picker` từ `shared/` (Phase 4); chặn ngày quá khứ; mặc định 2 người lớn.\n4. `/phong`: lưới thẻ loại phòng, hiển thị `availableCount` khi đã chọn ngày; lọc theo giá và số khách ở phía client (dữ liệu nhỏ), lọc theo ngày ở phía server.\n5. `/phong/:slug`: băng ảnh, mô tả, tiện ích, bảng giá, thẻ đặt phòng dính bên phải trên desktop và dính đáy trên mobile.\n6. `booking-flow.store.ts`: signal store giữ `{checkIn, checkOut, adults, children, roomTypeId, quantity, promotionCode, guest}`; đồng bộ query param; kiểm tra lại phòng trống ở bước 3 trước khi gửi (tránh trường hợp phòng bị người khác lấy trong lúc điền form).\n7. Bước 3: form dùng typed reactive form, validate SĐT Việt Nam (`^0[35789]\\d{8}$`), email, tên. Ô nhập mã giảm giá gọi API kiểm tra và hiện ngay số tiền được giảm.\n8. Xử lý 409 `ROOM_NOT_AVAILABLE` ở bước 3: hiện hộp thoại \"phòng vừa được đặt\", đưa về bước 1 với ngày đã chọn — không để người dùng rơi vào ngõ cụt.\n9. `/tra-cuu`: nhập mã + SĐT → hiện trạng thái, chi tiết, nút huỷ (nếu trạng thái cho phép), nút thanh toán lại (nếu `PENDING_PAYMENT` còn hạn).\n10. `/tai-khoan/dat-phong`: danh sách phân trang, lọc theo trạng thái, mở chi tiết.\n11. `/danh-gia/:code`: chỉ mở khi booking `CHECKED_OUT` và chưa có review; chọn sao + tiêu đề + nội dung; gửi xong hiện \"chờ duyệt\".\n12. `PublicContentController` + `content.service.ts`: trang chủ nạp nội dung động; có giá trị mặc định để trang không vỡ khi CMS còn trống.\n13. `HtmlSanitizer` cho nội dung bài viết: chỉ cho phép `p, h2-h4, ul, ol, li, strong, em, a[href], img[src,alt], br, blockquote`. Frontend render qua `[innerHTML]` sau khi đã sanitize ở backend (chống XSS lưu trữ).\n14. 4 màn hình CMS trong admin dùng lại `data-table` và `image-uploader` của Phase 6.\n15. SEO cơ bản: `<title>`/`<meta description>` theo trang, Open Graph cho trang chi tiết phòng và bài viết, `alt` cho mọi ảnh.\n16. Truy cập: điều hướng bằng bàn phím cho stepper và lightbox, `aria-live` cho thông báo lỗi, tương phản màu đạt WCAG AA, tôn trọng `prefers-reduced-motion`.\n\n## Verify\n\n```bash\ncd frontend\nnpm run build && npx ng lint\nnpx lighthouse http://localhost:4200 --only-categories=accessibility,performance --view\n\n# Kiểm tra thủ công đúng thứ tự\n# 1. Trang chủ 360px / 768px / 1440px — không tràn ngang\n# 2. Chọn ngày -> chọn phòng -> điền form -> QR -> mô phỏng chuyển khoản -> trang cảm ơn\n# 3. F5 giữa chừng bước 3 -> dữ liệu vẫn còn (query param)\n# 4. Mở 2 tab, cùng đặt phòng cuối cùng -> tab thứ hai nhận thông báo hết phòng, quay lại bước 1\n# 5. /tra-cuu bằng mã + SĐT -> ra đúng booking; sai SĐT -> không lộ thông tin\n# 6. Admin đổi hero ở /admin/content/sections -> refresh trang chủ -> nội dung đổi\n# 7. Gửi đánh giá -> chưa hiện; admin duyệt -> hiện trên trang chủ\n# 8. Đăng bài viết có thẻ <script> -> nội dung hiển thị không chạy script\n```\n\n## Todo\n\n- [ ] `public-layout` (header dính, menu mobile, footer)\n- [ ] Trang chủ + 8 section\n- [ ] `/phong` danh sách + lọc; `/phong/:slug` chi tiết\n- [ ] `booking-flow.store` + 3 bước + đồng bộ query param\n- [ ] Kiểm tra lại phòng trống ở bước 3 + xử lý 409 êm ái\n- [ ] Trang cảm ơn + trang tra cứu + lịch sử đặt phòng\n- [ ] Form đánh giá + kiểm duyệt\n- [ ] `PublicContentController` + `AdminContentController` + sanitize HTML\n- [ ] 4 màn hình CMS trong admin\n- [ ] SEO cơ bản + truy cập bàn phím + tương phản AA\n- [ ] Lightbox thư viện ảnh, skeleton loader, empty state\n\n## Success Criteria\n\n- [ ] Đi trọn luồng từ trang chủ đến email xác nhận không gặp lỗi\n- [ ] Responsive sạch ở 360px, 768px, 1440px — không cuộn ngang\n- [ ] Lighthouse Accessibility ≥ 90\n- [ ] F5 giữa luồng đặt phòng không mất dữ liệu đã nhập\n- [ ] Phòng bị người khác lấy mất → thông báo rõ và đưa về bước 1, không kẹt\n- [ ] Admin sửa hero/banner/thư viện ảnh/tin tức → landing đổi ngay, không cần build lại\n- [ ] Đánh giá chỉ hiện sau khi được duyệt\n- [ ] Bài viết chứa `<script>` không thực thi được (chống XSS)\n- [ ] Tra cứu sai SĐT không lộ bất kỳ thông tin nào của booking\n\n## Risk Assessment\n\n| Rủi ro | Dấu hiệu | Phản ứng đã định |\n|---|---|---|\n| Landing tự viết bằng Tailwind mất nhiều thời gian hơn dự tính | Phase 7 tràn quá 14h | Ưu tiên theo thứ tự: luồng đặt phòng > trang chủ > tin tức. Tin tức có thể lược nếu cạn thời gian (nêu rõ với người dùng, không tự cắt lặng lẽ) |\n| XSS lưu trữ qua nội dung CMS | Script chạy được trên trang công khai | Sanitize ở **backend** trước khi lưu (không chỉ ở frontend); test khẳng định với payload `<script>` và `<img onerror>` |\n| Phòng bị lấy mất giữa lúc khách điền form | 409 rơi vào mặt người dùng cuối luồng | Kiểm tra lại phòng trống ở bước 3 + hộp thoại xử lý êm; giữ chỗ 15 phút bắt đầu tính từ lúc tạo booking |\n| Trang chủ vỡ khi CMS chưa có dữ liệu | Section trống hoặc lỗi null | Mỗi section có nội dung mặc định; seed CMS đầy đủ ở Phase 8 |\n| Va chạm với Phase 6 ở `shared/` | Conflict git | Chỉ thêm file mới vào `shared/`, không sửa file đã chốt ở Phase 4 |\n\n**Rollback:** revert commit của phase; API và admin không phụ thuộc landing.\n"},{"n":8,"file":"phase-08-packaging-docs.md","effort":"6h","deps":[6,7],"critical":false,"parallel":"","objective":"Một lệnh chạy được trên máy lạ, dữ liệu mẫu thuyết phục, và 7 tài liệu tiếng Việt để bảo vệ.","bullets":["Dockerfile nhiều tầng + compose 3 service có healthcheck","Seed 6 tháng dữ liệu, 15 phòng, 40 booking đủ mọi trạng thái","docs/: ERD, use case, sequence, API, cài đặt, kiểm thử","Quét secret + thử lại trên clone sạch"],"title":"Đóng gói, seed & tài liệu","tasks":20,"md":"---\ntitle: \"Phase 8: Đóng gói, seed & tài liệu\"\nstatus: todo\nphase: 8\npriority: P1\neffort: \"6h\"\ndependencies: [6, 7]\n---\n\n# Phase 8: Đóng gói, seed & tài liệu\n\n## Overview\n\nBiến hệ thống thành thứ chạy được bằng một lệnh trên máy lạ, kèm dữ liệu mẫu thuyết phục và tài liệu kỹ thuật tiếng Việt đủ để bảo vệ đồ án.\n\n## Requirements\n\n- Functional: `docker compose up` dựng Postgres + API + web với dữ liệu mẫu và tài khoản admin sẵn sàng.\n- Non-functional: khởi động sạch từ máy chưa từng chạy dự án; không có secret nào trong repo; tài liệu khớp với code thật.\n\n## Architecture\n\n```mermaid\nflowchart LR\n    subgraph compose[\"docker compose up\"]\n      W[\"web<br/>nginx:alpine<br/>:80\"] -->|proxy /api| A[\"api<br/>eclipse-temurin:21-jre<br/>:8080\"]\n      A --> D[(\"db<br/>postgres:16<br/>:5432\")]\n      A -.->|dev| M[\"mailpit<br/>:8025\"]\n    end\n    U[Trình duyệt] --> W\n```\n\n- **web**: build Angular nhiều tầng (`node:20` build → `nginx:alpine` serve), có `try_files` cho SPA routing và `proxy_pass /api` sang service `api`.\n- **api**: build Maven nhiều tầng, chạy JRE 21, `healthcheck` gọi `/api/health`.\n- **db**: `postgres:16` + volume `pgdata` + `healthcheck` `pg_isready`; `api` chờ `db` khoẻ mới khởi động.\n- Dữ liệu mẫu nạp qua Flyway ở `db/seed/` chỉ được thêm vào `spring.flyway.locations` khi profile là `demo` — production sạch dữ liệu giả.\n\n## Related Code Files\n\n- Create: `backend/Dockerfile`, `backend/.dockerignore`\n- Create: `frontend/Dockerfile`, `frontend/nginx.conf`, `frontend/.dockerignore`\n- Create: `docker-compose.yml` (đầy đủ 3–4 service)\n- Create: `backend/src/main/resources/db/seed/V900__demo_data.sql`\n- Modify: `backend/src/main/resources/application-demo.yml` — thêm `classpath:db/seed` vào `flyway.locations`\n- Create: `docs/kien-truc.md` — kiến trúc hệ thống + sơ đồ thành phần\n- Create: `docs/erd.md` — ERD đầy đủ + mô tả từng bảng, từng ràng buộc\n- Create: `docs/use-case.md` — sơ đồ và đặc tả use case theo tác nhân\n- Create: `docs/luong-dat-phong.md` — sequence đặt phòng + thanh toán + trạng thái\n- Create: `docs/api.md` — bảng endpoint, quyền truy cập, mã lỗi\n- Create: `docs/cai-dat.md` — hướng dẫn cài đặt và chạy chi tiết\n- Create: `docs/kiem-thu.md` — danh mục test và cách chạy\n- Modify: `README.md` — tóm tắt + ảnh chụp màn hình + liên kết sang `docs/`\n- Modify: `.env.example`\n\n## Implementation Steps\n\n1. `backend/Dockerfile`: tầng build `maven:3.9-eclipse-temurin-21` chạy `mvn package -DskipTests`, tầng chạy `eclipse-temurin:21-jre-alpine` chỉ chép file jar. Chạy bằng user không phải root.\n2. `frontend/Dockerfile`: tầng build `node:20-alpine` chạy `npm ci && npm run build`, tầng chạy `nginx:alpine` chép thư mục build ra `/usr/share/nginx/html`.\n3. `frontend/nginx.conf`: `try_files $uri $uri/ /index.html;` cho SPA; `location /api { proxy_pass http://api:8080; }`; bật gzip; đặt header bảo mật cơ bản (`X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`).\n4. `docker-compose.yml`: 3 service + volume `pgdata` + `uploads` (để ảnh upload local không mất khi dựng lại); mọi biến môi trường đọc từ `.env` với giá trị mặc định an toàn cho demo.\n5. `V900__demo_data.sql` — dữ liệu mẫu thật sự dùng được:\n   - 1 admin (`admin@tvh.local` / `Admin@123`, hash BCrypt sinh sẵn) + 2 khách hàng\n   - 4 loại phòng (Standard 500k, Deluxe 750k, Family 1.2tr, Bungalow 1.5tr) × 3–5 phòng mỗi loại = 15 phòng\n   - 12 tiện ích, ảnh dùng đường dẫn tương đối tới ảnh trong repo (không phụ thuộc mạng)\n   - ~40 booking rải 6 tháng gần nhất, đủ mọi trạng thái, để dashboard có biểu đồ đẹp\n   - 3 mã giảm giá (còn hạn, hết hạn, hết lượt), 8 đánh giá (6 đã duyệt, 2 chờ)\n   - nội dung CMS đầy đủ: hero, giới thiệu, 3 banner, 8 ảnh thư viện, 4 bài viết\n6. Kiểm tra dữ liệu mẫu không vi phạm ràng buộc `EXCLUDE` (viết sao cho các booking không chồng phòng) — chạy migration là bằng chứng.\n7. `docs/erd.md`: sơ đồ Mermaid + bảng mô tả từng cột, giải thích tại sao chọn `EXCLUDE ... gist` thay vì khoá ở tầng ứng dụng. Đây là phần dễ được hỏi nhất khi bảo vệ.\n8. `docs/use-case.md`: 3 tác nhân (Khách vãng lai, Khách có tài khoản, Quản trị viên); đặc tả chi tiết 5 use case chính (tìm phòng, đặt phòng, thanh toán, quản lý booking, xem báo cáo) theo mẫu: tác nhân, tiền điều kiện, luồng chính, luồng thay thế, hậu điều kiện.\n9. `docs/luong-dat-phong.md`: sequence đặt phòng, sequence thanh toán + webhook, biểu đồ trạng thái booking (chép lại từ Phase 4/5, giữ đồng bộ).\n10. `docs/api.md`: bảng đầy đủ endpoint — phương thức, đường dẫn, quyền, mô tả, mã lỗi; trỏ tới `/swagger-ui` cho chi tiết tham số.\n11. `docs/kiem-thu.md`: liệt kê từng test và điều nó chứng minh, đặc biệt `BookingConcurrencyIT` và `SepayWebhookIT`; kèm lệnh chạy.\n12. `README.md`: giới thiệu 5 dòng, ảnh chụp landing + admin + dashboard, khối lệnh chạy nhanh, tài khoản demo, liên kết `docs/`.\n13. Quét secret toàn repo trước khi commit cuối.\n14. Chạy thử toàn bộ trên thư mục clone sạch để chắc chắn không phụ thuộc trạng thái máy đang phát triển.\n\n## Verify\n\n```bash\n# Kịch bản máy lạ\ncd /tmp && rm -rf smoke && git clone <repo-url> smoke && cd smoke\ncp .env.example .env\ndocker compose up -d --build\ndocker compose ps          # cả 3 service healthy\n\ncurl -sf localhost/api/health                       # UP\ncurl -sf localhost/api/room-types | jq 'length'     # 4\nopen http://localhost                               # landing có nội dung, không phải trang trắng\nopen http://localhost/admin                         # đăng nhập admin@tvh.local / Admin@123\nopen http://localhost/swagger-ui/index.html         # liệt kê đủ endpoint\n\n# Toàn bộ test\ncd backend && ./mvnw -q verify\ncd ../frontend && npm ci && npm run build && npx ng lint\n\n# Quét secret\ngit grep -nEi '(api[_-]?key|secret|password|token)\\s*[:=]\\s*[\"'\"'\"'][^\"'\"'\"']{8,}' \\\n  -- ':!*.example' ':!docs/*' ':!plans/*' || echo \"OK: khong lo secret\"\n\n# Kiểm tra tài liệu khớp code\ngrep -c '/api/' docs/api.md   # so với số endpoint trong Swagger\n```\n\n## Todo\n\n- [ ] `backend/Dockerfile` nhiều tầng, chạy user không phải root\n- [ ] `frontend/Dockerfile` + `nginx.conf` (SPA fallback + proxy + header bảo mật)\n- [ ] `docker-compose.yml` đầy đủ + healthcheck + volume\n- [ ] `V900__demo_data.sql` (dữ liệu mẫu 6 tháng, đủ mọi trạng thái)\n- [ ] `application-demo.yml` tách seed khỏi production\n- [ ] `docs/kien-truc.md`\n- [ ] `docs/erd.md` (kèm lý giải lựa chọn `EXCLUDE`)\n- [ ] `docs/use-case.md` (3 tác nhân, 5 use case đặc tả đầy đủ)\n- [ ] `docs/luong-dat-phong.md` (2 sequence + 1 state diagram)\n- [ ] `docs/api.md`, `docs/cai-dat.md`, `docs/kiem-thu.md`\n- [ ] `README.md` + ảnh chụp màn hình\n- [ ] Quét secret + thử lại trên clone sạch\n\n## Success Criteria\n\n- [ ] Trên máy chưa từng chạy dự án: `cp .env.example .env && docker compose up -d --build` là đủ\n- [ ] Cả 3 service báo healthy; landing có nội dung thật, không phải trang trắng\n- [ ] Đăng nhập admin demo được, dashboard có biểu đồ với dữ liệu 6 tháng\n- [ ] `/swagger-ui` liệt kê đủ endpoint\n- [ ] `./mvnw verify` và `npm run build` đều xanh\n- [ ] Quét secret không phát hiện gì ngoài `.env.example`\n- [ ] 7 tài liệu trong `docs/` khớp với code thật (endpoint, bảng, trạng thái)\n- [ ] Mọi sơ đồ Mermaid render được trên GitHub\n\n## Risk Assessment\n\n| Rủi ro | Dấu hiệu | Phản ứng đã định |\n|---|---|---|\n| Dữ liệu mẫu vi phạm ràng buộc `EXCLUDE` | Migration V900 lỗi `23P01`, container `api` không lên | Sinh booking mẫu bằng script có kiểm tra chồng lấn, hoặc phân bổ phòng thủ công theo lịch không giao nhau; migration chạy được chính là bằng chứng |\n| Dockerfile build lâu, buổi bảo vệ chờ mất kiên nhẫn | `docker compose up --build` mất hơn 5 phút | Tận dụng cache tầng (chép `pom.xml` / `package.json` trước rồi mới chép mã nguồn); build sẵn image trước buổi bảo vệ |\n| Máy hội đồng không có Docker | Không dựng được | `docs/cai-dat.md` có đường chạy thủ công (Postgres cài máy + `mvn spring-boot:run` + `ng serve`); chuẩn bị sẵn video demo dự phòng |\n| Tài liệu lệch code sau các lần sửa cuối | Docs mô tả endpoint không còn tồn tại | Viết docs **sau cùng**, đối chiếu trực tiếp với Swagger đang chạy, không viết từ trí nhớ |\n| Mật khẩu admin demo lọt vào production | Tài khoản mặc định trên môi trường thật | Seed chỉ nạp ở profile `demo`; `docs/cai-dat.md` cảnh báo đổi mật khẩu khi triển khai thật |\n\n**Rollback:** revert commit; ứng dụng vẫn chạy được ở chế độ dev (`docker-compose.dev.yml` + `mvn spring-boot:run` + `ng serve`).\n"}]};
+</script>
+<script>
+(function(){
+  var PH = window.__PLAN__.phases;
+
+  function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+
+  function inline(s){
+    return s
+      .replace(/`([^`]+)`/g,function(m,c){return "<code>"+c+"</code>";})
+      .replace(/\*\*([^*]+)\*\*/g,"<strong>$1</strong>")
+      .replace(/(^|[^*])\*([^*\n]+)\*/g,"$1<em>$2</em>")
+      .replace(/\[([^\]]+)\]\(([^)\s]+)\)/g,'<a href="$2">$1</a>');
+  }
+
+  function renderTableRow(cells,tag){
+    return "<tr>"+cells.map(function(c){return "<"+tag+">"+inline(c.trim())+"</"+tag+">";}).join("")+"</tr>";
+  }
+  function splitRow(line){
+    var t=line.trim().replace(/^\|/,"").replace(/\|$/,"");
+    return t.split("|");
+  }
+
+  function md2html(src){
+    // frontmatter
+    var fm="", body=src;
+    var m=src.match(/^---\n([\s\S]*?)\n---\n?/);
+    if(m){
+      var pairs=m[1].split("\n").filter(Boolean).map(function(l){
+        var i=l.indexOf(":"); if(i<0) return "";
+        return '<span>'+esc(l.slice(0,i))+': <b>'+esc(l.slice(i+1).trim().replace(/^["']|["']$/g,""))+'</b></span>';
+      }).join("");
+      fm='<div class="fmatter">'+pairs+'</div>';
+      body=src.slice(m[0].length);
+    }
+    var lines=body.split("\n"), out=[], i=0;
+    var listStack=[];
+    function closeLists(){ while(listStack.length){ out.push("</"+listStack.pop()+">"); } }
+
+    while(i<lines.length){
+      var line=lines[i];
+
+      // fenced code
+      var f=line.match(/^```(\w*)\s*$/);
+      if(f){
+        closeLists();
+        var lang=f[1]||"", buf=[]; i++;
+        while(i<lines.length && !/^```\s*$/.test(lines[i])){ buf.push(lines[i]); i++; }
+        i++;
+        if(lang==="mermaid"){
+          out.push('<div class="mermaid-note">Sơ đồ Mermaid — xem bản render trên GitHub</div>');
+        }
+        out.push("<pre><code>"+esc(buf.join("\n"))+"</code></pre>");
+        continue;
+      }
+
+      // table
+      if(/^\s*\|/.test(line) && i+1<lines.length && /^\s*\|[\s:\-|]+\|\s*$/.test(lines[i+1])){
+        closeLists();
+        var head=splitRow(line); i+=2;
+        var rows=[];
+        while(i<lines.length && /^\s*\|/.test(lines[i])){ rows.push(splitRow(lines[i])); i++; }
+        out.push("<table><thead>"+renderTableRow(head,"th")+"</thead><tbody>"+
+          rows.map(function(r){return renderTableRow(r,"td");}).join("")+"</tbody></table>");
+        continue;
+      }
+
+      // heading
+      var h=line.match(/^(#{1,4})\s+(.*)$/);
+      if(h){ closeLists(); var lv=h[1].length; out.push("<h"+lv+">"+inline(esc(h[2]))+"</h"+lv+">"); i++; continue; }
+
+      // hr
+      if(/^---+\s*$/.test(line)){ closeLists(); out.push("<hr>"); i++; continue; }
+
+      // blockquote
+      if(/^>\s?/.test(line)){
+        closeLists(); var q=[];
+        while(i<lines.length && /^>\s?/.test(lines[i])){ q.push(lines[i].replace(/^>\s?/,"")); i++; }
+        out.push("<blockquote>"+inline(esc(q.join(" ")))+"</blockquote>"); continue;
+      }
+
+      // list item (ordered / unordered / task)
+      var li=line.match(/^(\s*)([-*]|\d+\.)\s+(.*)$/);
+      if(li){
+        var ordered=/\d/.test(li[2]);
+        var want=ordered?"ol":"ul";
+        if(!listStack.length || listStack[listStack.length-1]!==want){ closeLists(); out.push("<"+want+">"); listStack.push(want); }
+        var txt=li[3];
+        var task=txt.match(/^\[([ xX])\]\s+(.*)$/);
+        if(task){ out.push('<li class="task"><span class="box"></span><span>'+inline(esc(task[2]))+"</span></li>"); }
+        else { out.push("<li>"+inline(esc(txt))+"</li>"); }
+        i++; continue;
+      }
+
+      if(!line.trim()){ closeLists(); i++; continue; }
+
+      closeLists();
+      var p=[line];
+      i++;
+      while(i<lines.length && lines[i].trim() && !/^(\s*)([-*]|\d+\.)\s+/.test(lines[i]) && !/^#{1,4}\s/.test(lines[i]) && !/^```/.test(lines[i]) && !/^\s*\|/.test(lines[i]) && !/^>/.test(lines[i]) && !/^---+\s*$/.test(lines[i])){
+        p.push(lines[i]); i++;
+      }
+      out.push("<p>"+inline(esc(p.join(" ")))+"</p>");
+    }
+    closeLists();
+    return fm+out.join("\n");
+  }
+
+  // build cards
+  var grid=document.getElementById("phaseGrid");
+  PH.forEach(function(p,idx){
+    var b=document.createElement("button");
+    b.type="button"; b.className="pcard";
+    b.innerHTML=
+      '<span class="num">PHASE '+String(p.n).padStart(2,"0")+(p.parallel?' · '+p.parallel:'')+'</span>'+
+      '<h3>'+esc(p.title)+'</h3>'+
+      '<p class="obj">'+esc(p.objective)+'</p>'+
+      '<ul>'+p.bullets.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+'</ul>'+
+      '<div class="foot">'+
+        '<span class="chip">'+esc(p.effort)+'</span>'+
+        '<span class="chip">'+p.tasks+' việc</span>'+
+        '<span class="chip'+(p.critical?' accent':'')+'">'+(p.deps.length?'phụ thuộc '+p.deps.join(', '):'không phụ thuộc')+'</span>'+
+        '<span class="more">Chi tiết →</span>'+
+      '</div>';
+    b.addEventListener("click",function(){ open(idx); });
+    grid.appendChild(b);
+  });
+
+  var modal=document.getElementById("modal"),
+      mt=document.getElementById("modalTitle"),
+      mb=document.getElementById("modalBody"),
+      last=null;
+
+  function open(idx){
+    var p=PH[idx];
+    mt.textContent="Phase "+p.n+" — "+p.title;
+    mb.innerHTML=md2html(p.md);
+    modal.hidden=false;
+    document.body.style.overflow="hidden";
+    last=document.activeElement;
+    modal.querySelector(".close").focus();
+    modal.querySelector(".sheet").scrollTop=0;
+  }
+  function close(){
+    modal.hidden=true;
+    document.body.style.overflow="";
+    if(last) last.focus();
+  }
+  modal.addEventListener("click",function(e){ if(e.target.hasAttribute("data-close")) close(); });
+  document.addEventListener("keydown",function(e){
+    if(e.key==="Escape" && !modal.hidden) close();
+    if(e.key==="Tab" && !modal.hidden){
+      var f=modal.querySelectorAll('button, a[href]');
+      if(!f.length) return;
+      var first=f[0], lastEl=f[f.length-1];
+      if(e.shiftKey && document.activeElement===first){ e.preventDefault(); lastEl.focus(); }
+      else if(!e.shiftKey && document.activeElement===lastEl){ e.preventDefault(); first.focus(); }
+    }
+  });
+})();
+</script>
+</body>
+</html>
