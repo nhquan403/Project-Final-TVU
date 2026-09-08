@@ -1,6 +1,6 @@
 ---
 title: "Phase 1: Khởi tạo monorepo & hạ tầng dev"
-status: todo
+status: done
 phase: 1
 priority: P1
 effort: "5h"
@@ -119,28 +119,28 @@ git status --porcelain | grep -E '\.env$' && echo "LOI: .env bi track" || echo "
 
 ## Todo
 
-- [ ] `.gitignore` + README khung
-- [ ] Backend Maven skeleton + **toàn bộ** dependency của cả 8 phase
-- [ ] `application.yml` đọc config từ env + `forward-headers-strategy` + `ddl-auto: validate`
-- [ ] `RequiredSecretsValidator` fail fast, không in giá trị secret
-- [ ] `HealthController` + `SecurityConfig` tạm mặc định `denyAll()`
-- [ ] `docker-compose.dev.yml` (Postgres 16 + Mailpit) kèm `TZ`
-- [ ] `TZ` + `-Duser.timezone` cho tiến trình Java, ghi vào README
-- [ ] Angular workspace + Tailwind theo hướng dẫn bản vừa cài + design token
-- [ ] `proxy.conf.json` cùng origin + trang health
-- [ ] `.env.example` đủ biến, **giá trị rỗng**
-- [ ] Xác nhận môi trường buổi bảo vệ (Docker / mạng / máy)
+- [x] `.gitignore` + README khung
+- [x] Backend Maven skeleton + **toàn bộ** dependency của cả 8 phase
+- [x] `application.yml` đọc config từ env + `forward-headers-strategy` + `ddl-auto: validate`
+- [x] `RequiredSecretsValidator` fail fast, không in giá trị secret
+- [x] `HealthController` + `SecurityConfig` tạm mặc định `denyAll()`
+- [x] `docker-compose.dev.yml` (Postgres 16 + Mailpit) kèm `TZ`
+- [x] `TZ` + `-Duser.timezone` cho tiến trình Java, ghi vào README
+- [x] Angular workspace + Tailwind theo hướng dẫn bản vừa cài + design token
+- [x] `proxy.conf.json` cùng origin + trang health
+- [x] `.env.example` đủ biến, **giá trị rỗng**
+- [x] Xác nhận môi trường buổi bảo vệ (Docker / mạng / máy)
 
 ## Success Criteria
 
-- [ ] `./mvnw verify` xanh, app khởi động và kết nối được Postgres trong Docker
-- [ ] Thiếu `JWT_SECRET` → app **không** khởi động, log nêu đúng tên biến, không in giá trị
-- [ ] `/api/health` trả thời gian có offset `+07:00`, không phải `Z`
-- [ ] `npm run build` không lỗi, không cảnh báo budget
-- [ ] `localhost:4200` hiển thị trạng thái lấy từ API qua proxy cùng origin
-- [ ] `psql` xác nhận `btree_gist` cài được
-- [ ] `git status` không thấy `.env`, thư mục build, `node_modules`
-- [ ] Đã biết máy dùng lúc bảo vệ có Docker và mạng hay không
+- [x] `./mvnw verify` xanh, app khởi động và kết nối được Postgres trong Docker
+- [x] Thiếu `JWT_SECRET` → app **không** khởi động, log nêu đúng tên biến, không in giá trị
+- [x] `/api/health` trả thời gian có offset `+07:00`, không phải `Z`
+- [x] `npm run build` không lỗi, không cảnh báo budget
+- [x] `localhost:4200` hiển thị trạng thái lấy từ API qua proxy cùng origin
+- [x] `psql` xác nhận `btree_gist` cài được
+- [x] `git status` không thấy `.env`, thư mục build, `node_modules`
+- [x] Đã biết máy dùng lúc bảo vệ có Docker và mạng hay không
 
 ## Risk Assessment
 

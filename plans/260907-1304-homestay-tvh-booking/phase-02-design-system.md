@@ -1,6 +1,6 @@
 ---
 title: "Phase 2: Design system & UI kit"
-status: todo
+status: done
 phase: 2
 priority: P1
 effort: "12h"
@@ -192,37 +192,37 @@ npm start
 
 ## Todo
 
-- [ ] `tokens.css` đầy đủ 5 nhóm token, mỗi màu ghi kèm tỉ lệ tương phản
-- [ ] Ánh xạ token vào Tailwind và **xoá bảng màu mặc định** khỏi theme
-- [ ] `base.css` + `focus-visible` toàn cục + `prefers-reduced-motion`
-- [ ] `ui-button` 3 cấp, đủ 6 trạng thái
-- [ ] `ui-input`, `ui-select` đủ trạng thái lỗi và disabled
-- [ ] `ui-date-range-picker`: chặn ngày hết phòng, giá từng đêm, điều hướng bàn phím, 1 tháng trên mobile
-- [ ] `ui-guest-stepper` có biên min/max
-- [ ] `ui-room-card` đúng thứ tự thông tin, có trạng thái hết phòng
-- [ ] `ui-status-badge` phủ đủ 8 trạng thái booking
-- [ ] `ui-modal` bẫy focus, `Esc`, trả focus
-- [ ] `ui-toast` với `aria-live`
-- [ ] `ui-skeleton` 3 hình dạng
-- [ ] `ui-pagination`, `ui-data-table` (có trạng thái rỗng kèm hành động)
-- [ ] `ui-star-rating`, `ui-lightbox` (điều hướng bàn phím), `ui-empty-state`
-- [ ] `vnd-currency` và `night-count` pipe
-- [ ] `check-hardcoded-colors.mjs` gắn vào `npm run lint`
-- [ ] Trang `/ui-kit` chỉ nạp ở profile `demo`, kèm bảng tương phản tính lúc chạy
-- [ ] `docs/thiet-ke-giao-dien.md`
+- [x] `tokens.css` đầy đủ 5 nhóm token, mỗi màu ghi kèm tỉ lệ tương phản
+- [x] Ánh xạ token vào Tailwind và **xoá bảng màu mặc định** khỏi theme
+- [x] `base.css` + `focus-visible` toàn cục + `prefers-reduced-motion`
+- [x] `ui-button` 3 cấp, đủ 6 trạng thái
+- [x] `ui-input`, `ui-select` đủ trạng thái lỗi và disabled
+- [x] `ui-date-range-picker`: chặn ngày hết phòng, giá từng đêm, điều hướng bàn phím, 1 tháng trên mobile
+- [x] `ui-guest-stepper` có biên min/max
+- [x] `ui-room-card` đúng thứ tự thông tin, có trạng thái hết phòng
+- [x] `ui-status-badge` phủ đủ 8 trạng thái booking
+- [x] `ui-modal` bẫy focus, `Esc`, trả focus
+- [x] `ui-toast` với `aria-live`
+- [x] `ui-skeleton` 3 hình dạng
+- [x] `ui-pagination`, `ui-data-table` (có trạng thái rỗng kèm hành động)
+- [x] `ui-star-rating`, `ui-lightbox` (điều hướng bàn phím), `ui-empty-state`
+- [x] `vnd-currency` và `night-count` pipe
+- [x] `check-hardcoded-colors.mjs` gắn vào `npm run lint`
+- [x] Trang `/ui-kit` chỉ nạp ở profile `demo`, kèm bảng tương phản tính lúc chạy
+- [x] `docs/thiet-ke-giao-dien.md`
 
 ## Success Criteria
 
-- [ ] `check-hardcoded-colors.mjs` thoát 0 — không mã màu nào nằm ngoài `tokens.css`
-- [ ] Trang `/ui-kit` render **đủ 15 component ở mọi trạng thái** đã khai báo trong bảng inventory
-- [ ] Đi Tab hết trang `/ui-kit`: mọi thành phần tương tác có vòng focus nhìn thấy được
-- [ ] Bảng tương phản trên `/ui-kit` không ô nào dưới 4.5:1 với chữ thường, dưới 3:1 với viền tương tác
-- [ ] Ở 360px không có cuộn ngang; mọi nút và ô nhập có hộp bao ≥ 44×44px
-- [ ] Bật "giảm chuyển động" của hệ điều hành → không hiệu ứng nào chạy
-- [ ] Date picker không cho chọn ngày quá khứ và ngày đã hết phòng; di chuyển được bằng mũi tên
-- [ ] Zoom 200% không vỡ bố cục
-- [ ] Không có `outline: none` nào trong toàn bộ mã nguồn
-- [ ] `docs/thiet-ke-giao-dien.md` nêu rõ quyết định không dùng dark pattern kèm lý do
+- [x] `check-hardcoded-colors.mjs` thoát 0 — không mã màu nào nằm ngoài `tokens.css`
+- [x] Trang `/ui-kit` render **đủ 15 component ở mọi trạng thái** đã khai báo trong bảng inventory
+- [x] Đi Tab hết trang `/ui-kit`: mọi thành phần tương tác có vòng focus nhìn thấy được
+- [x] Bảng tương phản trên `/ui-kit` không ô nào dưới 4.5:1 với chữ thường, dưới 3:1 với viền tương tác
+- [x] Ở 360px không có cuộn ngang; mọi nút và ô nhập có hộp bao ≥ 44×44px
+- [x] Bật "giảm chuyển động" của hệ điều hành → không hiệu ứng nào chạy
+- [x] Date picker không cho chọn ngày quá khứ và ngày đã hết phòng; di chuyển được bằng mũi tên
+- [x] Zoom 200% không vỡ bố cục
+- [x] Không có `outline: none` nào trong toàn bộ mã nguồn
+- [x] `docs/thiet-ke-giao-dien.md` nêu rõ quyết định không dùng dark pattern kèm lý do
 
 ## Risk Assessment
 
