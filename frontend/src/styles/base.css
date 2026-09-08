@@ -1,0 +1,74 @@
+/* Nền tảng dùng chung: reset tối thiểu, quy ước focus, và tôn trọng thiết lập
+   giảm chuyển động của hệ điều hành. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Ô nhập trên mobile phải ≥16px, nếu không iOS phóng to trang khi focus. */
+input,
+select,
+textarea,
+button {
+  font: inherit;
+  color: inherit;
+}
+
+img,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+/* --- Focus: một quy ước duy nhất cho toàn hệ thống -------------------------
+   Không có `outline: none` ở bất kỳ đâu trong dự án. Bỏ vòng focus là cắt
+   đường đi của người dùng bàn phím và người dùng trình đọc màn hình. */
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* --- Giảm chuyển động ------------------------------------------------------
+   Người bật thiết lập này thường vì chuyển động gây chóng mặt hoặc buồn nôn.
+   Tắt gần như hoàn toàn, không chỉ làm chậm lại. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Nội dung chỉ dành cho trình đọc màn hình. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

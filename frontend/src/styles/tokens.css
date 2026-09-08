@@ -1,0 +1,99 @@
+/* ============================================================================
+   Design token — nguồn sự thật duy nhất về màu, chữ, khoảng cách của dự án.
+   ----------------------------------------------------------------------------
+   Homestay TVH chưa có bộ nhận diện thương hiệu, và bảng màu này đã được chốt.
+   Nên file này KHÔNG phải màu tạm chờ thay — nó là định nghĩa thương hiệu.
+   Đổi thương hiệu về sau = sửa đúng file này, nhưng phải TÍNH LẠI tương phản,
+   không chỉ thay mã hex.
+
+   Tailwind v4 dùng cấu hình CSS-first: khối @theme vừa khai báo biến CSS vừa
+   sinh ra lớp tiện ích tương ứng. Không có tailwind.config.js.
+
+   Mọi tỉ lệ tương phản trong file này tính bằng công thức luminance của WCAG.
+   Trang /ui-kit tính lại chúng lúc chạy — đổi token mà tụt dưới ngưỡng là thấy
+   ngay, không phải tin vào comment.
+   ========================================================================== */
+
+@theme {
+  /* --- Xoá sạch bảng màu mặc định của Tailwind ---------------------------
+     Bắt buộc, không phải tuỳ chọn. Còn nó thì `text-blue-500` vẫn dùng được
+     và lint chặn mã màu mất hết tác dụng. */
+  --color-*: initial;
+
+  /* --- Nền và bề mặt ---------------------------------------------------- */
+  --color-bg: #FBF9F6;         /* nền trang, giấy ấm */
+  --color-surface: #FFFFFF;    /* thẻ, modal, bảng */
+  --color-surface-2: #F2EEE8;  /* nền phụ, hàng bảng xen kẽ */
+
+  /* --- Chữ -------------------------------------------------------------- */
+  --color-text: #1C1917;       /* 16.64:1 trên bg · 17.49:1 trên surface */
+  --color-text-muted: #6B625A; /*  5.68:1 trên bg ·  5.97:1 trên surface */
+  --color-text-invert: #FFFFFF;
+
+  /* --- Thương hiệu và hành động ----------------------------------------- */
+  --color-primary: #0F5C4C;       /* 7.53:1 trên bg; chữ trắng trên nó 7.91:1 */
+  --color-primary-hover: #0B4B3E; /* chữ trắng trên nó 10.05:1 */
+  --color-price: #B03A0B;         /* 5.78:1 trên bg · 6.08:1 trên surface */
+
+  /* --- Trạng thái ------------------------------------------------------- */
+  --color-success: #15803D;    /* 4.77:1 trên bg */
+  --color-warning: #9A5B08;    /* 5.16:1 trên bg */
+  --color-danger: #B91C1C;     /* 6.16:1 trên bg; chữ trắng trên nó 6.47:1 */
+  --color-focus: #1D4ED8;      /* 6.38:1 trên bg */
+
+  /* --- Viền: HAI token, có chủ đích ------------------------------------- */
+  /* Vạch phân cách trang trí. 1.31:1 — không đạt và không cần đạt 3:1, vì
+     nó không phải ranh giới của thành phần tương tác. */
+  --color-border: #E2DBD1;
+  /* Viền ô nhập và nút. 3.67:1 — đạt WCAG 1.4.11. Dùng --color-border ở đây
+     sẽ khiến ô nhập biến mất với người thị lực kém. */
+  --color-border-strong: #8C8071;
+
+  /* --- Khoảng cách: thang bội số của 4px --------------------------------- */
+  /* Tailwind tính p-4 = calc(var(--spacing) * 4) = 16px. */
+  --spacing: 4px;
+
+  /* --- Bo góc ----------------------------------------------------------- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+
+  /* --- Đổ bóng: ba mức, không hơn --------------------------------------- */
+  --shadow-1: 0 1px 2px rgb(28 25 23 / 0.06);
+  --shadow-2: 0 4px 12px rgb(28 25 23 / 0.10);
+  --shadow-3: 0 12px 32px rgb(28 25 23 / 0.16);
+
+  /* --- Chữ: co giãn theo màn hình bằng clamp() -------------------------- */
+  --text-display: clamp(2rem, 1.4rem + 2.6vw, 2.75rem);  /* 32 → 44px */
+  --text-h1: clamp(1.625rem, 1.35rem + 1.2vw, 2rem);      /* 26 → 32px */
+  --text-h2: clamp(1.3125rem, 1.16rem + 0.66vw, 1.5rem);  /* 21 → 24px */
+  --text-h3: clamp(1.0625rem, 1rem + 0.28vw, 1.1875rem);  /* 17 → 19px */
+  /* Chữ nội dung KHÔNG BAO GIỜ dưới 16px: dưới ngưỡng này iOS tự phóng to
+     trang khi người dùng chạm vào ô nhập, và bố cục nhảy. */
+  --text-body: 1rem;      /* 16px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-xs: 0.75rem;     /* 12px */
+
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Iowan Old Style", Georgia, "Times New Roman", serif;
+
+  /* --- Breakpoint: thiết kế từ 360px lên -------------------------------- */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+}
+
+:root {
+  /* Token không sinh lớp tiện ích — dùng trực tiếp trong CSS thủ công. */
+
+  /* Vùng chạm tối thiểu trên mobile. Mọi nút, ô nhập, ô ngày phải đạt, kể cả
+     khi trông nhỏ hơn (nới bằng padding hoặc pseudo-element). */
+  --touch-min: 44px;
+
+  /* Chuyển động: ba mức. */
+  --dur-fast: 120ms;   /* hover, focus */
+  --dur-base: 200ms;   /* mở/đóng, trượt */
+  --dur-slow: 320ms;   /* modal, lightbox */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
+}

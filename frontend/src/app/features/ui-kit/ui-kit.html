@@ -1,0 +1,446 @@
+<div class="mx-auto max-w-6xl px-4 py-8">
+  <header class="mb-8">
+    <p class="text-xs font-semibold uppercase tracking-wide text-text-muted">Homestay TVH</p>
+    <h1 class="mt-1 text-h1 font-bold">Hệ thống thiết kế</h1>
+    <p class="mt-2 max-w-2xl text-body text-text-muted">
+      Trang này là tài liệu tham chiếu thương hiệu của dự án: mọi màu, mọi component và mọi
+      trạng thái đều nằm ở đây. Bảng tương phản bên dưới đo lúc chạy từ token thật, nên đổi
+      token là thấy ngay ô nào tụt xuống dưới ngưỡng WCAG AA.
+    </p>
+  </header>
+
+  <nav aria-label="Mục lục" class="mb-10 flex flex-wrap gap-2">
+    @for (section of sections; track section[0]) {
+      <a
+        [href]="'#' + section[0]"
+        class="flex min-h-[var(--touch-min)] items-center rounded-sm bg-surface-2 px-3 text-sm
+               text-text transition-colors duration-[var(--dur-fast)] hover:bg-border">
+        {{ section[1] }}
+      </a>
+    }
+  </nav>
+
+  <div class="flex flex-col gap-12">
+    <!-- ─── Bảng màu ──────────────────────────────────────────────────── -->
+    <ui-kit-section
+      anchor="mau"
+      title="Bảng màu"
+      note="Tỉ lệ đo tại thời điểm chạy bằng công thức WCAG, không chép lại từ tài liệu.
+            Chữ thường cần 4.5:1; viền của thành phần tương tác cần 3:1 theo WCAG 1.4.11.">
+      <ui-kit-contrast-table />
+    </ui-kit-section>
+
+    <!-- ─── Button ────────────────────────────────────────────────────── -->
+    <ui-kit-section
+      anchor="button"
+      title="ui-button"
+      note="Ba cấp. Trạng thái loading giữ nguyên bề rộng để bố cục không nhảy khi spinner
+            xuất hiện. Hover và active kiểm bằng chuột, focus kiểm bằng Tab.">
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <ui-kit-case state="primary — mặc định">
+          <ui-button>Đặt phòng</ui-button>
+        </ui-kit-case>
+        <ui-kit-case state="secondary — mặc định">
+          <ui-button variant="secondary">Xem chi tiết</ui-button>
+        </ui-kit-case>
+        <ui-kit-case state="ghost — mặc định">
+          <ui-button variant="ghost">Huỷ</ui-button>
+        </ui-kit-case>
+        <ui-kit-case state="disabled">
+          <ui-button [disabled]="true">Đặt phòng</ui-button>
+        </ui-kit-case>
+        <ui-kit-case state="loading">
+          <ui-button [loading]="true">Đặt phòng</ui-button>
+        </ui-kit-case>
+        <ui-kit-case state="full width">
+          <ui-button [fullWidth]="true">Tiếp tục thanh toán</ui-button>
+        </ui-kit-case>
+        <ui-kit-case state="hover / active / focus-visible">
+          <p class="text-sm text-text-muted">
+            Rê chuột, giữ chuột, và nhấn Tab vào nút bên cạnh để xem ba trạng thái này.
+          </p>
+          <div class="mt-2"><ui-button variant="secondary">Thử tôi</ui-button></div>
+        </ui-kit-case>
+      </div>
+    </ui-kit-section>
+
+    <!-- ─── Input ─────────────────────────────────────────────────────── -->
+    <ui-kit-section
+      anchor="input"
+      title="ui-input"
+      note="Trạng thái lỗi đổi CẢ màu viền LẪN độ dày viền — chỉ đổi màu thì người mù màu
+            không phân biệt được.">
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <ui-kit-case state="mặc định">
+          <ui-input label="Họ tên" placeholder="Nguyễn Văn A" />
+        </ui-kit-case>
+        <ui-kit-case state="có gợi ý">
+          <ui-input label="Số điện thoại" type="tel" hint="Dùng để xác nhận đặt phòng" />
+        </ui-kit-case>
+        <ui-kit-case state="lỗi">
+          <ui-input label="Email" type="email" error="Email không hợp lệ" [required]="true" />
+        </ui-kit-case>
+        <ui-kit-case state="disabled">
+          <ui-input label="Mã đặt phòng" [disabled]="true" value="TVH-000124" />
+        </ui-kit-case>
+      </div>
+    </ui-kit-section>
+
+    <!-- ─── Select ────────────────────────────────────────────────────── -->
+    <ui-kit-section
+      anchor="select"
+      title="ui-select"
+      note="Dựng trên thẻ select gốc: điều hướng bàn phím, trình đọc màn hình và bánh xe
+            chọn của mobile đã có sẵn, không phải làm lại.">
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <ui-kit-case state="mặc định">
+          <ui-select label="Loại phòng" [options]="options" placeholder="Chọn loại phòng" />
+        </ui-kit-case>
+        <ui-kit-case state="lỗi">
+          <ui-select label="Loại phòng" [options]="options" error="Chưa chọn loại phòng" />
+        </ui-kit-case>
+        <ui-kit-case state="disabled">
+          <ui-select label="Loại phòng" [options]="options" [disabled]="true" />
+        </ui-kit-case>
+        <ui-kit-case state="loading">
+          <ui-select label="Loại phòng" [loading]="true" />
+        </ui-kit-case>
+        <ui-kit-case state="rỗng">
+          <ui-select label="Loại phòng" [options]="[]" />
+        </ui-kit-case>
+      </div>
+    </ui-kit-section>
+
+    <!-- ─── Date range picker ─────────────────────────────────────────── -->
+    <ui-kit-section
+      anchor="date-range-picker"
+      title="ui-date-range-picker"
+      note="Ngày quá khứ và ngày hết phòng bị chặn SẴN, không cho chọn rồi mới báo lỗi.
+            Lịch mẫu để ngày thứ 5 đến thứ 7 kể từ hôm nay hết phòng. Mũi tên di chuyển ngày,
+            PageUp/PageDown đổi tháng, Enter chọn, Esc đóng. Mobile một tháng, desktop hai tháng.">
+      <div class="grid gap-3 lg:grid-cols-2">
+        <ui-kit-case state="mặc định — có lịch giá, có ngày bị chặn">
+          <ui-date-range-picker [availability]="availability" />
+        </ui-kit-case>
+        <ui-kit-case state="loading">
+          <ui-date-range-picker [loading]="true" />
+        </ui-kit-case>
+        <ui-kit-case state="lỗi">
+          <ui-date-range-picker
+            [availability]="availability"
+            error="Chưa chọn ngày nhận và trả phòng" />
+        </ui-kit-case>
+        <ui-kit-case state="disabled">
+          <ui-date-range-picker [disabled]="true" />
+        </ui-kit-case>
+      </div>
+    </ui-kit-section>
+
+    <!-- ─── Guest stepper ─────────────────────────────────────────────── -->
+    <ui-kit-section
+      anchor="guest-stepper"
+      title="ui-guest-stepper"
+      note="Chạm biên thì nút bị vô hiệu chứ không im lặng bỏ qua cú bấm. Vượt sức chứa thì
+            báo chứ không chặn — đó là lỗi của lựa chọn phòng, không phải của ô nhập.">
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <ui-kit-case state="mặc định">
+          <ui-guest-stepper label="Người lớn" [(value)]="guests" [min]="1" [max]="6" />
+        </ui-kit-case>
+        <ui-kit-case state="ở biên dưới (min = 0)">
+          <ui-guest-stepper label="Trẻ em" [value]="0" [min]="0" [max]="4" hint="Dưới 12 tuổi" />
+        </ui-kit-case>
+        <ui-kit-case state="ở biên trên (max = 2)">
+          <ui-guest-stepper label="Trẻ em" [value]="2" [min]="0" [max]="2" />
+        </ui-kit-case>
+        <ui-kit-case state="disabled">
+          <ui-guest-stepper label="Người lớn" [value]="2" [disabled]="true" />
+        </ui-kit-case>
+        <ui-kit-case state="lỗi — vượt sức chứa">
+          <ui-guest-stepper
+            label="Người lớn"
+            [(value)]="guestsOverCapacity"
+            [min]="1"
+            [max]="8"
+            [capacity]="4" />
+        </ui-kit-case>
+      </div>
+    </ui-kit-section>
+
+    <!-- ─── Room card ─────────────────────────────────────────────────── -->
+    <ui-kit-section
+      anchor="room-card"
+      title="ui-room-card"
+      note="Thứ tự thông tin cố định, và TỔNG CẢ KỲ hiện ngay trên thẻ — không để tổng tiền
+            lộ ra ở bước cuối. 'Còn N phòng' chỉ hiện khi N ≤ 3 và luôn là số thật trong
+            cơ sở dữ liệu.">
+      <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <ui-kit-case state="mặc định — còn 2 phòng">
+          <ui-room-card [room]="room" />
+        </ui-kit-case>
+        <ui-kit-case state="hết phòng — mờ, không bấm được">
+          <ui-room-card [room]="soldOutRoom" />
+        </ui-kit-case>
+        <ui-kit-case state="loading — skeleton">
+          <ui-room-card [loading]="true" />
+        </ui-kit-case>
+      </div>
+    </ui-kit-section>
+
+    <!-- ─── Status badge ──────────────────────────────────────────────── -->
+    <ui-kit-section
+      anchor="status-badge"
+      title="ui-status-badge"
+      note="Đủ 8 trạng thái booking. Mỗi trạng thái một màu cố định trên toàn hệ thống —
+            không để mỗi màn hình tự chọn màu riêng.">
+      <div class="flex flex-wrap gap-2 rounded-md border border-border bg-surface p-3">
+        @for (status of statuses; track status) {
+          <ui-status-badge [status]="status" />
+        }
+      </div>
+    </ui-kit-section>
+
+    <!-- ─── Modal ─────────────────────────────────────────────────────── -->
+    <ui-kit-section
+      anchor="modal"
+      title="ui-modal"
+      note="Bẫy focus bên trong, Esc đóng, trả focus về nút đã mở nó, khoá cuộn nền. Mở rồi
+            nhấn Tab liên tục: vòng focus không thoát ra ngoài hộp thoại được.">
+      <div class="grid gap-3 sm:grid-cols-3">
+        <ui-kit-case state="mặc định">
+          <ui-button variant="secondary" (pressed)="modalOpen.set(true)">Mở hộp thoại</ui-button>
+        </ui-kit-case>
+        <ui-kit-case state="loading">
+          <ui-button variant="secondary" (pressed)="modalLoadingOpen.set(true)">
+            Mở bản đang tải
+          </ui-button>
+        </ui-kit-case>
+        <ui-kit-case state="lỗi">
+          <ui-button variant="secondary" (pressed)="modalErrorOpen.set(true)">
+            Mở bản có lỗi
+          </ui-button>
+        </ui-kit-case>
+      </div>
+
+      <ui-modal [open]="modalOpen()" title="Xác nhận đặt phòng" (closed)="modalOpen.set(false)">
+        <p class="text-body">
+          Bạn sắp giữ chỗ Phòng Vườn trong 2 đêm. Hệ thống giữ chỗ 15 phút để bạn hoàn tất
+          thanh toán.
+        </p>
+        <div modal-footer class="flex justify-end gap-2">
+          <ui-button variant="ghost" (pressed)="modalOpen.set(false)">Để sau</ui-button>
+          <ui-button (pressed)="modalOpen.set(false)">Xác nhận</ui-button>
+        </div>
+      </ui-modal>
+
+      <ui-modal
+        [open]="modalLoadingOpen()"
+        [loading]="true"
+        title="Đang tải chi tiết"
+        (closed)="modalLoadingOpen.set(false)" />
+
+      <ui-modal
+        [open]="modalErrorOpen()"
+        error="Không tải được chi tiết đặt phòng. Thử lại sau ít phút."
+        title="Chi tiết đặt phòng"
+        (closed)="modalErrorOpen.set(false)" />
+    </ui-kit-section>
+
+    <!-- ─── Toast ─────────────────────────────────────────────────────── -->
+    <ui-kit-section
+      anchor="toast"
+      title="ui-toast"
+      note="Lỗi dùng aria-live assertive để cắt ngang trình đọc màn hình, phần còn lại dùng
+            polite. Đồng hồ tự đóng DỪNG khi rê chuột hoặc Tab vào bên trong.">
+      <div class="flex flex-col gap-3">
+        @if (toastsVisible()) {
+          @for (kind of toastKinds; track kind) {
+            <ui-toast
+              [kind]="kind"
+              [durationMs]="0"
+              [message]="'Thông báo loại ' + kind + ' — rê chuột vào để dừng đồng hồ tự đóng'" />
+          }
+        }
+        <div>
+          <ui-button variant="secondary" (pressed)="toastsVisible.set(!toastsVisible())">
+            {{ toastsVisible() ? 'Ẩn' : 'Hiện' }} thông báo
+          </ui-button>
+        </div>
+      </div>
+    </ui-kit-section>
+
+    <!-- ─── Skeleton ──────────────────────────────────────────────────── -->
+    <ui-kit-section
+      anchor="skeleton"
+      title="ui-skeleton"
+      note="Ba hình dạng. Dùng thay spinner giữa màn hình: người dùng cần thấy trước bố cục
+            sẽ ra sao.">
+      <div class="grid gap-3 sm:grid-cols-3">
+        <ui-kit-case state="line"><ui-skeleton shape="line" /></ui-kit-case>
+        <ui-kit-case state="card"><ui-skeleton shape="card" /></ui-kit-case>
+        <ui-kit-case state="row"><ui-skeleton shape="row" /></ui-kit-case>
+      </div>
+    </ui-kit-section>
+
+    <!-- ─── Pagination ────────────────────────────────────────────────── -->
+    <ui-kit-section
+      anchor="pagination"
+      title="ui-pagination"
+      note="Ẩn hoàn toàn khi chỉ có một trang. Dải số rút gọn quanh trang hiện tại để không
+            tràn ngang ở 360px.">
+      <div class="grid gap-3 lg:grid-cols-2">
+        <ui-kit-case state="mặc định — trang 4 / 20">
+          <ui-pagination [page]="page()" [totalPages]="20" (pageChange)="page.set($event)" />
+        </ui-kit-case>
+        <ui-kit-case state="ở trang đầu — nút lùi bị vô hiệu">
+          <ui-pagination [page]="1" [totalPages]="20" />
+        </ui-kit-case>
+        <ui-kit-case state="ở trang cuối — nút tiến bị vô hiệu">
+          <ui-pagination [page]="20" [totalPages]="20" />
+        </ui-kit-case>
+        <ui-kit-case state="loading">
+          <ui-pagination [page]="4" [totalPages]="20" [loading]="true" />
+        </ui-kit-case>
+        <ui-kit-case state="chỉ 1 trang — ẩn hoàn toàn">
+          <ui-pagination [page]="1" [totalPages]="1" />
+          <p class="text-sm text-text-muted">(Không render gì — đúng như thiết kế.)</p>
+        </ui-kit-case>
+        <ui-kit-case state="disabled">
+          <ui-pagination [page]="4" [totalPages]="20" [disabled]="true" />
+        </ui-kit-case>
+      </div>
+    </ui-kit-section>
+
+    <!-- ─── Data table ────────────────────────────────────────────────── -->
+    <ui-kit-section
+      anchor="data-table"
+      title="ui-data-table"
+      note="Cột đang sắp xếp mang cả aria-sort lẫn mũi tên nhìn thấy được. Bảng cuộn ngang
+            trong khối riêng — cả TRANG cuộn ngang mới là lỗi.">
+      <div class="flex flex-col gap-4">
+        <ui-kit-case state="mặc định — có sắp xếp theo Mã đặt phòng">
+          <ui-data-table
+            caption="Danh sách đặt phòng"
+            [columns]="bookingColumns"
+            [rows]="bookings"
+            [sort]="sort()"
+            (sortChange)="sort.set($any($event))" />
+        </ui-kit-case>
+        <ui-kit-case state="loading — skeleton hàng">
+          <ui-data-table caption="Đang tải" [columns]="bookingColumns" [loading]="true" />
+        </ui-kit-case>
+        <ui-kit-case state="lỗi">
+          <ui-data-table
+            caption="Lỗi tải dữ liệu"
+            [columns]="bookingColumns"
+            error="Không tải được danh sách đặt phòng." />
+        </ui-kit-case>
+        <ui-kit-case state="rỗng — kèm hành động">
+          <ui-data-table
+            caption="Chưa có đặt phòng"
+            [columns]="bookingColumns"
+            [rows]="[]"
+            emptyTitle="Chưa có đặt phòng nào"
+            emptyDescription="Khi khách đặt phòng đầu tiên, đơn sẽ xuất hiện ở đây."
+            emptyActionLabel="Tạo đặt phòng thủ công" />
+        </ui-kit-case>
+      </div>
+    </ui-kit-section>
+
+    <!-- ─── Star rating ───────────────────────────────────────────────── -->
+    <ui-kit-section
+      anchor="star-rating"
+      title="ui-star-rating"
+      note="Chế độ đọc không nằm trong luồng Tab — một trang có hàng chục thẻ đánh giá mà
+            mỗi thẻ chiếm năm điểm dừng Tab thì bàn phím thành cực hình. Chế độ nhập là một
+            radiogroup thật, mũi tên trái/phải đổi sao.">
+      <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <ui-kit-case state="đọc — 4 sao, 27 lượt">
+          <ui-star-rating [value]="4" [count]="27" />
+        </ui-kit-case>
+        <ui-kit-case state="nhập">
+          <ui-star-rating [readonly]="false" [(value)]="rating" />
+        </ui-kit-case>
+        <ui-kit-case state="lỗi — chưa chọn sao">
+          <ui-star-rating
+            [readonly]="false"
+            [(value)]="ratingEmpty"
+            error="Hãy chấm điểm trước khi gửi" />
+        </ui-kit-case>
+        <ui-kit-case state="disabled">
+          <ui-star-rating [readonly]="false" [value]="3" [disabled]="true" />
+        </ui-kit-case>
+      </div>
+    </ui-kit-section>
+
+    <!-- ─── Lightbox ──────────────────────────────────────────────────── -->
+    <ui-kit-section
+      anchor="lightbox"
+      title="ui-lightbox"
+      note="Mũi tên trái/phải chuyển ảnh, Esc đóng. Không cuộn vòng ở ảnh đầu và ảnh cuối —
+            nút bị vô hiệu để người dùng biết mình đang ở đâu trong bộ ảnh.">
+      <div class="grid gap-3 sm:grid-cols-3">
+        <ui-kit-case state="mặc định">
+          <ui-button variant="secondary" (pressed)="lightboxOpen.set(true)">Mở bộ ảnh</ui-button>
+        </ui-kit-case>
+        <ui-kit-case state="loading">
+          <ui-button variant="secondary" (pressed)="lightboxLoadingOpen.set(true)">
+            Mở bản đang tải
+          </ui-button>
+        </ui-kit-case>
+        <ui-kit-case state="lỗi — ảnh hỏng">
+          <ui-button variant="secondary" (pressed)="lightboxBrokenOpen.set(true)">
+            Mở ảnh hỏng
+          </ui-button>
+        </ui-kit-case>
+      </div>
+
+      <ui-lightbox
+        [open]="lightboxOpen()"
+        [images]="images"
+        (closed)="lightboxOpen.set(false)" />
+      <ui-lightbox
+        [open]="lightboxLoadingOpen()"
+        [images]="images"
+        [loading]="true"
+        (closed)="lightboxLoadingOpen.set(false)" />
+      <ui-lightbox
+        [open]="lightboxBrokenOpen()"
+        [images]="brokenImages"
+        (closed)="lightboxBrokenOpen.set(false)" />
+    </ui-kit-section>
+
+    <!-- ─── Empty state ───────────────────────────────────────────────── -->
+    <ui-kit-section
+      anchor="empty-state"
+      title="ui-empty-state"
+      note="Luôn có câu giải thích VÌ SAO rỗng và một lối đi tiếp. Bảng trắng không chữ khiến
+            người dùng không phân biệt được 'chưa có dữ liệu' với 'trang hỏng'.">
+      <div class="rounded-lg border border-border bg-surface">
+        <ui-empty-state
+          title="Chưa có đánh giá nào"
+          description="Đánh giá xuất hiện sau khi khách trả phòng. Bạn có thể gửi lời mời đánh giá cho các đơn đã hoàn tất."
+          actionLabel="Gửi lời mời đánh giá" />
+      </div>
+    </ui-kit-section>
+
+    <!-- ─── Pipe ──────────────────────────────────────────────────────── -->
+    <ui-kit-section
+      anchor="pipe"
+      title="Pipe"
+      note="Số đêm đếm theo khoảng nửa mở [nhận, trả) — đúng quy ước của ràng buộc EXCLUDE
+            trên daterange ở tầng cơ sở dữ liệu.">
+      <div class="grid gap-3 sm:grid-cols-2">
+        <ui-kit-case state="vndCurrency">
+          <p class="text-h3 font-bold text-price">{{ samplePrice | vndCurrency }}</p>
+          <p class="text-sm text-text-muted">{{ samplePrice }} → định dạng tiền Việt</p>
+        </ui-kit-case>
+        <ui-kit-case state="nightCount">
+          <p class="text-h3 font-bold">{{ checkIn | nightCount: checkOut }} đêm</p>
+          <p class="text-sm text-text-muted">
+            Nhận {{ checkIn }}, trả {{ checkOut }} → 2 đêm, không phải 3 ngày
+          </p>
+        </ui-kit-case>
+      </div>
+    </ui-kit-section>
+  </div>
+</div>
