@@ -184,6 +184,15 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <configuration>
           <argLine>-Duser.timezone=Asia/Ho_Chi_Minh</argLine>
+          <!-- Mặc định surefire chỉ nhận *Test/Test*/*Tests, nên lớp có hậu tố
+               IT bị bỏ qua IM LẶNG: `mvn test` báo xanh trong khi những test
+               quan trọng nhất chưa hề chạy. Ở dự án này mọi test đều cần
+               Docker như nhau, không có lý do tách hai vòng chạy. -->
+          <includes>
+            <include>**/*Test.java</include>
+            <include>**/*Tests.java</include>
+            <include>**/*IT.java</include>
+          </includes>
         </configuration>
       </plugin>
     </plugins>
