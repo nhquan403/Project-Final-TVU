@@ -83,7 +83,7 @@ flowchart LR
 |---|-------|--------|-----------|--------|
 | 1 | [Phase 1: Khởi tạo monorepo & hạ tầng dev](./phase-01-bootstrap.md) | Done | — | 5h |
 | 2 | [Phase 2: Design system & UI kit](./phase-02-design-system.md) | Done | 1 | 12h |
-| 3 | [Phase 3: Schema cơ sở dữ liệu & Flyway migration](./phase-03-database-schema.md) | Pending | 1 | 8h |
+| 3 | [Phase 3: Schema cơ sở dữ liệu & Flyway migration](./phase-03-database-schema.md) | Done | 1 | 8h |
 | 4 | [Phase 4: Xác thực & phân quyền (JWT)](./phase-04-auth.md) | Pending | 3 | 7h |
 | 5 | [Phase 5: Lõi đặt phòng & chống trùng lịch](./phase-05-booking-core.md) | Pending | 3 | 11h |
 | 6 | [Phase 6: Thanh toán QR, webhook & email](./phase-06-payment-qr.md) | Pending | 5 | 10h |

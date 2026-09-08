@@ -1,6 +1,6 @@
 ---
 title: "Phase 3: Schema cơ sở dữ liệu & Flyway migration"
-status: todo
+status: done
 phase: 3
 priority: P1
 effort: "8h"
@@ -466,30 +466,30 @@ docker exec -it homestay-db psql -U postgres -d homestay -c \
 
 ## Todo
 
-- [ ] V1 extensions + users (`token_version`, `must_change_password`) + refresh_tokens
-- [ ] V2 amenities + room_types + rooms + images + bảng nối
-- [ ] V3 bookings (+ `access_token`, `client_ip`) + booking_rooms + EXCLUDE + status history
-- [ ] V3 constraint trigger bất biến `room_quantity` (DEFERRABLE)
-- [ ] V4 payments (nhiều lần/booking, `amount_received`, `reconcile_status`) + webhook events + outbox
-- [ ] V5 promotions (CHECK `usage_limit`) + reviews (`user_id` nullable)
-- [ ] V6 site_contents + banners + gallery + posts
-- [ ] CHECK cho **mọi** cột enum trong bảng ở mục "Tập giá trị enum"
-- [ ] Index cho truy vấn nóng
-- [ ] 19 entity JPA + repository
-- [ ] `SchemaMigrationTest` (Testcontainers, ddl-auto=validate)
-- [ ] `SchemaConstraintIT` phủ 5 ràng buộc sống còn
+- [x] V1 extensions + users (`token_version`, `must_change_password`) + refresh_tokens
+- [x] V2 amenities + room_types + rooms + images + bảng nối
+- [x] V3 bookings (+ `access_token`, `client_ip`) + booking_rooms + EXCLUDE + status history
+- [x] V3 constraint trigger bất biến `room_quantity` (DEFERRABLE)
+- [x] V4 payments (nhiều lần/booking, `amount_received`, `reconcile_status`) + webhook events + outbox
+- [x] V5 promotions (CHECK `usage_limit`) + reviews (`user_id` nullable)
+- [x] V6 site_contents + banners + gallery + posts
+- [x] CHECK cho **mọi** cột enum trong bảng ở mục "Tập giá trị enum"
+- [x] Index cho truy vấn nóng
+- [x] 19 entity JPA + repository
+- [x] `SchemaMigrationTest` (Testcontainers, ddl-auto=validate)
+- [x] `SchemaConstraintIT` phủ 5 ràng buộc sống còn
 
 ## Success Criteria
 
-- [ ] `./mvnw test` xanh với Testcontainers Postgres thật (không dùng H2 — H2 không có `EXCLUDE`/`daterange`)
-- [ ] Spring context khởi động với `ddl-auto=validate` mà không sai lệch entity/schema
-- [ ] Đếm bảng ra đúng **19**
-- [ ] Chèn hai khoảng ngày chồng nhau cùng phòng bị bác với `23P01`
-- [ ] Chèn khoảng nửa mở liền kề (`10/05` nối `10/05`) thành công
-- [ ] Ghi `booking_rooms.status = 'Active'` bị CHECK chặn — **không** lọt xuống DB
-- [ ] Commit với `room_quantity` lệch số dòng `ACTIVE` bị trigger chặn
-- [ ] Mã khuyến mãi có `usage_limit IS NULL` không bị CHECK chặn
-- [ ] `flyway:info` báo mọi migration Success
+- [x] `./mvnw test` xanh với Testcontainers Postgres thật (không dùng H2 — H2 không có `EXCLUDE`/`daterange`)
+- [x] Spring context khởi động với `ddl-auto=validate` mà không sai lệch entity/schema
+- [x] Đếm bảng ra đúng **19**
+- [x] Chèn hai khoảng ngày chồng nhau cùng phòng bị bác với `23P01`
+- [x] Chèn khoảng nửa mở liền kề (`10/05` nối `10/05`) thành công
+- [x] Ghi `booking_rooms.status = 'Active'` bị CHECK chặn — **không** lọt xuống DB
+- [x] Commit với `room_quantity` lệch số dòng `ACTIVE` bị trigger chặn
+- [x] Mã khuyến mãi có `usage_limit IS NULL` không bị CHECK chặn
+- [x] `flyway:info` báo mọi migration Success
 
 ## Risk Assessment
 
