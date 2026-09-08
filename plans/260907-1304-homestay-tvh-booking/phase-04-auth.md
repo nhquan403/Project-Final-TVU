@@ -1,19 +1,19 @@
 ---
-title: "Phase 3: Xác thực & phân quyền (JWT)"
+title: "Phase 4: Xác thực & phân quyền (JWT)"
 status: todo
-phase: 3
+phase: 4
 priority: P1
 effort: "7h"
-dependencies: [2]
+dependencies: [3]
 ---
 
-# Phase 3: Xác thực & phân quyền (JWT)
+# Phase 4: Xác thực & phân quyền (JWT)
 
 ## Overview
 
 Ba lớp người dùng cùng tồn tại: **guest** (không tài khoản, thao tác bằng `access_token` của booking), **CUSTOMER** (đăng ký/đăng nhập, xem lịch sử, đánh giá), **ADMIN** (toàn quyền quản trị). Phase này dựng JWT access + refresh token có xoay vòng, khoá đúng từng nhóm endpoint, và đặt giới hạn tần suất ở những chỗ thực sự bị lạm dụng.
 
-**Chạy song song được với Phase 4.**
+**Chạy song song được với Phase 5.**
 
 ## Requirements
 
@@ -91,9 +91,9 @@ Trong bản đóng gói, mọi request đi qua nginx rồi `proxy_pass` sang API
 - Giới hạn 10 request/phút trở thành giới hạn **toàn hệ thống** — một vòng `while true; do curl ...; done` khoá tính năng đăng nhập của mọi khách.
 - Nếu chữa cháy bằng cách đọc thẳng `X-Forwarded-For` mà nginx không ghi đè, kẻ tấn công tự đặt header giả và dò không giới hạn.
 
-Nên phase này yêu cầu **cả ba** thứ, và Phase 8 phải kiểm tra lại:
+Nên phase này yêu cầu **cả ba** thứ, và Phase 9 phải kiểm tra lại:
 
-1. nginx **ghi đè** `X-Real-IP $remote_addr` và `X-Forwarded-For $proxy_add_x_forwarded_for` (Phase 8).
+1. nginx **ghi đè** `X-Real-IP $remote_addr` và `X-Forwarded-For $proxy_add_x_forwarded_for` (Phase 9).
 2. Spring bật `server.forward-headers-strategy: framework`.
 3. Có khoá giới hạn thứ hai **không phụ thuộc IP**: theo `email` cho login, theo `code` cho các thao tác booking, theo `guestPhone` cho tạo booking. Đây là lớp còn tác dụng ngay cả khi IP bị giả mạo.
 
@@ -197,9 +197,9 @@ for i in $(seq 1 11); do curl -s -o /dev/null -w '%{http_code} ' \
 |---|---|---|
 | Interceptor refresh gây vòng lặp vô hạn | Trình duyệt bắn liên tục `/auth/refresh`, tab treo | Cờ `isRefreshing` + hàng đợi; refresh fail → logout, chuyển về trang đăng nhập |
 | Kiểm `token_version` mỗi request làm tăng tải DB | Số truy vấn tăng tuyến tính theo request | Cache 30 giây theo user id; chấp nhận cửa sổ thu hồi ≤ 30 giây, ghi rõ trong `docs/` |
-| JWT secret yếu hoặc bị commit | Secret nằm trong yml, `.env.example`, hoặc `docker-compose.yml` | Fail fast ở mọi profile; Phase 8 sinh secret ngẫu nhiên lúc dựng lần đầu; quét secret **bao gồm** cả file `.example` |
+| JWT secret yếu hoặc bị commit | Secret nằm trong yml, `.env.example`, hoặc `docker-compose.yml` | Fail fast ở mọi profile; Phase 9 sinh secret ngẫu nhiên lúc dựng lần đầu; quét secret **bao gồm** cả file `.example` |
 | Rate limit in-memory mất tác dụng khi chạy nhiều instance | Dò mã booking vẫn thành công | Chấp nhận trong phạm vi đồ án (1 instance) và ghi rõ trong `docs/`; khoá theo email/mã/SĐT vẫn thu hẹp đáng kể bề mặt. Cần scale → chuyển sang Redis |
 | CORS cấu hình `*` kèm credentials | Trình duyệt báo lỗi CORS hoặc bảo mật lỏng | Liệt kê tường minh origin từ env |
 | Cookie `SameSite=Strict` chặn refresh khi frontend khác origin | Người dùng bị đăng xuất bất thường lúc dev | Dev chạy qua proxy cùng origin (`proxy.conf.json`, Phase 1); production frontend và API cùng tên miền qua nginx |
 
-**Rollback:** revert commit; Phase 4 không phụ thuộc auth nên vẫn chạy tiếp được.
+**Rollback:** revert commit; Phase 5 không phụ thuộc auth nên vẫn chạy tiếp được.

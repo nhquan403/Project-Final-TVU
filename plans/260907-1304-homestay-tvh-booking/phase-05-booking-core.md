@@ -1,19 +1,19 @@
 ---
-title: "Phase 4: Lõi đặt phòng & chống trùng lịch"
+title: "Phase 5: Lõi đặt phòng & chống trùng lịch"
 status: todo
-phase: 4
+phase: 5
 priority: P1
-effort: "13h"
-dependencies: [2]
+effort: "11h"
+dependencies: [3]
 ---
 
-# Phase 4: Lõi đặt phòng & chống trùng lịch
+# Phase 5: Lõi đặt phòng & chống trùng lịch
 
 ## Overview
 
 Phase quan trọng nhất của đồ án. Xây truy vấn phòng trống, thuật toán gán phòng vật lý, vòng đời booking và cơ chế giữ chỗ. Đây cũng là nơi chứng minh bằng test rằng hệ thống không thể đặt trùng.
 
-**Chạy song song được với Phase 3.**
+**Chạy song song được với Phase 4.**
 
 ## Requirements
 
@@ -50,7 +50,7 @@ WHERE rt.active
 Hai điều câu này sửa so với cách "tổng trừ đã đặt":
 
 1. **Chạy được.** PostgreSQL cấm tham chiếu alias cột output trong `HAVING`, và `HAVING` không kèm `GROUP BY` biến cả câu thành một nhóm duy nhất khiến `rt.id`, `rt.name` bị từ chối. `CROSS JOIN LATERAL` không vướng cả hai.
-2. **Không trừ nhầm.** Cách cũ đếm tổng phòng `AVAILABLE` rồi trừ đi mọi `booking_rooms` `ACTIVE` của loại phòng đó — kể cả booking nằm trên phòng đã chuyển sang `MAINTENANCE`. Phòng bảo trì có booking cũ bị trừ hai lần, website báo thiếu phòng và mất doanh thu âm thầm. Admin **được phép** chuyển phòng đang có booking sang `MAINTENANCE` (Phase 6), nên đây là tình huống thiết kế, không phải hiếm gặp.
+2. **Không trừ nhầm.** Cách cũ đếm tổng phòng `AVAILABLE` rồi trừ đi mọi `booking_rooms` `ACTIVE` của loại phòng đó — kể cả booking nằm trên phòng đã chuyển sang `MAINTENANCE`. Phòng bảo trì có booking cũ bị trừ hai lần, website báo thiếu phòng và mất doanh thu âm thầm. Admin **được phép** chuyển phòng đang có booking sang `MAINTENANCE` (Phase 7), nên đây là tình huống thiết kế, không phải hiếm gặp.
 
 Sức chứa so theo **từng phòng** (`:adultsPerRoom = ceil(adults / roomQuantity)`), không so tổng số khách với sức chứa một phòng.
 
@@ -110,7 +110,7 @@ public BookingResponse create(CreateBookingRequest req) {
 
 `SqlStates.isExclusionViolation` đọc `SQLState` từ `PSQLException` gốc và so đúng `23P01`. Mọi mã khác ném nguyên trạng — nếu bắt chung mọi `DataIntegrityViolationException` thì lỗi khoá ngoại sẽ bị báo là "hết phòng" và che bug thật.
 
-**All-or-nothing với nhiều phòng.** Một lần thử gán đủ `roomQuantity` phòng trong một transaction, hoặc rollback toàn bộ. Không bao giờ commit một phần. Constraint trigger `booking_room_count_check` (Phase 2, DEFERRABLE) là lưới chắn ở tầng DB: commit nào để lại `booking_rooms` lệch `room_quantity` đều bị bác.
+**All-or-nothing với nhiều phòng.** Một lần thử gán đủ `roomQuantity` phòng trong một transaction, hoặc rollback toàn bộ. Không bao giờ commit một phần. Constraint trigger `booking_room_count_check` (Phase 3, DEFERRABLE) là lưới chắn ở tầng DB: commit nào để lại `booking_rooms` lệch `room_quantity` đều bị bác.
 
 ### Vòng đời booking
 
@@ -177,7 +177,7 @@ Bulk `UPDATE` đi vòng qua Hibernate nên **phải** ghi `booking_status_histor
 - Create: `backend/src/main/java/com/tvh/homestay/promotion/PromotionService.java` — validate, tiêu thụ và **hoàn** lượt
 - Create: `backend/src/main/java/com/tvh/homestay/common/GlobalExceptionHandler.java` — RFC 7807
 - Create: `frontend/src/app/core/services/booking.service.ts`, `availability.service.ts`
-- Create: `frontend/src/app/shared/` — date-range-picker, button, input, modal, badge, spinner, pagination, currency pipe, **data-table**, **image-uploader**
+- Dùng lại từ `shared/ui/` (Phase 2 đã xây): `date-range-picker`, `button`, `input`, `room-card`, `status-badge`, `pagination`, pipe `vnd-currency` — phase này **không** tạo component UI mới
 - Create: `backend/src/test/java/com/tvh/homestay/booking/BookingConcurrencyIT.java`
 - Create: `backend/src/test/java/com/tvh/homestay/booking/AvailabilityQueryIT.java`
 - Create: `backend/src/test/java/com/tvh/homestay/booking/BookingLifecycleIT.java`
@@ -196,7 +196,7 @@ Bulk `UPDATE` đi vòng qua Hibernate nên **phải** ghi `booking_status_histor
 6. `bookings.access_token`: 32 ký tự hex từ `SecureRandom`, sinh cùng lúc với mã. Đây mới là **bí mật thao tác**; mã booking chỉ để hiển thị và làm nội dung chuyển khoản (nó nằm trên sao kê ngân hàng, ảnh chụp màn hình, dashboard SePay — không thể coi là bí mật).
 7. `BookingTxService.createInNewTransaction()`: `@Transactional(propagation = REQUIRES_NEW)`, insert booking → insert đủ `booking_rooms` → insert `payments` attempt 1 → commit. `BookingService.create()` giữ vòng thử ở ngoài như mã mẫu trên.
 8. `BookingController`:
-   - `POST /api/bookings` — tạo (guest hoặc user đã đăng nhập; `user_id` lấy từ token nếu có). Lưu `client_ip` + `user_agent` để truy vết lạm dụng. Có rate limit theo IP **và** theo `guestPhone` (Phase 3).
+   - `POST /api/bookings` — tạo (guest hoặc user đã đăng nhập; `user_id` lấy từ token nếu có). Lưu `client_ip` + `user_agent` để truy vết lạm dụng. Có rate limit theo IP **và** theo `guestPhone` (Phase 4).
    - `POST /api/bookings/lookup` — body `{code, phone}`, so khớp cả hai, trả booking kèm `accessToken` để các thao tác sau dùng.
    - `POST /api/bookings/{code}/cancel` — yêu cầu `accessToken` **hoặc** `{phone}`; có rate limit theo `code`.
    - `GET /api/bookings/{code}/payment-status?token=...` — yêu cầu `access_token`; có rate limit theo `code`.
@@ -204,8 +204,8 @@ Bulk `UPDATE` đi vòng qua Hibernate nên **phải** ghi `booking_status_histor
 10. `BookingStateMachine`: bảng chuyển trạng thái hợp lệ theo sơ đồ trên; chuyển sai → 409 `INVALID_STATE_TRANSITION`. Mỗi lần chuyển: ghi `booking_status_history` (kèm `actor`), nhả `booking_rooms` nếu vào trạng thái kết thúc, gọi `PromotionService.release()` — tất cả trong cùng transaction, không rải rác ở controller.
 11. `BookingExpiryScheduler`: mỗi phút, chạy đúng câu SQL ba điều kiện ở trên, rồi `EntityManager.clear()`. `booking.hold-minutes` và `booking.expiry-grace-minutes` đọc từ `application.yml` để test chạy với giá trị nhỏ.
 12. `GlobalExceptionHandler`: map từng exception nghiệp vụ sang mã lỗi ổn định — `ROOM_NOT_AVAILABLE`, `INVALID_PROMOTION`, `PROMOTION_EXHAUSTED`, `BOOKING_NOT_FOUND`, `INVALID_STATE_TRANSITION`, `RATE_LIMITED`. Frontend hiển thị thông báo tiếng Việt theo mã, không parse chuỗi.
-13. Frontend: `availability.service.ts` + `booking.service.ts`; dựng thư viện `shared/` gồm cả `data-table` và `image-uploader` (Phase 6 và Phase 7 đều dùng — chốt ở đây để hai phase đó không tranh nhau tạo).
-14. **Chốt `shared/` ở cuối phase này.** Sau điểm này, Phase 6 và Phase 7 chỉ được thêm file mới vào `shared/`, không sửa file đã có.
+13. Frontend phase này chỉ có hai service gọi API: `availability.service.ts` và `booking.service.ts`. Thư viện component đã xong ở Phase 2, nên không có việc dựng UI ở đây.
+14. `availability.service.ts` trả về bản đồ `{ngày: {giá, còn phòng}}` để `ui-date-range-picker` (Phase 2) chặn sẵn ngày hết phòng — đây là hợp đồng dữ liệu giữa hai phase, chốt ở đây.
 
 ## Verify
 
@@ -262,7 +262,7 @@ docker exec -it homestay-db psql -U postgres -d homestay -c \
 - [ ] `BookingStateMachine` + `AWAITING_REVIEW` + ghi lịch sử + nhả phòng + hoàn lượt khuyến mãi
 - [ ] `BookingExpiryScheduler` ba điều kiện + ghi lịch sử qua `RETURNING` + `EntityManager.clear()`
 - [ ] `GlobalExceptionHandler` RFC 7807 + 6 mã lỗi ổn định
-- [ ] Thư viện `shared/` Angular gồm `data-table` và `image-uploader` (chốt trước Phase 6/7)
+- [ ] `availability.service.ts` trả bản đồ giá và số phòng trống theo từng ngày cho date picker
 - [ ] 4 test bắt buộc trong bảng Verify
 
 ## Success Criteria

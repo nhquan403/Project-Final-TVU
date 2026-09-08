@@ -1,13 +1,13 @@
 ---
-title: "Phase 8: Đóng gói, seed & tài liệu"
+title: "Phase 9: Đóng gói, seed & tài liệu"
 status: todo
-phase: 8
+phase: 9
 priority: P1
 effort: "7h"
-dependencies: [6, 7]
+dependencies: [7, 8]
 ---
 
-# Phase 8: Đóng gói, seed & tài liệu
+# Phase 9: Đóng gói, seed & tài liệu
 
 ## Overview
 
@@ -55,7 +55,7 @@ proxy_set_header X-Forwarded-For   $proxy_add_x_forwarded_for;
 proxy_set_header X-Forwarded-Proto $scheme;
 ```
 
-nginx `proxy_pass` mặc định chỉ đặt `Host` và `Connection`. Thiếu hai dòng `X-*` thì `getRemoteAddr()` trả IP container nginx cho mọi khách, và giới hạn tần suất của Phase 3 biến thành giới hạn toàn hệ thống — một vòng `curl` khoá tính năng đăng nhập của tất cả mọi người. Phải **ghi đè** chứ không nối thêm từ Internet, để header giả không đi lọt.
+nginx `proxy_pass` mặc định chỉ đặt `Host` và `Connection`. Thiếu hai dòng `X-*` thì `getRemoteAddr()` trả IP container nginx cho mọi khách, và giới hạn tần suất của Phase 4 biến thành giới hạn toàn hệ thống — một vòng `curl` khoá tính năng đăng nhập của tất cả mọi người. Phải **ghi đè** chứ không nối thêm từ Internet, để header giả không đi lọt.
 
 Header bảo mật chung cho toàn site: `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: strict-origin-when-cross-origin`, và một `Content-Security-Policy` cơ bản.
 
@@ -112,7 +112,7 @@ Nên: booking `PENDING_PAYMENT` mẫu đặt `hold_expires_at = now() + interval
 8. `docs/erd.md`: sơ đồ Mermaid 19 bảng + bảng mô tả từng cột, và giải thích **tại sao** chọn `EXCLUDE … USING gist` thay vì khoá ở tầng ứng dụng. Đây là phần dễ bị hỏi nhất khi bảo vệ.
 9. `docs/use-case.md`: 3 tác nhân (Khách vãng lai, Khách có tài khoản, Quản trị viên); đặc tả 6 use case chính (tìm phòng, đặt phòng, thanh toán, đối soát thanh toán, quản lý booking, xem báo cáo) theo mẫu: tác nhân, tiền điều kiện, luồng chính, luồng thay thế, hậu điều kiện.
 10. `docs/luong-dat-phong.md`: sequence đặt phòng, sequence thanh toán + webhook (gồm nhánh tiền về muộn), biểu đồ trạng thái booking 8 trạng thái.
-11. `docs/api.md`: bảng đầy đủ endpoint — phương thức, đường dẫn, quyền, giới hạn tần suất, mã lỗi; **đối chiếu trực tiếp với ma trận phân quyền ở Phase 3**, không viết từ trí nhớ.
+11. `docs/api.md`: bảng đầy đủ endpoint — phương thức, đường dẫn, quyền, giới hạn tần suất, mã lỗi; **đối chiếu trực tiếp với ma trận phân quyền ở Phase 4**, không viết từ trí nhớ.
 12. `docs/bao-mat.md`: mô hình xác thực, vì sao refresh token nằm trong cookie `HttpOnly`, cơ chế `token_version`, các lớp bảo vệ webhook, và **các giới hạn đã biết** — rate limit in-memory chỉ đúng với một instance; khuyến nghị chuyển webhook sang HMAC-SHA256 + whitelist IP khi triển khai thật.
 13. `docs/cai-dat.md`: đường chạy bằng Docker **và** đường chạy thủ công (Postgres cài máy + `mvn spring-boot:run` + `ng serve`) cho trường hợp máy hội đồng không có Docker. Cảnh báo đổi mật khẩu admin khi triển khai thật.
 14. `docs/kiem-thu.md`: liệt kê từng test và điều nó chứng minh, đặc biệt `BookingConcurrencyIT` (cả ba kịch bản), `SepayWebhookIT`, `PaymentRaceIT`, `EndpointAuthorizationIT`, `SchemaConstraintIT`.
@@ -209,7 +209,7 @@ git grep -nEi '(api[_-]?key|secret|password|token)\s*[:=]\s*["'"'"'][^"'"'"']{8,
 | Scheduler ăn dữ liệu mẫu | Sau ít phút, `PENDING_PAYMENT` về 0 | `hold_expires_at` ở tương lai; smoke test kiểm tra sau 90 giây nên bắt được |
 | Máy hội đồng không có Docker | Không dựng được | Đã xác nhận từ Phase 1. `docs/cai-dat.md` có đường chạy thủ công; video demo dự phòng |
 | Dockerfile build lâu | `up --build` mất hơn 5 phút | Cache tầng theo `pom.xml`/`package.json`; build sẵn image trước buổi bảo vệ |
-| Tài liệu lệch code sau các lần sửa cuối | Docs mô tả endpoint không còn tồn tại | Viết docs **sau cùng**, đối chiếu trực tiếp với `/v3/api-docs` và ma trận Phase 3, không viết từ trí nhớ |
+| Tài liệu lệch code sau các lần sửa cuối | Docs mô tả endpoint không còn tồn tại | Viết docs **sau cùng**, đối chiếu trực tiếp với `/v3/api-docs` và ma trận Phase 4, không viết từ trí nhớ |
 | Secret mặc định lọt vào repo | Quét secret có kết quả trong `.env.example` hoặc `docker-compose.yml` | Quét **bao gồm** file `.example`; `init-env.sh` là đường duy nhất tạo secret |
 
 **Rollback:** revert commit; ứng dụng vẫn chạy được ở chế độ dev (`docker-compose.dev.yml` + `mvn spring-boot:run` + `ng serve`). Vì seed không còn nằm trong Flyway, revert **không** gây lệch `flyway_schema_history`. Nếu cần xoá dữ liệu mẫu: `docker compose down -v`.

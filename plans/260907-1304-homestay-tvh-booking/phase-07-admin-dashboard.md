@@ -1,24 +1,25 @@
 ---
-title: "Phase 6: Trang admin & dashboard"
+title: "Phase 7: Trang admin & dashboard"
 status: todo
-phase: 6
+phase: 7
 priority: P1
-effort: "13h"
-dependencies: [3, 4]
+effort: "14h"
+dependencies: [2, 4, 5]
 ---
 
-# Phase 6: Trang admin & dashboard
+# Phase 7: Trang admin & dashboard
 
 ## Overview
 
 Toàn bộ khu vực quản trị: đăng nhập, CRUD loại phòng/phòng/ảnh/giá, xử lý booking theo vòng đời, **hàng đợi đối soát thanh toán**, quản lý khuyến mãi, duyệt đánh giá, và dashboard doanh thu + tỉ lệ lấp đầy.
 
-Phase 7 dùng lại `data-table` và `image-uploader` — hai component này đã được chốt trong `shared/` ở cuối Phase 4, nên hai phase không tranh nhau tạo.
+Toàn bộ component UI đến từ design system ở Phase 2 — phase này lắp ráp màn hình, không chế thêm biến thể.
 
 ## Requirements
 
 - Functional: 7 màn hình quản trị + dashboard; upload ảnh an toàn; đổi trạng thái booking; đối soát thanh toán; xuất CSV.
 - Non-functional: mọi endpoint dưới `/api/admin/**` chỉ `ADMIN`; danh sách phân trang phía server; dashboard tổng hợp bằng SQL, không tải hết dữ liệu về app.
+- UI/UX: mọi component lấy từ design system Phase 2; không mã màu hard-code; mọi hành động phá huỷ có xác nhận nêu rõ hậu quả; mọi bảng rỗng có hướng dẫn hành động tiếp theo.
 
 ## Architecture
 
@@ -33,10 +34,29 @@ Phase 7 dùng lại `data-table` và `image-uploader` — hai component này đ�
 /admin/rooms                → CRUD phòng vật lý + lịch phòng
 /admin/promotions           → CRUD mã giảm giá
 /admin/reviews              → Duyệt / ẩn / trả lời đánh giá
-/admin/content              → (Phase 7) banner, thư viện ảnh, tin tức, nội dung trang
+/admin/content              → (Phase 8) banner, thư viện ảnh, tin tức, nội dung trang
 ```
 
-`/admin/payments` là màn hình bắt buộc, không phải tuỳ chọn: Phase 5 có ba nhánh kết thúc bằng "chuyển admin xử lý" (thiếu tiền, thừa tiền, tiền về muộn không gán lại được phòng). Không có màn hình này thì những khoản tiền đó nằm im trong bảng và không ai biết. Số dòng cần đối soát hiển thị ngay trên dashboard, không giấu trong menu con.
+`/admin/payments` là màn hình bắt buộc, không phải tuỳ chọn: Phase 6 có ba nhánh kết thúc bằng "chuyển admin xử lý" (thiếu tiền, thừa tiền, tiền về muộn không gán lại được phòng). Không có màn hình này thì những khoản tiền đó nằm im trong bảng và không ai biết. Số dòng cần đối soát hiển thị ngay trên dashboard, không giấu trong menu con.
+
+### Quy tắc UX cho khu quản trị
+
+Admin là màn hình mật độ cao — người dùng ở đây làm việc hàng ngày, không phải khách vãng lai. Nhưng mật độ cao không có nghĩa là chen chúc.
+
+**Nhịp của bảng.** Chiều cao dòng 48px (không phải 32px kiểu bảng tính), cột số căn phải và dùng chữ số đều bề rộng (`font-variant-numeric: tabular-nums`) để mắt so sánh được theo cột dọc. Cột trạng thái dùng `ui-status-badge` của Phase 2 — mỗi trạng thái một màu cố định trên toàn hệ thống, không để mỗi màn hình tự chọn.
+
+**Bộ lọc luôn nhìn thấy.** Điều kiện lọc đang áp hiển thị thành các chip ngay trên bảng, mỗi chip có nút bỏ riêng, cộng một nút "Xoá tất cả bộ lọc". Trạng thái lọc đồng bộ lên query param để admin bookmark và chia sẻ được. Bộ lọc giấu sau một nút "Filter" là cách nhanh nhất để người dùng quên mình đang xem tập con và kết luận sai về dữ liệu.
+
+**Hành động phá huỷ nói rõ hậu quả.** Không dùng "Bạn có chắc không?". Hộp thoại phải nêu đúng việc gì sẽ xảy ra và với cái gì:
+
+> **Huỷ booking TVH8F3K2Q?**
+> Phòng 203 sẽ được trả về kho và có thể bán cho khách khác ngay lập tức.
+> Khách đã đặt cọc 300.000đ — khoản này cần hoàn thủ công.
+> [Không huỷ] [Huỷ booking]
+
+Nút xác nhận mang nhãn động từ thật ("Huỷ booking"), không phải "OK". Nút phá huỷ dùng `--c-danger`; nút an toàn là lựa chọn mặc định khi nhấn Enter.
+
+**Trang rỗng có lối đi tiếp.** `ui-empty-state` với một câu giải thích vì sao rỗng và một nút hành động: bảng booking rỗng vì bộ lọc quá hẹp thì gợi ý xoá lọc; rỗng vì chưa có dữ liệu thì gợi ý tạo mới. Bảng trắng không chữ khiến người dùng không phân biệt được "không có dữ liệu" với "trang hỏng".
 
 ### Chỉ số dashboard
 
@@ -98,7 +118,7 @@ Mọi truy vấn gom nhóm theo thời điểm phải viết `date_trunc('month'
 - Create: `features/admin/login/`, `dashboard/`, `bookings/`, `payments/`, `room-types/`, `rooms/`, `promotions/`, `reviews/`
 - Create: `features/admin/bookings/booking-detail.component.ts` — dòng thời gian trạng thái + trạng thái email
 - Modify: `frontend/package.json` — thêm thư viện vẽ biểu đồ
-- Dùng lại từ `shared/` (đã chốt ở Phase 4): `data-table`, `image-uploader`, `modal`, `badge`, `pagination`
+- Dùng lại từ `shared/ui/` (Phase 2): `data-table`, `modal`, `status-badge`, `pagination`, `toast`, `skeleton`, `empty-state`, `button`, `input`, `select`
 
 **Test**
 - Create: `backend/src/test/java/com/tvh/homestay/report/DashboardServiceIT.java`
@@ -113,7 +133,7 @@ Mọi truy vấn gom nhóm theo thời điểm phải viết `date_trunc('month'
 4. `AdminRoomTypeController`: CRUD + gắn tiện ích + sắp thứ tự ảnh + đặt ảnh bìa; hiển thị `area_sqm`, `capacity_children`, `bed_info`. Xoá loại phòng đang có booking → 409, gợi ý `active = false`.
 5. `AdminRoomController`: CRUD phòng (gồm `floor`, `note`); đổi `status` sang `MAINTENANCE`/`OUT_OF_SERVICE` cho phòng đang có booking `ACTIVE` tương lai → cảnh báo và liệt kê booking bị ảnh hưởng, không tự huỷ.
 6. `ImageValidator`: **danh sách trắng tường minh** `image/jpeg`, `image/png`, `image/webp`. SVG bị loại — SVG là XML thuần, không có magic bytes cố định nên mọi bộ dò nội dung đều trả `image/svg+xml` là "ảnh hợp lệ", và khi phục vụ cùng origin nó thực thi JavaScript. Sau khi kiểm, **giải mã lại ảnh và ghi lại** để loại metadata và tệp polyglot. Đổi tên file thành UUID, bỏ hoàn toàn tên do client gửi (chống path traversal). Giới hạn 5MB.
-7. `ImageStorageService`: có `CLOUDINARY_URL` → Cloudinary (lưu `public_id` để xoá được); không có → `LocalImageStorage` ghi `uploads/`, phục vụ qua `/uploads/**` với `X-Content-Type-Options: nosniff`, `Content-Type` do server quyết định, và `Content-Security-Policy: sandbox` (Phase 8 cấu hình nginx).
+7. `ImageStorageService`: có `CLOUDINARY_URL` → Cloudinary (lưu `public_id` để xoá được); không có → `LocalImageStorage` ghi `uploads/`, phục vụ qua `/uploads/**` với `X-Content-Type-Options: nosniff`, `Content-Type` do server quyết định, và `Content-Security-Policy: sandbox` (Phase 9 cấu hình nginx).
 8. `AdminPromotionController`: CRUD; không cho sửa `code` khi đã có booking dùng; hiển thị `used_count / usage_limit` (hiện "không giới hạn" khi `usage_limit IS NULL`).
 9. `AdminReviewController`: danh sách theo trạng thái, duyệt/từ chối, trả lời. Nội dung review hiển thị bằng **text binding**, không `innerHTML` — nội dung này do người ẩn danh gửi và màn hình duyệt là nơi admin bắt buộc phải mở nó.
 10. `DashboardService`: gom 7 chỉ số trên, nhận `periodStart`/`periodEnd` (mặc định 12 tháng gần nhất), trả một DTO duy nhất.
@@ -121,7 +141,9 @@ Mọi truy vấn gom nhóm theo thời điểm phải viết `date_trunc('month'
 12. Frontend `admin-layout` + `data-table` dùng chung cho 6 màn hình danh sách (một component bảng, cấu hình cột theo input).
 13. Dashboard: 6 thẻ chỉ số + biểu đồ cột "Giá trị booking" + biểu đồ đường tỉ lệ lấp đầy + bảng top loại phòng, vẽ bằng **thư viện biểu đồ** (quyết định của người dùng — ràng buộc "tự viết component" áp cho UI component library, không áp cho thư viện vẽ biểu đồ). Mỗi điểm dữ liệu vẫn cần nhãn đọc được cho trình đọc màn hình.
 14. Màn hình booking: bộ lọc gắn vào query param để admin bookmark/chia sẻ đường dẫn đã lọc.
-15. Cập nhật ma trận phân quyền ở `phase-03-auth.md` với mọi endpoint mới; `EndpointAuthorizationIT` sẽ fail nếu quên.
+15. Cập nhật ma trận phân quyền ở `phase-04-auth.md` với mọi endpoint mới; `EndpointAuthorizationIT` sẽ fail nếu quên.
+16. Áp quy tắc UX ở trên cho cả 7 màn hình: chip lọc + nút xoá lọc, chiều cao dòng 48px, số căn phải `tabular-nums`, `ui-empty-state` ở mọi bảng, hộp thoại xác nhận nêu hậu quả cho huỷ booking / xoá loại phòng / xoá mã giảm giá / từ chối đánh giá.
+17. Trạng thái tải: bảng dùng `ui-skeleton` dạng hàng, không dùng spinner giữa màn hình — người dùng cần thấy bố cục sẽ ra sao trước khi dữ liệu về.
 
 ## Verify
 
@@ -181,7 +203,11 @@ Kiểm tra thủ công: đặt booking ở landing → `/admin/bookings` thấy 
 - [ ] `admin-layout` + badge "cần đối soát" + `data-table` dùng chung
 - [ ] Dashboard dùng thư viện biểu đồ + nhãn cho trình đọc màn hình
 - [ ] Bộ lọc booking gắn query param
-- [ ] Cập nhật ma trận phân quyền Phase 3 với endpoint mới
+- [ ] Cập nhật ma trận phân quyền Phase 4 với endpoint mới
+- [ ] Chip lọc hiển thị điều kiện đang áp + nút xoá từng chip và xoá tất cả
+- [ ] Hộp thoại xác nhận nêu rõ hậu quả cho 4 hành động phá huỷ
+- [ ] `ui-empty-state` ở mọi bảng, phân biệt rỗng-do-lọc và rỗng-do-chưa-có-dữ-liệu
+- [ ] Bảng: dòng 48px, số căn phải `tabular-nums`, skeleton khi tải
 - [ ] `DashboardServiceIT`, `CsvExportTest`, `ImageUploadIT`
 
 ## Success Criteria
@@ -198,6 +224,11 @@ Kiểm tra thủ công: đặt booking ở landing → `/admin/bookings` thấy 
 - [ ] Upload `.svg` chứa script bị từ chối; `.jpg` giả (thực chất `.exe`) bị từ chối
 - [ ] Booking có `guestName` bắt đầu bằng `=` → ô CSV không được Excel hiểu là công thức
 - [ ] CSV mở trong Excel không lỗi font tiếng Việt
+- [ ] Không mã màu nào trong khu admin nằm ngoài token (`check-hardcoded-colors.mjs` thoát 0)
+- [ ] Lọc booking rồi tải lại trang → chip lọc vẫn đúng, bảng vẫn đúng tập con
+- [ ] Hộp thoại huỷ booking nêu đúng số phòng và số tiền cọc, không phải câu chung chung
+- [ ] Lọc ra tập rỗng → hiện hướng dẫn xoá lọc, không phải bảng trắng
+- [ ] Đi Tab qua màn hình booking: mọi nút, chip, ô lọc đều có vòng focus nhìn thấy
 - [ ] `npm run build` sạch, không cảnh báo budget
 
 ## Risk Assessment
@@ -206,10 +237,10 @@ Kiểm tra thủ công: đặt booking ở landing → `/admin/bookings` thấy 
 |---|---|---|
 | Tỉ lệ lấp đầy sai vì mẫu số theo trạng thái hiện tại | Số liệu tháng cũ đổi sau khi admin sửa phòng | Mẫu số là tổng số phòng vật lý; kẹp `LEAST(ratio, 1.0)`; test riêng đưa phòng có booking sang bảo trì |
 | "Khớp tuyệt đối" nhưng câu đối chiếu không cùng tham số | Test xanh giả vì dữ liệu mẫu ngắn hơn 12 tháng | Câu đối chiếu nhận cùng `periodStart`/`periodEnd` như API; ghi rõ trong bước Verify |
-| Dashboard chậm khi dữ liệu lớn | Trang tải trên 2 giây | Tổng hợp bằng SQL; index `bookings(status, check_in)` từ Phase 2; nếu vẫn chậm → bảng tổng hợp theo ngày |
+| Dashboard chậm khi dữ liệu lớn | Trang tải trên 2 giây | Tổng hợp bằng SQL; index `bookings(status, check_in)` từ Phase 3; nếu vẫn chậm → bảng tổng hợp theo ngày |
 | Cloudinary hết quota giữa buổi bảo vệ | Upload lỗi 4xx | Fallback local nằm trong phase; ảnh mẫu nhúng sẵn trong repo, không phụ thuộc mạng |
 | Xoá loại phòng làm mồ côi booking cũ | Lỗi khoá ngoại hoặc mất lịch sử | Chặn xoá cứng khi còn booking; dùng `active = false`; booking đã snapshot tên và giá |
 | Hàng đợi đối soát bị bỏ quên | Tiền lạc nằm im | Badge đếm hiển thị trên dashboard và trên sidebar, không giấu trong menu con |
-| Ảnh tải lên phục vụ cùng origin | XSS lưu trữ, mất phiên admin | Danh sách trắng MIME + giải mã lại + `nosniff` + refresh token trong cookie `HttpOnly` (Phase 3) — ba lớp độc lập |
+| Ảnh tải lên phục vụ cùng origin | XSS lưu trữ, mất phiên admin | Danh sách trắng MIME + giải mã lại + `nosniff` + refresh token trong cookie `HttpOnly` (Phase 4) — ba lớp độc lập |
 
-**Rollback:** revert commit của phase; landing (Phase 7) không phụ thuộc admin nên vẫn chạy.
+**Rollback:** revert commit của phase; landing (Phase 8) không phụ thuộc admin nên vẫn chạy.

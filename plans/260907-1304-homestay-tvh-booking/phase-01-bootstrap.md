@@ -13,7 +13,7 @@ dependencies: []
 
 Dựng bộ khung monorepo chạy được: Spring Boot khởi động và kết nối Postgres trong Docker, Angular dev server chạy với Tailwind, hai bên nói chuyện được qua một endpoint health. Chưa có nghiệp vụ nào.
 
-Phase này cũng là nơi chốt ba quyết định hạ tầng mà các phase sau đều dựa vào: **múi giờ**, **mô hình profile**, và **cách cấp secret**. Sai ở đây thì lỗi chỉ lộ ra ở Phase 8, tức là giờ thứ 60 trên 70.
+Phase này cũng là nơi chốt ba quyết định hạ tầng mà các phase sau đều dựa vào: **múi giờ**, **mô hình profile**, và **cách cấp secret**. Sai ở đây thì lỗi chỉ lộ ra ở Phase 9, tức là giờ thứ 60 trên 70.
 
 ## Requirements
 
@@ -35,7 +35,7 @@ Project-Final-TVU/
 └── README.md
 ```
 
-Dev chạy `docker compose -f docker-compose.dev.yml up -d` (chỉ hạ tầng), rồi `mvn spring-boot:run` và `ng serve` ở máy host để có hot reload. Compose đầy đủ để ở Phase 8.
+Dev chạy `docker compose -f docker-compose.dev.yml up -d` (chỉ hạ tầng), rồi `mvn spring-boot:run` và `ng serve` ở máy host để có hot reload. Compose đầy đủ để ở Phase 9.
 
 ### Mô hình profile: chỉ hai profile
 
@@ -62,7 +62,7 @@ Nên phase này đặt cả ba: `TZ` cho container, `-Duser.timezone` cho JVM, v
 
 `JWT_SECRET` và `SEPAY_WEBHOOK_API_KEY` **không** có giá trị mặc định trong `application.yml`, `.env.example` hay `docker-compose.yml`. App fail fast khi thiếu, ở mọi profile.
 
-Lý do: repo công khai. Một giá trị mặc định "an toàn cho demo" nằm trong repo nghĩa là bất kỳ ai cũng tự ký được JWT với `role=ADMIN` cho mọi bản triển khai dùng repo này, và giả mạo được webhook xác nhận thanh toán. Phase 8 sinh secret ngẫu nhiên lúc dựng lần đầu và ghi vào `.env` cục bộ (không commit).
+Lý do: repo công khai. Một giá trị mặc định "an toàn cho demo" nằm trong repo nghĩa là bất kỳ ai cũng tự ký được JWT với `role=ADMIN` cho mọi bản triển khai dùng repo này, và giả mạo được webhook xác nhận thanh toán. Phase 9 sinh secret ngẫu nhiên lúc dựng lần đầu và ghi vào `.env` cục bộ (không commit).
 
 ## Related Code Files
 
@@ -79,19 +79,19 @@ Lý do: repo công khai. Một giá trị mặc định "an toàn cho demo" nằ
 ## Implementation Steps
 
 1. Ở branch `claude/homestay-tvh-booking-site-bew1pw`, commit `.gitignore` (thư mục build Maven, `node_modules/`, `.env`, `uploads/`) + `README.md` khung.
-2. Sinh backend: Maven project `com.tvh:homestay`, Java 21. Thêm **toàn bộ** dependency ở trên ngay bây giờ — Phase 5 cần Thymeleaf, Phase 3 cần Bucket4j, Phase 6 cần Cloudinary, Phase 7 cần sanitizer. Thêm dần sẽ khiến mỗi phase phải dừng lại sửa `pom.xml`.
+2. Sinh backend: Maven project `com.tvh:homestay`, Java 21. Thêm **toàn bộ** dependency ở trên ngay bây giờ — Phase 6 cần Thymeleaf, Phase 4 cần Bucket4j, Phase 7 cần Cloudinary, Phase 8 cần sanitizer. Thêm dần sẽ khiến mỗi phase phải dừng lại sửa `pom.xml`.
 3. `application.yml`: datasource đọc `${DB_URL}`, `${DB_USER}`, `${DB_PASSWORD}`; `spring.jpa.hibernate.ddl-auto: validate` (Flyway là chủ schema, **không bao giờ** `update`); `server.forward-headers-strategy: framework`; `spring.jackson.time-zone: Asia/Ho_Chi_Minh`.
 4. `RequiredSecretsValidator`: `ApplicationRunner` chạy sớm, kiểm `JWT_SECRET` (≥ 32 byte) và `SEPAY_WEBHOOK_API_KEY` có mặt; thiếu → ném exception dừng khởi động, in rõ tên biến thiếu (**không** in giá trị).
-5. Viết `HealthController` trả `{"status":"UP","time":...}` tại `GET /api/health`; `SecurityConfig` tạm cho phép `/api/health`, phần còn lại `denyAll()` — Phase 3 thay bằng ma trận đầy đủ. Bắt đầu bằng đóng, không bằng mở.
+5. Viết `HealthController` trả `{"status":"UP","time":...}` tại `GET /api/health`; `SecurityConfig` tạm cho phép `/api/health`, phần còn lại `denyAll()` — Phase 4 thay bằng ma trận đầy đủ. Bắt đầu bằng đóng, không bằng mở.
 6. `docker-compose.dev.yml`: service `db` (`postgres:16-alpine`, volume `pgdata`, `POSTGRES_DB=homestay`, `TZ=Asia/Ho_Chi_Minh`) và `mailpit` (cổng 8025).
 7. Đặt múi giờ cho tiến trình Java: `TZ=Asia/Ho_Chi_Minh` và `JAVA_TOOL_OPTIONS=-Duser.timezone=Asia/Ho_Chi_Minh`. Ghi vào `README.md` như quy ước bắt buộc cho mọi cách chạy.
 8. Sinh frontend bằng Angular CLI; cài Tailwind **theo đúng hướng dẫn của phiên bản vừa cài** (các bản gần đây bỏ lệnh `tailwindcss init` và chuyển sang cấu hình CSS-first; standalone cũng đã là mặc định nên không truyền cờ đã bị gỡ). Không sao chép lệnh từ trí nhớ — đọc `README` của gói vừa cài.
-9. Khai báo design token (màu thương hiệu, font, spacing) ở một chỗ duy nhất để Phase 6/7 dùng chung, tránh rải màu cứng khắp nơi.
-10. `proxy.conf.json` map `/api` → `http://localhost:8080`; `ng serve` dùng proxy. Frontend và API cùng origin ở dev — cần thiết để cookie `HttpOnly` của refresh token (Phase 3) hoạt động.
+9. Khai báo design token (màu thương hiệu, font, spacing) ở một chỗ duy nhất để Phase 7/8 dùng chung, tránh rải màu cứng khắp nơi.
+10. `proxy.conf.json` map `/api` → `http://localhost:8080`; `ng serve` dùng proxy. Frontend và API cùng origin ở dev — cần thiết để cookie `HttpOnly` của refresh token (Phase 4) hoạt động.
 11. Trang `app.component` gọi `/api/health` và hiển thị trạng thái — bằng chứng hai đầu đã nối.
 12. `.env.example` liệt kê đủ biến với giá trị **rỗng** và ghi chú cách sinh: `DB_*`, `JWT_SECRET`, `SEPAY_*`, `CLOUDINARY_URL`, `MAIL_*`, `TZ`.
 13. `README.md`: yêu cầu môi trường (JDK 21, Node 20+, Docker), lệnh chạy dev, và cách sinh secret.
-14. **Xác nhận môi trường buổi bảo vệ** — máy hội đồng có Docker không, có mạng không, ai cấp máy. Đây là điều kiện có thể phá vỡ toàn bộ kịch bản demo, và nó rẻ để hỏi bây giờ, đắt để phát hiện ở Phase 8.
+14. **Xác nhận môi trường buổi bảo vệ** — máy hội đồng có Docker không, có mạng không, ai cấp máy. Đây là điều kiện có thể phá vỡ toàn bộ kịch bản demo, và nó rẻ để hỏi bây giờ, đắt để phát hiện ở Phase 9.
 
 ## Verify
 
@@ -146,9 +146,9 @@ git status --porcelain | grep -E '\.env$' && echo "LOI: .env bi track" || echo "
 
 | Rủi ro | Dấu hiệu | Phản ứng đã định |
 |---|---|---|
-| Máy dùng lúc bảo vệ không có Docker hoặc không có mạng | Phát hiện lúc mang máy tới | Hỏi và xác nhận **ngay phase này**. `docs/cai-dat.md` (Phase 8) có đường chạy thủ công; chuẩn bị sẵn video demo dự phòng. Đây là rủi ro thật, khác với `btree_gist` |
-| Image Postgres không cài được `btree_gist` | `CREATE EXTENSION` báo lỗi | Kiểm tra ở đây vì nó rẻ. **Không có phương án lùi tương đương**: `SELECT ... FOR UPDATE` khoá dòng đã tồn tại, không ngăn hai transaction cùng `INSERT` vào `booking_rooms`, tức là quay về đảm bảo ở tầng ứng dụng — đúng thứ Phase 4 loại bỏ. Nếu thật sự xảy ra thì phải replan Phase 4 và viết lại `docs/erd.md`, không phải đổi một dòng cấu hình |
-| Dependency thiếu, phát hiện giữa Phase 5 | Build gãy, phải sửa `pom.xml` giữa chừng | Khai báo đủ ngay ở bước 2; danh sách đã đối chiếu với nhu cầu của cả 8 phase |
+| Máy dùng lúc bảo vệ không có Docker hoặc không có mạng | Phát hiện lúc mang máy tới | Hỏi và xác nhận **ngay phase này**. `docs/cai-dat.md` (Phase 9) có đường chạy thủ công; chuẩn bị sẵn video demo dự phòng. Đây là rủi ro thật, khác với `btree_gist` |
+| Image Postgres không cài được `btree_gist` | `CREATE EXTENSION` báo lỗi | Kiểm tra ở đây vì nó rẻ. **Không có phương án lùi tương đương**: `SELECT ... FOR UPDATE` khoá dòng đã tồn tại, không ngăn hai transaction cùng `INSERT` vào `booking_rooms`, tức là quay về đảm bảo ở tầng ứng dụng — đúng thứ Phase 5 loại bỏ. Nếu thật sự xảy ra thì phải replan Phase 5 và viết lại `docs/erd.md`, không phải đổi một dòng cấu hình |
+| Dependency thiếu, phát hiện giữa Phase 6 | Build gãy, phải sửa `pom.xml` giữa chừng | Khai báo đủ ngay ở bước 2; danh sách đã đối chiếu với nhu cầu của cả 8 phase |
 | `ddl-auto` vô tình để `update` phá schema Flyway | Bảng có cột lạ không nằm trong migration | Chốt `validate` ngay từ Phase 1; test khởi động context phát hiện sớm |
 | Lệnh khởi tạo Angular/Tailwind đã đổi ở bản mới | `ng new` hoặc `tailwindcss init` báo cờ không tồn tại | Đọc hướng dẫn của phiên bản vừa cài, không copy lệnh từ trí nhớ |
 

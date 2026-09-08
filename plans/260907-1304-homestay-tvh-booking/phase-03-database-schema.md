@@ -1,13 +1,13 @@
 ---
-title: "Phase 2: Schema cơ sở dữ liệu & Flyway migration"
+title: "Phase 3: Schema cơ sở dữ liệu & Flyway migration"
 status: todo
-phase: 2
+phase: 3
 priority: P1
 effort: "8h"
 dependencies: [1]
 ---
 
-# Phase 2: Schema cơ sở dữ liệu & Flyway migration
+# Phase 3: Schema cơ sở dữ liệu & Flyway migration
 
 ## Overview
 
@@ -496,10 +496,10 @@ docker exec -it homestay-db psql -U postgres -d homestay -c \
 | Rủi ro | Dấu hiệu | Phản ứng đã định |
 |---|---|---|
 | Thiếu `CHECK` trên một cột enum nào đó | Dữ liệu có giá trị lạ; với `booking_rooms.status` thì phòng bị đặt trùng âm thầm | Truy vấn `pg_constraint` trong bước Verify liệt kê toàn bộ CHECK — đối chiếu với bảng enum ở trên, thiếu cái nào thấy ngay |
-| Hibernate cố ghi cột generated `stay` | Lỗi `cannot insert into generated column` lúc chạy | `insertable=false, updatable=false` ngay từ đầu; test chèn qua JPA (không chỉ SQL thô) ở Phase 4 |
+| Hibernate cố ghi cột generated `stay` | Lỗi `cannot insert into generated column` lúc chạy | `insertable=false, updatable=false` ngay từ đầu; test chèn qua JPA (không chỉ SQL thô) ở Phase 5 |
 | Constraint trigger DEFERRABLE làm chậm hoặc gây khoá | Thời gian commit tăng khi đặt nhiều phòng | Trigger chỉ chạy lúc commit và chỉ đọc một booking; nếu vẫn chậm → chuyển sang kiểm tra ở tầng service **và** giữ test bất biến trong `SchemaConstraintIT` |
 | `ddl-auto=validate` fail vì lệch kiểu nhỏ | App không khởi động, log "wrong column type" | Sửa entity theo migration (migration là chủ), không bao giờ sửa ngược |
 | Sửa migration đã chạy làm lệch checksum | Flyway báo `Migration checksum mismatch` | Không bao giờ sửa file V đã chạy — luôn thêm file V mới. Dev muốn làm lại: `docker compose down -v` |
-| Phát sinh nhu cầu bảng/cột mới ở Phase 5 | Phải thêm V7/V8 vá víu | Đó chính là lý do `payments`, `payment_webhook_events`, `outbound_emails` và các trạng thái đối soát được đưa vào ngay Phase 2 thay vì để Phase 5 |
+| Phát sinh nhu cầu bảng/cột mới ở Phase 6 | Phải thêm V7/V8 vá víu | Đó chính là lý do `payments`, `payment_webhook_events`, `outbound_emails` và các trạng thái đối soát được đưa vào ngay Phase 3 thay vì để Phase 6 |
 
 **Rollback:** `docker compose -f docker-compose.dev.yml down -v` xoá volume và chạy lại migration từ đầu (chưa có dữ liệu thật ở phase này).

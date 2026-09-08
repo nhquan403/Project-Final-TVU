@@ -1,24 +1,25 @@
 ---
-title: "Phase 7: Landing page, CMS nội dung & đánh giá"
+title: "Phase 8: Landing page, CMS nội dung & đánh giá"
 status: todo
-phase: 7
+phase: 8
 priority: P1
-effort: "14h"
-dependencies: [4, 5, 6]
+effort: "16h"
+dependencies: [2, 5, 6, 7]
 ---
 
-# Phase 7: Landing page, CMS nội dung & đánh giá
+# Phase 8: Landing page, CMS nội dung & đánh giá
 
 # Overview
 
 Bộ mặt của đồ án: trang giới thiệu homestay và toàn bộ luồng đặt phòng cho khách, cộng với lớp CMS để admin sửa nội dung mà không cần đụng code, và tính năng đánh giá sau khi trả phòng.
 
-**Phụ thuộc Phase 6**, không chạy song song hoàn toàn: 4 màn hình CMS nằm trong khu admin và dùng lại `admin-layout` của Phase 6. Phần công khai (trang chủ, danh sách phòng, luồng đặt phòng, tra cứu) **không** phụ thuộc Phase 6 và làm được song song; chỉ khối CMS phải chờ.
+**Phụ thuộc Phase 7**, không chạy song song hoàn toàn: 4 màn hình CMS nằm trong khu admin và dùng lại `admin-layout` của Phase 7. Phần công khai (trang chủ, danh sách phòng, luồng đặt phòng, tra cứu) **không** phụ thuộc Phase 7 và làm được song song; chỉ khối CMS phải chờ.
 
 ## Requirements
 
 - Functional: 9 màn hình công khai; 4 màn hình CMS trong admin; đánh giá có kiểm duyệt.
-- Non-functional: responsive từ 360px; ảnh lazy-load; không có văn bản cứng nào thuộc nhóm nội dung mà admin phải sửa được; không trường tự do nào của người dùng đi ra giao diện mà chưa qua xử lý.
+- Non-functional: **mobile-first** — thiết kế từ 360px lên, vùng chạm ≥ 44px, form một cột; ảnh lazy-load có `width`/`height`; mọi component lấy từ design system Phase 2; không trường tự do nào của người dùng đi ra giao diện mà chưa qua xử lý.
+- UX: mọi màn hình phải thiết kế đủ 6 trạng thái (mặc định, đang tải, rỗng, lỗi mạng, hết phòng, hết hạn giữ chỗ) — không chỉ trạng thái đẹp.
 
 ## Architecture
 
@@ -30,13 +31,30 @@ Bộ mặt của đồ án: trang giới thiệu homestay và toàn bộ luồng
 /phong                     Danh sách loại phòng (lọc theo ngày, số khách, giá)
 /phong/:slug               Chi tiết loại phòng: ảnh, tiện ích, diện tích, giá, nút đặt
 /dat-phong                 Luồng 3 bước
-/dat-phong/thanh-toan/:code  QR + đếm ngược (Phase 5)
+/dat-phong/thanh-toan/:code  QR + đếm ngược (Phase 6)
 /dat-phong/hoan-tat/:code    Trang cảm ơn
 /tra-cuu                   Tra cứu bằng mã + SĐT
 /tai-khoan/dat-phong       Lịch sử đặt phòng (cần đăng nhập)
 /danh-gia/:code            Form đánh giá sau khi trả phòng
 /tin-tuc, /tin-tuc/:slug   Tin tức & khuyến mãi
 ```
+
+### Chuẩn giao diện — đối chiếu Booking và Agoda
+
+| Yếu tố | Cách làm | Nguồn |
+|---|---|---|
+| Ô tìm kiếm | Khi focus thì làm mờ nền để dồn chú ý | Agoda |
+| Trang chi tiết phòng | Thanh nav dính khi cuộn | Agoda |
+| Gallery | 1 ảnh lớn + 2 ảnh nhỏ, bấm mở lightbox | Agoda |
+| Khoảng trắng | Rộng rãi, tương phản cao cho thông tin quyết định | Agoda |
+| Giá | **Tổng cả kỳ nghỉ** hiện ở thẻ phòng và cả 3 bước, không chỉ giá/đêm | Booking |
+| Đánh giá | Đặt ngay dưới khối chọn phòng | Booking |
+| Date picker | Chặn sẵn ngày hết phòng, giá từng đêm trên ô ngày | Booking, Airbnb |
+| Khan hiếm | "Còn 2 phòng" — số thật từ `availableCount` | Làm khác họ, xem dưới |
+| Áp lực thời gian | Chỉ đồng hồ giữ chỗ 15 phút — mốc thật trong DB | Làm khác họ |
+| "X người đang xem" | **Không có** | Làm khác họ |
+
+Ba dòng cuối là chỗ cố tình đi khác. Agoda hiện giá/đêm rồi để tổng tiền lộ ra ở checkout — đó là điểm họ bị chê, nên lấy cách của Booking. Còn nhóm tạo áp lực giả thì cả hai đều dùng và Booking.com đã bị EU xử lý vì nó; chi tiết và lý do nằm ở `docs/thiet-ke-giao-dien.md` (Phase 2).
 
 ### Luồng đặt phòng 3 bước
 
@@ -45,7 +63,7 @@ flowchart LR
     A["Bước 1<br/>Chọn ngày + số khách<br/>→ loại phòng còn trống"]
       --> B["Bước 2<br/>Chọn loại phòng + số lượng<br/>→ bảng giá chi tiết"]
       --> C["Bước 3<br/>Thông tin khách + mã giảm giá<br/>→ kiểm tra lại phòng trống → xác nhận"]
-      --> D["QR thanh toán<br/>(Phase 5)"]
+      --> D["QR thanh toán<br/>(Phase 6)"]
       --> E["Trang cảm ơn<br/>+ email xác nhận"]
 ```
 
@@ -75,7 +93,7 @@ Sanitize chỉ cho "nội dung bài viết" là chưa đủ. Đánh giá là b�
 | Thư viện ảnh | `gallery_images` | `/admin/content/gallery` |
 | Tiện ích homestay | `amenities` (category `PROPERTY`) | `/admin/room-types` |
 | Tin tức / khuyến mãi | `posts` | `/admin/content/posts` |
-| Đánh giá hiện trên trang chủ | `reviews` đã `APPROVED` | `/admin/reviews` (Phase 6) |
+| Đánh giá hiện trên trang chủ | `reviews` đã `APPROVED` | `/admin/reviews` (Phase 7) |
 
 ## Related Code Files
 
@@ -98,15 +116,15 @@ Sanitize chỉ cho "nội dung bài viết" là chưa đủ. Đánh giá là b�
 - Create: `features/landing/account/my-bookings.component.ts`
 - Create: `features/landing/review/review-form.component.ts`
 - Create: `features/landing/news/`
-- Create: `features/admin/content/` — sections, banners, gallery, posts (dùng `admin-layout` của Phase 6)
-- Create: `shared/ui/` — image-gallery-lightbox, star-rating, stepper, empty-state, skeleton-loader
+- Create: `features/admin/content/` — sections, banners, gallery, posts (dùng `admin-layout` của Phase 7)
+- Dùng lại từ `shared/ui/` (Phase 2): `lightbox`, `star-rating`, `room-card`, `date-range-picker`, `guest-stepper`, `skeleton`, `empty-state`, `toast`, `modal`, `data-table` (cho CMS)
 - Create: `core/services/content.service.ts`, `review.service.ts`
 
 ## Implementation Steps
 
 1. `public-layout`: header dính, logo, menu (Trang chủ / Phòng / Tin tức / Tra cứu / Liên hệ), nút "Đặt phòng" nổi bật, menu mobile dạng trượt.
 2. Trang chủ theo thứ tự: hero + thanh tìm phòng nổi lên trên ảnh → giới thiệu → loại phòng nổi bật → tiện ích → thư viện ảnh (lightbox) → đánh giá khách → tin tức → liên hệ + bản đồ nhúng.
-3. Thanh tìm phòng dùng lại `date-range-picker` từ `shared/` (Phase 4); chặn ngày quá khứ theo giờ Việt Nam; mặc định 2 người lớn.
+3. Thanh tìm phòng dùng `ui-date-range-picker` (Phase 2), nạp bản đồ giá và số phòng trống từ `availability.service` để chặn sẵn ngày hết phòng; chặn ngày quá khứ theo giờ Việt Nam; mặc định 2 người lớn. Khi focus thì làm mờ nền như Agoda.
 4. `/phong`: lưới thẻ loại phòng, hiển thị `availableCount` khi đã chọn ngày; lọc theo giá và số khách ở client, lọc theo ngày ở server.
 5. `/phong/:slug`: băng ảnh, mô tả, tiện ích, `area_sqm`, `bed_info`, bảng giá, thẻ đặt phòng dính bên phải trên desktop và dính đáy trên mobile.
 6. `booking-flow.store.ts`: signal store; tham số tìm kiếm đồng bộ query param, thông tin khách và mã giảm giá trong `sessionStorage`; kiểm tra lại phòng trống ở bước 3 trước khi gửi.
@@ -117,9 +135,14 @@ Sanitize chỉ cho "nội dung bài viết" là chưa đủ. Đánh giá là b�
 11. `/danh-gia/:code`: yêu cầu `accessToken` hoặc SĐT — **cùng mức xác thực với `lookup` và `cancel`**. Mã booking chỉ 6 ký tự và nằm trên sao kê ngân hàng, nên nếu không kiểm danh tính thì bất kỳ ai thấy mã đều gửi được đánh giá 1 sao đứng tên khách thật. Chỉ mở khi booking `CHECKED_OUT` và chưa có review.
 12. `PublicContentController` + `content.service.ts`: trang chủ nạp nội dung động, có giá trị mặc định để trang không vỡ khi CMS còn trống.
 13. `HtmlSanitizer` áp cho `posts.content` và `site_contents.body` **ở tầng vào** (trước khi lưu): chỉ cho phép `p, h2-h4, ul, ol, li, strong, em, a[href], img[src,alt], br, blockquote`; `a[href]` giới hạn scheme `http/https/mailto`; `img[src]` giới hạn origin. Các trường còn lại lưu văn bản thuần theo bảng ở trên.
-14. 4 màn hình CMS trong admin dùng lại `data-table`, `image-uploader` (`shared/`, chốt ở Phase 4) và `admin-layout` (Phase 6).
+14. 4 màn hình CMS trong admin dùng `ui-data-table` (Phase 2) và `admin-layout` (Phase 7).
 15. SEO cơ bản: `<title>`/`<meta description>` theo trang, Open Graph cho trang chi tiết phòng và bài viết, `alt` cho mọi ảnh.
 16. Truy cập: điều hướng bàn phím cho stepper và lightbox, `aria-live` cho thông báo lỗi, tương phản màu đạt WCAG AA, tôn trọng `prefers-reduced-motion`. Đây là **mục tiêu chất lượng**, không phải cổng chặn — xem mục Success Criteria.
+17. **Mobile:** ở trang chi tiết loại phòng, khối đặt phòng thu gọn thành thanh dính đáy màn hình (giá + tổng + nút "Đặt phòng"); ở bước 3, tóm tắt giá thu gọn thành thanh dính đáy bấm mở rộng được. Trên desktop cả hai là thẻ dính bên phải.
+18. **Thanh tiến trình 3 bước luôn hiển thị**, kể cả trên mobile; bước đã qua bấm quay lại được mà không mất dữ liệu đã nhập.
+19. **Giá cập nhật tức thì** khi đổi ngày, số phòng hoặc mã giảm giá — tổng cả kỳ, tiền giảm, tiền cọc đều tính lại từ phản hồi backend, không tính ở frontend.
+20. Thiết kế đủ 6 trạng thái cho từng màn hình chính: đang tải dùng `ui-skeleton` giữ đúng bố cục sắp hiện (không spinner giữa màn hình), rỗng dùng `ui-empty-state`, lỗi mạng có nút thử lại, hết phòng đưa về bước 1 kèm ngày đã chọn, hết hạn giữ chỗ có nút đặt lại, mã giảm giá sai báo ngay dưới ô nhập.
+21. Trang chi tiết loại phòng: tiện ích nhóm theo loại (phòng / homestay), chính sách huỷ hiển thị thành khối riêng nhìn thấy được, không giấu trong accordion đóng sẵn.
 
 ## Verify
 
@@ -158,8 +181,13 @@ Kiểm tra thủ công theo thứ tự:
 - [ ] `UrlSchemeValidator` cho `banners.link_url`
 - [ ] 4 màn hình CMS trong admin
 - [ ] SEO cơ bản + truy cập bàn phím + tương phản AA
-- [ ] Lightbox thư viện ảnh, skeleton loader, empty state
-- [ ] Cập nhật ma trận phân quyền Phase 3
+- [ ] Chuẩn Booking/Agoda: mờ nền khi focus tìm kiếm, nav dính ở trang chi tiết, gallery 1 lớn + 2 nhỏ
+- [ ] Tổng tiền cả kỳ hiện ở thẻ phòng và cả 3 bước
+- [ ] Thanh đặt phòng dính đáy trên mobile; thẻ giá dính phải trên desktop
+- [ ] Thanh tiến trình 3 bước luôn hiển thị, quay lại không mất dữ liệu
+- [ ] Đủ 6 trạng thái cho mỗi màn hình chính
+- [ ] Tiện ích nhóm theo loại; chính sách huỷ hiển thị rõ, không giấu
+- [ ] Cập nhật ma trận phân quyền Phase 4
 
 ## Success Criteria
 
@@ -173,6 +201,13 @@ Kiểm tra thủ công theo thứ tự:
 - [ ] Admin sửa hero/banner/thư viện ảnh/tin tức → landing đổi ngay, không cần build lại
 - [ ] Đánh giá chỉ hiện sau khi được duyệt
 - [ ] Tra cứu sai SĐT không lộ bất kỳ thông tin nào của booking
+- [ ] Tổng tiền cả kỳ nghỉ xuất hiện trên thẻ loại phòng **và** ở cả 3 bước đặt phòng
+- [ ] Ngày đã hết phòng không bấm chọn được trong date picker (chặn trước, không báo lỗi sau)
+- [ ] Ở 360px: mọi nút và ô nhập có hộp bao ≥ 44×44px, form một cột, không cuộn ngang
+- [ ] Trang chi tiết phòng trên mobile có thanh đặt phòng dính đáy màn hình
+- [ ] Không mã màu nào trong landing nằm ngoài token (`check-hardcoded-colors.mjs` thoát 0)
+- [ ] Ngắt mạng giữa lúc tải danh sách phòng → hiện lỗi có nút thử lại, không phải trang trắng
+- [ ] Mã giảm giá sai → báo ngay dưới ô nhập, không phải toast biến mất sau 3 giây
 
 **Mục tiêu chất lượng (không chặn hoàn thành phase):** Lighthouse Accessibility ≥ 90. Vẫn làm `alt` cho ảnh, điều hướng bàn phím và tương phản AA; nhưng điểm số không phải điều kiện để coi phase là xong — đây là phase nặng nhất và có nguy cơ tràn thời gian cao nhất.
 
@@ -180,10 +215,10 @@ Kiểm tra thủ công theo thứ tự:
 
 | Rủi ro | Dấu hiệu | Phản ứng đã định |
 |---|---|---|
-| Landing tự viết bằng Tailwind mất nhiều thời gian hơn dự tính | Phase 7 tràn quá 14h | Ưu tiên theo thứ tự: luồng đặt phòng > trang chủ > CMS > tin tức. Cắt tin tức là phương án cuối, và phải **nói rõ với người dùng**, không tự lược lặng lẽ |
+| Landing tự viết bằng Tailwind mất nhiều thời gian hơn dự tính | Phase 8 tràn quá 16h | Ưu tiên theo thứ tự: luồng đặt phòng > trang chủ > CMS > tin tức. Cắt tin tức là phương án cuối, và phải **nói rõ với người dùng**, không tự lược lặng lẽ |
 | XSS lưu trữ qua đánh giá hoặc CMS | Script chạy ở trang công khai hoặc màn hình duyệt của admin | Bảng phân loại trường ở trên: nội dung giàu định dạng sanitize ở backend, phần còn lại text binding. Test với `<script>` và `<img onerror>` ở **cả hai** nơi |
 | Phòng bị lấy mất giữa lúc khách điền form | 409 rơi vào mặt người dùng cuối luồng | Kiểm tra lại phòng trống ở bước 3 + hộp thoại xử lý êm |
-| Trang chủ vỡ khi CMS chưa có dữ liệu | Section trống hoặc lỗi null | Mỗi section có nội dung mặc định; seed CMS đầy đủ ở Phase 8 |
-| Khối CMS chờ Phase 6 xong | Nhánh song song bị nghẽn giữa chừng | Làm phần công khai trước (không phụ thuộc Phase 6), để 4 màn hình CMS vào cuối phase |
+| Trang chủ vỡ khi CMS chưa có dữ liệu | Section trống hoặc lỗi null | Mỗi section có nội dung mặc định; seed CMS đầy đủ ở Phase 9 |
+| Khối CMS chờ Phase 7 xong | Nhánh song song bị nghẽn giữa chừng | Làm phần công khai trước (không phụ thuộc Phase 7), để 4 màn hình CMS vào cuối phase |
 
 **Rollback:** revert commit của phase; API và admin không phụ thuộc landing.

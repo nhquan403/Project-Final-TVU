@@ -1,13 +1,13 @@
 ---
-title: "Phase 5: Thanh toán QR, webhook & email"
+title: "Phase 6: Thanh toán QR, webhook & email"
 status: todo
-phase: 5
+phase: 6
 priority: P1
 effort: "10h"
-dependencies: [4]
+dependencies: [5]
 ---
 
-# Phase 5: Thanh toán QR, webhook & email
+# Phase 6: Thanh toán QR, webhook & email
 
 ## Overview
 
@@ -107,11 +107,11 @@ Nhờ vậy tiêu chí "email đã gửi" kiểm chứng được bằng SQL tha
 
 1. `VietQrGenerator`: dựng URL ảnh QR từ `SEPAY_ACCOUNT_NUMBER`, `SEPAY_BANK_CODE`, tiền cọc và `transfer_content`.
 2. `transfer_content` = `bookings.code` + 2 chữ số `attempt_no`, ví dụ `TVH8F3K2Q01`. Hậu tố khiến QR của lần trước **không** khớp vào lần sau — không có nó, khách quét lại ảnh QR cũ trong tab đang mở sẽ trả tiền vào một booking đã chết.
-3. `PaymentService.createForBooking()`: tạo dòng `payments` `PENDING`, `amount_expected` = cọc, `expires_at = hold_expires_at + ân hạn`. Gọi từ `BookingTxService` (Phase 4) trong cùng transaction.
+3. `PaymentService.createForBooking()`: tạo dòng `payments` `PENDING`, `amount_expected` = cọc, `expires_at = hold_expires_at + ân hạn`. Gọi từ `BookingTxService` (Phase 5) trong cùng transaction.
 4. `SepayWebhookController` `POST /api/payments/webhook/sepay`, ủy quyền cho `SepayWebhookService` chạy năm lớp kiểm tra ở trên và bảng quyết định.
 5. Ghi nguyên payload vào `payment_webhook_events.payload` (JSONB) cho mọi sự kiện, kể cả không khớp — đây là chứng cứ đối soát khi SePay đổi tên trường.
 6. Chuyển trạng thái booking **luôn** qua `BookingStateMachine` để ghi `booking_status_history` với `actor = SYSTEM`.
-7. `PaymentReallocationService`: với tiền về muộn, gọi lại `RoomAllocator` (Phase 4) cho cùng loại phòng và khoảng ngày. Gán được → `CONFIRMED`; không → `AWAITING_REVIEW` + `NEEDS_REVIEW`.
+7. `PaymentReallocationService`: với tiền về muộn, gọi lại `RoomAllocator` (Phase 5) cho cùng loại phòng và khoảng ngày. Gán được → `CONFIRMED`; không → `AWAITING_REVIEW` + `NEEDS_REVIEW`.
 8. `EmailOutboxService.enqueue()` trong cùng transaction; `EmailDispatchScheduler` gửi và retry như mô tả trên.
 9. `MailConfig`: có `MAIL_HOST` → `SmtpMailSender`; không có → `LoggingMailSender` ghi đầy đủ nội dung ra log. Cả hai đều cập nhật `outbound_emails`, nên bằng chứng gửi luôn tồn tại.
 10. Mẫu email tiếng Việt: mã booking, loại phòng, ngày nhận/trả, số phòng, tổng tiền, đã cọc, còn lại, liên hệ homestay.
@@ -218,6 +218,6 @@ curl -s -o /dev/null -w '%{http_code}\n' -X POST $WEBHOOK -H 'Authorization: Api
 | SMTP chậm hoặc hỏng | Webhook timeout, hoặc mail mất không ai biết | Outbox: webhook không bao giờ chờ SMTP; mail hỏng có `last_error` và nút gửi lại |
 | Polling 3 giây chạy mãi sau khi rời trang | Rò rỉ bộ nhớ, API bị gọi vô ích | Huỷ trong `ngOnDestroy`; dừng khi đạt trạng thái cuối hoặc hết hạn |
 | Tin số tiền do client gửi | Trả 1.000đ vẫn được xác nhận | Số tiền chỉ lấy từ payload webhook, so với `amount_expected` trong DB |
-| Hàng đợi đối soát không ai nhìn | Tiền lạc nằm im trong bảng | Đếm số dòng cần đối soát hiển thị ngay trên dashboard admin (Phase 6), không giấu trong màn hình con |
+| Hàng đợi đối soát không ai nhìn | Tiền lạc nằm im trong bảng | Đếm số dòng cần đối soát hiển thị ngay trên dashboard admin (Phase 7), không giấu trong màn hình con |
 
-**Rollback:** revert commit; booking vẫn tạo được (mất bước thanh toán tự động), admin xác nhận thủ công qua màn hình đối soát ở Phase 6.
+**Rollback:** revert commit; booking vẫn tạo được (mất bước thanh toán tự động), admin xác nhận thủ công qua màn hình đối soát ở Phase 7.
