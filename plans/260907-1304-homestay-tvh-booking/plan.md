@@ -192,6 +192,8 @@ Chuẩn tham chiếu là Booking.com và Agoda. Bảng dưới là những gì l
 | Nav dính ở trang chi tiết | Chặn sẵn ngày hết phòng trong date picker | **Không** có "X người đang xem" — hệ thống không đo được thì không nói |
 | Gallery 1 ảnh lớn + 2 nhỏ | Giá từng đêm hiện trên ô ngày | |
 
+**Bảng màu đã chốt (08.09.2026).** Homestay TVH chưa có bộ nhận diện thương hiệu, và người dùng chốt dùng bảng màu ở Phase 2. Nghĩa là `tokens.css` **không còn là đề xuất tạm — nó chính là định nghĩa thương hiệu** của dự án: xanh rừng `#0F5C4C` cho hành động chính, đất nung `#B03A0B` cho giá tiền, trên nền giấy ấm `#FBF9F6`. Trang `/ui-kit` trở thành tài liệu tham chiếu thương hiệu, và `docs/thiet-ke-giao-dien.md` ghi lại lựa chọn kèm số đo tương phản. Nếu sau này có logo, việc cần làm là thay giá trị trong `tokens.css` — không component nào phải sửa.
+
 Cột thứ ba là quyết định có ý thức. Nhóm pattern tạo áp lực giả là thứ dễ nhận ra nhất ở hai trang tham chiếu, và Booking.com đã bị cơ quan quản lý châu Âu xử lý vì nó. Với đồ án tốt nghiệp, chép chúng là tự tạo một câu hỏi không trả lời được. Hệ thống này có dữ liệu thật để nói cùng một điều — nên nói thật.
 
 ## Red Team Review
@@ -250,6 +252,7 @@ Người dùng nâng UI/UX lên ngang hàng với backend, chuẩn tham chiếu 
 - Phase admin 13h → 14h, phase landing 14h → 16h do bổ sung yêu cầu UX (chip lọc, hộp thoại nêu hậu quả, đủ 6 trạng thái mỗi màn hình, thanh dính mobile).
 - Tổng effort 77h → 90h.
 - Bổ sung tiêu chí nghiệm thu giao diện dạng kiểm được bằng lệnh, và `docs/thiet-ke-giao-dien.md`.
+- Người dùng xác nhận chưa có logo và chốt dùng bảng màu do Phase 2 đề xuất — bảng token trở thành định nghĩa thương hiệu của dự án, không còn là phương án tạm.
 
 Quyết định thiết kế đáng chú ý: **từ chối nhóm dark pattern** của hai trang tham chiếu và thay bằng phiên bản trung thực dựa trên dữ liệu thật của hệ thống. Xem mục "Nguyên tắc thiết kế giao diện" ở trên.
 
@@ -287,6 +290,5 @@ Không còn mâu thuẫn chưa giải quyết.
 3. SMTP Gmail app password hay Mailtrap? (chưa có → `LoggingMailSender`, outbox vẫn ghi nhận)
 4. Số phòng thực tế của Homestay TVH (bao nhiêu loại, mỗi loại mấy phòng, giá bao nhiêu) để seed đúng thực tế?
 5. **Máy dùng lúc bảo vệ có Docker và có mạng không?** Cần trả lời ở Phase 1.
-6. **Homestay TVH đã có bộ nhận diện thương hiệu chưa** (logo, màu chủ đạo)? Phase 2 đang dùng bảng màu tự đề xuất (xanh rừng `#0F5C4C` + đất nung `#B03A0B` trên nền giấy ấm). Có logo thật thì thay token màu là xong, không phải sửa component.
 
 <!-- slug: homestay-tvh-booking -->

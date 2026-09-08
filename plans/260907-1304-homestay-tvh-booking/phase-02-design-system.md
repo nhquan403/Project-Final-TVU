@@ -46,6 +46,8 @@ Nguyên tắc: **không hiển thị con số nào mà hệ thống không truy 
 
 Khai báo một lần trong `frontend/src/styles/tokens.css` dưới dạng CSS custom property, rồi ánh xạ vào cấu hình Tailwind. Component chỉ đọc token, **không** viết mã màu trực tiếp.
 
+Homestay TVH chưa có bộ nhận diện thương hiệu, và người dùng đã chốt dùng bảng màu dưới đây. Nên `tokens.css` **là định nghĩa thương hiệu của dự án**, không phải màu tạm chờ thay: xanh rừng cho hành động, đất nung cho giá tiền, nền giấy ấm. Trang `/ui-kit` vì thế đóng luôn vai trò tài liệu tham chiếu thương hiệu.
+
 **Màu — kèm tỉ lệ tương phản đã tính, không phải ước lượng**
 
 | Token | Giá trị | Dùng cho | Tương phản |
@@ -167,7 +169,7 @@ Kèm một khối hiển thị bảng màu với tỉ lệ tương phản tính 
 9. `ui-toast`: `aria-live="polite"` cho thông báo thường, `assertive` cho lỗi; dừng đếm giờ tự đóng khi hover hoặc focus.
 10. Viết `check-hardcoded-colors.mjs`: quét `src/**/*.{ts,html,css}` tìm `#rrggbb`, `rgb(`, `hsl(` ngoài `tokens.css`; có mã màu lạ thì thoát khác 0. Gắn vào `npm run lint`.
 11. Dựng trang `/ui-kit` render toàn bộ inventory, kèm bảng màu tính tương phản lúc chạy.
-12. Viết `docs/thiet-ke-giao-dien.md`: nguyên tắc, bảng token, bảng "lấy gì / không lấy gì" ở trên, và lý do từ chối dark pattern.
+12. Viết `docs/thiet-ke-giao-dien.md`: nguyên tắc, bảng token kèm số đo tương phản, bảng "lấy gì / không lấy gì" ở trên, lý do từ chối dark pattern, và ghi rõ đây là bộ màu thương hiệu chính thức của dự án (chưa có logo nên bảng token giữ vai trò đó).
 
 ## Verify
 
@@ -231,5 +233,6 @@ npm start
 | `ui-date-range-picker` ngốn hết ngân sách phase | Hết 6h mà picker vẫn chưa xong | Làm bản tối thiểu trước (chọn khoảng, chặn ngày quá khứ), giá từng đêm và điều hướng bàn phím thêm sau — nhưng **chặn ngày hết phòng là bắt buộc**, không lược |
 | Token khai báo rồi nhưng Tailwind vẫn cho dùng màu mặc định | `text-blue-500` vẫn chạy | Xoá `colors` mặc định khỏi theme ở bước 2, không chỉ thêm màu mới |
 | Bảng màu đẹp trên màn hình đang làm, xấu trên máy chiếu buổi bảo vệ | Màu nhạt biến mất khi chiếu | Tương phản tối thiểu 4.5:1 đã bao hàm phần lớn rủi ro này; kiểm thêm một lần trên máy chiếu nếu mượn được |
+| Sau này có logo với màu chủ đạo khác hẳn | Bộ nhận diện mới không hợp với giao diện đã dựng | Mọi màu nằm trong `tokens.css` và có lint chặn mã màu rải rác, nên đổi thương hiệu = sửa một file. Nhưng phải **tính lại tương phản** cho bảng màu mới, không chỉ thay mã hex |
 
 **Rollback:** revert commit; các phase backend (3, 4, 5, 6) không phụ thuộc phase này nên vẫn chạy tiếp được. Chỉ Phase 7 và Phase 8 phải chờ.
