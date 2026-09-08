@@ -1,0 +1,3 @@
+/* Tailwind v4: nạp bằng @import, không còn ba chỉ thị @tailwind của v3.
+   Bảng design token đầy đủ nằm ở styles/tokens.css (Phase 2). */
+@import "tailwindcss";

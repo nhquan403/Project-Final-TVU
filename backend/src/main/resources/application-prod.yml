@@ -1,0 +1,11 @@
+# Profile prod: triển khai thật. Không dữ liệu mẫu, không Swagger, không
+# endpoint mô phỏng thanh toán.
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+payments:
+  simulator:
+    enabled: false

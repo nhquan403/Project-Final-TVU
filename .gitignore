@@ -1,0 +1,28 @@
+# Java / Maven
+backend/target/
+*.class
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+
+# Node / Angular
+node_modules/
+frontend/dist/
+frontend/.angular/
+npm-debug.log*
+
+# Bí mật — không bao giờ commit. Chỉ .env.example được theo dõi.
+.env
+.env.*
+!.env.example
+
+# Ảnh do người dùng tải lên khi chạy LocalImageStorage
+uploads/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# Hệ điều hành
+.DS_Store
+Thumbs.db

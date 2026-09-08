@@ -1,0 +1,40 @@
+# Hạ tầng cho môi trường phát triển: chỉ Postgres và Mailpit.
+# Backend và frontend chạy trên máy host để có hot reload:
+#   cd backend  && ./mvnw spring-boot:run
+#   cd frontend && npm start
+# Bản compose đầy đủ (đóng gói cả API lẫn web) nằm ở Phase 9.
+
+name: homestay-tvh-dev
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: homestay-db
+    environment:
+      POSTGRES_DB: homestay
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres   # chỉ dùng cho DB cục bộ khi dev
+      TZ: Asia/Ho_Chi_Minh
+      PGTZ: Asia/Ho_Chi_Minh
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d homestay"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Hộp thư giả để xem email lúc dev — mở http://localhost:8025
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: homestay-mailpit
+    environment:
+      TZ: Asia/Ho_Chi_Minh
+    ports:
+      - "1025:1025"   # SMTP
+      - "8025:8025"   # giao diện web
+
+volumes:
+  pgdata:

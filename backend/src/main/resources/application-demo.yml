@@ -1,0 +1,18 @@
+# Profile demo: dùng khi phát triển trên máy và cho bản docker compose đem đi
+# bảo vệ. Chỉ có hai profile trong toàn dự án — demo và prod.
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui/index.html
+
+payments:
+  simulator:
+    # Endpoint mô phỏng chuyển khoản của Phase 6 cần CẢ ADMIN lẫn cờ này.
+    # Mặc định tắt kể cả ở demo: bật thủ công khi cần trình diễn.
+    enabled: false
+
+logging:
+  level:
+    com.tvh.homestay: DEBUG

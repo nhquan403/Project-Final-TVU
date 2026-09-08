@@ -1,0 +1,19 @@
+<main class="min-h-screen flex items-center justify-center p-6">
+  <section class="w-full max-w-md border p-6">
+    <h1 class="text-xl font-semibold">Homestay TVH</h1>
+    <p class="text-sm mt-1">Phase 1 — khung dự án</p>
+
+    @if (health(); as h) {
+      <dl class="mt-5 text-sm space-y-1">
+        <div class="flex justify-between"><dt>API</dt><dd>{{ h.status }}</dd></div>
+        <div class="flex justify-between"><dt>Giờ máy chủ</dt><dd>{{ h.time }}</dd></div>
+        <div class="flex justify-between"><dt>Múi giờ ứng dụng</dt><dd>{{ h.appZone }}</dd></div>
+        <div class="flex justify-between"><dt>Múi giờ JVM</dt><dd>{{ h.jvmDefaultZone }}</dd></div>
+      </dl>
+    } @else if (error(); as e) {
+      <p class="mt-5 text-sm">Không gọi được API: {{ e }}</p>
+    } @else {
+      <p class="mt-5 text-sm">Đang gọi API…</p>
+    }
+  </section>
+</main>

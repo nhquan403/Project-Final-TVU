@@ -1,0 +1,48 @@
+spring:
+  application:
+    name: homestay-tvh
+
+  # Không giá trị mặc định cho bất kỳ biến nào ở đây. Thiếu là app không khởi
+  # động — có chủ đích, xem RequiredSecretsValidator.
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    # Flyway là chủ schema. KHÔNG BAO GIỜ đổi thành update: Hibernate sẽ lặng
+    # lẽ thêm cột ngoài migration và ddl-auto=validate mất tác dụng canh gác.
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: Asia/Ho_Chi_Minh
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: false
+
+  mail:
+    host: ${MAIL_HOST:}
+    port: ${MAIL_PORT:1025}
+    username: ${MAIL_USERNAME:}
+    password: ${MAIL_PASSWORD:}
+
+  # Chỉ chi phối cách Jackson serialize JSON. KHÔNG đổi TimeZone.getDefault(),
+  # nên một mình nó là không đủ — xem ClockConfig và biến TZ/-Duser.timezone.
+  jackson:
+    time-zone: Asia/Ho_Chi_Minh
+
+server:
+  port: 8080
+  # Bắt buộc để rate limit theo IP còn tác dụng khi chạy sau nginx (Phase 9).
+  # Không có nó, getRemoteAddr() trả IP container nginx cho mọi khách và giới
+  # hạn 10 request/phút biến thành giới hạn toàn hệ thống.
+  forward-headers-strategy: framework
+
+logging:
+  level:
+    com.tvh.homestay: INFO
