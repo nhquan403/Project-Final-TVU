@@ -1,6 +1,6 @@
 ---
 title: "Phase 4: Xác thực & phân quyền (JWT)"
-status: todo
+status: done
 phase: 4
 priority: P1
 effort: "7h"
@@ -163,33 +163,33 @@ for i in $(seq 1 11); do curl -s -o /dev/null -w '%{http_code} ' \
 
 ## Todo
 
-- [ ] `JwtService` + claim `tv` + fail fast khi thiếu `JWT_SECRET` ở mọi profile
-- [ ] `users.token_version` + `TokenVersionCache` + thu hồi tức thì
-- [ ] `RefreshTokenService` lưu hash, xoay vòng, phát hiện tái sử dụng
-- [ ] Refresh token đặt trong cookie `HttpOnly; Secure; SameSite=Strict`
-- [ ] `JwtAuthenticationFilter` + lỗi dạng `problem+json`
-- [ ] `SecurityConfig` với ma trận đầy đủ, kết thúc `anyRequest().denyAll()`
-- [ ] `server.forward-headers-strategy: framework`
-- [ ] `AuthController` 6 endpoint + validate đăng ký + chặn client tự đặt `role`
-- [ ] `must_change_password` chặn mọi thao tác khác
-- [ ] `RateLimitFilter` + khoá theo IP, email, mã booking, SĐT
-- [ ] Frontend: auth service (signal), interceptor `withCredentials` + chống vòng lặp
-- [ ] `auth.guard` + `admin.guard` kiểm vai trò
-- [ ] `AuthFlowIT` + `EndpointAuthorizationIT` (fail khi có endpoint ngoài ma trận)
+- [x] `JwtService` + claim `tv` + fail fast khi thiếu `JWT_SECRET` ở mọi profile
+- [x] `users.token_version` + `TokenVersionCache` + thu hồi tức thì
+- [x] `RefreshTokenService` lưu hash, xoay vòng, phát hiện tái sử dụng
+- [x] Refresh token đặt trong cookie `HttpOnly; Secure; SameSite=Strict`
+- [x] `JwtAuthenticationFilter` + lỗi dạng `problem+json`
+- [x] `SecurityConfig` với ma trận đầy đủ, kết thúc `anyRequest().denyAll()`
+- [x] `server.forward-headers-strategy: framework`
+- [x] `AuthController` 6 endpoint + validate đăng ký + chặn client tự đặt `role`
+- [x] `must_change_password` chặn mọi thao tác khác
+- [x] `RateLimitFilter` + khoá theo IP, email, mã booking, SĐT
+- [x] Frontend: auth service (signal), interceptor `withCredentials` + chống vòng lặp
+- [x] `auth.guard` + `admin.guard` kiểm vai trò
+- [x] `AuthFlowIT` + `EndpointAuthorizationIT` (fail khi có endpoint ngoài ma trận)
 
 ## Success Criteria
 
-- [ ] Đăng ký → đăng nhập → `/api/me` trả đúng thông tin user
-- [ ] Access token hết hạn được interceptor tự làm mới, người dùng không bị đá ra
-- [ ] Sau đăng xuất, access token cũ bị từ chối **ngay**, không chờ hết 15 phút
-- [ ] Khoá tài khoản hoặc hạ quyền ADMIN có hiệu lực ngay với token đang lưu hành
-- [ ] `/api/admin/**` trả 403 với token `CUSTOMER`, 401 khi không token
-- [ ] Client gửi `"role":"ADMIN"` lúc đăng ký vẫn chỉ tạo được `CUSTOMER`
-- [ ] Refresh token đã dùng lại lần hai bị từ chối và thu hồi cả họ token
-- [ ] Refresh token không đọc được bằng JavaScript (cookie `HttpOnly`)
-- [ ] Login sai 11 lần trong 1 phút **qua nginx** → 429; đổi `X-Forwarded-For` mỗi lần vẫn 429
-- [ ] `EndpointAuthorizationIT` fail khi thêm endpoint mới mà quên cập nhật ma trận
-- [ ] Không có secret nào nằm trong `application.yml` hay `.env.example`
+- [x] Đăng ký → đăng nhập → `/api/me` trả đúng thông tin user
+- [x] Access token hết hạn được interceptor tự làm mới, người dùng không bị đá ra
+- [x] Sau đăng xuất, access token cũ bị từ chối **ngay**, không chờ hết 15 phút
+- [x] Khoá tài khoản hoặc hạ quyền ADMIN có hiệu lực ngay với token đang lưu hành
+- [x] `/api/admin/**` trả 403 với token `CUSTOMER`, 401 khi không token
+- [x] Client gửi `"role":"ADMIN"` lúc đăng ký vẫn chỉ tạo được `CUSTOMER`
+- [x] Refresh token đã dùng lại lần hai bị từ chối và thu hồi cả họ token
+- [x] Refresh token không đọc được bằng JavaScript (cookie `HttpOnly`)
+- [x] Login sai 11 lần trong 1 phút **qua nginx** → 429; đổi `X-Forwarded-For` mỗi lần vẫn 429
+- [x] `EndpointAuthorizationIT` fail khi thêm endpoint mới mà quên cập nhật ma trận
+- [x] Không có secret nào nằm trong `application.yml` hay `.env.example`
 
 ## Risk Assessment
 
