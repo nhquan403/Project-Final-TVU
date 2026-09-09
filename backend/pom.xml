@@ -49,6 +49,13 @@
       <artifactId>bucket4j_jdk17-core</artifactId>
       <version>${bucket4j.version}</version>
     </dependency>
+    <!-- Ký và đọc JWT bằng chính thư viện của Spring Security (Nimbus) thay vì
+         thêm một thư viện JWT bên thứ ba. Phiên bản do Spring Boot BOM quản lý,
+         và JwtEncoder/JwtDecoder ghép thẳng vào chuỗi filter đã có. -->
+    <dependency>
+      <groupId>org.springframework.security</groupId>
+      <artifactId>spring-security-oauth2-jose</artifactId>
+    </dependency>
 
     <!-- ─── Dữ liệu (Phase 3) ──────────────────────────────────────────── -->
     <dependency>
