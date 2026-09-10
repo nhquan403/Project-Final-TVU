@@ -45,6 +45,21 @@ public final class BookingDtos {
 
     public record BookingRoomView(Long roomId, String roomNumber, LocalDate checkIn, LocalDate checkOut) {}
 
+    /**
+     * Thông tin để khách trả tiền.
+     *
+     * <p>Gom thành một object thay vì rải phẳng ở gốc: màn hình QR cần cả bốn
+     * trường cùng lúc, và gom lại thì thêm trường mới (hoàn tiền, lần thử thứ
+     * hai) không phải nong thêm gốc của phản hồi.
+     */
+    public record PaymentView(
+            String transferContent,
+            String qrImageUrl,
+            String accountNumber,
+            String bankCode,
+            BigDecimal amount,
+            OffsetDateTime expiresAt) {}
+
     /** Đơn đặt phòng trả về cho khách. */
     public record BookingResponse(
             String code,
@@ -69,7 +84,7 @@ public final class BookingDtos {
             BigDecimal discountAmount,
             BigDecimal totalAmount,
             BigDecimal depositAmount,
-            String transferContent,
+            PaymentView payment,
             OffsetDateTime holdExpiresAt,
             List<BookingRoomView> rooms) {}
 

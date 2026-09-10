@@ -24,6 +24,26 @@ export interface BookingRoomView {
   checkOut: string;
 }
 
+/**
+ * Thông tin để khách trả tiền.
+ *
+ * Backend gom thành một object thay vì rải phẳng ở gốc `Booking`: màn hình QR
+ * cần cả bốn trường cùng lúc, và gom lại thì thêm trường mới (lần thử thứ hai,
+ * hoàn tiền) không phải nong thêm gốc của phản hồi.
+ *
+ * `qrImageUrl` có thể là `null` khi bản triển khai chưa cấu hình tài khoản
+ * nhận tiền — màn hình phải hiện phần chuyển khoản thủ công thay vì một ảnh
+ * hỏng.
+ */
+export interface PaymentView {
+  transferContent: string;
+  qrImageUrl: string | null;
+  accountNumber: string;
+  bankCode: string;
+  amount: number;
+  expiresAt: string | null;
+}
+
 export interface Booking {
   code: string;
   /** Bí mật thao tác. Chỉ có mặt ngay sau khi tạo đơn hoặc tra cứu thành công. */
@@ -44,7 +64,7 @@ export interface Booking {
   discountAmount: number;
   totalAmount: number;
   depositAmount: number;
-  transferContent: string | null;
+  payment: PaymentView | null;
   holdExpiresAt: string | null;
   rooms: BookingRoomView[];
 }

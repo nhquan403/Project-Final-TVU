@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head><meta charset="UTF-8"><title>Đơn đặt phòng đã huỷ</title></head>
+<body style="margin:0;padding:24px;background:#F9FAFB;font-family:Arial,Helvetica,sans-serif">
+<div style="max-width:560px;margin:0 auto;background:#FFFFFF;border-radius:12px;padding:28px">
+    <h1 style="margin:0 0 8px;font-size:20px;color:#991B1B">Đơn đặt phòng đã được huỷ</h1>
+    <p style="margin:0 0 16px;font-size:15px;color:#1F2937">
+        Chào <span th:text="${guestName}">Quý khách</span>, đơn
+        <strong th:text="${code}">TVH000000</strong> đã được huỷ.
+    </p>
+    <p th:if="${cancelReason}" style="margin:0 0 16px;font-size:14px;color:#6B7280">
+        Lý do: <span th:text="${cancelReason}">Khách tự huỷ</span>
+    </p>
+
+    <div th:replace="~{mail/_fragments :: details}"></div>
+
+    <p style="margin:20px 0 0;font-size:14px;color:#1F2937">
+        Nếu bạn đã chuyển tiền cho đơn này, xin liên hệ Homestay TVH để được đối soát và hoàn tiền.
+    </p>
+
+    <div th:replace="~{mail/_fragments :: footer}"></div>
+</div>
+</body>
+</html>

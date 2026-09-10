@@ -10,9 +10,7 @@ import com.tvh.homestay.booking.entity.HistoryActor;
 import com.tvh.homestay.booking.repository.BookingRepository;
 import com.tvh.homestay.booking.repository.BookingRoomRepository;
 import com.tvh.homestay.booking.repository.BookingStatusHistoryRepository;
-import com.tvh.homestay.payment.entity.Payment;
-import com.tvh.homestay.payment.entity.PaymentProvider;
-import com.tvh.homestay.payment.repository.PaymentRepository;
+import com.tvh.homestay.payment.PaymentService;
 import com.tvh.homestay.promotion.entity.Promotion;
 import com.tvh.homestay.room.entity.Room;
 import com.tvh.homestay.room.entity.RoomType;
@@ -44,7 +42,7 @@ public class BookingTxService {
     private final BookingRepository bookings;
     private final BookingRoomRepository bookingRooms;
     private final BookingStatusHistoryRepository history;
-    private final PaymentRepository payments;
+    private final PaymentService payments;
     private final RoomRepository rooms;
     private final BookingCodeGenerator codes;
     private final Clock clock;
@@ -54,7 +52,7 @@ public class BookingTxService {
             BookingRepository bookings,
             BookingRoomRepository bookingRooms,
             BookingStatusHistoryRepository history,
-            PaymentRepository payments,
+            PaymentService payments,
             RoomRepository rooms,
             BookingCodeGenerator codes,
             @Value("${booking.hold-minutes:15}") long holdMinutes,
@@ -138,14 +136,10 @@ public class BookingTxService {
         // với chỗ vòng thử cần biết.
         bookingRooms.flush();
 
-        Payment payment = new Payment();
-        payment.setBooking(booking);
-        payment.setAttemptNo(1);
-        payment.setProvider(PaymentProvider.SEPAY);
-        payment.setAmountExpected(attempt.quote().deposit());
-        payment.setTransferContent(BookingCodeGenerator.transferContent(booking.getCode(), 1));
-        payment.setExpiresAt(booking.getHoldExpiresAt());
-        payments.save(payment);
+        // Lần thanh toán đầu tiên do PaymentService dựng — kèm nội dung chuyển
+        // khoản và ảnh QR. Một đường tạo duy nhất, để định dạng nội dung chuyển
+        // khoản không bao giờ lệch giữa hai chỗ.
+        payments.createForBooking(booking);
 
         BookingStatusHistory entry = new BookingStatusHistory();
         entry.setBooking(booking);
@@ -156,6 +150,40 @@ public class BookingTxService {
         history.save(entry);
 
         return booking;
+    }
+
+    /**
+     * Gán LẠI phòng cho một đơn đã có sẵn, trong MỘT transaction hoàn toàn mới.
+     *
+     * <p>Dùng cho nhánh tiền về muộn: đơn đã {@code EXPIRED}/{@code CANCELLED}
+     * nên phòng đã bị nhả, và giờ phải giành lại đủ số phòng cũ. Chạy qua
+     * {@link RoomAllocator} giống hệt lúc tạo đơn — cùng một vòng thử, cùng một
+     * cách bắt va chạm ràng buộc chống trùng.
+     *
+     * <p><b>Chỉ chèn {@code booking_rooms}, tuyệt đối không đụng vào dòng
+     * {@code bookings}.</b> Transaction gọi vào đây đang giữ khoá trên đúng
+     * dòng đó (xem {@code BookingRepository#lockById}); một lệnh UPDATE ở đây
+     * sẽ chờ transaction ngoài, còn transaction ngoài lại đang chờ transaction
+     * này — treo cho tới khi hết {@code lock_timeout}, và PostgreSQL không coi
+     * đó là deadlock nên không tự gỡ.
+     *
+     * @throws org.springframework.dao.DataIntegrityViolationException khi đụng
+     *     ràng buộc chống trùng lịch; {@link RoomAllocator} bắt và thử bộ khác
+     */
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    public void reassignInNewTransaction(Long bookingId, List<Long> roomIds) {
+        Booking booking = bookings.findById(bookingId)
+                .orElseThrow(() -> new IllegalStateException("Không còn đơn " + bookingId));
+        for (Long roomId : roomIds) {
+            BookingRoom bookingRoom = new BookingRoom();
+            bookingRoom.setBooking(booking);
+            bookingRoom.setRoom(rooms.getReferenceById(roomId));
+            bookingRoom.setCheckIn(booking.getCheckIn());
+            bookingRoom.setCheckOut(booking.getCheckOut());
+            bookingRoom.setStatus(BookingRoomStatus.ACTIVE);
+            bookingRooms.save(bookingRoom);
+        }
+        bookingRooms.flush();
     }
 
     /**

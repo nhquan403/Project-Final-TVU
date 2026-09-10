@@ -99,7 +99,14 @@ class BookingLifecycleIT extends AbstractPostgresIT {
         assertThat(first.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         assertThat(first.getBody().get("code")).asString().startsWith("TVH");
         assertThat(first.getBody().get("accessToken")).asString().hasSize(32);
-        assertThat(first.getBody().get("transferContent"))
+        // Thông tin thanh toán nằm trong object `payment` chứ không rải phẳng ở
+        // gốc: màn hình QR cần cả nội dung chuyển khoản lẫn ảnh QR cùng lúc.
+        @SuppressWarnings("unchecked")
+        Map<String, Object> payment = (Map<String, Object>) first.getBody().get("payment");
+        assertThat(payment)
+                .as("đơn vừa tạo phải kèm sẵn thông tin để trả tiền")
+                .isNotNull();
+        assertThat(payment.get("transferContent"))
                 .as("nội dung chuyển khoản = mã đơn + số thứ tự lần thanh toán")
                 .isEqualTo(first.getBody().get("code") + "01");
 

@@ -44,8 +44,21 @@ public class BookingStateMachine {
                     BookingStatus.CHECKED_IN, BookingStatus.CANCELLED, BookingStatus.NO_SHOW),
             BookingStatus.CHECKED_IN, EnumSet.of(BookingStatus.CHECKED_OUT),
             BookingStatus.CHECKED_OUT, EnumSet.noneOf(BookingStatus.class),
-            BookingStatus.CANCELLED, EnumSet.noneOf(BookingStatus.class),
-            BookingStatus.EXPIRED, EnumSet.noneOf(BookingStatus.class),
+            // CANCELLED và EXPIRED có ĐÚNG MỘT đường ra: sang AWAITING_REVIEW,
+            // và chỉ khi tiền của khách về sau khi đơn đã đóng.
+            //
+            // Cửa sổ đua là có thật: ngân hàng → nhà cung cấp → API trễ vài
+            // chục giây, còn đồng hồ đếm ngược trên màn hình QR lại đẩy khách
+            // bấm chuyển khoản vào đúng phút cuối. Không có cạnh này thì nhánh
+            // đó kết thúc bằng "tiền đã vào tài khoản, đơn đã đóng, không ai
+            // biết" — đúng cái mà cả thiết kế này sinh ra để ngăn.
+            //
+            // Không mở thẳng sang CONFIRMED: phòng đã được nhả cho khách khác,
+            // nên phải qua AWAITING_REVIEW rồi mới thử gán lại. Gán được thì
+            // AWAITING_REVIEW → CONFIRMED (đã có sẵn ở trên); không gán được
+            // thì dừng ở đó cho người xử lý.
+            BookingStatus.CANCELLED, EnumSet.of(BookingStatus.AWAITING_REVIEW),
+            BookingStatus.EXPIRED, EnumSet.of(BookingStatus.AWAITING_REVIEW),
             BookingStatus.NO_SHOW, EnumSet.noneOf(BookingStatus.class));
 
     private final BookingRepository bookings;

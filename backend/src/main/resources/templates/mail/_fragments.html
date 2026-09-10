@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<!--
+  Các mảnh dùng chung cho ba mẫu thư.
+
+  Email client không hỗ trợ CSS ngoài, cũng không hỗ trợ phần lớn CSS hiện đại
+  (flex, grid, biến CSS). Nên ở đây dùng bảng và style nội tuyến — đúng cách
+  làm email, không phải cách làm trang web.
+-->
+<table th:fragment="details" role="presentation" cellpadding="0" cellspacing="0"
+       style="width:100%;border-collapse:collapse;font-size:14px;color:#1F2937">
+    <tr>
+        <td style="padding:6px 0;color:#6B7280">Mã đơn</td>
+        <td style="padding:6px 0;font-weight:700;text-align:right" th:text="${code}">TVH000000</td>
+    </tr>
+    <tr>
+        <td style="padding:6px 0;color:#6B7280">Loại phòng</td>
+        <td style="padding:6px 0;text-align:right" th:text="${roomTypeName}">Phòng Vườn</td>
+    </tr>
+    <tr>
+        <td style="padding:6px 0;color:#6B7280">Nhận phòng</td>
+        <td style="padding:6px 0;text-align:right" th:text="${checkIn}">01/11/2026</td>
+    </tr>
+    <tr>
+        <td style="padding:6px 0;color:#6B7280">Trả phòng</td>
+        <td style="padding:6px 0;text-align:right" th:text="${checkOut}">03/11/2026</td>
+    </tr>
+    <tr>
+        <td style="padding:6px 0;color:#6B7280">Số đêm / số phòng</td>
+        <td style="padding:6px 0;text-align:right">
+            <span th:text="${nights}">2</span> đêm × <span th:text="${roomQuantity}">1</span> phòng
+        </td>
+    </tr>
+    <tr>
+        <td style="padding:6px 0;color:#6B7280">Số khách</td>
+        <td style="padding:6px 0;text-align:right">
+            <span th:text="${adults}">2</span> người lớn,
+            <span th:text="${children}">0</span> trẻ em
+        </td>
+    </tr>
+    <tr>
+        <td style="padding:6px 0;border-top:1px solid #E5E7EB;color:#6B7280">Tổng tiền</td>
+        <td style="padding:6px 0;border-top:1px solid #E5E7EB;text-align:right;font-weight:700"
+            th:text="${totalAmount}">1.700.000 đ</td>
+    </tr>
+    <tr>
+        <td style="padding:6px 0;color:#6B7280">Đã đặt cọc</td>
+        <td style="padding:6px 0;text-align:right" th:text="${depositAmount}">510.000 đ</td>
+    </tr>
+    <tr>
+        <td style="padding:6px 0;color:#6B7280">Còn lại trả khi nhận phòng</td>
+        <td style="padding:6px 0;text-align:right" th:text="${remainingAmount}">1.190.000 đ</td>
+    </tr>
+</table>
+
+<div th:fragment="footer"
+     style="margin-top:24px;padding-top:16px;border-top:1px solid #E5E7EB;font-size:13px;color:#6B7280">
+    <p style="margin:0 0 4px">Homestay TVH — <span th:text="${contactAddress}">Trà Vinh</span></p>
+    <p style="margin:0 0 4px">
+        Điện thoại: <span th:text="${contactPhone}">0294 3855 246</span> ·
+        Email: <span th:text="${contactEmail}">lienhe@homestaytvh.vn</span>
+    </p>
+    <p style="margin:0">Thư này được gửi tự động, vui lòng không trả lời trực tiếp.</p>
+</div>
+</body>
+</html>

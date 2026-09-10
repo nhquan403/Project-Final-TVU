@@ -57,13 +57,25 @@ public abstract class AbstractPostgresIT {
         POSTGRES.start();
     }
 
+    /**
+     * Sinh MỘT LẦN cho cả lần chạy, không sinh lại mỗi lần đọc.
+     *
+     * <p>{@code DynamicPropertyRegistry} nhận một {@code Supplier} và gọi nó
+     * LẠI ở mỗi lượt phân giải thuộc tính. Truyền thẳng {@code () ->
+     * randomSecret(32)} nghĩa là ứng dụng đọc được một khoá còn test đọc được
+     * một khoá khác — mọi request có xác thực sẽ hỏng với 401 mà không có gì
+     * trong log chỉ ra vì sao.
+     */
+    private static final String JWT_SECRET = randomSecret(48);
+    private static final String SEPAY_WEBHOOK_API_KEY = randomSecret(32);
+
     @DynamicPropertySource
     static void properties(DynamicPropertyRegistry registry) {
         registry.add("DB_URL", POSTGRES::getJdbcUrl);
         registry.add("DB_USER", POSTGRES::getUsername);
         registry.add("DB_PASSWORD", POSTGRES::getPassword);
-        registry.add("JWT_SECRET", () -> randomSecret(48));
-        registry.add("SEPAY_WEBHOOK_API_KEY", () -> randomSecret(32));
+        registry.add("JWT_SECRET", () -> JWT_SECRET);
+        registry.add("SEPAY_WEBHOOK_API_KEY", () -> SEPAY_WEBHOOK_API_KEY);
     }
 
     private static String randomSecret(int bytes) {

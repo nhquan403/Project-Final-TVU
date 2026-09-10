@@ -57,3 +57,29 @@ booking:
   expiry-scan-ms: 60000
   # Tỉ lệ đặt cọc. Backend quyết định số tiền, frontend chỉ hiển thị.
   deposit-rate: 0.30
+
+payments:
+  # Đơn chuyển thiếu tiền được gia hạn giữ chỗ thêm chừng này giờ, để khách kịp
+  # bù phần còn thiếu thay vì mất phòng vì một lần gõ sai số tiền.
+  partial-review-hours: 24
+  simulator:
+    # Endpoint mô phỏng chuyển khoản. Mặc định TẮT ở mọi profile; bật thủ công
+    # bằng biến môi trường khi cần trình diễn.
+    enabled: false
+
+mail:
+  # Địa chỉ người gửi. Không phải bí mật nên có mặc định.
+  from: no-reply@homestaytvh.vn
+  # Chu kỳ quét hộp thư đi.
+  dispatch-ms: 30000
+  dispatch-batch-size: 20
+  # Quá số lần này thì dòng thư chuyển FAILED và hiện ra cho người xử lý, thay
+  # vì quay vòng mãi và che mất những thư còn cứu được.
+  max-attempts: 5
+
+homestay:
+  # Thông tin liên hệ in ở chân mọi email.
+  contact:
+    phone: "0294 3855 246"
+    email: lienhe@homestaytvh.vn
+    address: "Trà Vinh"

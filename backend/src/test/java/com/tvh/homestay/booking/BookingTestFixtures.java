@@ -10,14 +10,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
  * <p>Dựng bằng SQL thô chứ không qua JPA: các test này quan tâm hành vi của
  * cơ sở dữ liệu, và dựng nền bằng chính tầng đang được kiểm là tự bịt mắt.
  */
-final class BookingTestFixtures {
+public final class BookingTestFixtures {
 
-    static final long ROOM_TYPE_ID = 1L;
+    public static final long ROOM_TYPE_ID = 1L;
 
     private BookingTestFixtures() {}
 
     /** Xoá sạch theo đúng thứ tự khoá ngoại, rồi dựng lại một loại phòng với N phòng. */
-    static void reset(JdbcTemplate jdbc, int roomCount) {
+    public static void reset(JdbcTemplate jdbc, int roomCount) {
         jdbc.execute("DELETE FROM booking_status_history");
         jdbc.execute("DELETE FROM outbound_emails");
         jdbc.execute("DELETE FROM payment_webhook_events");
@@ -42,7 +42,7 @@ final class BookingTestFixtures {
         }
     }
 
-    static CreateBookingRequest request(LocalDate checkIn, LocalDate checkOut, int roomQuantity, int seq) {
+    public static CreateBookingRequest request(LocalDate checkIn, LocalDate checkOut, int roomQuantity, int seq) {
         return new CreateBookingRequest(
                 ROOM_TYPE_ID,
                 checkIn,
