@@ -65,7 +65,7 @@ public class RateLimitKeyResolver {
                 readField(body, "email").ifPresent(
                         email -> limits.add(new Limit("email:login:" + email.toLowerCase(), 5, ONE_MINUTE)));
             }
-        } else if (path.equals("/api/availability")) {
+        } else if (path.startsWith("/api/availability")) {
             limits.add(new Limit("ip:availability:" + ip, 60, ONE_MINUTE));
         } else if (path.equals("/api/promotions/check")) {
             limits.add(new Limit("ip:promo:" + ip, 20, ONE_MINUTE));

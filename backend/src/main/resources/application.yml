@@ -46,3 +46,14 @@ server:
 logging:
   level:
     com.tvh.homestay: INFO
+
+booking:
+  # Thời gian giữ chỗ trước khi đơn hết hạn.
+  hold-minutes: 15
+  # Ân hạn thêm trước khi bộ quét đụng vào. Hấp thụ độ trễ ngân hàng → nhà
+  # cung cấp → API, thường 5–30 giây nhưng có lúc lâu hơn.
+  expiry-grace-minutes: 5
+  # Chu kỳ quét đơn quá hạn.
+  expiry-scan-ms: 60000
+  # Tỉ lệ đặt cọc. Backend quyết định số tiền, frontend chỉ hiển thị.
+  deposit-rate: 0.30

@@ -78,7 +78,7 @@ public class SecurityConfig {
                         // ─── Công khai ───────────────────────────────────────
                         .requestMatchers("/api/health").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/room-types/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/availability").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/availability", "/api/availability/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/content/**", "/api/posts/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/reviews").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/promotions/check").permitAll()
