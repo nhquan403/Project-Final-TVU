@@ -1,6 +1,6 @@
 ---
 title: "Phase 5: Lõi đặt phòng & chống trùng lịch"
-status: todo
+status: done
 phase: 5
 priority: P1
 effort: "11h"
@@ -248,39 +248,39 @@ docker exec -it homestay-db psql -U postgres -d homestay -c \
 
 ## Todo
 
-- [ ] `AvailabilityService` với truy vấn `CROSS JOIN LATERAL` + `NOT EXISTS`
-- [ ] Validate ngày theo `ZoneId.of("Asia/Ho_Chi_Minh")` tường minh
-- [ ] `BookingPricingService` (giá, khuyến mãi, cọc 30% do backend quyết)
-- [ ] `PromotionService`: `consume()` xử lý `usage_limit IS NULL`, `release()` hoàn lượt
-- [ ] `SqlStates` nhận diện đúng `23P01`, mã khác ném nguyên trạng
-- [ ] `BookingTxService` `REQUIRES_NEW` + vòng thử ở `BookingService` ngoài transaction
-- [ ] Gán all-or-nothing cho `roomQuantity > 1`
-- [ ] `BookingCodeGenerator` dùng `SecureRandom`
-- [ ] `bookings.access_token` sinh cùng booking, dùng cho mọi thao tác theo `{code}`
-- [ ] `BookingController` (tạo / lookup / cancel / payment-status) + ghi `client_ip`
-- [ ] `MyBookingController` lọc theo token
-- [ ] `BookingStateMachine` + `AWAITING_REVIEW` + ghi lịch sử + nhả phòng + hoàn lượt khuyến mãi
-- [ ] `BookingExpiryScheduler` ba điều kiện + ghi lịch sử qua `RETURNING` + `EntityManager.clear()`
-- [ ] `GlobalExceptionHandler` RFC 7807 + 6 mã lỗi ổn định
-- [ ] `availability.service.ts` trả bản đồ giá và số phòng trống theo từng ngày cho date picker
-- [ ] 4 test bắt buộc trong bảng Verify
+- [x] `AvailabilityService` với truy vấn `CROSS JOIN LATERAL` + `NOT EXISTS`
+- [x] Validate ngày theo `ZoneId.of("Asia/Ho_Chi_Minh")` tường minh
+- [x] `BookingPricingService` (giá, khuyến mãi, cọc 30% do backend quyết)
+- [x] `PromotionService`: `consume()` xử lý `usage_limit IS NULL`, `release()` hoàn lượt
+- [x] `SqlStates` nhận diện đúng `23P01`, mã khác ném nguyên trạng
+- [x] `BookingTxService` `REQUIRES_NEW` + vòng thử ở `BookingService` ngoài transaction
+- [x] Gán all-or-nothing cho `roomQuantity > 1`
+- [x] `BookingCodeGenerator` dùng `SecureRandom`
+- [x] `bookings.access_token` sinh cùng booking, dùng cho mọi thao tác theo `{code}`
+- [x] `BookingController` (tạo / lookup / cancel / payment-status) + ghi `client_ip`
+- [x] `MyBookingController` lọc theo token
+- [x] `BookingStateMachine` + `AWAITING_REVIEW` + ghi lịch sử + nhả phòng + hoàn lượt khuyến mãi
+- [x] `BookingExpiryScheduler` ba điều kiện + ghi lịch sử qua `RETURNING` + `EntityManager.clear()`
+- [x] `GlobalExceptionHandler` RFC 7807 + 6 mã lỗi ổn định
+- [x] `availability.service.ts` trả bản đồ giá và số phòng trống theo từng ngày cho date picker
+- [x] 4 test bắt buộc trong bảng Verify
 
 ## Success Criteria
 
-- [ ] `lastRoom`: 20 thread, 1 phòng → đúng 1 thành công, 19 nhận **409** (không có 500 nào)
-- [ ] `multiRoom`: 3 thread, 3 phòng → cả 3 thành công, không request nào nhận 500
-- [ ] `partialAllocation`: không bao giờ tồn tại booking có `booking_rooms` lệch `room_quantity`
-- [ ] `maintenanceRoom`: phòng bảo trì có booking cũ không làm giảm nhầm số phòng trống
-- [ ] Loại phòng hết sạch không xuất hiện trong kết quả tìm kiếm
-- [ ] Khách A trả phòng 10/03, khách B nhận phòng 10/03 → cả hai đặt được cùng phòng
-- [ ] Booking quá hạn **và chưa nhận đồng nào** mới chuyển `EXPIRED`; booking đã nhận tiền không bao giờ bị scheduler đụng
-- [ ] Hết hạn sinh dòng `booking_status_history` với `actor = SYSTEM`
-- [ ] Huỷ booking → slot mở lại ngay, lượt khuyến mãi được hoàn, lịch sử vẫn tra cứu được
-- [ ] Mã khuyến mãi `usage_limit IS NULL` dùng được không giới hạn
-- [ ] Gọi `payment-status` không kèm `access_token` → 401
-- [ ] Tra cứu sai SĐT → 404, không rò rỉ thông tin booking
-- [ ] Chuyển trạng thái sai (VD `CHECKED_OUT` → `CHECKED_IN`) → 409
-- [ ] Mọi lỗi trả `application/problem+json` có `code` ổn định
+- [x] `lastRoom`: 20 thread, 1 phòng → đúng 1 thành công, 19 nhận **409** (không có 500 nào)
+- [x] `multiRoom`: 3 thread, 3 phòng → cả 3 thành công, không request nào nhận 500
+- [x] `partialAllocation`: không bao giờ tồn tại booking có `booking_rooms` lệch `room_quantity`
+- [x] `maintenanceRoom`: phòng bảo trì có booking cũ không làm giảm nhầm số phòng trống
+- [x] Loại phòng hết sạch không xuất hiện trong kết quả tìm kiếm
+- [x] Khách A trả phòng 10/03, khách B nhận phòng 10/03 → cả hai đặt được cùng phòng
+- [x] Booking quá hạn **và chưa nhận đồng nào** mới chuyển `EXPIRED`; booking đã nhận tiền không bao giờ bị scheduler đụng
+- [x] Hết hạn sinh dòng `booking_status_history` với `actor = SYSTEM`
+- [x] Huỷ booking → slot mở lại ngay, lượt khuyến mãi được hoàn, lịch sử vẫn tra cứu được
+- [x] Mã khuyến mãi `usage_limit IS NULL` dùng được không giới hạn
+- [x] Gọi `payment-status` không kèm `access_token` → 401
+- [x] Tra cứu sai SĐT → 404, không rò rỉ thông tin booking
+- [x] Chuyển trạng thái sai (VD `CHECKED_OUT` → `CHECKED_IN`) → 409
+- [x] Mọi lỗi trả `application/problem+json` có `code` ổn định
 
 ## Risk Assessment
 
