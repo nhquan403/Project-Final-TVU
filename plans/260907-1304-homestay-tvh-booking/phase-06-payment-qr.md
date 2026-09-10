@@ -1,6 +1,6 @@
 ---
 title: "Phase 6: Thanh toán QR, webhook & email"
-status: todo
+status: done
 phase: 6
 priority: P1
 effort: "10h"
@@ -174,39 +174,39 @@ curl -s -o /dev/null -w '%{http_code}\n' -X POST $WEBHOOK -H 'Authorization: Api
 
 ## Todo
 
-- [ ] `VietQrGenerator` + `transfer_content` có hậu tố `attempt_no`
-- [ ] `PaymentService.createForBooking()` gọi trong transaction tạo booking
-- [ ] Xác thực API key chống timing attack
-- [ ] Kiểm tra `transferType == "in"` và `accountNumber` khớp
-- [ ] Regex neo, chỉ chấp nhận đúng một mã trong nội dung
-- [ ] Idempotency theo `(provider, external_id)` **có phân biệt `ERROR` để xử lý lại**
-- [ ] Cộng dồn `amount_received`, dung sai ±1.000đ
-- [ ] Bảng quyết định 6 nhánh, gồm nhánh tiền về muộn
-- [ ] `PaymentReallocationService` gán lại phòng, hết phòng → `AWAITING_REVIEW`
-- [ ] Trả `{"success": true}` kèm HTTP 200
-- [ ] `outbound_emails` + `EmailDispatchScheduler` + retry
-- [ ] `MailService` + fallback ghi log, cả hai cập nhật outbox
-- [ ] 3 mẫu email Thymeleaf tiếng Việt
-- [ ] `payment-status` yêu cầu `access_token` + polling frontend có dọn dẹp
-- [ ] `PaymentSimulatorController` dưới `/api/admin/**` + cờ mặc định tắt
-- [ ] `SepayWebhookIT` phủ 8 tình huống; `PaymentRaceIT` phủ tiền về muộn
+- [x] `VietQrGenerator` + `transfer_content` có hậu tố `attempt_no`
+- [x] `PaymentService.createForBooking()` gọi trong transaction tạo booking
+- [x] Xác thực API key chống timing attack
+- [x] Kiểm tra `transferType == "in"` và `accountNumber` khớp
+- [x] Regex neo, chỉ chấp nhận đúng một mã trong nội dung
+- [x] Idempotency theo `(provider, external_id)` **có phân biệt `ERROR` để xử lý lại**
+- [x] Cộng dồn `amount_received`, dung sai ±1.000đ
+- [x] Bảng quyết định 6 nhánh, gồm nhánh tiền về muộn
+- [x] `PaymentReallocationService` gán lại phòng, hết phòng → `AWAITING_REVIEW`
+- [x] Trả `{"success": true}` kèm HTTP 200
+- [x] `outbound_emails` + `EmailDispatchScheduler` + retry
+- [x] `MailService` + fallback ghi log, cả hai cập nhật outbox
+- [x] 3 mẫu email Thymeleaf tiếng Việt
+- [x] `payment-status` yêu cầu `access_token` + polling frontend có dọn dẹp
+- [x] `PaymentSimulatorController` dưới `/api/admin/**` + cờ mặc định tắt
+- [x] `SepayWebhookIT` phủ 8 tình huống; `PaymentRaceIT` phủ tiền về muộn
 
 ## Success Criteria
 
-- [ ] Đặt phòng → QR đúng tiền cọc, nội dung chuyển khoản = mã + số lần thử
-- [ ] Webhook hợp lệ → `CONFIRMED`, `DEPOSIT_PAID`, có dòng `outbound_emails`
-- [ ] Phản hồi webhook là HTTP 200 **và** body `{"success": true}`
-- [ ] Gọi lại cùng `external_id` → 200, dữ liệu không đổi, không sinh mail thứ hai
-- [ ] Sự kiện lần trước `ERROR` được xử lý lại khi SePay retry
-- [ ] `transferType = "out"` hoặc `accountNumber` lạ → **không** xác nhận booking
-- [ ] Nội dung chứa hai mã booking → `UNMATCHED`, vào hàng đợi đối soát
-- [ ] Sai API key → 401, không thay đổi gì trong DB
-- [ ] Chuyển thiếu tiền → `AWAITING_REVIEW`, giữ chỗ được gia hạn, scheduler không đụng tới
-- [ ] Chuyển thiếu rồi bù đủ → cộng dồn đủ → `CONFIRMED`
-- [ ] Tiền về sau hạn giữ chỗ → gán lại được thì `CONFIRMED`, không thì `AWAITING_REVIEW` + `NEEDS_REVIEW`; **không có nhánh nào kết thúc im lặng**
-- [ ] Thiếu SMTP → app vẫn chạy, `outbound_emails` vẫn ghi nhận, nội dung nằm trong log
-- [ ] Gọi endpoint mô phỏng không kèm token ADMIN → 401; với cờ tắt → 404
-- [ ] Hết 15 phút chưa trả tiền → trang QR báo hết hạn; đã trả một phần → báo đang đối soát
+- [x] Đặt phòng → QR đúng tiền cọc, nội dung chuyển khoản = mã + số lần thử
+- [x] Webhook hợp lệ → `CONFIRMED`, `DEPOSIT_PAID`, có dòng `outbound_emails`
+- [x] Phản hồi webhook là HTTP 200 **và** body `{"success": true}`
+- [x] Gọi lại cùng `external_id` → 200, dữ liệu không đổi, không sinh mail thứ hai
+- [x] Sự kiện lần trước `ERROR` được xử lý lại khi SePay retry
+- [x] `transferType = "out"` hoặc `accountNumber` lạ → **không** xác nhận booking
+- [x] Nội dung chứa hai mã booking → `UNMATCHED`, vào hàng đợi đối soát
+- [x] Sai API key → 401, không thay đổi gì trong DB
+- [x] Chuyển thiếu tiền → `AWAITING_REVIEW`, giữ chỗ được gia hạn, scheduler không đụng tới
+- [x] Chuyển thiếu rồi bù đủ → cộng dồn đủ → `CONFIRMED`
+- [x] Tiền về sau hạn giữ chỗ → gán lại được thì `CONFIRMED`, không thì `AWAITING_REVIEW` + `NEEDS_REVIEW`; **không có nhánh nào kết thúc im lặng**
+- [x] Thiếu SMTP → app vẫn chạy, `outbound_emails` vẫn ghi nhận, nội dung nằm trong log
+- [x] Gọi endpoint mô phỏng không kèm token ADMIN → 401; với cờ tắt → 404
+- [x] Hết 15 phút chưa trả tiền → trang QR báo hết hạn; đã trả một phần → báo đang đối soát
 
 ## Risk Assessment
 

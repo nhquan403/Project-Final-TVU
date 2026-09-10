@@ -86,7 +86,7 @@ flowchart LR
 | 3 | [Phase 3: Schema cơ sở dữ liệu & Flyway migration](./phase-03-database-schema.md) | Done | 1 | 8h |
 | 4 | [Phase 4: Xác thực & phân quyền (JWT)](./phase-04-auth.md) | Done | 3 | 7h |
 | 5 | [Phase 5: Lõi đặt phòng & chống trùng lịch](./phase-05-booking-core.md) | Done | 3 | 11h |
-| 6 | [Phase 6: Thanh toán QR, webhook & email](./phase-06-payment-qr.md) | Pending | 5 | 10h |
+| 6 | [Phase 6: Thanh toán QR, webhook & email](./phase-06-payment-qr.md) | Done | 5 | 10h |
 | 7 | [Phase 7: Trang admin & dashboard](./phase-07-admin-dashboard.md) | Pending | 2, 4, 5 | 14h |
 | 8 | [Phase 8: Landing page, CMS nội dung & đánh giá](./phase-08-landing-cms.md) | Pending | 2, 5, 6, 7 | 16h |
 | 9 | [Phase 9: Đóng gói, seed & tài liệu](./phase-09-packaging-docs.md) | Pending | 7, 8 | 7h |

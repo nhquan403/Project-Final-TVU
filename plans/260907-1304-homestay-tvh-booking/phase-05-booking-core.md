@@ -127,13 +127,15 @@ stateDiagram-v2
     CONFIRMED --> CANCELLED: huỷ trước ngày nhận
     CONFIRMED --> NO_SHOW: quá ngày nhận không đến
     CHECKED_IN --> CHECKED_OUT: admin trả phòng
+    EXPIRED --> AWAITING_REVIEW: tiền về SAU khi đơn đã đóng (Phase 6)
+    CANCELLED --> AWAITING_REVIEW: tiền về SAU khi đơn đã đóng (Phase 6)
     CHECKED_OUT --> [*]
-    EXPIRED --> [*]
-    CANCELLED --> [*]
     NO_SHOW --> [*]
 ```
 
 `AWAITING_REVIEW` là trạng thái mới, sinh ra để không còn đường nào dẫn tới "khách đã trả tiền nhưng hệ thống im lặng". Scheduler **không bao giờ** đụng tới nó.
+
+**Cập nhật ở Phase 6 — `EXPIRED` và `CANCELLED` không còn là ngõ cụt tuyệt đối.** Bản đầu vẽ chúng đi thẳng ra `[*]`, nhưng bảng quyết định của Phase 6 đòi đúng một đường ra: khi tiền của khách về sau lúc đơn đã đóng, đơn phải quay lại `AWAITING_REVIEW` để hệ thống thử gán lại phòng. Không mở cạnh này thì nhánh đó kết thúc bằng "tiền đã vào tài khoản, đơn đã đóng, không ai biết". Cạnh này **không** đi thẳng sang `CONFIRMED`: lúc đơn đóng, phòng đã được nhả cho khách khác, nên phải qua `AWAITING_REVIEW` rồi mới thử giành lại — gán được thì đi tiếp `AWAITING_REVIEW → CONFIRMED` (cạnh đã có sẵn), không gán được thì dừng lại cho người xử lý.
 
 Mọi trạng thái kết thúc (`EXPIRED`, `CANCELLED`, `NO_SHOW`) kéo theo `booking_rooms.status = 'RELEASED'` → slot mở lại tức thì. Mọi lần chuyển trạng thái ghi một dòng `booking_status_history` kèm `actor`.
 
