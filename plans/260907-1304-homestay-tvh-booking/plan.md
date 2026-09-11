@@ -289,6 +289,13 @@ Không còn mâu thuẫn chưa giải quyết.
 2. Cloudinary cloud name / API key? (chưa có → fallback lưu ổ đĩa)
 3. SMTP Gmail app password hay Mailtrap? (chưa có → `LoggingMailSender`, outbox vẫn ghi nhận)
 4. Số phòng thực tế của Homestay TVH (bao nhiêu loại, mỗi loại mấy phòng, giá bao nhiêu) để seed đúng thực tế?
-5. **Máy dùng lúc bảo vệ có Docker và có mạng không?** Cần trả lời ở Phase 1.
+5. ~~**Máy dùng lúc bảo vệ có Docker và có mạng không?**~~ **ĐÃ TRẢ LỜI (11/09/2026): CÓ CẢ HAI.**
+   Hệ quả đã chốt:
+   - Bản `docker compose` đầy đủ ở Phase 9 là đường trình diễn CHÍNH, không cần phương án chạy tay dự phòng.
+   - Ảnh QR tải từ `qr.sepay.vn` hiển thị được; phần chuyển khoản dạng chữ vẫn giữ nguyên làm lớp dự phòng
+     cho trường hợp mạng chập chờn giữa buổi, không phải cho trường hợp không có mạng.
+   - Mailpit chạy được, nên thư xác nhận xem được bằng mắt — nhưng bằng chứng chính vẫn là bảng
+     `outbound_emails`, không đổi.
+   - Postgres qua Testcontainers chạy được trên máy đó, nên bộ test đầy đủ demo tại chỗ được.
 
 <!-- slug: homestay-tvh-booking -->
