@@ -13,4 +13,6 @@ public interface OutboundEmailRepository extends JpaRepository<OutboundEmail, Lo
     List<OutboundEmail> findByStatusOrderByIdAsc(OutboundEmailStatus status, Limit limit);
 
     long countByBookingIdAndTemplate(Long bookingId, String template);
+
+    List<OutboundEmail> findByBookingIdOrderByIdAsc(Long bookingId);
 }

@@ -31,19 +31,20 @@ class SchemaMigrationTest extends AbstractPostgresIT {
     private DataSource dataSource;
 
     @Test
-    @DisplayName("Migration dựng đúng 19 bảng")
-    void migrationsCreateNineteenTables() throws Exception {
+    @DisplayName("Migration dựng đúng 20 bảng")
+    void migrationsCreateExpectedTables() throws Exception {
         assertThat(queryForInt("""
                 SELECT count(*) FROM information_schema.tables
                  WHERE table_schema = 'public'
                    AND table_name <> 'flyway_schema_history'
-                """)).isEqualTo(19);
+                """)).isEqualTo(20);
     }
 
     @Test
     @DisplayName("Mọi migration đều Success, không cái nào Failed")
     void everyMigrationSucceeded() throws Exception {
-        assertThat(queryForInt("SELECT count(*) FROM flyway_schema_history WHERE success")).isEqualTo(6);
+        // V7 (booking_notes) là migration thứ bảy, thêm ở Phase 7.
+        assertThat(queryForInt("SELECT count(*) FROM flyway_schema_history WHERE success")).isEqualTo(7);
         assertThat(queryForInt("SELECT count(*) FROM flyway_schema_history WHERE NOT success")).isZero();
     }
 

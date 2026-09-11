@@ -22,6 +22,20 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
  * thay vì để endpoint đó rơi vào {@code denyAll()} rồi mãi sau mới phát hiện
  * qua một lỗi 401 khó hiểu trên giao diện.
  *
+ * <h2>Vì sao khu quản trị không có một dòng bao</h2>
+ *
+ * <p>Bản đầu của ma trận này có đúng một dòng {@code "/api/admin"}. Vì
+ * {@link #isCovered} so theo TIỀN TỐ, dòng đó bao trọn mọi endpoint quản trị —
+ * thêm ba mươi endpoint mới cũng không làm test đỏ, và lưới chắn được tuyên bố
+ * ở kế hoạch Phase 7 thực ra không bắt được gì.
+ *
+ * <p>Nay mỗi nhóm endpoint quản trị là một dòng riêng. Việc thi hành phân quyền
+ * vẫn nằm ở MỘT dòng {@code /api/admin/**} trong {@code SecurityConfig} — một
+ * quy tắc bảo mật duy nhất vẫn tốt hơn ba mươi quy tắc để lệch nhau. Cái được
+ * siết ở đây là SỰ CÓ Ý THỨC: thêm một nhóm endpoint quản trị mới buộc người
+ * viết phải khai nó ra ở đây, tức là phải dừng lại nghĩ một lần xem nhóm đó có
+ * thật sự chỉ dành cho ADMIN hay không.
+ *
  * <p><b>Kiểm một chiều, có chủ ý.</b> Chỉ soi "endpoint có thật mà thiếu trong
  * ma trận", KHÔNG soi chiều ngược lại. Ma trận cố ý khai trước nhiều đường dẫn
  * của Phase 5 đến Phase 8; bắt lỗi chiều ngược lại sẽ khiến test đỏ liên tục từ
@@ -53,7 +67,19 @@ class EndpointAuthorizationIT extends AbstractPostgresIT {
             "/api/auth/logout",
             "/api/auth/change-password",
             "/api/me",
-            "/api/admin",
+            // Khu quản trị được liệt kê THEO TỪNG NHÓM, không phải một dòng
+            // "/api/admin" bao hết. Xem javadoc bên dưới.
+            "/api/admin/bookings",
+            "/api/admin/payments",
+            "/api/admin/room-types",
+            "/api/admin/amenities",
+            "/api/admin/rooms",
+            "/api/admin/promotions",
+            "/api/admin/reviews",
+            "/api/admin/dashboard",
+            "/api/admin/reports",
+            "/api/admin/images",
+            "/api/admin/dev",
             "/swagger-ui",
             "/v3/api-docs");
 
@@ -81,6 +107,23 @@ class EndpointAuthorizationIT extends AbstractPostgresIT {
                 .as("Endpoint có thật nhưng không có dòng nào trong ma trận phân quyền. "
                         + "Thêm dòng vào SecurityConfig VÀ vào AUTHORIZATION_MATRIX của test này.")
                 .isEmpty();
+    }
+
+    /**
+     * Lưới chắn cho chính lưới chắn.
+     *
+     * <p>Một người sửa sau này thấy test đỏ vì quên khai endpoint mới có thể
+     * "sửa" bằng cách thêm lại dòng bao {@code "/api/admin"}. Làm vậy là tắt
+     * lưới chắn mà test vẫn xanh — đúng kiểu hỏng tệ nhất. Kiểm này khiến cách
+     * sửa đó không đi lọt.
+     */
+    @Test
+    @DisplayName("Ma trận KHÔNG được có dòng bao \"/api/admin\" — nó vô hiệu hoá chính kiểm tra trên")
+    void adminPrefixMustBeListedPerGroup() {
+        assertThat(AUTHORIZATION_MATRIX)
+                .as("Khai theo từng nhóm (/api/admin/bookings, /api/admin/rooms, …), "
+                        + "không dùng một dòng bao hết")
+                .doesNotContain("/api/admin", "/api/admin/", "/api/admin/**");
     }
 
     @Test

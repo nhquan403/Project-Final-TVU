@@ -75,7 +75,11 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
           // Làm mới cũng hỏng nghĩa là phiên đã chết thật. Dừng ở đây.
           isRefreshing = false;
           auth.clear();
-          void router.navigate(['/dang-nhap']);
+          // Phiên hỏng ở khu quản trị phải quay về trang đăng nhập CỦA khu
+          // quản trị; đẩy về trang khách là bắt người dùng tự tìm đường lại.
+          void router.navigate([
+            router.url.startsWith('/admin') ? '/admin/login' : '/dang-nhap',
+          ]);
           return throwError(() => refreshError);
         }),
       );

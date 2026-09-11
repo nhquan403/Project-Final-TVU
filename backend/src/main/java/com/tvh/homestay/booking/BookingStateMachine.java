@@ -28,10 +28,32 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class BookingStateMachine {
 
-    /** Trạng thái kết thúc: đơn không đi tiếp được, và phòng phải được trả lại. */
-    private static final EnumSet<BookingStatus> TERMINAL = EnumSet.of(
-            BookingStatus.CANCELLED, BookingStatus.EXPIRED, BookingStatus.NO_SHOW,
-            BookingStatus.CHECKED_OUT);
+    /**
+     * Trạng thái mà chuyến đi KHÔNG diễn ra — và chỉ khi đó phòng mới được trả
+     * về kho cùng lượt khuyến mãi.
+     *
+     * <p><b>{@code CHECKED_OUT} cố ý KHÔNG nằm ở đây, dù nó cũng là trạng thái
+     * kết thúc.</b> Khách đã ở thật, nên những dòng {@code booking_rooms} của
+     * đơn đó là BẰNG CHỨNG LỊCH SỬ về số đêm-phòng đã bán, không phải chỗ đang
+     * bị giữ. Nhả chúng gây hỏng theo hai hướng cùng lúc:
+     *
+     * <ul>
+     *   <li>Ràng buộc ở tầng cơ sở dữ liệu bác ngay: hàm
+     *       {@code assert_booking_room_count} (V3) đòi số dòng ACTIVE khớp
+     *       {@code room_quantity} với mọi đơn KHÔNG thuộc
+     *       {@code CANCELLED/EXPIRED/NO_SHOW} — danh sách đó không có
+     *       {@code CHECKED_OUT}, và đây chính là lý do.
+     *   <li>Tỉ lệ lấp đầy tính theo dòng ACTIVE của đơn
+     *       {@code CONFIRMED/CHECKED_IN/CHECKED_OUT}; nhả phòng khi trả phòng
+     *       sẽ đưa số liệu của mọi chuyến đã hoàn tất về 0.
+     * </ul>
+     *
+     * <p>Không nhả phòng ở đây cũng không giam phòng: ràng buộc chống trùng chỉ
+     * so KHOẢNG NGÀY, mà khoảng ngày của một chuyến đã trả phòng nằm trong quá
+     * khứ nên không chặn ai.
+     */
+    private static final EnumSet<BookingStatus> RELEASES_ROOMS = EnumSet.of(
+            BookingStatus.CANCELLED, BookingStatus.EXPIRED, BookingStatus.NO_SHOW);
 
     /** Bảng chuyển trạng thái hợp lệ, khớp sơ đồ trong kế hoạch. */
     private static final Map<BookingStatus, EnumSet<BookingStatus>> ALLOWED = Map.of(
@@ -92,6 +114,24 @@ public class BookingStateMachine {
     @Transactional
     public Booking transition(
             Booking booking, BookingStatus target, HistoryActor actor, String reason) {
+        return transition(booking, target, actor, null, reason);
+    }
+
+    /**
+     * Bản có ghi NGƯỜI thực hiện.
+     *
+     * <p>Với thao tác của quản trị viên, {@code actor = ADMIN} mới chỉ nói
+     * "một người nào đó có quyền". Cột {@code changed_by} nói người nào — và đó
+     * là khác biệt giữa một dòng nhật ký và một dòng nhật ký dùng được khi phải
+     * truy lại ai đã huỷ đơn của khách.
+     */
+    @Transactional
+    public Booking transition(
+            Booking booking,
+            BookingStatus target,
+            HistoryActor actor,
+            com.tvh.homestay.user.entity.User changedBy,
+            String reason) {
 
         BookingStatus current = booking.getStatus();
         if (!canTransition(current, target)) {
@@ -110,19 +150,18 @@ public class BookingStateMachine {
         entry.setFromStatus(current);
         entry.setToStatus(target);
         entry.setActor(actor);
+        entry.setChangedBy(changedBy);
         entry.setNote(reason);
         history.save(entry);
 
-        if (TERMINAL.contains(target)) {
+        if (RELEASES_ROOMS.contains(target)) {
             // Nhả phòng NGAY trong transaction này. Ràng buộc chống trùng chỉ
             // soi dòng ACTIVE, nên slot mở lại tức thì cho khách khác.
             bookingRooms.releaseByBookingIds(List.of(booking.getId()));
 
-            // Hoàn lượt khuyến mãi, trừ khi đơn đã đi tới cuối hành trình:
-            // khách CHECKED_OUT là đã thật sự dùng mã đó.
-            if (target != BookingStatus.CHECKED_OUT) {
-                promotions.release(booking.getPromotion());
-            }
+            // Và hoàn lượt khuyến mãi: chuyến đi không diễn ra thì mã chưa
+            // thực sự được dùng.
+            promotions.release(booking.getPromotion());
         }
         return booking;
     }

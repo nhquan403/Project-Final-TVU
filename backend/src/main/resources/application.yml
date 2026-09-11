@@ -31,6 +31,16 @@ spring:
     username: ${MAIL_USERNAME:}
     password: ${MAIL_PASSWORD:}
 
+  servlet:
+    multipart:
+      # PHẢI khớp với storage.max-image-bytes bên dưới. Mặc định của Spring Boot
+      # là 1MB: để nguyên thì một ảnh JPEG hợp lệ 3MB bị chặn ở tầng servlet
+      # TRƯỚC khi ImageValidator kịp chạy, và giới hạn 5MB viết trong mã không
+      # bao giờ có cơ hội chạm tới.
+      max-file-size: 5MB
+      # Lớn hơn max-file-size một chút để chừa chỗ cho các trường khác của form.
+      max-request-size: 6MB
+
   # Chỉ chi phối cách Jackson serialize JSON. KHÔNG đổi TimeZone.getDefault(),
   # nên một mình nó là không đủ — xem ClockConfig và biến TZ/-Duser.timezone.
   jackson:
@@ -83,3 +93,10 @@ homestay:
     phone: "0294 3855 246"
     email: lienhe@homestaytvh.vn
     address: "Trà Vinh"
+
+storage:
+  # Trần dung lượng ảnh, tính bằng byte. 5MB — khớp spring.servlet.multipart.
+  max-image-bytes: 5242880
+  local:
+    # Thư mục ảnh khi chưa cấu hình CLOUDINARY_URL. Phục vụ qua /uploads/**.
+    dir: uploads

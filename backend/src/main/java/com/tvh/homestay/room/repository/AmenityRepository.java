@@ -5,4 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 /** Tiện ích phòng và tiện ích homestay. */
 public interface AmenityRepository extends JpaRepository<Amenity, Long> {
+
+    java.util.List<Amenity> findAllByOrderByCategoryAscDisplayOrderAsc();
 }

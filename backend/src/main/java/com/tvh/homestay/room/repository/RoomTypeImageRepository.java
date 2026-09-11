@@ -9,4 +9,6 @@ public interface RoomTypeImageRepository extends JpaRepository<RoomTypeImage, Lo
 
     /** Ảnh bìa nếu có, nếu không thì ảnh đầu tiên theo thứ tự hiển thị. */
     Optional<RoomTypeImage> findFirstByRoomTypeIdOrderByCoverDescDisplayOrderAsc(Long roomTypeId);
+
+    java.util.List<RoomTypeImage> findByRoomTypeIdOrderByDisplayOrderAscIdAsc(Long roomTypeId);
 }

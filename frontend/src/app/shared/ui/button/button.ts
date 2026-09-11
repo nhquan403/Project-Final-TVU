@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 
-export type ButtonVariant = 'primary' | 'secondary' | 'ghost';
+export type ButtonVariant = 'primary' | 'secondary' | 'ghost' | 'danger';
 
 /**
- * Nút, ba cấp. Trạng thái loading giữ nguyên bề rộng nút để bố cục không nhảy
+ * Nút, bốn cấp. Trạng thái loading giữ nguyên bề rộng nút để bố cục không nhảy
  * khi spinner xuất hiện — nhảy layout ngay lúc người dùng vừa bấm là cách
  * nhanh nhất khiến họ bấm nhầm lần hai.
  */
@@ -60,6 +60,12 @@ export class UiButton {
         'bg-surface text-text border border-border-strong hover:bg-surface-2 ' +
         'active:bg-surface-2 disabled:hover:bg-surface',
       ghost: 'bg-transparent text-primary hover:bg-surface-2 active:bg-surface-2',
+      // Hành động phá huỷ. Thêm vào thư viện dùng chung chứ không tô màu tại
+      // chỗ ở từng màn hình: "nút nào xoá dữ liệu" phải trông giống nhau ở mọi
+      // nơi, nếu không người dùng phải đọc nhãn mới biết mình sắp làm gì.
+      danger:
+        'bg-danger text-text-invert hover:opacity-90 active:opacity-90 ' +
+        'disabled:hover:opacity-100',
     }[this.variant()];
     return [base, width, variant].filter(Boolean).join(' ');
   });

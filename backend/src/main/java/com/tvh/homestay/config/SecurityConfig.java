@@ -113,6 +113,12 @@ public class SecurityConfig {
                         // Endpoint mô phỏng thanh toán cần ADMIN VÀ cờ
                         // payments.simulator.enabled (Phase 6 kiểm cờ đó).
                         .requestMatchers("/api/admin/dev/**").hasRole("ADMIN")
+                        // MỘT dòng cho toàn bộ khu quản trị, có chủ ý: liệt kê
+                        // ba mươi đường dẫn ở đây là tạo ra ba mươi chỗ để lệch
+                        // nhau, và chỉ cần một chỗ khai thiếu là một endpoint
+                        // quản trị rơi ra ngoài. Việc bắt người viết PHẢI khai
+                        // từng nhóm endpoint mới thuộc về EndpointAuthorizationIT,
+                        // nơi khai sai chỉ làm test đỏ chứ không mở cửa.
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
 
                         // ─── Mặc định đóng ───────────────────────────────────

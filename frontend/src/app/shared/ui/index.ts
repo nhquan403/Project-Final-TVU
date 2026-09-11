@@ -19,6 +19,8 @@ export { UiDataTable, type SortState, type TableColumn } from './data-table/data
 export { UiStarRating } from './star-rating/star-rating';
 export { UiLightbox, type LightboxImage } from './lightbox/lightbox';
 export { UiEmptyState } from './empty-state/empty-state';
+export { UiFilterChips, type FilterChip } from './filter-chips/filter-chips';
+export { UiConfirmDialog } from './confirm-dialog/confirm-dialog';
 
 export * from './contrast.util';
 

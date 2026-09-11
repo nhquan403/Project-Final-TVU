@@ -1,5 +1,6 @@
 package com.tvh.homestay.common;
 
+import com.tvh.homestay.admin.exception.AdminExceptions.AdminException;
 import com.tvh.homestay.booking.exception.BookingExceptions.BookingException;
 import com.tvh.homestay.booking.exception.BookingExceptions.BookingNotFound;
 import com.tvh.homestay.booking.exception.BookingExceptions.InvalidAccessToken;
@@ -14,6 +15,7 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 /**
@@ -60,6 +62,36 @@ public class ApiExceptionHandler {
         problem.setTitle(exception.getCode());
         problem.setDetail(exception.getMessage());
         problem.setProperty("code", exception.getCode());
+        return problem;
+    }
+
+    /**
+     * Lỗi nghiệp vụ của khu quản trị. Mã trạng thái đi kèm chính ngoại lệ,
+     * không tra bảng — xem javadoc của {@code AdminExceptions}.
+     */
+    @ExceptionHandler(AdminException.class)
+    public ProblemDetail handleAdminException(AdminException exception) {
+        ProblemDetail problem = ProblemDetail.forStatus(exception.getStatus());
+        problem.setTitle(exception.getCode());
+        problem.setDetail(exception.getMessage());
+        problem.setProperty("code", exception.getCode());
+        return problem;
+    }
+
+    /**
+     * Tệp tải lên vượt giới hạn của tầng servlet.
+     *
+     * <p>Không có handler này, ngoại lệ rơi ra ngoài thành 500 kèm stack trace:
+     * sai mã (413 mới đúng), và người dùng không hiểu vì sao ảnh của mình bị
+     * từ chối. Giới hạn bị chạm Ở ĐÂY, TRƯỚC khi request tới controller, nên
+     * {@code ImageValidator} không bao giờ có cơ hội nói câu đó thay.
+     */
+    @ExceptionHandler(MaxUploadSizeExceededException.class)
+    public ProblemDetail handleUploadTooLarge(MaxUploadSizeExceededException exception) {
+        ProblemDetail problem = ProblemDetail.forStatus(HttpStatus.PAYLOAD_TOO_LARGE);
+        problem.setTitle("IMAGE_TOO_LARGE");
+        problem.setDetail("Tệp vượt quá dung lượng cho phép.");
+        problem.setProperty("code", "IMAGE_TOO_LARGE");
         return problem;
     }
 

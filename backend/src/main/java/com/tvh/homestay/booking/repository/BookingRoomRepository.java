@@ -28,6 +28,9 @@ public interface BookingRoomRepository extends JpaRepository<BookingRoom, Long> 
 
     List<BookingRoom> findByBookingIdAndStatus(Long bookingId, BookingRoomStatus status);
 
+    /** Kể cả dòng đã RELEASED — lịch sử gán phòng là lý do không xoá cứng phòng được. */
+    long countByRoomId(Long roomId);
+
     /**
      * Nhả phòng của một đơn.
      *

@@ -14,6 +14,7 @@ import com.tvh.homestay.booking.exception.BookingExceptions.InvalidStateTransiti
 import com.tvh.homestay.booking.repository.BookingRepository;
 import com.tvh.homestay.schema.AbstractPostgresIT;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -115,6 +116,34 @@ class BookingLifecycleIT extends AbstractPostgresIT {
                 .as("hết phòng là tình huống nghiệp vụ, không phải lỗi máy chủ")
                 .isEqualTo(HttpStatus.CONFLICT);
         assertThat(second.getBody().get("code")).isEqualTo("ROOM_NOT_AVAILABLE");
+    }
+
+    @Test
+    @DisplayName("Trả phòng KHÔNG nhả dòng booking_rooms — đó là bằng chứng số đêm-phòng đã bán")
+    void checkOutKeepsRoomAssignmentAsHistory() {
+        BookingResponse booking = bookings.create(request(1), null, "127.0.0.1", "junit");
+        Long id = bookingRepository.findByCode(booking.code()).orElseThrow().getId();
+
+        for (BookingStatus target : List.of(
+                BookingStatus.CONFIRMED, BookingStatus.CHECKED_IN, BookingStatus.CHECKED_OUT)) {
+            stateMachine.transition(
+                    bookingRepository.findById(id).orElseThrow(),
+                    target,
+                    HistoryActor.ADMIN,
+                    "kiểm thử vòng đời đầy đủ");
+        }
+
+        assertThat(statusOf(booking.code())).isEqualTo("CHECKED_OUT");
+        // Hai lý do dòng này phải còn ACTIVE, và cả hai đều hỏng lặng lẽ nếu
+        // nhả phòng: ràng buộc assert_booking_room_count (V3) bác commit, và
+        // tỉ lệ lấp đầy của mọi chuyến đã hoàn tất tụt về 0.
+        assertThat(jdbc.queryForObject("""
+                SELECT count(*) FROM booking_rooms br
+                JOIN bookings b ON b.id = br.booking_id
+                WHERE b.code = ? AND br.status = 'ACTIVE'
+                """, Integer.class, booking.code()))
+                .as("chuyến đi đã diễn ra thật, nên phòng đã bán vẫn phải được ghi nhận")
+                .isEqualTo(1);
     }
 
     @Test
@@ -229,5 +258,9 @@ class BookingLifecycleIT extends AbstractPostgresIT {
         }
         assertThat(jdbc.queryForObject("SELECT used_count FROM promotions WHERE id = 1", Integer.class))
                 .isEqualTo(3);
+    }
+
+    private String statusOf(String code) {
+        return jdbc.queryForObject("SELECT status FROM bookings WHERE code = ?", String.class, code);
     }
 }

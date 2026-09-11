@@ -105,6 +105,28 @@ public class EmailOutboxService {
         return payload;
     }
 
+    /**
+     * Xếp hàng LẠI một lá thư đã gửi hỏng hoặc khách bảo không nhận được.
+     *
+     * <p>Tạo một dòng MỚI thay vì đặt dòng cũ về {@code PENDING}. Dòng cũ là
+     * bằng chứng: nó ghi lần gửi đó đã hỏng vì lý do gì và vào lúc nào. Đặt lại
+     * nó về PENDING sẽ xoá sạch {@code attempts} và {@code last_error} — đúng
+     * thứ cần đọc khi tìm hiểu vì sao khách không nhận được thư.
+     *
+     * <p>Nội dung được sao y bản cũ, không dựng lại từ đơn hiện tại: lá thư gửi
+     * lại phải nói đúng điều đã nói lần đầu.
+     */
+    @Transactional
+    public OutboundEmail requeue(OutboundEmail original) {
+        OutboundEmail copy = new OutboundEmail();
+        copy.setBooking(original.getBooking());
+        copy.setTemplate(original.getTemplate());
+        copy.setToEmail(original.getToEmail());
+        copy.setPayload(original.getPayload());
+        copy.setStatus(OutboundEmailStatus.PENDING);
+        return outbox.save(copy);
+    }
+
     /** Lô thư kế tiếp cần gửi. Chỉ đọc, để bộ gửi không giữ transaction lúc nói chuyện với SMTP. */
     @Transactional(readOnly = true)
     public java.util.List<OutboundEmail> nextPending(int batchSize) {

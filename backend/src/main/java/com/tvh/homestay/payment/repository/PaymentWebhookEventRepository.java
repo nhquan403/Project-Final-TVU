@@ -1,6 +1,7 @@
 package com.tvh.homestay.payment.repository;
 
 import com.tvh.homestay.payment.entity.PaymentWebhookEvent;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -15,4 +16,7 @@ public interface PaymentWebhookEventRepository extends JpaRepository<PaymentWebh
      * lần này phải xử lý lại. Xem {@code SepayWebhookTxService.claim}.
      */
     Optional<PaymentWebhookEvent> findByProviderAndExternalId(String provider, String externalId);
+
+    /** Nguyên văn mọi webhook đã chạm tới một lần thanh toán — chứng cứ đối soát. */
+    List<PaymentWebhookEvent> findByPaymentIdOrderByIdAsc(Long paymentId);
 }

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
 import { UiSkeleton } from '../skeleton/skeleton';
 import { UiEmptyState } from '../empty-state/empty-state';
 
@@ -57,7 +57,7 @@ export interface SortState {
                 <th
                   scope="col"
                   [attr.aria-sort]="ariaSort(column)"
-                  [class]="'px-3 py-2 font-semibold ' + (column.numeric ? 'text-right' : 'text-left')">
+                  [class]="cellClass() + ' font-semibold ' + (column.numeric ? 'text-right' : 'text-left')">
                   @if (column.sortable) {
                     <button
                       type="button"
@@ -82,7 +82,7 @@ export interface SortState {
               @for (placeholder of skeletonRows; track placeholder) {
                 <tr class="border-b border-border">
                   @for (column of columns(); track column.key) {
-                    <td class="px-3 py-2"><ui-skeleton shape="line" /></td>
+                    <td [class]="cellClass()"><ui-skeleton shape="line" /></td>
                   }
                 </tr>
               }
@@ -94,7 +94,7 @@ export interface SortState {
                   @for (column of columns(); track column.key) {
                     <td
                       tabindex="0"
-                      [class]="'px-3 py-2 ' + (column.numeric ? 'text-right tabular-nums' : '')">
+                      [class]="cellClass() + ' ' + (column.numeric ? 'text-right tabular-nums' : '')">
                       {{ column.value(row) }}
                     </td>
                   }
@@ -110,6 +110,19 @@ export interface SortState {
 export class UiDataTable<T> {
   protected readonly skeletonRows = [0, 1, 2, 3, 4];
 
+  /**
+   * Mật độ dòng.
+   *
+   * <p>`comfortable` (mặc định) giữ nguyên nhịp cũ cho trang khách. `admin` cho
+   * dòng cao 48px theo quy tắc UX của khu quản trị — nơi người dùng quét mắt
+   * theo cột dọc hàng ngày và cần khoảng thở giữa các dòng.
+   *
+   * <p>Thêm một input thay vì sửa thẳng `py-2`: đổi component dùng chung sẽ đổi
+   * luôn mọi bảng của trang landing, và đó là quyết định của Phase 8 chứ không
+   * phải hệ quả phụ của Phase 7.
+   */
+  readonly density = input<'comfortable' | 'admin'>('comfortable');
+
   readonly caption = input.required<string>();
   readonly columns = input.required<readonly TableColumn<T>[]>();
   readonly rows = input<readonly T[]>([]);
@@ -122,6 +135,10 @@ export class UiDataTable<T> {
 
   readonly sortChange = output<SortState>();
   readonly emptyAction = output<void>();
+
+  protected readonly cellClass = computed(() =>
+    this.density() === 'admin' ? 'px-3 py-3 leading-6' : 'px-3 py-2',
+  );
 
   protected ariaSort(column: TableColumn<T>): 'ascending' | 'descending' | 'none' | null {
     if (!column.sortable) {
