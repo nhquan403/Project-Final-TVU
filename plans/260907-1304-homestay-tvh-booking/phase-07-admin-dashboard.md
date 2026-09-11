@@ -1,6 +1,6 @@
 ---
 title: "Phase 7: Trang admin & dashboard"
-status: todo
+status: done
 phase: 7
 priority: P1
 effort: "14h"
@@ -141,7 +141,7 @@ Mọi truy vấn gom nhóm theo thời điểm phải viết `date_trunc('month'
 12. Frontend `admin-layout` + `data-table` dùng chung cho 6 màn hình danh sách (một component bảng, cấu hình cột theo input).
 13. Dashboard: 6 thẻ chỉ số + biểu đồ cột "Giá trị booking" + biểu đồ đường tỉ lệ lấp đầy + bảng top loại phòng, vẽ bằng **thư viện biểu đồ** (quyết định của người dùng — ràng buộc "tự viết component" áp cho UI component library, không áp cho thư viện vẽ biểu đồ). Mỗi điểm dữ liệu vẫn cần nhãn đọc được cho trình đọc màn hình.
 14. Màn hình booking: bộ lọc gắn vào query param để admin bookmark/chia sẻ đường dẫn đã lọc.
-15. Cập nhật ma trận phân quyền ở `phase-04-auth.md` với mọi endpoint mới; `EndpointAuthorizationIT` sẽ fail nếu quên.
+15. **Đã sửa lại so với bản đầu.** `SecurityConfig` KHÔNG cần thêm dòng nào: một dòng `/api/admin/** → hasRole("ADMIN")` đã bao trọn phase này, và liệt kê ba mươi đường dẫn ở đó chỉ tạo ra ba mươi chỗ để lệch nhau. Lời hứa "`EndpointAuthorizationIT` sẽ fail nếu quên" ở bản đầu là SAI: test khớp theo tiền tố và ma trận của nó có sẵn một dòng bao `"/api/admin"`, nên thêm bao nhiêu endpoint quản trị cũng không làm test đỏ. Nay ma trận trong test liệt kê **từng nhóm** endpoint quản trị, cộng một kiểm tra cấm khai lại dòng bao — lưới chắn giờ mới thật sự bắt được thứ nó tuyên bố.
 16. Áp quy tắc UX ở trên cho cả 7 màn hình: chip lọc + nút xoá lọc, chiều cao dòng 48px, số căn phải `tabular-nums`, `ui-empty-state` ở mọi bảng, hộp thoại xác nhận nêu hậu quả cho huỷ booking / xoá loại phòng / xoá mã giảm giá / từ chối đánh giá.
 17. Trạng thái tải: bảng dùng `ui-skeleton` dạng hàng, không dùng spinner giữa màn hình — người dùng cần thấy bố cục sẽ ra sao trước khi dữ liệu về.
 
@@ -189,47 +189,47 @@ Kiểm tra thủ công: đặt booking ở landing → `/admin/bookings` thấy 
 
 ## Todo
 
-- [ ] `AdminBookingController` (lọc, chi tiết, chuyển trạng thái, ghi chú, gửi lại email)
-- [ ] `AdminPaymentController` — hàng đợi đối soát + xác nhận thủ công
-- [ ] `AdminRoomTypeController` + tiện ích + thứ tự ảnh + ảnh bìa
-- [ ] `AdminRoomController` + cảnh báo booking bị ảnh hưởng
-- [ ] `ImageValidator`: danh sách trắng MIME (loại SVG), giải mã lại, đổi tên UUID
-- [ ] `ImageStorageService` + Cloudinary + fallback local
-- [ ] `AdminPromotionController` (hiển thị đúng khi `usage_limit IS NULL`)
-- [ ] `AdminReviewController` — hiển thị review bằng text binding
-- [ ] `DashboardService` 7 chỉ số, mẫu số lấp đầy là tổng số phòng
-- [ ] Mọi `date_trunc` kèm `AT TIME ZONE 'Asia/Ho_Chi_Minh'`
-- [ ] `CsvExportService` BOM UTF-8 + thoát ký tự công thức
-- [ ] `admin-layout` + badge "cần đối soát" + `data-table` dùng chung
-- [ ] Dashboard dùng thư viện biểu đồ + nhãn cho trình đọc màn hình
-- [ ] Bộ lọc booking gắn query param
-- [ ] Cập nhật ma trận phân quyền Phase 4 với endpoint mới
-- [ ] Chip lọc hiển thị điều kiện đang áp + nút xoá từng chip và xoá tất cả
-- [ ] Hộp thoại xác nhận nêu rõ hậu quả cho 4 hành động phá huỷ
-- [ ] `ui-empty-state` ở mọi bảng, phân biệt rỗng-do-lọc và rỗng-do-chưa-có-dữ-liệu
-- [ ] Bảng: dòng 48px, số căn phải `tabular-nums`, skeleton khi tải
-- [ ] `DashboardServiceIT`, `CsvExportTest`, `ImageUploadIT`
+- [x] `AdminBookingController` (lọc, chi tiết, chuyển trạng thái, ghi chú, gửi lại email)
+- [x] `AdminPaymentController` — hàng đợi đối soát + xác nhận thủ công
+- [x] `AdminRoomTypeController` + tiện ích + thứ tự ảnh + ảnh bìa
+- [x] `AdminRoomController` + cảnh báo booking bị ảnh hưởng
+- [x] `ImageValidator`: danh sách trắng MIME (loại SVG), giải mã lại, đổi tên UUID
+- [x] `ImageStorageService` + Cloudinary + fallback local
+- [x] `AdminPromotionController` (hiển thị đúng khi `usage_limit IS NULL`)
+- [x] `AdminReviewController` — hiển thị review bằng text binding
+- [x] `DashboardService` 7 chỉ số, mẫu số lấp đầy là tổng số phòng
+- [x] Mọi `date_trunc` kèm `AT TIME ZONE 'Asia/Ho_Chi_Minh'`
+- [x] `CsvExportService` BOM UTF-8 + thoát ký tự công thức
+- [x] `admin-layout` + badge "cần đối soát" + `data-table` dùng chung
+- [x] Dashboard dùng thư viện biểu đồ + nhãn cho trình đọc màn hình
+- [x] Bộ lọc booking gắn query param
+- [x] Siết ma trận của `EndpointAuthorizationIT` xuống từng nhóm endpoint quản trị (thay cho việc sửa `SecurityConfig`, vốn đã bao đủ)
+- [x] Chip lọc hiển thị điều kiện đang áp + nút xoá từng chip và xoá tất cả
+- [x] Hộp thoại xác nhận nêu rõ hậu quả cho 4 hành động phá huỷ
+- [x] `ui-empty-state` ở mọi bảng, phân biệt rỗng-do-lọc và rỗng-do-chưa-có-dữ-liệu
+- [x] Bảng: dòng 48px, số căn phải `tabular-nums`, skeleton khi tải
+- [x] `DashboardServiceIT`, `CsvExportTest`, `ImageUploadIT`
 
 ## Success Criteria
 
-- [ ] Admin đăng nhập thấy booking vừa tạo ở landing, đổi được trạng thái theo đúng vòng đời
-- [ ] Chuyển trạng thái sai luồng bị chặn với thông báo tiếng Việt rõ ràng
-- [ ] Dashboard khớp với truy vấn SQL thô **khi truyền cùng tham số kỳ**
-- [ ] Đưa phòng có booking lịch sử sang `MAINTENANCE` không làm đổi tỉ lệ lấp đầy các tháng đã qua
-- [ ] Tỉ lệ lấp đầy không bao giờ vượt 100%, kể cả với booking vắt qua hai tháng
-- [ ] Booking tạo lúc 01:00 giờ Việt Nam ngày mùng 1 được xếp đúng tháng
-- [ ] Payment thiếu/thừa/không khớp hiện ở `/admin/payments` và badge dashboard đếm đúng
-- [ ] Mọi `/api/admin/**` trả 403 với token `CUSTOMER`; `EndpointAuthorizationIT` xanh
-- [ ] Upload chạy được cả khi có và không có Cloudinary
-- [ ] Upload `.svg` chứa script bị từ chối; `.jpg` giả (thực chất `.exe`) bị từ chối
-- [ ] Booking có `guestName` bắt đầu bằng `=` → ô CSV không được Excel hiểu là công thức
-- [ ] CSV mở trong Excel không lỗi font tiếng Việt
-- [ ] Không mã màu nào trong khu admin nằm ngoài token (`check-hardcoded-colors.mjs` thoát 0)
-- [ ] Lọc booking rồi tải lại trang → chip lọc vẫn đúng, bảng vẫn đúng tập con
-- [ ] Hộp thoại huỷ booking nêu đúng số phòng và số tiền cọc, không phải câu chung chung
-- [ ] Lọc ra tập rỗng → hiện hướng dẫn xoá lọc, không phải bảng trắng
-- [ ] Đi Tab qua màn hình booking: mọi nút, chip, ô lọc đều có vòng focus nhìn thấy
-- [ ] `npm run build` sạch, không cảnh báo budget
+- [x] Admin đăng nhập thấy booking vừa tạo ở landing, đổi được trạng thái theo đúng vòng đời
+- [x] Chuyển trạng thái sai luồng bị chặn với thông báo tiếng Việt rõ ràng
+- [x] Dashboard khớp với truy vấn SQL thô **khi truyền cùng tham số kỳ**
+- [x] Đưa phòng có booking lịch sử sang `MAINTENANCE` không làm đổi tỉ lệ lấp đầy các tháng đã qua
+- [x] Tỉ lệ lấp đầy không bao giờ vượt 100%, kể cả với booking vắt qua hai tháng
+- [x] Booking tạo lúc 01:00 giờ Việt Nam ngày mùng 1 được xếp đúng tháng
+- [x] Payment thiếu/thừa/không khớp hiện ở `/admin/payments` và badge dashboard đếm đúng
+- [x] Mọi `/api/admin/**` trả 403 với token `CUSTOMER`; `EndpointAuthorizationIT` xanh
+- [x] Upload chạy được cả khi có và không có Cloudinary
+- [x] Upload `.svg` chứa script bị từ chối; `.jpg` giả (thực chất `.exe`) bị từ chối
+- [x] Booking có `guestName` bắt đầu bằng `=` → ô CSV không được Excel hiểu là công thức
+- [x] CSV mở trong Excel không lỗi font tiếng Việt
+- [x] Không mã màu nào trong khu admin nằm ngoài token (`check-hardcoded-colors.mjs` thoát 0)
+- [x] Lọc booking rồi tải lại trang → chip lọc vẫn đúng, bảng vẫn đúng tập con
+- [x] Hộp thoại huỷ booking nêu đúng số phòng và số tiền cọc, không phải câu chung chung
+- [x] Lọc ra tập rỗng → hiện hướng dẫn xoá lọc, không phải bảng trắng
+- [x] Đi Tab qua màn hình booking: mọi nút, chip, ô lọc đều có vòng focus nhìn thấy
+- [x] `npm run build` sạch, không cảnh báo budget
 
 ## Risk Assessment
 

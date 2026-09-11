@@ -137,7 +137,9 @@ stateDiagram-v2
 
 **Cập nhật ở Phase 6 — `EXPIRED` và `CANCELLED` không còn là ngõ cụt tuyệt đối.** Bản đầu vẽ chúng đi thẳng ra `[*]`, nhưng bảng quyết định của Phase 6 đòi đúng một đường ra: khi tiền của khách về sau lúc đơn đã đóng, đơn phải quay lại `AWAITING_REVIEW` để hệ thống thử gán lại phòng. Không mở cạnh này thì nhánh đó kết thúc bằng "tiền đã vào tài khoản, đơn đã đóng, không ai biết". Cạnh này **không** đi thẳng sang `CONFIRMED`: lúc đơn đóng, phòng đã được nhả cho khách khác, nên phải qua `AWAITING_REVIEW` rồi mới thử giành lại — gán được thì đi tiếp `AWAITING_REVIEW → CONFIRMED` (cạnh đã có sẵn), không gán được thì dừng lại cho người xử lý.
 
-Mọi trạng thái kết thúc (`EXPIRED`, `CANCELLED`, `NO_SHOW`) kéo theo `booking_rooms.status = 'RELEASED'` → slot mở lại tức thì. Mọi lần chuyển trạng thái ghi một dòng `booking_status_history` kèm `actor`.
+Ba trạng thái kết thúc mà chuyến đi KHÔNG diễn ra — `EXPIRED`, `CANCELLED`, `NO_SHOW` — kéo theo `booking_rooms.status = 'RELEASED'` → slot mở lại tức thì. Mọi lần chuyển trạng thái ghi một dòng `booking_status_history` kèm `actor`.
+
+**Sửa ở Phase 7 — `CHECKED_OUT` KHÔNG nhả phòng.** Bản đầu xếp `CHECKED_OUT` chung với ba trạng thái trên. Phase 7 là đường chạy đầu tiên thật sự đưa một đơn tới `CHECKED_OUT`, và nó lộ ra hai lỗi cùng lúc: hàm `assert_booking_room_count` của V3 chỉ miễn kiểm cho `CANCELLED/EXPIRED/NO_SHOW`, nên commit bị bác với `booking_rooms khong khop room_quantity`; và tỉ lệ lấp đầy đếm dòng `ACTIVE` của đơn `CONFIRMED/CHECKED_IN/CHECKED_OUT`, nên nhả phòng lúc trả phòng sẽ đưa số liệu của mọi chuyến đã hoàn tất về 0. Khách đã ở thật thì những dòng đó là bằng chứng số đêm-phòng đã bán, không phải chỗ đang bị giữ — và giữ chúng cũng không giam phòng, vì ràng buộc chống trùng chỉ so khoảng ngày, mà khoảng ngày đó đã nằm trong quá khứ.
 
 ### Scheduler hết hạn giữ chỗ — ba điều kiện bảo vệ
 
