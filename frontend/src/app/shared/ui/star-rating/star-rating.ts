@@ -13,7 +13,15 @@ import { ChangeDetectionStrategy, Component, computed, input, model } from '@ang
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     @if (readonly()) {
-      <span class="inline-flex items-center gap-1" [attr.aria-label]="value() + ' trên 5 sao'">
+      <!--
+        role="img" là bắt buộc: một span trần không được mang aria-label —
+        trình đọc màn hình bỏ qua nhãn đó, và người dùng chỉ nghe năm ký tự
+        sao rời rạc.
+      -->
+      <span
+        role="img"
+        class="inline-flex items-center gap-1"
+        [attr.aria-label]="value() + ' trên 5 sao'">
         @for (star of stars; track star) {
           <span [class]="star <= value() ? filled : empty" aria-hidden="true">★</span>
         }

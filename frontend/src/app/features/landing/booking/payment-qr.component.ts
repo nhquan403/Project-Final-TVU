@@ -5,6 +5,7 @@ import {
   computed,
   inject,
   input,
+  type OnInit,
   output,
   signal,
 } from '@angular/core';
@@ -140,7 +141,7 @@ const MAX_POLL_MS = 15 * 60_000;
     </section>
   `,
 })
-export class PaymentQrComponent {
+export class PaymentQrComponent implements OnInit {
   private readonly bookings = inject(BookingService);
 
   readonly booking = input.required<Booking>();
@@ -159,13 +160,23 @@ export class PaymentQrComponent {
   private tickTimer?: ReturnType<typeof setInterval>;
 
   constructor() {
-    this.pollTimer = setInterval(() => this.poll(), POLL_INTERVAL_MS);
-    this.tickTimer = setInterval(() => this.now.set(Date.now()), 1_000);
-    this.poll();
-
     // Dọn dẹp khi component biến mất. Thiếu bước này, rời trang giữa chừng để
     // lại một bộ đếm gọi API mãi mãi — và mỗi lần khách quay lại là thêm một bộ.
     inject(DestroyRef).onDestroy(() => this.stopPolling());
+  }
+
+  /**
+   * Vòng hỏi trạng thái bắt đầu ở {@link ngOnInit}, KHÔNG ở hàm dựng.
+   *
+   * <p>Angular gán giá trị cho input SAU khi dựng xong đối tượng. Đọc
+   * `booking()` — một `input.required` — trong hàm dựng ném NG0950 và cả màn
+   * hình thanh toán trắng trơn: khách vừa bấm đặt phòng xong nhìn thấy một
+   * trang trống, đúng lúc cần mã QR nhất.
+   */
+  ngOnInit(): void {
+    this.pollTimer = setInterval(() => this.poll(), POLL_INTERVAL_MS);
+    this.tickTimer = setInterval(() => this.now.set(Date.now()), 1_000);
+    this.poll();
   }
 
   protected readonly currentStatus = computed<BookingStatus>(

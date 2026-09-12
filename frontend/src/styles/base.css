@@ -1,74 +1,148 @@
 /* Nền tảng dùng chung: reset tối thiểu, quy ước focus, và tôn trọng thiết lập
-   giảm chuyển động của hệ điều hành. */
+   giảm chuyển động của hệ điều hành.
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
+   TẤT CẢ nằm trong `@layer base`, và đó là điều bắt buộc chứ không phải thói
+   quen. Tailwind v4 đặt utility vào `@layer utilities`; một quy tắc KHÔNG thuộc
+   layer nào sẽ thắng mọi quy tắc có layer, bất kể độ đặc hiệu. Để `button {
+   color: inherit }` ở ngoài layer nghĩa là `text-text-invert` trên một thẻ
+   <button> không bao giờ có tác dụng — mọi nút chính trong cả trang bán hàng
+   lẫn khu quản trị hiện chữ tối trên nền xanh đậm, tỉ lệ tương phản rơi xuống
+   khoảng 2:1. */
 
-html {
-  -webkit-text-size-adjust: 100%;
-}
+@layer base {
 
-body {
-  margin: 0;
-  background: var(--color-bg);
-  color: var(--color-text);
-  font-family: var(--font-sans);
-  font-size: var(--text-body);
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Ô nhập trên mobile phải ≥16px, nếu không iOS phóng to trang khi focus. */
-input,
-select,
-textarea,
-button {
-  font: inherit;
-  color: inherit;
-}
-
-img,
-svg,
-video {
-  display: block;
-  max-width: 100%;
-}
-
-/* --- Focus: một quy ước duy nhất cho toàn hệ thống -------------------------
-   Không có `outline: none` ở bất kỳ đâu trong dự án. Bỏ vòng focus là cắt
-   đường đi của người dùng bàn phím và người dùng trình đọc màn hình. */
-:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 2px;
-  border-radius: var(--radius-sm);
-}
-
-/* --- Giảm chuyển động ------------------------------------------------------
-   Người bật thiết lập này thường vì chuyển động gây chóng mặt hoặc buồn nôn.
-   Tắt gần như hoàn toàn, không chỉ làm chậm lại. */
-@media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+    box-sizing: border-box;
   }
-}
 
-/* Nội dung chỉ dành cho trình đọc màn hình. */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Ô nhập trên mobile phải ≥16px, nếu không iOS phóng to trang khi focus. */
+  input,
+  select,
+  textarea,
+  button {
+    font: inherit;
+    color: inherit;
+  }
+
+  img,
+  svg,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* --- Focus: một quy ước duy nhất cho toàn hệ thống -------------------------
+     Không có `outline: none` ở bất kỳ đâu trong dự án. Bỏ vòng focus là cắt
+     đường đi của người dùng bàn phím và người dùng trình đọc màn hình. */
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+  }
+
+  /* --- Giảm chuyển động ------------------------------------------------------
+     Người bật thiết lập này thường vì chuyển động gây chóng mặt hoặc buồn nôn.
+     Tắt gần như hoàn toàn, không chỉ làm chậm lại. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Nội dung chỉ dành cho trình đọc màn hình. */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* --- Nội dung do quản trị viên soạn ---------------------------------------
+     HTML của CMS đã qua bộ lọc thẻ ở tầng vào của backend, nên chỉ còn một tập
+     thẻ hẹp: đoạn văn, danh sách, tiêu đề, liên kết, in đậm/nghiêng, ảnh.
+
+     Reset của Tailwind gỡ sạch style mặc định của những thẻ đó, nên không có
+     khối này thì một bài viết dài hiện ra như một mảng chữ liền không xuống
+     dòng, không dấu đầu dòng, và liên kết không phân biệt được với chữ thường.
+     Style đặt ở đây chứ không rải trong component vì cả trang chủ, trang tin tức
+     và trang chi tiết phòng cùng hiển thị một loại nội dung. */
+  .prose-tvh > * + * {
+    margin-top: 0.75em;
+  }
+
+  .prose-tvh h2,
+  .prose-tvh h3 {
+    color: var(--color-text);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+
+  .prose-tvh h2 {
+    font-size: var(--text-h2);
+    margin-top: 1.5em;
+  }
+
+  .prose-tvh h3 {
+    font-size: var(--text-h3);
+    margin-top: 1.25em;
+  }
+
+  .prose-tvh ul,
+  .prose-tvh ol {
+    padding-left: 1.5em;
+  }
+
+  .prose-tvh ul {
+    list-style: disc;
+  }
+
+  .prose-tvh ol {
+    list-style: decimal;
+  }
+
+  .prose-tvh a {
+    color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  .prose-tvh strong {
+    font-weight: 600;
+    color: var(--color-text);
+  }
+
+  .prose-tvh blockquote {
+    border-left: 3px solid var(--color-border-strong);
+    padding-left: 1em;
+    font-style: italic;
+  }
+
+  .prose-tvh img {
+    border-radius: var(--radius-md);
+  }
 }
