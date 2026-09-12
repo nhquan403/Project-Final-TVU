@@ -36,7 +36,8 @@ public class AvailabilityController {
      */
     @GetMapping("/api/availability/calendar")
     public DayAvailabilityResponse calendar(
-            @RequestParam Long roomTypeId,
+            // TUỲ CHỌN: vắng nghĩa là hỏi lịch của toàn homestay.
+            @RequestParam(required = false) Long roomTypeId,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate from,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate to) {
         return availability.dayCalendar(roomTypeId, from, to);

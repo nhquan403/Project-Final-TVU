@@ -119,4 +119,25 @@ class AvailabilityQueryIT extends AbstractPostgresIT {
         // Ngày trả phòng không cần còn phòng — đêm 10-04 vẫn trống.
         assertThat(days.get("2026-10-04").availableCount()).isEqualTo(1);
     }
+
+    @Test
+    @DisplayName("Lịch KHÔNG kèm roomTypeId trả lịch toàn homestay; đêm kín mọi loại phòng có 0 phòng trống")
+    void calendarWithoutRoomTypeAggregatesEveryRoomType() {
+        // Nền của lớp này có ba phòng; chiếm HẾT cả ba trong đúng một đêm.
+        BookingTestFixtures.reset(jdbc, 3);
+        bookings.create(BookingTestFixtures.request(CHECK_IN, CHECK_IN.plusDays(1), 3, 91),
+                null, "127.0.0.1", "junit");
+
+        var days = availability.dayCalendar(null, CHECK_IN, CHECK_IN.plusDays(2)).days();
+
+        assertThat(days.get(CHECK_IN.toString()).availableCount())
+                .as("mọi loại phòng đều hết thì đêm này phải bị lịch chặn trước, không báo lỗi sau")
+                .isZero();
+        assertThat(days.get(CHECK_IN.plusDays(1).toString()).availableCount())
+                .as("đêm hôm sau vẫn còn nguyên cả ba phòng")
+                .isEqualTo(3);
+        assertThat(days.get(CHECK_IN.plusDays(1).toString()).price())
+                .as("giá là mức THẤP NHẤT của các loại còn chỗ — giao diện hiện dạng \"từ X\"")
+                .isNotNull();
+    }
 }

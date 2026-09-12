@@ -16,6 +16,18 @@ public interface RoomTypeRepository extends JpaRepository<RoomType, Long> {
             "select distinct t from RoomType t left join fetch t.amenities order by t.displayOrder, t.id")
     java.util.List<RoomType> findAllWithAmenities();
 
+    /** Chỉ loại phòng ĐANG bán — trang công khai không bao giờ thấy loại đã tắt. */
+    @org.springframework.data.jpa.repository.Query(
+            "select distinct t from RoomType t left join fetch t.amenities"
+                    + " where t.active = true order by t.displayOrder, t.id")
+    java.util.List<RoomType> findActiveWithAmenities();
+
+    @org.springframework.data.jpa.repository.Query(
+            "select distinct t from RoomType t left join fetch t.amenities"
+                    + " where t.active = true and lower(t.slug) = lower(:slug)")
+    java.util.Optional<RoomType> findActiveBySlug(
+            @org.springframework.data.repository.query.Param("slug") String slug);
+
     @org.springframework.data.jpa.repository.Query(
             "select distinct t from RoomType t left join fetch t.amenities where t.id = :id")
     java.util.Optional<RoomType> findWithAmenities(

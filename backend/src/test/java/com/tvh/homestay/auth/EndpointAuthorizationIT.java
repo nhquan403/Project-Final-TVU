@@ -70,6 +70,7 @@ class EndpointAuthorizationIT extends AbstractPostgresIT {
             // Khu quản trị được liệt kê THEO TỪNG NHÓM, không phải một dòng
             // "/api/admin" bao hết. Xem javadoc bên dưới.
             "/api/admin/bookings",
+            "/api/admin/content",
             "/api/admin/payments",
             "/api/admin/room-types",
             "/api/admin/amenities",

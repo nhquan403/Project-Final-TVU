@@ -121,14 +121,29 @@ public class AvailabilityService {
         if (ChronoUnit.DAYS.between(from, to) > MAX_CALENDAR_DAYS) {
             throw new InvalidBookingRequest("Lịch giá tối đa " + MAX_CALENDAR_DAYS + " ngày một lượt.");
         }
+        Map<String, DayInfo> days = new LinkedHashMap<>();
+
+        if (roomTypeId == null) {
+            // Lịch của TOÀN HOMESTAY, dùng cho thanh tìm phòng ở trang chủ —
+            // lúc đó khách chưa chọn loại phòng nên chưa có roomTypeId để hỏi.
+            // Một đêm chỉ bị chặn khi MỌI loại phòng đều hết chỗ.
+            availability.countFreeRoomsPerNight(from, to).forEach(night ->
+                    days.put(
+                            night.night().format(DAY_KEY),
+                            new DayInfo(night.price(), night.freeRooms())));
+            return new DayAvailabilityResponse(days);
+        }
+
         RoomType roomType = roomTypes.findById(roomTypeId)
                 .orElseThrow(() -> new InvalidBookingRequest("Không tìm thấy loại phòng."));
 
-        Map<String, DayInfo> days = new LinkedHashMap<>();
         for (LocalDate night = from; night.isBefore(to); night = night.plusDays(1)) {
             days.put(
                     night.format(DAY_KEY),
                     new DayInfo(
+                            // Cùng một con số cho mọi đêm: chưa có bảng giá theo
+                            // đêm trong schema. Giao diện vì thế KHÔNG được vẽ
+                            // nó như một mức giá thay đổi theo ngày.
                             roomType.getBasePrice(),
                             availability.countFreeRoomsForNight(roomTypeId, night)));
         }

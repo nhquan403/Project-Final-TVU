@@ -119,6 +119,61 @@ public class AvailabilityRepository {
                 .list();
     }
 
+    /**
+     * Số phòng rảnh của TOÀN HOMESTAY cho từng đêm trong khoảng, trong MỘT truy vấn.
+     *
+     * <p>Thanh tìm phòng ở trang chủ chạy TRƯỚC khi khách chọn loại phòng, nên
+     * nó không có {@code roomTypeId} để hỏi. Không có truy vấn này, lịch trên
+     * trang chủ chỉ chặn được ngày quá khứ — còn ngày đã kín phòng vẫn bấm chọn
+     * được, và khách chỉ biết mình chọn sai sau khi bấm tìm.
+     *
+     * <p>Gộp cả khoảng vào một câu lệnh thay vì lặp từng đêm: khoảng tối đa là
+     * 120 ngày, và 120 lượt đi về cơ sở dữ liệu cho một lần mở lịch là đủ để
+     * người dùng thấy lịch giật.
+     *
+     * <p>Giá trả về là giá THẤP NHẤT trong các loại phòng còn chỗ đêm đó — giao
+     * diện hiển thị dạng "từ X", vì đây là mức khởi điểm chứ không phải giá của
+     * một loại phòng cụ thể.
+     */
+    public java.util.List<NightAvailability> countFreeRoomsPerNight(LocalDate from, LocalDate to) {
+        return jdbc.sql("""
+                        WITH sellable AS (
+                            SELECT r.id, rt.base_price
+                              FROM rooms r
+                              JOIN room_types rt ON rt.id = r.room_type_id
+                             WHERE r.status = 'AVAILABLE' AND rt.active = true
+                        ), nights AS (
+                            SELECT d::date AS night
+                              FROM generate_series(
+                                      CAST(:from AS date),
+                                      CAST(:to AS date) - 1,
+                                      interval '1 day') AS d
+                        )
+                        SELECT n.night                AS night,
+                               count(s.id)            AS free_rooms,
+                               min(s.base_price)      AS price
+                          FROM nights n
+                          LEFT JOIN sellable s ON NOT EXISTS (
+                                   SELECT 1 FROM booking_rooms br
+                                    WHERE br.room_id = s.id
+                                      AND br.status = 'ACTIVE'
+                                      AND br.stay && daterange(n.night, n.night + 1, '[)'))
+                         GROUP BY n.night
+                         ORDER BY n.night
+                        """)
+                .param("from", from)
+                .param("to", to)
+                .query((rs, row) -> new NightAvailability(
+                        rs.getObject("night", LocalDate.class),
+                        rs.getInt("free_rooms"),
+                        rs.getBigDecimal("price")))
+                .list();
+    }
+
+    /** Một đêm của lịch toàn homestay. {@code price} null khi đêm đó không còn phòng nào. */
+    public record NightAvailability(
+            LocalDate night, int freeRooms, java.math.BigDecimal price) {}
+
     /** Số phòng rảnh của một loại phòng trong đúng MỘT đêm. Dùng dựng lịch giá. */
     public int countFreeRoomsForNight(Long roomTypeId, LocalDate night) {
         Integer count = jdbc.sql("""
