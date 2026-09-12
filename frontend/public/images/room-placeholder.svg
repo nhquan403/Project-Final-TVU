@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img"
+     aria-label="Chưa có ảnh cho loại phòng này">
+  <!--
+    Ảnh dự phòng cho loại phòng chưa có ảnh. Nằm trong repo, không phụ thuộc
+    mạng, và KHÔNG nằm trong src/ nên không đụng check-hardcoded-colors.mjs —
+    đây là tài nguyên tĩnh, không phải mã giao diện.
+  -->
+  <rect width="400" height="300" fill="#F3F4F6"/>
+  <g fill="#9CA3AF">
+    <path d="M120 190h160v12H120z"/>
+    <path d="M140 150h120v40H140z"/>
+    <circle cx="160" cy="140" r="14"/>
+    <path d="M180 132h70v18h-70z"/>
+  </g>
+  <text x="200" y="235" text-anchor="middle" font-family="sans-serif" font-size="14"
+        fill="#6B7280">Chưa có ảnh</text>
+</svg>

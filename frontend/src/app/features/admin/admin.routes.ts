@@ -61,6 +61,26 @@ export const adminRoutes: Routes = [
         loadComponent: () => import('./reviews/admin-reviews').then((m) => m.AdminReviews),
         title: 'Đánh giá — Quản trị',
       },
+      {
+        path: 'content/sections',
+        loadComponent: () => import('./content/admin-sections').then((m) => m.AdminSections),
+        title: 'Nội dung trang chủ — Quản trị',
+      },
+      {
+        path: 'content/banners',
+        loadComponent: () => import('./content/admin-banners').then((m) => m.AdminBanners),
+        title: 'Banner — Quản trị',
+      },
+      {
+        path: 'content/gallery',
+        loadComponent: () => import('./content/admin-gallery').then((m) => m.AdminGallery),
+        title: 'Thư viện ảnh — Quản trị',
+      },
+      {
+        path: 'content/posts',
+        loadComponent: () => import('./content/admin-posts').then((m) => m.AdminPosts),
+        title: 'Tin tức — Quản trị',
+      },
     ],
   },
 ];

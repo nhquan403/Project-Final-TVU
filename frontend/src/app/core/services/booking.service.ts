@@ -105,6 +105,14 @@ export const BOOKING_ERROR_MESSAGES: Record<BookingErrorCode, string> = {
   TOO_MANY_REQUESTS: 'Bạn thao tác hơi nhanh. Thử lại sau ít phút.',
 };
 
+/** Một trang kết quả của Spring Data: `number` đếm từ 0. */
+export interface BookingPage {
+  content: Booking[];
+  totalElements: number;
+  totalPages: number;
+  number: number;
+}
+
 /** Tạo, tra cứu, huỷ đơn và theo dõi thanh toán. */
 @Injectable({ providedIn: 'root' })
 export class BookingService {
@@ -137,8 +145,8 @@ export class BookingService {
   }
 
   /** Đơn của tài khoản đang đăng nhập. Backend lọc theo token, không theo tham số. */
-  myBookings(page = 0, size = 10): Observable<{ content: Booking[]; totalElements: number }> {
-    return this.http.get<{ content: Booking[]; totalElements: number }>('/api/me/bookings', {
+  myBookings(page = 0, size = 10): Observable<BookingPage> {
+    return this.http.get<BookingPage>('/api/me/bookings', {
       params: new HttpParams().set('page', page).set('size', size),
     });
   }

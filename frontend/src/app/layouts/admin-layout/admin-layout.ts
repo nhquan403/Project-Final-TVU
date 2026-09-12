@@ -18,6 +18,10 @@ const NAV: NavItem[] = [
   { path: '/admin/rooms', label: 'Phòng' },
   { path: '/admin/promotions', label: 'Khuyến mãi' },
   { path: '/admin/reviews', label: 'Đánh giá' },
+  { path: '/admin/content/sections', label: 'Nội dung trang chủ' },
+  { path: '/admin/content/banners', label: 'Banner' },
+  { path: '/admin/content/gallery', label: 'Thư viện ảnh' },
+  { path: '/admin/content/posts', label: 'Tin tức' },
 ];
 
 /**
