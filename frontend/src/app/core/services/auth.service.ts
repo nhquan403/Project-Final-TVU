@@ -77,6 +77,25 @@ export class AuthService {
       .pipe(tap((response) => this.accessToken.set(response.accessToken)));
   }
 
+  /**
+   * Đổi mật khẩu.
+   *
+   * <p>Thành công thì phiên hiện tại CHẾT: backend tăng `token_version` và thu
+   * hồi mọi refresh token, nên access token đang giữ trong bộ nhớ cũng hết giá
+   * trị ngay. Đó là hành vi đúng — đổi mật khẩu thường là phản ứng khi nghi bị
+   * lộ, nên mọi phiên khác phải chết theo — và màn hình gọi hàm này phải tự
+   * đăng nhập lại bằng mật khẩu mới thay vì tưởng mình vẫn còn phiên.
+   */
+  changePassword(currentPassword: string, newPassword: string): Observable<void> {
+    return this.http
+      .post<void>(
+        '/api/auth/change-password',
+        { currentPassword, newPassword },
+        { withCredentials: true },
+      )
+      .pipe(tap(() => this.clear()));
+  }
+
   /** Gọi lúc khởi động ứng dụng để khôi phục phiên từ cookie sau khi tải lại trang. */
   restoreSession(): Observable<CurrentUser> {
     return this.refresh().pipe(switchMap(() => this.loadCurrentUser()));

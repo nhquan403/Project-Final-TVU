@@ -3,6 +3,7 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, filter, switchMap, take, throwError } from 'rxjs';
 import { AuthService } from '../services/auth.service';
+import { ADMIN_CHANGE_PASSWORD_PATH } from '../guards/admin.guard';
 
 /** Đường không bao giờ được tự làm mới token — chính chúng là cơ chế làm mới. */
 const NO_RETRY_PATHS = ['/api/auth/login', '/api/auth/register', '/api/auth/refresh'];
@@ -49,6 +50,19 @@ export const authInterceptor: HttpInterceptorFn = (request, next) => {
 
   return send(request).pipe(
     catchError((error: unknown) => {
+      // Tài khoản đang bị buộc đổi mật khẩu: MustChangePasswordFilter trả 403
+      // cho mọi đường trừ ba đường tối thiểu. Không bắt ở đây thì mỗi màn hình
+      // quản trị tự hiện một lỗi khó hiểu của riêng nó, và người dùng không
+      // được dẫn tới chỗ duy nhất họ đi tiếp được.
+      if (
+        error instanceof HttpErrorResponse &&
+        error.status === 403 &&
+        (error.error as { title?: string } | null)?.title === 'PASSWORD_CHANGE_REQUIRED'
+      ) {
+        void router.navigate([ADMIN_CHANGE_PASSWORD_PATH]);
+        return throwError(() => error);
+      }
+
       if (!(error instanceof HttpErrorResponse) || error.status !== 401 || isAuthEndpoint) {
         return throwError(() => error);
       }

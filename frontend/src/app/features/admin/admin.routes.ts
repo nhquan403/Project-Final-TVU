@@ -16,6 +16,17 @@ export const adminRoutes: Routes = [
     title: 'Đăng nhập quản trị — Homestay TVH',
   },
   {
+    // Ngoài AdminLayout, cùng lý do với trang đăng nhập: tài khoản đang bị buộc
+    // đổi mật khẩu không gọi được API nào khác, nên mọi liên kết và huy hiệu
+    // trong khung quản trị sẽ hỏng hoặc trống. Hiện một khung rỗng rồi bắt
+    // người dùng đoán là cách chắc chắn khiến họ bấm lung tung.
+    path: 'doi-mat-khau',
+    canActivate: [adminGuard],
+    loadComponent: () =>
+      import('./password/admin-change-password').then((m) => m.AdminChangePassword),
+    title: 'Đổi mật khẩu — Quản trị',
+  },
+  {
     path: '',
     component: AdminLayout,
     canActivate: [adminGuard],
