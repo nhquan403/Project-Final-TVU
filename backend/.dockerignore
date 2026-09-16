@@ -1,0 +1,6 @@
+# Giữ ngữ cảnh gửi tới Docker daemon nhỏ nhất có thể. target/ một mình đã vài
+# trăm MB và không có ích gì: tầng dựng biên dịch lại từ nguồn.
+target/
+uploads/
+.idea/
+*.iml

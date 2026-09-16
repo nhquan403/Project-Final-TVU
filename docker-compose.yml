@@ -1,0 +1,117 @@
+# Bản đóng gói đầy đủ: Postgres + API + web + hộp thư giả.
+#
+# Chạy:  ./scripts/init-env.sh && docker compose up -d --build
+# Mở:    http://localhost          (trang khách + khu quản trị)
+#        http://localhost:8025     (hộp thư giả, xem thư xác nhận)
+#
+# KHÔNG chạy cùng lúc với docker-compose.dev.yml: bản dev bind 5432/1025/8025 ra
+# máy chủ và sẽ đụng cổng. Bản dev dành cho lúc code (backend/frontend chạy trên
+# máy để có hot reload); bản này dành cho lúc trình diễn và triển khai.
+
+name: homestay-tvh
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: tvh-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-homestay}
+      POSTGRES_USER: ${POSTGRES_USER:-homestay}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD chua duoc dat - chay ./scripts/init-env.sh}
+      TZ: Asia/Ho_Chi_Minh
+      PGTZ: Asia/Ho_Chi_Minh
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    # KHÔNG publish 5432 ra máy chủ. Chỉ api cần tới được cơ sở dữ liệu; mở nó
+    # ra ngoài là thêm một bề mặt tấn công mà không đổi lại được gì. Cần truy
+    # vấn tay thì dùng `docker compose exec db psql -U homestay -d homestay`.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-homestay} -d ${POSTGRES_DB:-homestay}"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    restart: unless-stopped
+
+  api:
+    container_name: tvh-api
+    build:
+      context: ./backend
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # Dạng ${BIEN:-mac_dinh} chứ KHÔNG đặt cứng "demo". Đặt cứng thì lệnh
+      # `SPRING_PROFILES_ACTIVE=prod docker compose up -d api` chạy mà không đổi
+      # gì cả — container vẫn khoẻ, và bước kiểm tra "đổi sang prod" báo xanh
+      # trong khi chưa kiểm được điều nó định kiểm.
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-demo}
+      DB_URL: jdbc:postgresql://db:5432/${POSTGRES_DB:-homestay}
+      DB_USER: ${POSTGRES_USER:-homestay}
+      DB_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD chua duoc dat - chay ./scripts/init-env.sh}
+      # Hai biến này KHÔNG có giá trị mặc định, ở đây cũng như ở mọi nơi khác.
+      # Dấu :? làm compose dừng lại với thông báo rõ ràng thay vì để ứng dụng
+      # khởi động với một bí mật mà ai đọc repo cũng biết.
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET chua duoc dat - chay ./scripts/init-env.sh}
+      SEPAY_WEBHOOK_API_KEY: ${SEPAY_WEBHOOK_API_KEY:?SEPAY_WEBHOOK_API_KEY chua duoc dat - chay ./scripts/init-env.sh}
+      SEPAY_ACCOUNT_NUMBER: ${SEPAY_ACCOUNT_NUMBER:-0123456789}
+      SEPAY_BANK_CODE: ${SEPAY_BANK_CODE:-MBBank}
+      # storage.local.dir trong application.yml là đường dẫn TƯƠNG ĐỐI
+      # ("uploads"), bám theo thư mục làm việc của tiến trình. Đặt tuyệt đối ở
+      # đây và gắn volume vào đúng chỗ đó; lệch nhau là ảnh tải lên biến mất sau
+      # mỗi lần `up`. Spring tự ánh xạ STORAGE_LOCAL_DIR → storage.local.dir.
+      STORAGE_LOCAL_DIR: /app/uploads
+      MAIL_HOST: mailpit
+      MAIL_PORT: 1025
+      TZ: Asia/Ho_Chi_Minh
+      JAVA_TOOL_OPTIONS: -Duser.timezone=Asia/Ho_Chi_Minh
+    volumes:
+      - uploads:/app/uploads
+    # Cũng KHÔNG publish 8080. Chỉ nginx cần tới được API — và điều đó quan
+    # trọng hơn vẻ tiện: forward-headers-strategy=framework khiến Spring tin
+    # X-Forwarded-For từ bất kỳ ai gọi thẳng được 8080. Đóng cổng này là thứ
+    # biến "tin header" thành an toàn, vì nginx là đường vào duy nhất.
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:8080/api/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 60s
+    restart: unless-stopped
+
+  web:
+    container_name: tvh-web
+    build:
+      context: ./frontend
+    depends_on:
+      api:
+        condition: service_healthy
+    ports:
+      - "${WEB_PORT:-80}:80"
+    environment:
+      TZ: Asia/Ho_Chi_Minh
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    restart: unless-stopped
+
+  mailpit:
+    image: axllent/mailpit:latest
+    container_name: tvh-mailpit
+    environment:
+      TZ: Asia/Ho_Chi_Minh
+    ports:
+      # Chỉ mở giao diện web để xem thư xác nhận lúc trình diễn. Cổng SMTP 1025
+      # không mở ra ngoài: chỉ api gửi thư, và nó gọi qua mạng nội bộ.
+      - "${MAILPIT_PORT:-8025}:8025"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q --spider http://localhost:8025/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  uploads:
