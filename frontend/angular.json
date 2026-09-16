@@ -52,7 +52,15 @@
                   "replace": "src/app/features/ui-kit/ui-kit.routes.ts",
                   "with": "src/app/features/ui-kit/ui-kit.routes.prod.ts"
                 }
-              ]
+              ],
+              "optimization": {
+                "scripts": true,
+                "styles": {
+                  "minify": true,
+                  "inlineCritical": false
+                },
+                "fonts": true
+              }
             },
             "development": {
               "optimization": false,

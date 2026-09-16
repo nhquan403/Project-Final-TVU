@@ -5,7 +5,12 @@ springdoc:
     enabled: true
   swagger-ui:
     enabled: true
-    path: /swagger-ui/index.html
+    # KHÔNG khai `path`. Khai `path: /swagger-ui/index.html` (bản trước) làm
+    # springdoc đăng ký một redirect ngay tại URL đó, che mất chính tệp
+    # index.html của webjar, rồi chuyển hướng sang `/swagger-ui/swagger-ui/
+    # index.html` — thừa một cấp. Bỏ thuộc tính này thì webjar được phục vụ
+    # thẳng ở /swagger-ui/index.html, đúng URL mà SecurityConfig đã mở
+    # (`/swagger-ui/**`) và đúng URL ghi trong tài liệu.
 
 payments:
   simulator:
