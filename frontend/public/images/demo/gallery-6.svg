@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Bàn ăn ngoài hiên">
+<rect width="800" height="600" fill="#0B4B3E"/>
+<circle cx="400" cy="276" r="175" fill="#FFFFFF"/>
+<circle cx="400" cy="276" r="128" fill="#B03A0B"/>
+<circle cx="400" cy="276" r="72" fill="#0F5C4C"/>
+<text x="400" y="582" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-size="16" fill="#FFFFFF">Bàn ăn ngoài hiên</text>
+</svg>

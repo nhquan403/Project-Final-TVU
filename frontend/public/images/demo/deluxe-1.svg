@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Phòng Deluxe">
+<rect width="800" height="600" fill="#F2EEE8"/>
+<rect y="372" width="800" height="228" fill="#F2EEE8"/>
+<rect x="480" y="84" width="224" height="204" fill="#FFFFFF" stroke="#8C8071" stroke-width="4"/>
+<line x1="592" y1="84" x2="592" y2="288" stroke="#8C8071" stroke-width="4"/>
+<rect x="484" y="180" width="216" height="102" fill="#0F5C4C" opacity="0.35"/>
+<rect x="64" y="300" width="336" height="156" rx="8" fill="#0F5C4C"/>
+<rect x="74" y="276" width="316" height="34" rx="10" fill="#FFFFFF"/>
+<rect x="64" y="402" width="336" height="14" fill="#8C8071" opacity="0.5"/>
+<text x="400" y="582" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-size="16" fill="#6B625A">Phòng Deluxe</text>
+</svg>

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Bungalow ven sông">
+<rect width="800" height="600" fill="#0F5C4C"/>
+<rect y="348" width="800" height="252" fill="#0B4B3E"/>
+<rect x="0" y="396" width="800" height="6" fill="#FFFFFF" opacity="0.45"/>
+<rect x="40" y="444" width="800" height="6" fill="#FFFFFF" opacity="0.45"/>
+<rect x="0" y="491" width="800" height="6" fill="#FFFFFF" opacity="0.45"/>
+<rect x="40" y="540" width="800" height="6" fill="#FFFFFF" opacity="0.45"/>
+<rect x="463" y="204" width="240" height="144" fill="#8C8071"/>
+<polygon points="440,204 584,108 728,204" fill="#0B4B3E"/>
+<text x="400" y="582" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-size="16" fill="#1C1917">Bungalow ven sông</text>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 540" width="960" height="540" role="img" aria-label="Đi Trà Vinh mùa nào đẹp">
+<rect width="960" height="540" fill="#FBF9F6"/>
+<rect x="0" y="0" width="345" height="540" fill="#0F5C4C"/>
+<rect x="422" y="162" width="441" height="14" rx="7" fill="#E2DBD1"/>
+<rect x="422" y="226" width="401" height="14" rx="7" fill="#E2DBD1"/>
+<rect x="422" y="291" width="361" height="14" rx="7" fill="#E2DBD1"/>
+<rect x="422" y="356" width="321" height="14" rx="7" fill="#E2DBD1"/>
+<text x="422" y="118" font-family="system-ui,-apple-system,sans-serif" font-size="30" font-weight="700" fill="#1C1917">Đi Trà Vinh mùa nào đẹp</text>
+</svg>

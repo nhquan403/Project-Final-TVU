@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" aria-label="Homestay TVH bên sông">
+<rect width="1600" height="900" fill="#0F5C4C"/>
+<rect y="522" width="1600" height="378" fill="#0B4B3E"/>
+<rect x="0" y="594" width="1600" height="6" fill="#FFFFFF" opacity="0.45"/>
+<rect x="80" y="666" width="1600" height="6" fill="#FFFFFF" opacity="0.45"/>
+<rect x="0" y="738" width="1600" height="6" fill="#FFFFFF" opacity="0.45"/>
+<rect x="80" y="810" width="1600" height="6" fill="#FFFFFF" opacity="0.45"/>
+<rect x="927" y="306" width="480" height="216" fill="#8C8071"/>
+<polygon points="880,306 1168,162 1456,306" fill="#0B4B3E"/>
+<text x="800" y="882" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-size="16" fill="#1C1917">Homestay TVH bên sông</text>
+</svg>

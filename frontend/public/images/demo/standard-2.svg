@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Góc bàn làm việc">
+<rect width="800" height="600" fill="#FFFFFF"/>
+<rect y="372" width="800" height="228" fill="#F2EEE8"/>
+<rect x="64" y="300" width="336" height="156" rx="8" fill="#E2DBD1"/>
+<rect x="74" y="276" width="316" height="34" rx="10" fill="#FFFFFF"/>
+<rect x="64" y="402" width="336" height="14" fill="#8C8071" opacity="0.5"/>
+<text x="400" y="582" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-size="16" fill="#6B625A">Góc bàn làm việc</text>
+</svg>
