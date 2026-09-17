@@ -22,7 +22,7 @@ Ba endpoint khoảng đóng phòng lồng dưới `/api/admin/rooms` chứ khôn
 `/api/admin/closures` riêng: khoảng đóng không tồn tại độc lập với phòng, và lồng
 vào tài nguyên cha thì ma trận dưới đây không phải thêm dòng nào.
 
-`EndpointAuthorizationIT` giữ một ma trận 29 tiền tố và có hai bài kiểm:
+`EndpointAuthorizationIT` giữ một ma trận 30 tiền tố và có hai bài kiểm:
 mọi endpoint đã đăng ký phải nằm trong ma trận, và **cấm** khai lại dòng bao
 `/api/admin`. Liệt kê từng nhóm quản trị buộc người thêm endpoint mới phải nghĩ
 về quyền của nó, thay vì được che miễn phí.

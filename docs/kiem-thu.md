@@ -1,6 +1,6 @@
 # Kiểm thử
 
-**127 test, 18 lớp**, tất cả xanh. Chạy:
+**129 test, 18 lớp**, tất cả xanh. Chạy:
 
 ```bash
 cd backend && ./mvnw verify
@@ -12,7 +12,7 @@ Testcontainers. Không mock cơ sở dữ liệu, vì phần lớn thứ đáng 
 trigger hoãn, mã `SQLSTATE`. Mock chúng là kiểm thử một thứ không tồn tại.
 
 Dự án **không** cấu hình failsafe. Surefire được nới để nhận cả lớp hậu tố `*IT`,
-nên `verify` = biên dịch + chạy 127 test + đóng gói, không có pha
+nên `verify` = biên dịch + chạy 129 test + đóng gói, không có pha
 integration-test riêng.
 
 ## Từng lớp chứng minh điều gì
@@ -33,21 +33,21 @@ integration-test riêng.
 | `AvailabilityQueryIT` | 6 | Đếm phòng trống đúng trong những tình huống dễ đếm sai: phòng `MAINTENANCE` đang có đơn **không** bị trừ hai lần; loại phòng hết sạch biến mất khỏi kết quả; khoảng nửa mở `[)` cho khách A trả và khách B nhận cùng ngày; sức chứa so theo **từng phòng**, không so tổng khách; lịch giá trả đủ mọi ngày kể cả ngày đã kín; lịch không kèm `roomTypeId` gộp mọi loại phòng. |
 | `BookingLifecycleIT` | 8 | Bảng chuyển trạng thái: bước hợp lệ đi được, bước không hợp lệ bị `INVALID_STATE_TRANSITION`. `CHECKED_OUT` **không** nhả phòng — bài kiểm này sinh ra từ một lỗi thật: nhả phòng lúc trả phòng làm trigger `assert_booking_room_count` bác giao dịch. |
 | `BookingExpiryIT` | 4 | Bộ quét chuyển đơn quá hạn sang `EXPIRED`, nhả phòng, hoàn lượt khuyến mãi; đơn `PARTIAL` (đã có tiền) **không** bị quét — quét nhầm là xoá một đơn đã trả tiền thật. |
-| **`RoomClosureIT`** | 8 | Khoảng đóng phòng trừ đúng phòng và đúng đêm ở **cả bốn** truy vấn phòng trống. Bài quan trọng nhất là `closedRoomIsNeverAssignedToNewBooking`: sót truy vấn chọn phòng vật lý thì đơn vẫn tạo được và phòng đang sửa chữa vẫn bị gán — lỗi im lặng chỉ lộ ra khi khách tới nhận phòng. Kèm biên nửa mở, lịch không rơi mất ngày, chồng khoảng bị `23P01`, và đóng phòng **không** huỷ đơn. |
+| **`RoomClosureIT`** | 9 | Khoảng đóng phòng trừ đúng phòng và đúng đêm ở **cả bốn** truy vấn phòng trống. Bài quan trọng nhất là `closedRoomIsNeverAssignedToNewBooking`: sót truy vấn chọn phòng vật lý thì đơn vẫn tạo được và phòng đang sửa chữa vẫn bị gán — lỗi im lặng chỉ lộ ra khi khách tới nhận phòng. Kèm biên nửa mở, lịch không rơi mất ngày, chồng khoảng bị `23P01`, và đóng phòng **không** huỷ đơn. |
 
 ### Thanh toán
 
 | Lớp | Test | Chứng minh |
 |---|---:|---|
 | `SepayWebhookIT` | 10 | Sai khoá API bị từ chối; webhook gửi lại không cộng tiền hai lần (`UNIQUE (provider, external_id)`); đủ tiền → `CONFIRMED`; thiếu tiền → `AWAITING_REVIEW` + `NEEDS_REVIEW`; thừa tiền → `REFUND_REQUIRED`; webhook không khớp đơn nào vẫn được ghi nhật ký. |
-| **`PaymentRaceIT`** | 4 | Cửa sổ tranh chấp giữa webhook và bộ quét hết hạn. Tiền về **sau khi** đơn đã `EXPIRED`: đơn mở lại sang `AWAITING_REVIEW`, thử gán phòng lại; không gán được thì vào hàng đợi hoàn tiền. Đây là bài kiểm cho tiêu chí "không nhánh nào để tiền biến mất im lặng". |
+| **`PaymentRaceIT`** | 5 | Cửa sổ tranh chấp giữa webhook và bộ quét hết hạn. Tiền về **sau khi** đơn đã `EXPIRED`: đơn mở lại sang `AWAITING_REVIEW`, thử gán phòng lại; không gán được thì vào hàng đợi hoàn tiền. Nhánh giành lại phòng cũng phải tôn trọng **khoảng đóng phòng** — bài kiểm đó quan trọng vì nhánh này chạy trong webhook chứ không theo cú bấm của ai, nên sai ở đây là sai im lặng. Đây là bài kiểm cho tiêu chí "không nhánh nào để tiền biến mất im lặng". |
 
 ### Xác thực và phân quyền
 
 | Lớp | Test | Chứng minh |
 |---|---:|---|
 | `AuthFlowIT` | 7 | Đăng ký, đăng nhập, làm mới token, đăng xuất; `token_version` tăng làm token cũ chết ngay; refresh token lưu dạng hash. |
-| **`EndpointAuthorizationIT`** | 3 | Mọi endpoint đã đăng ký đều nằm trong ma trận 29 tiền tố; **cấm** khai lại dòng bao `/api/admin`; endpoint không khai gì bị `denyAll()` chặn. Lớp này biến "nhớ phân quyền" thành "không thể quên". |
+| **`EndpointAuthorizationIT`** | 3 | Mọi endpoint đã đăng ký đều nằm trong ma trận 30 tiền tố; **cấm** khai lại dòng bao `/api/admin`; endpoint không khai gì bị `denyAll()` chặn. Lớp này biến "nhớ phân quyền" thành "không thể quên". |
 
 ### Nội dung và đánh giá
 

@@ -128,7 +128,9 @@ public class AdminRoomService {
     @Transactional(readOnly = true)
     public List<RoomClosureView> listClosures(Long roomId) {
         require(roomId);
-        return closures.findByRoomIdOrderByFromDateAsc(roomId).stream()
+        return closures
+                .findByRoomIdAndToDateGreaterThanOrderByFromDateAsc(roomId, LocalDate.now(clock))
+                .stream()
                 .map(AdminRoomService::toView)
                 .toList();
     }
@@ -190,6 +192,13 @@ public class AdminRoomService {
      * <p>Lọc theo khoảng chứ không lấy mọi đơn tương lai của phòng: một đơn ba
      * tháng nữa không liên quan gì tới việc sơn phòng tuần sau, và liệt kê nó ra
      * chỉ làm cảnh báo mất trọng lượng.
+     *
+     * <p><b>Danh sách này có thể thiếu dưới tranh chấp.</b> Không có ràng buộc
+     * nào giữa {@code room_closures} và {@code booking_rooms}, nên một đơn commit
+     * ngay sau lượt đọc này sẽ không được báo. Đây là cảnh báo cho người, không
+     * phải bất biến của hệ thống — và vì đóng phòng cố ý KHÔNG huỷ đơn, thiếu một
+     * dòng cảnh báo không làm mất dữ liệu nào. Muốn chắc chắn thì mở lại màn hình
+     * để đọc lại.
      */
     private List<AffectedBooking> affectedBy(Long roomId, LocalDate from, LocalDate to) {
         return bookings.findActiveFutureByRoom(roomId, LocalDate.now(clock)).stream()

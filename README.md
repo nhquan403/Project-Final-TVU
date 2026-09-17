@@ -123,7 +123,7 @@ Endpoint `/api/health` phơi bày cả `appZone` lẫn `jvmDefaultZone` để ki
 ## Kiểm thử
 
 ```bash
-cd backend  && ./mvnw verify   # 127 test — CẦN Docker (Testcontainers)
+cd backend  && ./mvnw verify   # 129 test — CẦN Docker (Testcontainers)
 cd frontend && npm run build && npm run lint
 ```
 
@@ -158,7 +158,7 @@ Bảng đầy đủ: [docs/cai-dat.md](docs/cai-dat.md#xử-lý-sự-cố).
 | [api.md](docs/api.md) | 80 thao tác, quyền truy cập, giới hạn tần suất, mã lỗi |
 | [bao-mat.md](docs/bao-mat.md) | Mô hình bảo mật **và 7 giới hạn đã biết** |
 | [cai-dat.md](docs/cai-dat.md) | Cài đặt bằng Docker và không Docker, xử lý sự cố |
-| [kiem-thu.md](docs/kiem-thu.md) | 127 test — từng lớp chứng minh điều gì |
+| [kiem-thu.md](docs/kiem-thu.md) | 129 test — từng lớp chứng minh điều gì |
 | [thanh-toan-sepay.md](docs/thanh-toan-sepay.md) | Chi tiết tích hợp SePay và webhook |
 | [so-lieu-va-quan-tri.md](docs/so-lieu-va-quan-tri.md) | Cách tính số liệu dashboard |
 | [thiet-ke-giao-dien.md](docs/thiet-ke-giao-dien.md) | Design system, token màu, quy ước UI |

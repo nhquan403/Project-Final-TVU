@@ -59,7 +59,7 @@ vừa nhập để người dùng không phải gõ hai lần.
 Mặc định **đóng**: `SecurityConfig` kết thúc bằng `anyRequest().denyAll()`. Một
 endpoint mới quên khai quyền sẽ bị từ chối, không lọt ra công khai.
 
-`EndpointAuthorizationIT` giữ một ma trận 29 tiền tố và kiểm hai điều:
+`EndpointAuthorizationIT` giữ một ma trận 30 tiền tố và kiểm hai điều:
 
 1. Mọi endpoint đã đăng ký đều nằm trong ma trận.
 2. **Cấm** khai lại dòng bao `/api/admin`.

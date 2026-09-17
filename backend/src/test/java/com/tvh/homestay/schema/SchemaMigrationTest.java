@@ -72,7 +72,8 @@ class SchemaMigrationTest extends AbstractPostgresIT {
     void closureRangeIsGenerated() throws Exception {
         assertThat(queryForInt("""
                 SELECT count(*) FROM information_schema.columns
-                 WHERE table_name = 'room_closures' AND column_name = 'blocked'
+                 WHERE table_schema = 'public'
+                   AND table_name = 'room_closures' AND column_name = 'blocked'
                    AND is_generated = 'ALWAYS'
                 """)).isEqualTo(1);
     }

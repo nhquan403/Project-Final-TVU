@@ -184,7 +184,11 @@ may mắn.
 5. **Controller** — ba endpoint lồng dưới `/api/admin/rooms`.
 6. **Dữ liệu mẫu** — một khoảng đóng trên một phòng **không** có đơn nào trong
    khoảng đó, ngày tương đối (`CURRENT_DATE + 40` đến `+45`), lý do
-   *"Sơn lại phòng"*. Idempotent: `WHERE NOT EXISTS` theo `(room_id, from_date)`.
+   *"Sơn lại phòng"*. Idempotent: `WHERE NOT EXISTS (SELECT 1 FROM room_closures)`
+   — **không** theo `(room_id, from_date)`. `from_date` là `CURRENT_DATE + 40`,
+   nên khoá theo nó thì mỗi lần khởi động lại vào một ngày khác sẽ sinh thêm
+   một khoảng đóng nữa. Phòng cũng được CHỌN bằng truy vấn (phòng đầu tiên
+   không có đơn giao với khoảng đó) chứ không ghi cứng số phòng.
 7. **Giao diện** — khối khoảng đóng trong `/admin/rooms`, hiển thị dạng
    "N đêm: dd/MM – dd/MM (mở lại từ dd/MM)".
 8. **Tài liệu** — cập nhật `erd.md` (21 bảng + mô tả bảng mới + lý do dùng

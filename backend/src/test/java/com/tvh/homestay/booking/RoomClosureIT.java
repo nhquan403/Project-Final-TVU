@@ -189,6 +189,27 @@ class RoomClosureIT extends AbstractPostgresIT {
     }
 
     @Test
+    @DisplayName("Khoảng đã qua biến khỏi danh sách quản trị nhưng vẫn còn trong bảng")
+    void expiredClosuresLeaveTheAdminList() {
+        LocalDate today = LocalDate.now();
+        close(1L, today.plusDays(10), today.plusDays(12));
+        // Khoảng đã kết thúc: không còn chặn đêm nào từ hôm nay trở đi.
+        close(1L, today.minusDays(5), today.minusDays(2));
+        // Khoảng đang diễn ra dở phải CÒN hiện ra — sửa xong sớm thì phải xoá được.
+        close(1L, today.minusDays(1), today.plusDays(1));
+
+        assertThat(adminRooms.listClosures(1L))
+                .as("chỉ khoảng còn chặn đêm từ hôm nay trở đi mới thao tác được")
+                .hasSize(2)
+                .allMatch(view -> view.toDate().isAfter(today));
+
+        assertThat(jdbc.queryForObject(
+                        "SELECT count(*) FROM room_closures WHERE room_id = 1", Integer.class))
+                .as("lọc ở màn hình, KHÔNG xoá dữ liệu — bản ghi cũ là vết lịch sử")
+                .isEqualTo(3);
+    }
+
+    @Test
     @DisplayName("Xoá khoảng đóng trả phòng về kho bán ngay")
     void deletingClosureReopensRoom() {
         var result = close(1L, CHECK_IN, CHECK_OUT);

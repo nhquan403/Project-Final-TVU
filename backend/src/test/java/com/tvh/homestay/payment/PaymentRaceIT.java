@@ -2,6 +2,8 @@ package com.tvh.homestay.payment;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.tvh.homestay.admin.AdminRoomService;
+import com.tvh.homestay.admin.dto.AdminDtos.RoomClosureRequest;
 import com.tvh.homestay.booking.BookingExpiryScheduler;
 import com.tvh.homestay.booking.BookingService;
 import com.tvh.homestay.booking.BookingTestFixtures;
@@ -52,6 +54,9 @@ class PaymentRaceIT extends AbstractPostgresIT {
 
     @Autowired
     private BookingExpiryScheduler expiry;
+
+    @Autowired
+    private AdminRoomService adminRooms;
 
     @Autowired
     private JdbcTemplate jdbc;
@@ -115,6 +120,38 @@ class PaymentRaceIT extends AbstractPostgresIT {
         assertThat(statusOf(taker.code()))
                 .as("đơn của khách sau không được đụng tới")
                 .isEqualTo("PENDING_PAYMENT");
+    }
+
+    @Test
+    @DisplayName("Tiền về muộn nhưng phòng đã bị ĐÓNG → không giành lại được, vào đối soát thủ công")
+    void closedRoomBlocksLatePaymentReallocation() {
+        // Nhánh giành lại phòng đi qua cùng truy vấn chọn phòng với lúc tạo đơn,
+        // nên khoảng đóng phải chặn cả ở đây. Sót chỗ này thì hệ thống tự gán
+        // lại đúng cái phòng đang sửa chữa — và nó làm điều đó IM LẶNG, vì
+        // nhánh này chạy trong webhook chứ không phải theo một cú bấm của ai.
+        BookingTestFixtures.reset(jdbc, 1);
+        BookingResponse abandoned = createBooking(1);
+        assertThat(expiry.runOnce()).isEqualTo(1);
+        assertThat(activeRooms(abandoned.code())).isZero();
+
+        adminRooms.addClosure(
+                1L, new RoomClosureRequest(CHECK_IN, CHECK_OUT, "Sửa điều hoà"), null);
+
+        WebhookProcessingResult result = webhooks.handle(json(
+                nextEventId++, RECEIVING_ACCOUNT, transferContent(abandoned), abandoned.depositAmount()));
+
+        assertThat(result).isEqualTo(WebhookProcessingResult.LATE);
+        assertThat(statusOf(abandoned.code()))
+                .as("phòng duy nhất đang đóng thì không có gì để giành lại")
+                .isEqualTo("AWAITING_REVIEW");
+        assertThat(activeRooms(abandoned.code()))
+                .as("tuyệt đối không được gán lại phòng đang đóng")
+                .isZero();
+        assertThat(paymentColumn(transferContent(abandoned), "reconcile_status"))
+                .isEqualTo("NEEDS_REVIEW");
+        assertThat(amountReceived(transferContent(abandoned)))
+                .as("tiền vẫn phải được ghi nhận — không nhánh nào để tiền biến mất im lặng")
+                .isEqualByComparingTo(abandoned.depositAmount());
     }
 
     /**

@@ -188,6 +188,6 @@ dev bind 5432/1025/8025 ra máy chủ và sẽ đụng cổng.
 Xem [kiem-thu.md](./kiem-thu.md). Tóm tắt:
 
 ```bash
-cd backend  && ./mvnw verify     # 127 test, CẦN Docker (Testcontainers)
+cd backend  && ./mvnw verify     # 129 test, CẦN Docker (Testcontainers)
 cd frontend && npm run build && npm run lint
 ```

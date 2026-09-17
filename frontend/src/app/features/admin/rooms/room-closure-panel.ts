@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, signal } from '@angular/core';
+import { of, switchMap } from 'rxjs';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { AdminCatalogService } from '../../../core/services/admin-catalog.service';
 import type {
   AffectedBooking,
@@ -126,10 +128,27 @@ export class RoomClosurePanel {
   protected readonly affected = signal<AffectedBooking[]>([]);
   protected readonly error = signal<string | null>(null);
   protected readonly saving = signal(false);
-  protected readonly selectedRoom = signal('');
+  private readonly pickedRoom = signal('');
+
+  /**
+   * Phòng đang chọn, ĐỐI CHIẾU với danh sách phòng màn hình cha đang hiển thị.
+   *
+   * <p>Danh sách cha thay đổi theo bộ lọc loại phòng. Giữ id thô thì sau khi
+   * đổi bộ lọc, thẻ `select` rơi về placeholder "Chọn phòng" (không `option`
+   * nào khớp) trong khi khối bên dưới vẫn mở, vẫn liệt kê khoảng đóng của phòng
+   * cũ, và nút "Thêm" vẫn POST vào đúng phòng cũ đó — quản trị viên đóng một
+   * phòng mà màn hình không hề hiển thị. Đối chiếu ở đây làm khối tự đóng lại
+   * thay vì thao tác nhầm đích.
+   */
+  protected readonly selectedRoom = computed(() =>
+    this.rooms().some((room) => String(room.id) === this.pickedRoom()) ? this.pickedRoom() : '',
+  );
   protected readonly reason = signal('');
   protected readonly range = signal<DateRange>({ checkIn: null, checkOut: null });
   protected readonly pendingRemoval = signal<RoomClosureView | null>(null);
+
+  /** Tăng lên để bắt luồng tải chạy lại khi phòng không đổi (sau khi thêm/xoá). */
+  private readonly reload = signal(0);
 
   protected readonly roomOptions = computed<SelectOption[]>(() =>
     this.rooms().map((room) => ({
@@ -174,24 +193,33 @@ export class RoomClosurePanel {
 
   /** Đổi phòng thì xoá luôn cảnh báo của phòng trước — nó không nói về phòng này. */
   protected pickRoom(roomId: string): void {
-    this.selectedRoom.set(roomId);
+    this.pickedRoom.set(roomId);
     this.affected.set([]);
-    this.loadClosures();
+    this.reload.set(this.reload() + 1);
   }
 
   protected loadClosures(): void {
-    const roomId = this.selectedRoom();
-    if (!roomId) {
-      this.closures.set([]);
-      return;
-    }
-    this.catalog.closures(Number(roomId)).subscribe({
-      next: (list) => {
-        this.closures.set(list);
-        this.error.set(null);
-      },
-      error: () => this.error.set('Không tải được danh sách khoảng đóng.'),
-    });
+    this.reload.set(this.reload() + 1);
+  }
+
+  constructor() {
+    // switchMap huỷ lượt gọi trước khi phòng đổi nhanh hai lần: subscribe trần
+    // để hai phản hồi về ngược thứ tự, và màn hình hiện khoảng đóng của phòng A
+    // dưới tên phòng B.
+    toObservable(computed(() => `${this.selectedRoom()}:${this.reload()}`))
+      .pipe(
+        switchMap(() => {
+          const roomId = this.selectedRoom();
+          return roomId ? this.catalog.closures(Number(roomId)) : of([]);
+        }),
+      )
+      .subscribe({
+        next: (list) => {
+          this.closures.set(list);
+          this.error.set(null);
+        },
+        error: () => this.error.set('Không tải được danh sách khoảng đóng.'),
+      });
   }
 
   protected add(): void {
