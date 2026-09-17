@@ -15,6 +15,7 @@ import {
   type SelectOption,
   type TableColumn,
 } from '../../../shared/ui';
+import { RoomClosurePanel } from './room-closure-panel';
 
 const ROOM_STATUS: Record<string, string> = {
   AVAILABLE: 'Đang khai thác',
@@ -28,11 +29,15 @@ const ROOM_STATUS: Record<string, string> = {
  * Đổi trạng thái phòng KHÔNG tự huỷ đơn nào. Backend trả về danh sách đơn bị
  * ảnh hưởng và màn hình hiện chúng ra: đổi phòng cho khách hay hoãn bảo trì là
  * quyết định kinh doanh, không phải hệ quả tự động của một cú bấm.
+ *
+ * Màn hình có HAI công cụ ngừng bán và chúng khác nhau ở chỗ có ngày hay không:
+ * trạng thái vận hành là công tắc vĩnh viễn (phải nhớ bật lại), còn khoảng đóng
+ * ở khối cuối trang tự hết hạn.
  */
 @Component({
   selector: 'app-admin-rooms',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UiButton, UiSelect, UiInput, UiDataTable, UiFilterChips],
+  imports: [UiButton, UiSelect, UiInput, UiDataTable, UiFilterChips, RoomClosurePanel],
   template: `
     <h1 class="mb-4 text-xl font-bold text-text">Phòng</h1>
 
@@ -107,6 +112,8 @@ const ROOM_STATUS: Record<string, string> = {
         </p>
       }
     </section>
+
+    <app-room-closure-panel [rooms]="rooms()" />
   `,
 })
 export class AdminRooms {

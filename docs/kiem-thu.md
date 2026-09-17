@@ -1,6 +1,6 @@
 # Kiểm thử
 
-**118 test, 17 lớp**, tất cả xanh. Chạy:
+**127 test, 18 lớp**, tất cả xanh. Chạy:
 
 ```bash
 cd backend && ./mvnw verify
@@ -12,7 +12,7 @@ Testcontainers. Không mock cơ sở dữ liệu, vì phần lớn thứ đáng 
 trigger hoãn, mã `SQLSTATE`. Mock chúng là kiểm thử một thứ không tồn tại.
 
 Dự án **không** cấu hình failsafe. Surefire được nới để nhận cả lớp hậu tố `*IT`,
-nên `verify` = biên dịch + chạy 118 test + đóng gói, không có pha
+nên `verify` = biên dịch + chạy 127 test + đóng gói, không có pha
 integration-test riêng.
 
 ## Từng lớp chứng minh điều gì
@@ -21,7 +21,7 @@ integration-test riêng.
 
 | Lớp | Test | Chứng minh |
 |---|---:|---|
-| `SchemaMigrationTest` | 7 | Migration dựng đúng **20 bảng**; mọi migration `success`; không migration nào bị sửa sau khi phát hành (checksum). Đây là lớp canh nguyên tắc "migration bất biến". |
+| `SchemaMigrationTest` | 8 | Migration dựng đúng **21 bảng**; mọi migration `success`; không migration nào bị sửa sau khi phát hành (checksum); cả hai cột `daterange` đều là cột sinh tự động. Đây là lớp canh nguyên tắc "migration bất biến". |
 | `SchemaConstraintIT` | 9 | Từng ràng buộc `CHECK` thật sự chặn: email không chữ thường, trạng thái sai chính tả, số tiền âm, `check_out <= check_in`, `rating` ngoài 1–5. Ràng buộc không được kiểm là ràng buộc có thể đã bị viết sai từ đầu mà không ai biết. |
 | `SqlStatesIT` | 2 | `SQLSTATE 23P01` (exclusion violation) và `25P02` (giao dịch đã hỏng) được dịch đúng. Lớp này tồn tại vì toàn bộ chiến lược xử lý tranh chấp dựa trên việc đọc đúng hai mã đó. |
 
@@ -33,6 +33,7 @@ integration-test riêng.
 | `AvailabilityQueryIT` | 6 | Đếm phòng trống đúng trong những tình huống dễ đếm sai: phòng `MAINTENANCE` đang có đơn **không** bị trừ hai lần; loại phòng hết sạch biến mất khỏi kết quả; khoảng nửa mở `[)` cho khách A trả và khách B nhận cùng ngày; sức chứa so theo **từng phòng**, không so tổng khách; lịch giá trả đủ mọi ngày kể cả ngày đã kín; lịch không kèm `roomTypeId` gộp mọi loại phòng. |
 | `BookingLifecycleIT` | 8 | Bảng chuyển trạng thái: bước hợp lệ đi được, bước không hợp lệ bị `INVALID_STATE_TRANSITION`. `CHECKED_OUT` **không** nhả phòng — bài kiểm này sinh ra từ một lỗi thật: nhả phòng lúc trả phòng làm trigger `assert_booking_room_count` bác giao dịch. |
 | `BookingExpiryIT` | 4 | Bộ quét chuyển đơn quá hạn sang `EXPIRED`, nhả phòng, hoàn lượt khuyến mãi; đơn `PARTIAL` (đã có tiền) **không** bị quét — quét nhầm là xoá một đơn đã trả tiền thật. |
+| **`RoomClosureIT`** | 8 | Khoảng đóng phòng trừ đúng phòng và đúng đêm ở **cả bốn** truy vấn phòng trống. Bài quan trọng nhất là `closedRoomIsNeverAssignedToNewBooking`: sót truy vấn chọn phòng vật lý thì đơn vẫn tạo được và phòng đang sửa chữa vẫn bị gán — lỗi im lặng chỉ lộ ra khi khách tới nhận phòng. Kèm biên nửa mở, lịch không rơi mất ngày, chồng khoảng bị `23P01`, và đóng phòng **không** huỷ đơn. |
 
 ### Thanh toán
 
@@ -97,3 +98,8 @@ Danh sách tối thiểu nên chạy tay trên bản đóng gói:
 7. `/admin/payments` có sẵn khoản cần đối soát.
 8. Sửa khối "hero" trong CMS → mở lại trang chủ thấy đổi.
 9. Mở `localhost:8025` xem thư xác nhận đã gửi.
+10. `/admin/rooms` → khối "Ngày không nhận khách": đóng một phòng vài ngày, tìm
+    phòng đúng khoảng đó thấy số phòng giảm 1, đêm mở lại **không** giảm.
+
+Dữ liệu mẫu có sẵn một khoảng đóng ở `CURRENT_DATE + 40 .. + 45` — cố ý đặt xa
+khoảng ngày hội đồng thường thử đặt, nên nó không che mất phòng lúc trình diễn.

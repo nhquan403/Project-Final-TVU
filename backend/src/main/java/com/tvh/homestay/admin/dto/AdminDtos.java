@@ -198,6 +198,31 @@ public final class AdminDtos {
 
     public record RoomStatusResult(RoomView room, List<AffectedBooking> affectedBookings) {}
 
+    /**
+     * Một khoảng ngày phòng không nhận khách.
+     *
+     * <p>{@code toDate} là ngày MỞ BÁN LẠI, không phải đêm cuối bị chặn — quy
+     * ước nửa mở {@code [)} y hệt {@code booking_rooms.stay}. {@code nights}
+     * được tính sẵn ở backend để giao diện không tự trừ ngày rồi lệch một đêm.
+     */
+    public record RoomClosureView(
+            Long id,
+            Long roomId,
+            String roomNumber,
+            LocalDate fromDate,
+            LocalDate toDate,
+            int nights,
+            String reason) {}
+
+    public record RoomClosureRequest(
+            @NotNull LocalDate fromDate,
+            @NotNull LocalDate toDate,
+            @Size(max = 300) String reason) {}
+
+    /** Đóng phòng KHÔNG huỷ đơn nào — danh sách dưới đây chỉ để người quyết định nhìn thấy. */
+    public record RoomClosureResult(
+            RoomClosureView closure, List<AffectedBooking> affectedBookings) {}
+
     // ─── Khuyến mãi ──────────────────────────────────────────────────────
 
     public record PromotionView(

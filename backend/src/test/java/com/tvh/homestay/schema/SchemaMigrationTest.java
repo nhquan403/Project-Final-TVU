@@ -15,9 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest;
  * Chứng minh hai điều cùng lúc:
  *
  * <ol>
- *   <li>Sáu file migration chạy hết trên PostgreSQL 16 thật.
+ *   <li>Tám file migration chạy hết trên PostgreSQL 16 thật.
  *   <li>Spring context khởi động được với {@code ddl-auto=validate} — nghĩa là
- *       19 entity khớp từng cột với schema mà migration dựng ra.
+ *       20 entity khớp từng cột với schema mà migration dựng ra.
  * </ol>
  *
  * <p>Điều thứ hai là điều đắt giá: {@code validate} so từng cột, từng kiểu.
@@ -31,20 +31,20 @@ class SchemaMigrationTest extends AbstractPostgresIT {
     private DataSource dataSource;
 
     @Test
-    @DisplayName("Migration dựng đúng 20 bảng")
+    @DisplayName("Migration dựng đúng 21 bảng")
     void migrationsCreateExpectedTables() throws Exception {
         assertThat(queryForInt("""
                 SELECT count(*) FROM information_schema.tables
                  WHERE table_schema = 'public'
                    AND table_name <> 'flyway_schema_history'
-                """)).isEqualTo(20);
+                """)).isEqualTo(21);
     }
 
     @Test
     @DisplayName("Mọi migration đều Success, không cái nào Failed")
     void everyMigrationSucceeded() throws Exception {
-        // V7 (booking_notes) là migration thứ bảy, thêm ở Phase 7.
-        assertThat(queryForInt("SELECT count(*) FROM flyway_schema_history WHERE success")).isEqualTo(7);
+        // V8 (room_closures) là migration thứ tám, thêm ở Phase 10.
+        assertThat(queryForInt("SELECT count(*) FROM flyway_schema_history WHERE success")).isEqualTo(8);
         assertThat(queryForInt("SELECT count(*) FROM flyway_schema_history WHERE NOT success")).isZero();
     }
 
@@ -55,11 +55,25 @@ class SchemaMigrationTest extends AbstractPostgresIT {
     }
 
     @Test
-    @DisplayName("Ràng buộc EXCLUDE tồn tại trên booking_rooms")
+    @DisplayName("Cả hai ràng buộc EXCLUDE đều tồn tại")
     void exclusionConstraintExists() throws Exception {
+        // booking_rooms: một phòng không bán trùng hai khoảng ở.
+        // room_closures: một phòng không có hai khoảng đóng chồng nhau — xoá một
+        // khoảng mà phòng vẫn đóng là loại lỗi người dùng không tự chẩn được.
         assertThat(queryForInt("""
                 SELECT count(*) FROM pg_constraint
-                 WHERE conname = 'booking_rooms_no_overlap' AND contype = 'x'
+                 WHERE conname IN ('booking_rooms_no_overlap', 'room_closures_no_overlap')
+                   AND contype = 'x'
+                """)).isEqualTo(2);
+    }
+
+    @Test
+    @DisplayName("room_closures.blocked cũng là cột sinh tự động")
+    void closureRangeIsGenerated() throws Exception {
+        assertThat(queryForInt("""
+                SELECT count(*) FROM information_schema.columns
+                 WHERE table_name = 'room_closures' AND column_name = 'blocked'
+                   AND is_generated = 'ALWAYS'
                 """)).isEqualTo(1);
     }
 

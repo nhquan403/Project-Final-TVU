@@ -5,6 +5,9 @@ import type {
   AmenityView,
   PromotionView,
   ReviewView,
+  RoomClosureRequest,
+  RoomClosureResult,
+  RoomClosureView,
   RoomStatusResult,
   RoomTypeRequest,
   RoomTypeView,
@@ -101,6 +104,21 @@ export class AdminCatalogService {
 
   deleteRoom(id: number): Observable<void> {
     return this.http.delete<void>(`/api/admin/rooms/${id}`);
+  }
+
+  // ─── Khoảng ngày không nhận khách ─────────────────────────────────────
+
+  closures(roomId: number): Observable<RoomClosureView[]> {
+    return this.http.get<RoomClosureView[]>(`/api/admin/rooms/${roomId}/closures`);
+  }
+
+  /** Phản hồi kèm các đơn giao với khoảng vừa đóng. Backend KHÔNG huỷ đơn nào. */
+  addClosure(roomId: number, body: RoomClosureRequest): Observable<RoomClosureResult> {
+    return this.http.post<RoomClosureResult>(`/api/admin/rooms/${roomId}/closures`, body);
+  }
+
+  removeClosure(closureId: number): Observable<void> {
+    return this.http.delete<void>(`/api/admin/rooms/closures/${closureId}`);
   }
 
   // ─── Khuyến mãi ───────────────────────────────────────────────────────

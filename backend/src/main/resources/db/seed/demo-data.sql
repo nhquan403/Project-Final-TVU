@@ -537,3 +537,28 @@ SELECT b.id, b.user_id, b.guest_name, v.rating, v.title, v.content, v.status,
             'PENDING', NULL)
        ) AS v(rn, rating, title, content, status, admin_reply) ON v.rn = picked.rn
  WHERE NOT EXISTS (SELECT 1 FROM reviews r WHERE r.booking_id = b.id);
+
+-- ─── Một khoảng đóng phòng để trình diễn "ngày khả dụng" ────────────────────
+-- Đặt ở +40..+45 ngày: đủ xa khoảng ngày hội đồng thường thử đặt, nên nó không
+-- che mất phòng lúc trình diễn, nhưng vẫn nằm trong cửa sổ lịch mặc định.
+--
+-- Phòng được CHỌN chứ không ghi cứng: chọn phòng đầu tiên còn khai thác mà
+-- không có đơn nào giao với khoảng đó. Ghi cứng số phòng thì chỉ cần tầng gán
+-- phòng đổi thứ tự là khoảng đóng rơi trúng một đơn đã seed, và bản demo mở ra
+-- với một cảnh báo "có đơn bị ảnh hưởng" mà không ai cố ý tạo.
+--
+-- Điều kiện cuối là chốt idempotent: đã có khoảng đóng nào thì không thêm nữa,
+-- nên khởi động lại container không cộng dồn mỗi lần một khoảng.
+INSERT INTO room_closures (room_id, from_date, to_date, reason)
+SELECT r.id, CURRENT_DATE + 40, CURRENT_DATE + 45, 'Sơn lại phòng và thay rèm'
+  FROM rooms r
+ WHERE r.status = 'AVAILABLE'
+   AND NOT EXISTS (
+       SELECT 1 FROM booking_rooms br
+        WHERE br.room_id = r.id
+          AND br.status = 'ACTIVE'
+          AND br.stay && daterange(CURRENT_DATE + 40, CURRENT_DATE + 45, '[)')
+   )
+   AND NOT EXISTS (SELECT 1 FROM room_closures)
+ ORDER BY r.room_number
+ LIMIT 1;

@@ -196,3 +196,4 @@ người thực hiện.
 | Xem báo cáo doanh thu | Quản trị viên | Dashboard: doanh thu theo tháng, tỉ lệ lấp đầy, tỉ lệ huỷ. Chi tiết cách tính ở [so-lieu-va-quan-tri.md](./so-lieu-va-quan-tri.md). |
 | Viết đánh giá | Khách đã trả phòng | Cần mã truy cập hoặc số điện thoại — cùng mức xác thực với tra cứu. Đánh giá chờ quản trị viên duyệt trước khi đăng. |
 | Soạn nội dung trang chủ | Quản trị viên | Bốn màn hình CMS: khối trang chủ, banner, thư viện ảnh, tin tức. |
+| Đặt ngày khả dụng của phòng | Quản trị viên | Đóng một phòng vật lý theo **khoảng ngày** (`/admin/rooms`), hệ thống tự mở lại khi hết khoảng. Khác trạng thái vận hành ở chỗ có ngày: trạng thái là công tắc vĩnh viễn. Đóng phòng **không huỷ đơn nào** — chỉ liệt kê đơn giao với khoảng đó. |

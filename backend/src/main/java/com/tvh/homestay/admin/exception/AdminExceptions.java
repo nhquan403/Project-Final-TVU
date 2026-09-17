@@ -19,7 +19,7 @@ public final class AdminExceptions {
 
     public abstract static sealed class AdminException extends RuntimeException
             permits AdminResourceNotFound, ResourceInUse, InvalidAdminRequest,
-                    UnsupportedImageType, ImageTooLarge, ImageStorageFailed {
+                    ClosureOverlap, UnsupportedImageType, ImageTooLarge, ImageStorageFailed {
 
         private final String code;
         private final HttpStatus status;
@@ -63,6 +63,21 @@ public final class AdminExceptions {
     public static final class InvalidAdminRequest extends AdminException {
         public InvalidAdminRequest(String message) {
             super(HttpStatus.BAD_REQUEST, "INVALID_ADMIN_REQUEST", message);
+        }
+    }
+
+    /**
+     * 409 — khoảng đóng chồng lên một khoảng đã có trên cùng phòng.
+     *
+     * <p>Mã riêng chứ không gộp vào {@code RESOURCE_IN_USE}: người dùng cần biết
+     * phải SỬA khoảng đang định thêm, không phải đi xoá thứ khác. Nguồn gốc là
+     * {@code SQLSTATE 23P01} của ràng buộc {@code room_closures_no_overlap} —
+     * bắt ở tầng service để client không bao giờ nhận một lỗi 500 kèm chuỗi
+     * ràng buộc thô.
+     */
+    public static final class ClosureOverlap extends AdminException {
+        public ClosureOverlap(String message) {
+            super(HttpStatus.CONFLICT, "CLOSURE_OVERLAP", message);
         }
     }
 

@@ -8,7 +8,7 @@ cho khách, khu quản trị cho chủ homestay, và REST API.
 | `backend/` | Java 21 · Spring Boot 3.5.6 · PostgreSQL 16 · Flyway · Spring Security |
 | `frontend/` | Angular 21 · Tailwind CSS 4 · design system tự viết |
 | `docs/` | Tài liệu kỹ thuật tiếng Việt |
-| `plans/` | Kế hoạch triển khai 9 phase |
+| `plans/` | Kế hoạch triển khai 10 phase |
 
 Điểm kỹ thuật cốt lõi: **chống đặt trùng phòng khoá ở tầng cơ sở dữ liệu** bằng
 `EXCLUDE USING gist` trên kiểu `daterange` của PostgreSQL, không phụ thuộc kiểm
@@ -60,7 +60,7 @@ Máy không có Docker: xem đường chạy thủ công ở
 
 Profile `demo` nạp sẵn: 4 loại phòng, 15 phòng, 12 tiện ích, 40 đơn đặt phòng
 trải đủ **tám trạng thái**, 3 khoản cần đối soát, 3 mã khuyến mãi (còn hạn / hết
-hạn / hết lượt), 8 đánh giá, và nội dung trang chủ đầy đủ.
+hạn / hết lượt), 8 đánh giá, 1 khoảng đóng phòng, và nội dung trang chủ đầy đủ.
 
 Mọi ngày trong dữ liệu mẫu là **tương đối** (`CURRENT_DATE ± n`), nên bộ dữ liệu
 không cũ đi theo thời gian. Seed **không** đi qua Flyway — lý do ở
@@ -123,7 +123,7 @@ Endpoint `/api/health` phơi bày cả `appZone` lẫn `jvmDefaultZone` để ki
 ## Kiểm thử
 
 ```bash
-cd backend  && ./mvnw verify   # 118 test — CẦN Docker (Testcontainers)
+cd backend  && ./mvnw verify   # 127 test — CẦN Docker (Testcontainers)
 cd frontend && npm run build && npm run lint
 ```
 
@@ -152,13 +152,13 @@ Bảng đầy đủ: [docs/cai-dat.md](docs/cai-dat.md#xử-lý-sự-cố).
 | Tài liệu | Nội dung |
 |---|---|
 | [kien-truc.md](docs/kien-truc.md) | Thành phần hệ thống, phân lớp, lý do từng quyết định |
-| [erd.md](docs/erd.md) | 20 bảng, từng ràng buộc, và vì sao chọn `EXCLUDE USING gist` |
+| [erd.md](docs/erd.md) | 21 bảng, từng ràng buộc, và **hai** lần dùng `EXCLUDE USING gist` |
 | [use-case.md](docs/use-case.md) | 3 tác nhân, 6 use case chính có đặc tả đầy đủ |
 | [luong-dat-phong.md](docs/luong-dat-phong.md) | Sequence đặt phòng, thanh toán, và biểu đồ 8 trạng thái |
-| [api.md](docs/api.md) | 77 thao tác, quyền truy cập, giới hạn tần suất, mã lỗi |
+| [api.md](docs/api.md) | 80 thao tác, quyền truy cập, giới hạn tần suất, mã lỗi |
 | [bao-mat.md](docs/bao-mat.md) | Mô hình bảo mật **và 7 giới hạn đã biết** |
 | [cai-dat.md](docs/cai-dat.md) | Cài đặt bằng Docker và không Docker, xử lý sự cố |
-| [kiem-thu.md](docs/kiem-thu.md) | 118 test — từng lớp chứng minh điều gì |
+| [kiem-thu.md](docs/kiem-thu.md) | 127 test — từng lớp chứng minh điều gì |
 | [thanh-toan-sepay.md](docs/thanh-toan-sepay.md) | Chi tiết tích hợp SePay và webhook |
 | [so-lieu-va-quan-tri.md](docs/so-lieu-va-quan-tri.md) | Cách tính số liệu dashboard |
 | [thiet-ke-giao-dien.md](docs/thiet-ke-giao-dien.md) | Design system, token màu, quy ước UI |

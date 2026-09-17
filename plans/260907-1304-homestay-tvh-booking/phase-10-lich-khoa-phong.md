@@ -1,7 +1,7 @@
 ---
 phase: 10
 title: "Lịch khoá phòng theo khoảng ngày"
-status: todo
+status: done
 priority: P1
 effort: "7h"
 dependencies: [7, 9]
@@ -194,21 +194,21 @@ may mắn.
 
 ## Success Criteria
 
-- [ ] Admin đóng phòng 201 từ hôm nay + 40 đến + 45; tìm phòng đúng khoảng đó
+- [x] Admin đóng phòng 201 từ hôm nay + 40 đến + 45; tìm phòng đúng khoảng đó
       thấy số phòng Deluxe **giảm đúng 1**
-- [ ] Đêm ngay trước và đêm mở lại (`to_date`) **không** bị ảnh hưởng — kiểm
+- [x] Đêm ngay trước và đêm mở lại (`to_date`) **không** bị ảnh hưởng — kiểm
       bằng số, không bằng cảm giác
-- [ ] Đặt đơn trùng khoảng đóng: phòng đang đóng **không bao giờ** được gán
-- [ ] Lịch trên trang chủ và trang chi tiết phòng đều hiện đúng
-- [ ] Thêm khoảng đóng chồng lên khoảng đã có → bị từ chối kèm thông báo rõ ràng,
+- [x] Đặt đơn trùng khoảng đóng: phòng đang đóng **không bao giờ** được gán
+- [x] Lịch trên trang chủ và trang chi tiết phòng đều hiện đúng
+- [x] Thêm khoảng đóng chồng lên khoảng đã có → bị từ chối kèm thông báo rõ ràng,
       không phải lỗi 500
-- [ ] Đóng phòng đang có đơn → trả về danh sách đơn bị ảnh hưởng, **không đơn nào
+- [x] Đóng phòng đang có đơn → trả về danh sách đơn bị ảnh hưởng, **không đơn nào
       bị huỷ**
-- [ ] Xoá khoảng đóng → phòng bán lại được ngay
-- [ ] `SchemaMigrationTest` báo 21 bảng, 8 migration, tất cả `success`
-- [ ] Toàn bộ test cũ vẫn xanh (118 + số bài mới)
-- [ ] `docker compose down -v && up -d` dựng lại sạch, có khoảng đóng mẫu
-- [ ] `docs/erd.md` ghi 21 bảng, `docs/api.md` khớp `/v3/api-docs`
+- [x] Xoá khoảng đóng → phòng bán lại được ngay
+- [x] `SchemaMigrationTest` báo 21 bảng, 8 migration, tất cả `success`
+- [x] Toàn bộ test cũ vẫn xanh (118 + số bài mới)
+- [x] `docker compose down -v && up -d` dựng lại sạch, có khoảng đóng mẫu
+- [x] `docs/erd.md` ghi 21 bảng, `docs/api.md` khớp `/v3/api-docs`
 
 ## Mandatory Tests — `RoomClosureIT`
 

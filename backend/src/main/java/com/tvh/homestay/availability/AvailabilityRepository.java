@@ -52,6 +52,11 @@ public class AvailabilityRepository {
                         AND br.status = 'ACTIVE'
                         AND br.stay && daterange(:checkIn, :checkOut, '[)')
                   )
+                  AND NOT EXISTS (
+                      SELECT 1 FROM room_closures rc
+                      WHERE rc.room_id = r.id
+                        AND rc.blocked && daterange(:checkIn, :checkOut, '[)')
+                  )
             ) c
             WHERE rt.active
               AND rt.capacity_adults   >= :adultsPerRoom
@@ -71,6 +76,11 @@ public class AvailabilityRepository {
                   WHERE br.room_id = r.id
                     AND br.status = 'ACTIVE'
                     AND br.stay && daterange(:checkIn, :checkOut, '[)')
+              )
+              AND NOT EXISTS (
+                  SELECT 1 FROM room_closures rc
+                  WHERE rc.room_id = r.id
+                    AND rc.blocked && daterange(:checkIn, :checkOut, '[)')
               )
             ORDER BY r.id
             """;
@@ -134,6 +144,12 @@ public class AvailabilityRepository {
      * <p>Giá trả về là giá THẤP NHẤT trong các loại phòng còn chỗ đêm đó — giao
      * diện hiển thị dạng "từ X", vì đây là mức khởi điểm chứ không phải giá của
      * một loại phòng cụ thể.
+     *
+     * <p><b>Điều kiện khoảng đóng nằm trong mệnh đề {@code ON}, không phải
+     * {@code WHERE}.</b> Đưa xuống {@code WHERE} sẽ biến {@code LEFT JOIN} thành
+     * {@code INNER JOIN}: những đêm không còn phòng nào biến mất khỏi kết quả
+     * thay vì trả về 0. Lịch ở giao diện coi ngày VẮNG MẶT là ngày không bị
+     * chặn, nên khách sẽ chọn được đúng những đêm không đặt được.
      */
     public java.util.List<NightAvailability> countFreeRoomsPerNight(LocalDate from, LocalDate to) {
         return jdbc.sql("""
@@ -158,6 +174,10 @@ public class AvailabilityRepository {
                                     WHERE br.room_id = s.id
                                       AND br.status = 'ACTIVE'
                                       AND br.stay && daterange(n.night, n.night + 1, '[)'))
+                               AND NOT EXISTS (
+                                   SELECT 1 FROM room_closures rc
+                                    WHERE rc.room_id = s.id
+                                      AND rc.blocked && daterange(n.night, n.night + 1, '[)'))
                          GROUP BY n.night
                          ORDER BY n.night
                         """)
@@ -186,6 +206,11 @@ public class AvailabilityRepository {
                               WHERE br.room_id = r.id
                                 AND br.status = 'ACTIVE'
                                 AND br.stay && daterange(:night, :nextDay, '[)')
+                          )
+                          AND NOT EXISTS (
+                              SELECT 1 FROM room_closures rc
+                              WHERE rc.room_id = r.id
+                                AND rc.blocked && daterange(:night, :nextDay, '[)')
                           )
                         """)
                 .param("roomTypeId", roomTypeId)

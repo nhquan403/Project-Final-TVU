@@ -189,6 +189,34 @@ export interface RoomStatusResult {
   affectedBookings: AffectedBooking[];
 }
 
+/**
+ * Một khoảng ngày phòng không nhận khách.
+ *
+ * `toDate` là ngày MỞ BÁN LẠI, không phải đêm cuối bị chặn. `nights` do backend
+ * tính sẵn — giao diện không tự trừ hai ngày, vì đó đúng là chỗ sinh ra lỗi lệch
+ * một đêm.
+ */
+export interface RoomClosureView {
+  id: number;
+  roomId: number;
+  roomNumber: string;
+  fromDate: string;
+  toDate: string;
+  nights: number;
+  reason: string | null;
+}
+
+export interface RoomClosureRequest {
+  fromDate: string;
+  toDate: string;
+  reason: string | null;
+}
+
+export interface RoomClosureResult {
+  closure: RoomClosureView;
+  affectedBookings: AffectedBooking[];
+}
+
 export interface PromotionView {
   id: number;
   code: string;

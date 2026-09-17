@@ -1,6 +1,6 @@
 # API
 
-**77 thao tác trên 61 đường dẫn** — đếm từ `/v3/api-docs` của hệ thống đang chạy
+**80 thao tác trên 63 đường dẫn** — đếm từ `/v3/api-docs` của hệ thống đang chạy
 ở profile `demo`, không chép từ kế hoạch:
 
 ```bash
@@ -17,6 +17,10 @@ Bản tương tác: `http://localhost/swagger-ui/index.html` (chỉ có ở prof
 
 Mặc định là **đóng**. `SecurityConfig` kết thúc bằng `anyRequest().denyAll()`,
 nên một endpoint mới không khai gì sẽ bị từ chối chứ không lọt ra công khai.
+
+Ba endpoint khoảng đóng phòng lồng dưới `/api/admin/rooms` chứ không mở nhóm
+`/api/admin/closures` riêng: khoảng đóng không tồn tại độc lập với phòng, và lồng
+vào tài nguyên cha thì ma trận dưới đây không phải thêm dòng nào.
 
 `EndpointAuthorizationIT` giữ một ma trận 29 tiền tố và có hai bài kiểm:
 mọi endpoint đã đăng ký phải nằm trong ma trận, và **cấm** khai lại dòng bao
@@ -66,6 +70,7 @@ không đọc `detail`** — đổi câu chữ ở backend không được phép
 | `INVALID_STATE_TRANSITION` | 409 | Bước chuyển trạng thái không hợp lệ |
 | `INVALID_BOOKING_REQUEST` | 400 | Dữ liệu đơn không hợp lệ |
 | `PASSWORD_CHANGE_REQUIRED` | 403 | Phải đổi mật khẩu tạm trước |
+| `CLOSURE_OVERLAP` | 409 | Khoảng đóng phòng chồng lên một khoảng đã có |
 | `IMAGE_TOO_LARGE` | 413 | Ảnh vượt 5MB |
 | `TOO_MANY_REQUESTS` | 429 | Vượt giới hạn tần suất |
 | `UNAUTHORIZED` | 401 | Thiếu hoặc sai token |
@@ -148,6 +153,8 @@ chỉ cần mã là xem được, ai thấy sao kê cũng theo dõi được đ�
 | GET | `/api/admin/amenities` | ADMIN |
 | GET POST | `/api/admin/rooms` | ADMIN |
 | PUT PATCH DELETE | `/api/admin/rooms/{id}` | ADMIN |
+| GET POST | `/api/admin/rooms/{id}/closures` | ADMIN |
+| DELETE | `/api/admin/rooms/closures/{closureId}` | ADMIN |
 | GET POST | `/api/admin/promotions` | ADMIN |
 | PUT DELETE | `/api/admin/promotions/{id}` | ADMIN |
 | POST | `/api/admin/images` | ADMIN |

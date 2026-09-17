@@ -1,8 +1,8 @@
 # Lược đồ cơ sở dữ liệu
 
-**20 bảng nghiệp vụ**, dựng bởi bảy migration Flyway V1–V7. Bảng thứ 21 trong
+**21 bảng nghiệp vụ**, dựng bởi tám migration Flyway V1–V8. Bảng thứ 22 trong
 schema `public` là `flyway_schema_history` — sổ ghi chép của chính Flyway, không
-thuộc mô hình nghiệp vụ. Số 20 được `SchemaMigrationTest` canh:
+thuộc mô hình nghiệp vụ. Số 21 được `SchemaMigrationTest` canh:
 
 ```sql
 SELECT count(*) FROM information_schema.tables
@@ -12,7 +12,7 @@ SELECT count(*) FROM information_schema.tables
 Flyway là chủ schema; `spring.jpa.hibernate.ddl-auto` đặt `validate` và **không
 bao giờ** được đổi thành `update` — Hibernate sẽ lặng lẽ thêm cột ngoài migration
 và lớp canh gác mất tác dụng. Migration đã phát hành là **bất biến**: sửa lược đồ
-nghĩa là thêm V8, không phải sửa V3.
+nghĩa là thêm V9, không phải sửa V3.
 
 ## Sơ đồ quan hệ
 
@@ -94,6 +94,18 @@ gian `starts_at`/`ends_at` + `CHECK` bảo đảm `ends_at > starts_at`),
 `gallery_images`, `posts` (`slug` UNIQUE). Trường HTML được lọc **ở tầng vào**
 trước khi lưu — xem [bao-mat.md](./bao-mat.md#nội-dung-html-của-cms).
 
+### Khoảng đóng phòng (V8)
+
+`room_closures` giữ các khoảng ngày một phòng vật lý **không nhận khách**:
+`room_id`, `from_date`, `to_date`, `reason`, `created_by`, cộng một cột sinh tự
+động `blocked daterange GENERATED ALWAYS AS (daterange(from_date, to_date, '[)'))`.
+
+Vì sao không dùng `rooms.status` cho việc này: trạng thái phòng **không có
+ngày**. Nó trả lời được "phòng này còn khai thác không", không trả lời được
+"phòng này có bán được đêm 20/10 không". Dùng trạng thái để bảo trì ba ngày
+nghĩa là chủ homestay phải tự nhớ bật lại — và ngày quên bật là ngày mất doanh
+thu mà không có gì báo.
+
 ## Vì sao `EXCLUDE USING gist`
 
 ```sql
@@ -130,6 +142,32 @@ ràng buộc chỉ soi các dòng đang giữ chỗ. Huỷ đơn chỉ đổi `s
 Cột `stay` là `GENERATED ALWAYS AS ... STORED`, không bao giờ ghi tay — để tầng
 ứng dụng tự tính rồi ghi vào thì sẽ có lúc nó tính sai, và lúc đó ràng buộc canh
 một giá trị sai.
+
+### Lần thứ hai: chống chồng khoảng đóng phòng
+
+```sql
+ALTER TABLE room_closures
+    ADD CONSTRAINT room_closures_no_overlap
+    EXCLUDE USING gist (room_id WITH =, blocked WITH &&);
+```
+
+Cùng một cơ chế cho một bài toán **khác**: không phải chống bán trùng, mà chống
+hai khoảng đóng chồng nhau trên cùng một phòng. Không có nó, màn hình quản trị
+hiện hai dòng nói cùng một điều và **xoá một dòng không mở lại được phòng** —
+người dùng bấm xoá, thấy dòng biến mất, rồi vẫn không bán được phòng mà không
+hiểu vì sao. Đây là loại lỗi người dùng không tự chẩn được, nên nó thuộc về tầng
+cơ sở dữ liệu.
+
+Không có mệnh đề `WHERE` như `booking_rooms`: khoảng đóng không có trạng thái,
+xoá là xoá hẳn.
+
+`blocked` dùng đúng quy ước `'[)'` của `stay` — bắt buộc chứ không phải sở
+thích. Hai quy ước khác nhau thì toán tử `&&` so sánh lệch nhau một ngày, và lỗi
+đó không bao giờ tái hiện ổn định.
+
+`AdminRoomService` bắt `SQLSTATE 23P01` của ràng buộc này và dịch thành mã lỗi
+`CLOSURE_OVERLAP` (409), nên client không bao giờ nhận một lỗi 500 kèm chuỗi
+ràng buộc thô.
 
 ### Bất biến đi kèm: `room_quantity` phải khớp số dòng ACTIVE
 

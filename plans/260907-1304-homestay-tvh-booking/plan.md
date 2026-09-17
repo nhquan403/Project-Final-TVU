@@ -90,7 +90,7 @@ flowchart LR
 | 7 | [Phase 7: Trang admin & dashboard](./phase-07-admin-dashboard.md) | Done | 2, 4, 5 | 14h |
 | 8 | [Phase 8: Landing page, CMS nội dung & đánh giá](./phase-08-landing-cms.md) | Done | 2, 5, 6, 7 | 16h |
 | 9 | [Phase 9: Đóng gói, seed & tài liệu](./phase-09-packaging-docs.md) | Done | 7, 8 | 7h |
-| 10 | [Phase 10: Lịch khoá phòng theo khoảng ngày](./phase-10-lich-khoa-phong.md) | Todo | 7, 9 | 7h |
+| 10 | [Phase 10: Lịch khoá phòng theo khoảng ngày](./phase-10-lich-khoa-phong.md) | Done | 7, 9 | 7h |
 
 ### Thứ tự phụ thuộc
 
