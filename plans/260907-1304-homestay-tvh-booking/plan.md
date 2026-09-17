@@ -3,7 +3,7 @@ title: "Homestay TVH - Website giới thiệu & đặt phòng"
 description: "Đồ án full-stack: Angular + Tailwind (design system, landing, admin) và Spring Boot 3 + PostgreSQL, đặt cọc qua QR VietQR/SePay, chống trùng lịch ở tầng DB."
 status: pending
 priority: P1
-effort: "~90h"
+effort: "~97h"
 tags: [angular, spring-boot, postgresql, booking, design-system, do-an]
 created: 2026-09-07
 branch: claude/homestay-tvh-booking-site-bew1pw
@@ -90,6 +90,7 @@ flowchart LR
 | 7 | [Phase 7: Trang admin & dashboard](./phase-07-admin-dashboard.md) | Done | 2, 4, 5 | 14h |
 | 8 | [Phase 8: Landing page, CMS nội dung & đánh giá](./phase-08-landing-cms.md) | Done | 2, 5, 6, 7 | 16h |
 | 9 | [Phase 9: Đóng gói, seed & tài liệu](./phase-09-packaging-docs.md) | Done | 7, 8 | 7h |
+| 10 | [Phase 10: Lịch khoá phòng theo khoảng ngày](./phase-10-lich-khoa-phong.md) | Todo | 7, 9 | 7h |
 
 ### Thứ tự phụ thuộc
 
@@ -109,6 +110,8 @@ flowchart TD
     P7 --> P8
     P7 --> P9[9. Đóng gói + Docs]
     P8 --> P9
+    P7 --> P10[10. Lịch khoá phòng]
+    P9 --> P10
 ```
 
 **Song song được — hai cặp:**
@@ -118,7 +121,7 @@ flowchart TD
 
 **Không song song hoàn toàn:** bốn màn hình CMS của Phase 8 nằm trong khu admin và dùng lại `admin-layout` của Phase 7, nên chúng phải chờ. Phần công khai của Phase 8 (trang chủ, danh sách phòng, luồng đặt phòng, tra cứu) chỉ cần Phase 2, 5, 6 nên làm song song với Phase 7 được — thứ tự trong Phase 8 đã sắp để phần công khai đi trước, khối CMS ở cuối.
 
-**Lưu ý về lịch:** tổng effort là 90h dù có song song. Với một người làm, "song song" chỉ nghĩa là hai phần không chặn nhau về file — nó không rút ngắn tổng thời gian.
+**Lưu ý về lịch:** tổng effort là 97h dù có song song. Với một người làm, "song song" chỉ nghĩa là hai phần không chặn nhau về file — nó không rút ngắn tổng thời gian.
 
 ## Success Criteria
 
@@ -270,6 +273,20 @@ Quyết định thiết kế đáng chú ý: **từ chối nhóm dark pattern** 
 - `ui-date-range-picker` (Phase 2) nhận bản đồ `{ngày: {giá, còn phòng}}` từ `availability.service.ts` (Phase 5) — hợp đồng dữ liệu này được nêu ở cả hai phase.
 
 Không còn mâu thuẫn chưa giải quyết.
+
+### Đối chiếu đề bài của trường — 2026-09-17
+
+Đọc lại nguyên văn yêu cầu đồ án sau khi Phase 9 xong. Tám yêu cầu triển khai
+được đối chiếu với hệ thống đang chạy; bảy yêu cầu đã có mã thật và có test.
+
+Một yêu cầu **chưa phủ**: *"Quản trị viên cập nhật phòng, giá, số lượng khách và
+**ngày khả dụng**"*. Admin đang sửa được phòng, giá và số khách, nhưng chưa có
+cách nào chặn một **khoảng ngày** — chỉ có `RoomStatus` bật/tắt cả phòng vô thời
+hạn. Thực tế vận hành cần "phòng này sửa chữa từ 20/10 đến 25/10", không phải
+"tắt phòng này mãi mãi rồi nhớ bật lại".
+
+Phase 10 sinh ra để đóng đúng khoảng trống đó, không mở rộng thêm gì khác. Tổng
+effort 90h → 97h.
 
 ## Nguồn tham khảo
 
