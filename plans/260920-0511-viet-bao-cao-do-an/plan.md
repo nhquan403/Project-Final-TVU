@@ -85,13 +85,13 @@ Danh mục bảng biểu, hình vẽ → Danh mục từ viết tắt
 | # | Phase | Trạng thái | Phụ thuộc | Công |
 |---|---|---|---|---|
 | 0 | [Chốt mẫu trình bày của khoa](#phase-0) | Todo | — | 0.5h |
-| 1 | [Phần đầu và khung tài liệu](#phase-1) | Todo | 0 | 3h |
-| 2 | [Mở đầu + Chương 1](#phase-2) | Todo | 1 | 5h |
-| 3 | [Chương 2 — Cơ sở lý thuyết](#phase-3) | Todo | 1 | 6h |
-| 4 | [Chương 3 — Phân tích và thiết kế](#phase-4) | Todo | 1 | 9h |
-| 5 | [Chương 4 — Xây dựng và triển khai](#phase-5) | Todo | 1 | 6h |
-| 6 | [Chương 5 — Kiểm thử và đánh giá](#phase-6) | Todo | 1 | 4h |
-| 7 | [Kết luận, TLTK, Phụ lục](#phase-7) | Todo | 2–6 | 3h |
+| 1 | [Phần đầu và khung tài liệu](#phase-1) | Done | 0 | 3h |
+| 2 | [Mở đầu + Chương 1](#phase-2) | Done | 1 | 5h |
+| 3 | [Chương 2 — Cơ sở lý thuyết](#phase-3) | Done | 1 | 6h |
+| 4 | [Chương 3 — Phân tích và thiết kế](#phase-4) | Done | 1 | 9h |
+| 5 | [Chương 4 — Xây dựng và triển khai](#phase-5) | Done | 1 | 6h |
+| 6 | [Chương 5 — Kiểm thử và đánh giá](#phase-6) | Done | 1 | 4h |
+| 7 | [Kết luận, TLTK, Phụ lục](#phase-7) | Done | 2–6 | 3h |
 | 8 | [40 hình ảnh](#phase-8) | Todo | — (song song) | 9h |
 | 9 | [Xuất Word và định dạng](#phase-9) | Todo | 0, 7, 8 | 4h |
 | 10 | [Slide bảo vệ và tập phản biện](#phase-10) | Todo | 9 | 6h |
