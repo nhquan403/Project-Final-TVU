@@ -7,12 +7,25 @@
 > **LƯU Ý TRƯỚC KHI DÙNG**
 >
 > Tài liệu này là **nội dung** của đồ án, không phải bản trình bày đã định dạng.
-> Mẫu trình bày riêng của Khoa CNTT — ĐH Trà Vinh (font, cỡ chữ, lề, cách đánh
-> số chương, mẫu bìa) không công khai nên **phải xin lại giáo viên hướng dẫn**
-> và định dạng theo đúng mẫu đó. Cấu trúc năm chương dưới đây là cấu trúc dùng
-> chung ở các trường kỹ thuật Việt Nam; nếu mẫu của khoa chia khác (ví dụ gộp
-> Chương 4 và 5, hoặc tách "Cơ sở lý thuyết" thành hai chương), chỉ cần sắp xếp
-> lại các mục — nội dung không đổi.
+> Mẫu trình bày riêng của Khoa CNTT — ĐH Trà Vinh không công khai nên **phải xin
+> lại giáo viên hướng dẫn**. Trong lúc chờ, tài liệu này neo theo quy định đầy
+> đủ và cụ thể của **Khoa Kỹ thuật — Công nghệ, ĐH Văn Hiến** (xem bảng dưới):
+>
+> | Hạng mục | Quy định |
+> |---|---|
+> | Độ dài | **tối thiểu 60 trang** phần thuyết minh |
+> | Lề | trên 2cm · dưới 2cm · **trái 3cm** · phải 1.5cm |
+> | Font | **Times New Roman, size 13** · giãn dòng **1.3** · thụt đầu dòng 1.0cm |
+> | Số trang | trang phụ: La Mã · phần chính: Ả Rập · bìa phụ và mục lục: không đánh |
+> | Đề mục | `Chương 1` đậm → `1.1` đậm → `1.1.1` đậm nghiêng |
+> | Số chương | tối thiểu 3 |
+>
+> Cấu trúc năm chương dưới đây là cấu trúc dùng chung ở các trường kỹ thuật Việt
+> Nam. Nếu mẫu của khoa chia khác (ví dụ gộp Chương 4 và 5), chỉ cần sắp xếp lại
+> các mục — nội dung không đổi.
+>
+> Kế hoạch hoàn thiện thành quyển nộp được nằm ở
+> [`plans/260920-0511-viet-bao-cao-do-an/plan.md`](../plans/260920-0511-viet-bao-cao-do-an/plan.md).
 >
 > Mọi số liệu trong tài liệu này (21 bảng, 80 thao tác API, 129 test…) lấy từ hệ
 > thống **đang chạy thật**, không phải ước lượng. Nếu bạn sửa thêm mã sau này,
@@ -43,13 +56,14 @@ Thứ tự các trang đầu (đánh số La Mã i, ii, iii… hoặc không đ�
 | 1 | **Trang bìa chính** | Tên trường, khoa, tên đề tài, họ tên sinh viên, MSSV, lớp, GVHD, địa danh và năm. In bìa cứng theo mẫu khoa. |
 | 2 | **Trang bìa phụ** | Nội dung giống bìa chính, in giấy thường. |
 | 3 | **Nhiệm vụ đồ án** | Do GVHD giao, có chữ ký. Thường là mẫu in sẵn của khoa. |
-| 4 | **Lời cảm ơn** | Xem bản mẫu ở Phụ lục A. |
-| 5 | **Nhận xét của GVHD** | Để trống, thầy/cô viết. |
-| 6 | **Nhận xét của GV phản biện** | Để trống. |
-| 7 | **Mục lục** | Tối đa 3 cấp tiêu đề. Dùng chức năng tự sinh của Word — đừng gõ tay. |
-| 8 | **Danh mục hình ảnh** | Tự sinh từ caption. Xem Phụ lục D để biết số lượng hình. |
-| 9 | **Danh mục bảng biểu** | Tự sinh từ caption. |
-| 10 | **Danh mục từ viết tắt** | Xem bản mẫu ở Phụ lục B. |
+| 4 | **Lời cảm ơn** | Xem bản mẫu ở Phụ lục A.1. |
+| 5 | **Lời cam đoan** | **Bắt buộc ở nhiều khoa.** Xem bản mẫu ở Phụ lục A.2. |
+| 6 | **Nhận xét của GVHD** | Để trống, thầy/cô viết. |
+| 7 | **Nhận xét của GV phản biện** | Để trống. |
+| 8 | **Mục lục** | Tối đa 3 cấp tiêu đề. Dùng chức năng tự sinh của Word — đừng gõ tay. |
+| 9 | **Danh mục hình ảnh** | Tự sinh từ caption. Xem Phụ lục D để biết số lượng hình. |
+| 10 | **Danh mục bảng biểu** | Tự sinh từ caption. |
+| 11 | **Danh mục từ viết tắt** | Xem bản mẫu ở Phụ lục B. |
 
 > 🖼️ **[HÌNH 0.1] — Trang bìa**
 > *Cần gì:* không phải "hình", mà là trang bìa định dạng theo mẫu khoa. Nếu
@@ -142,7 +156,43 @@ Nêu rõ giới hạn là một phần của thiết kế, không phải thiếu
 - **Về dữ liệu:** dữ liệu minh hoạ tự sinh, mô phỏng một homestay 15 phòng thuộc
   4 loại phòng.
 
-## 4. Phương pháp nghiên cứu
+## 4. Nhiệm vụ nghiên cứu
+
+Để đạt được các mục tiêu trên, đề tài xác định sáu nhiệm vụ cụ thể:
+
+1. **Khảo sát và phân tích** quy trình đặt phòng thủ công hiện tại của các cơ sở
+   homestay quy mô nhỏ, xác định các điểm yếu có thể tin học hoá.
+2. **Nghiên cứu cơ sở lý thuyết** về toàn vẹn dữ liệu khi có tranh chấp trong hệ
+   quản trị cơ sở dữ liệu quan hệ, đặc biệt là kiểu dữ liệu khoảng và ràng buộc
+   loại trừ của PostgreSQL.
+3. **Phân tích và thiết kế hệ thống** bằng UML: use case, lược đồ cơ sở dữ liệu,
+   biểu đồ trạng thái, biểu đồ tuần tự, kiến trúc phân lớp.
+4. **Xây dựng hệ thống** gồm ba khối: REST API, trang bán hàng cho khách và khu
+   quản trị cho chủ homestay.
+5. **Kiểm thử** bằng bộ kiểm thử tự động chạy trên cơ sở dữ liệu thật, bao gồm
+   kiểm thử tranh chấp đa luồng.
+6. **Đóng gói và lập tài liệu** để hệ thống chạy lại được trên máy khác và có
+   thể bàn giao.
+
+## 5. Các kết quả đạt được
+
+| # | Kết quả | Số liệu |
+|---|---|---|
+| 1 | Hệ thống hoàn chỉnh ba khối, chạy được bằng ba lệnh | 4 dịch vụ Docker |
+| 2 | REST API đầy đủ | **80 thao tác** trên 63 đường dẫn |
+| 3 | Lược đồ cơ sở dữ liệu có ràng buộc toàn vẹn ở tầng lưu trữ | **21 bảng**, 8 migration |
+| 4 | **Chống bán trùng phòng được chứng minh bằng thực nghiệm** | 3 ca kiểm thử đa luồng thật |
+| 5 | Bộ kiểm thử tự động | **129 ca**, 18 lớp, tất cả xanh |
+| 6 | Giao diện đạt chuẩn khả năng tiếp cận | 0 lỗi WCAG 2.1 mức A + AA |
+| 7 | Dữ liệu minh hoạ đủ để trình diễn | 40 đơn trải đủ 8 trạng thái |
+| 8 | Tài liệu kỹ thuật | 12 tài liệu trong `docs/` |
+
+Kết quả có ý nghĩa nhất không phải số lượng chức năng mà là **lời giải cho bài
+toán chống đặt trùng phòng**: đặt ràng buộc ở tầng cơ sở dữ liệu thay vì kiểm
+tra ở tầng ứng dụng, và chứng minh nó đúng bằng kiểm thử đa luồng trên
+PostgreSQL thật.
+
+## 6. Phương pháp nghiên cứu
 
 | Phương pháp | Áp dụng cụ thể trong đồ án |
 |---|---|
@@ -152,7 +202,7 @@ Nêu rõ giới hạn là một phần của thiết kế, không phải thiếu
 | **Thực nghiệm** | Dựng hệ thống thật, chạy 129 kịch bản kiểm thử tự động trên PostgreSQL thật (không giả lập), đo kết quả bằng lệnh chứ không bằng cảm nhận. |
 | **Kiểm thử đối kháng** | Chủ động tạo tình huống xấu: nhiều luồng cùng đặt phòng cuối, tiền về sau khi đơn đã hết hạn, webhook gửi lại hai lần, giả mạo header IP để vượt giới hạn tần suất. |
 
-## 5. Ý nghĩa khoa học và thực tiễn
+## 7. Ý nghĩa khoa học và thực tiễn
 
 **Ý nghĩa thực tiễn:** hệ thống có thể đưa vào dùng thật cho một homestay quy mô
 nhỏ sau khi thay dữ liệu mẫu bằng dữ liệu thật và bổ sung HTTPS. Chi phí vận
@@ -164,7 +214,7 @@ trùng phòng **không giải được đúng** bằng mẫu kiểm tra-rồi-gh
 này áp dụng lại được cho mọi bài toán "đặt chỗ theo khoảng": đặt sân bóng, đặt
 phòng họp, mượn thiết bị, lịch khám bệnh.
 
-## 6. Bố cục của đồ án
+## 8. Bố cục của đồ án
 
 Đồ án gồm phần mở đầu, năm chương nội dung, phần kết luận và phụ lục:
 
@@ -1857,7 +1907,9 @@ có những lỗi mà việc biên dịch thành công hoàn toàn không phát 
 
 # PHỤ LỤC
 
-## Phụ lục A — Mẫu lời cảm ơn
+## Phụ lục A — Mẫu lời cảm ơn và lời cam đoan
+
+### A.1. Lời cảm ơn
 
 > Sửa lại cho đúng tên thầy/cô và cảm xúc của bạn. Đừng dùng nguyên văn.
 
@@ -1880,6 +1932,35 @@ rất mong nhận được ý kiến đóng góp của quý Thầy/Cô.*
 
 *Trà Vinh, ngày ... tháng ... năm 20...*
 *Sinh viên thực hiện*
+
+### A.2. Lời cam đoan
+
+> **Nhiều khoa bắt buộc có trang này.** Nó là cam kết về tính trung thực của
+> công trình — đọc kỹ trước khi ký tên, đừng chép máy móc.
+
+*Em xin cam đoan đồ án tốt nghiệp **"Xây dựng website giới thiệu và đặt phòng
+homestay — Homestay TVH"** là công trình do chính em thực hiện dưới sự hướng dẫn
+của Thầy/Cô [HỌ TÊN GVHD].*
+
+*Toàn bộ mã nguồn của hệ thống do em tự viết. Các thư viện, framework và công cụ
+mã nguồn mở được sử dụng đều được nêu rõ trong Chương 2 và trong danh mục tài
+liệu tham khảo. Số liệu và kết quả kiểm thử trình bày trong đồ án được lấy trực
+tiếp từ hệ thống đang chạy, trung thực và chưa từng được công bố trong bất kỳ
+công trình nào khác.*
+
+*Những nội dung tham khảo từ tài liệu bên ngoài đều được trích dẫn đầy đủ nguồn
+gốc theo đúng quy định.*
+
+*Em xin chịu hoàn toàn trách nhiệm về lời cam đoan này.*
+
+*Trà Vinh, ngày ... tháng ... năm 20...*
+*Sinh viên thực hiện*
+*(Ký và ghi rõ họ tên)*
+
+> ⚠️ **Nếu bạn có dùng công cụ hỗ trợ (kể cả AI) trong quá trình làm, hãy hỏi
+> GVHD xem khoa yêu cầu khai báo thế nào.** Quy định về việc này khác nhau giữa
+> các trường và đang thay đổi nhanh. Cam đoan sai sự thật là rủi ro lớn hơn
+> nhiều so với việc khai báo trung thực.
 
 ## Phụ lục B — Danh mục từ viết tắt
 
