@@ -87,7 +87,9 @@ tiền biến mất im lặng.
 
 **Về lỗi số 4 và số 5:** cả hai chỉ phát hiện được khi **chụp màn hình bằng
 trình duyệt thật**. Việc biên dịch thành công không nói gì về việc trang có hiển
-thị đúng hay không. Hình 4.17 so sánh trước và sau khi khắc phục lỗi tương phản.
+thị đúng hay không. Hình 4.3 so sánh trước và sau khi khắc phục lỗi tương phản.
+
+[Hình 4.3]
 
 **Về lỗi số 9:** lỗi này do một vòng rà soát mã độc lập tìm ra **sau khi** tác
 giả đã tự kiểm thử và cho rằng chức năng đã hoàn chỉnh. Đây là lý do đề tài giữ
@@ -180,11 +182,15 @@ phòng giảm đúng một. Danh sách đầy đủ trình bày ở Phụ lục 
 
 Đề tài nêu rõ giới hạn của chính quá trình kiểm thử:
 
-- Quá trình phát triển chạy trong môi trường có proxy chặn kho phụ thuộc bên
-  ngoài từ bên trong container dựng ảnh, nên **bước dựng ảnh trong quy trình
-  đóng gói chưa được chạy trọn vẹn một lần** trong môi trường đó. Hệ thống đã
-  được kiểm chứng bằng PostgreSQL thật cộng ứng dụng chạy trực tiếp, và mọi số
-  liệu trong chương này lấy từ hệ thống chạy thật. **Cần chạy lại đủ ba lệnh
+- Toàn bộ bản đóng gói đã được dựng lên và kiểm chứng: bốn dịch vụ đều báo
+  `healthy` (Hình 3.20), nginx phục vụ trang khách ở cổng 80, lời gọi
+  `/api/room-types` đi xuyên qua nginx tới máy chủ ứng dụng trả về đủ bốn loại
+  phòng, và thư xác nhận đi trọn đường hàng đợi thư → giao thức SMTP → hộp thư
+  giả (Hình 3.21). Phần **chưa** kiểm chứng được chỉ còn là *tầng dựng ảnh*:
+  môi trường phát triển có proxy chặn kho phụ thuộc Maven và npm từ bên trong
+  container dựng ảnh, nên hai tệp `Dockerfile` được kiểm chứng ở tầng chạy với
+  tệp jar và thư mục tĩnh dựng sẵn bên ngoài, chưa phải bằng một lệnh
+  `docker compose up -d --build` chạy liền mạch. **Cần chạy lại đủ ba lệnh
   triển khai trên máy có kết nối mạng bình thường trước khi bảo vệ.**
 - Tầng giao diện **không có bộ kiểm thử tự động thường trực**, như đã nêu ở mục
   5.4.4. Hồi quy giao diện hiện phải phát hiện bằng mắt.

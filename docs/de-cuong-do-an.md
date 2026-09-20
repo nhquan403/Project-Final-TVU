@@ -98,10 +98,14 @@
 
 ---
 
-## 3. DANH SÁCH 28 HÌNH CẦN CHUẨN BỊ
+## 3. DANH SÁCH HÌNH
 
-> Đây là danh sách việc cần làm. Số hình đã giảm từ 40 xuống **28** cho vừa trần
-> 50 trang, và đánh số lại liền mạch theo chương.
+> **Cập nhật: 30/31 hình đã dựng xong**, nằm ở `docs/images/bao-cao/`. Bảng dưới
+> đây giữ lại để biết mỗi hình phải thể hiện điều gì — dùng khi viết chú thích
+> và khi kiểm tra lại hình trước lúc nộp. Trạng thái từng hình xem ở cuối mục 3.
+>
+> Số hình đã giảm từ 40 xuống 28 cho vừa trần 50 trang, sau đó thêm bốn hình
+> (4.3 và A.1–A.3) khi rà soát lại phần chữ, thành 31.
 >
 > **Mỗi hình bắt buộc có chú thích ghi rõ nguồn** — yêu cầu tường minh của quy
 > định. Mẫu chú thích: `Hình 3.2 — Sơ đồ quan hệ thực thể (Nguồn: tác giả)` hoặc
@@ -172,13 +176,34 @@ gọn, không để lẫn thanh tác vụ hệ điều hành.*
 
 ### Tổng kết công việc chuẩn bị hình
 
-| Nhóm | Số hình | Ước lượng |
+**Trạng thái hiện tại: 30/31 hình đã có trong `docs/images/bao-cao/`.**
+
+| Nhóm | Số hình | Trạng thái |
 |---|---:|---|
-| A — Sơ đồ tự vẽ minh hoạ lý thuyết | 4 | ~3 giờ |
-| B — Sơ đồ UML và kiến trúc | 10 | ~3 giờ |
-| C — Ảnh chụp màn hình | 12 | ~2 giờ (3 ảnh đã có sẵn) |
-| D — Ảnh kết quả đo đạc | 2 | ~30 phút |
-| **Tổng** | **28** | **~8–9 giờ** |
+| A — Sơ đồ tự vẽ minh hoạ lý thuyết | 4 | xong — dựng bằng Mermaid |
+| B — Sơ đồ UML và kiến trúc | 10 | xong — dựng bằng Mermaid |
+| C — Ảnh chụp màn hình | 12 | xong 11, **còn Hình 1.3** |
+| D — Ảnh kết quả đo đạc | 2 | xong |
+| Thêm: 4.3 độ tương phản, A.1–A.3 phụ lục | 4 | xong |
+| **Tổng** | **31** | **còn 1 hình** |
+
+Hình duy nhất còn thiếu là **1.3** — ảnh trang kết quả tìm kiếm của Booking.com.
+Đây là trang web bên ngoài nên phải tự mở trình duyệt chụp, khoanh vùng đánh số
+bốn thành phần, rồi ghi nguồn và ngày chụp ngay dưới hình.
+
+Bảng đối chiếu đầy đủ *hình ↔ tên tệp ↔ cách tạo ra* nằm ở
+`docs/images/bao-cao/README.md`.
+
+So với danh sách 28 hình ở trên có ba điểm khác, đều đã đồng bộ lại trong phần
+chữ của báo cáo:
+
+- Thêm **Hình 4.3** — đối chiếu độ tương phản nút chính trước và sau khi sửa.
+  Chương 4 vốn dẫn tới một số hình không tồn tại.
+- Thêm **Hình A.1–A.3** cho phụ lục: màn hình ngày khả dụng, bước buộc đổi mật
+  khẩu tạm, trang chi tiết loại phòng. Hình ngày khả dụng trước đó bị đánh
+  trùng số với sơ đồ quan hệ thực thể.
+- Ảnh chụp giao diện lấy ở tỉ lệ điểm ảnh gấp hai hoặc gấp ba, không phải ảnh
+  chụp màn hình thường, để in A4 không bị rỗ.
 
 ---
 

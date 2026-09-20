@@ -70,9 +70,9 @@ từ ngày mai chỉ vì hệ thống còn một đơn cũ — trong khi sự th
 hệ thống có cho ghi hay không. Vai trò của hệ thống là **liệt kê** đúng các đơn
 bị ảnh hưởng để người quyết định nhìn thấy, không phải quyết định thay.
 
-Hình 3.2 thể hiện màn hình quản lý ngày khả dụng.
+Hình A.1 thể hiện màn hình quản lý ngày khả dụng.
 
-[Hình 3.2]
+[Hình A.1]
 
 ---
 
@@ -275,6 +275,20 @@ nhu cầu định dạng, nên cách an toàn nhất là không diễn giải n�
 đánh dấu.
 
 ---
+
+#### Ảnh màn hình bổ trợ cho phụ lục A
+
+Hai màn hình dưới đây không nằm trong phần chữ của Chương 3 nhưng cần cho việc
+đối chiếu khi chấm: bước buộc đổi mật khẩu tạm ở lần đăng nhập quản trị đầu
+tiên, và trang chi tiết loại phòng mà khách thấy trước khi vào luồng đặt phòng.
+
+Hình A.2 thể hiện bước buộc đổi mật khẩu tạm.
+
+[Hình A.2]
+
+Hình A.3 thể hiện trang chi tiết một loại phòng.
+
+[Hình A.3]
 
 ## Phụ lục B — Mô tả mười bảy bảng còn lại
 
