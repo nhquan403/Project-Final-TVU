@@ -1,371 +1,205 @@
-# CHƯƠNG 4 — XÂY DỰNG VÀ TRIỂN KHAI HỆ THỐNG
+# CHƯƠNG 4. KẾT QUẢ NGHIÊN CỨU
 
-## 4.1. Môi trường phát triển
+Chương này trình bày các kết quả đạt được sau quá trình thực hiện đồ án: kết quả
+kiểm thử, đánh giá hiệu năng và khả năng tiếp cận, đối chiếu với mục đích ban
+đầu, và các giới hạn đã biết của hệ thống.
 
-| Thành phần | Công cụ |
-|---|---|
-| Hệ điều hành | Linux, Windows hoặc macOS |
-| Môi trường phát triển tầng máy chủ | IntelliJ IDEA hoặc Visual Studio Code |
-| Môi trường phát triển tầng giao diện | Visual Studio Code |
-| Quản lý phụ thuộc | Maven cho tầng máy chủ, npm cho tầng giao diện |
-| Quản lý mã nguồn | Git, lưu trữ trên GitHub |
-| Cơ sở dữ liệu cục bộ | PostgreSQL 16 trong container |
-| Kiểm thử giao diện lập trình ứng dụng | Tài liệu tương tác và công cụ dòng lệnh |
+## 4.1. Chiến lược kiểm thử
 
-**Yêu cầu tối thiểu để chạy hệ thống:**
+Hệ thống có **129 ca kiểm thử tự động trong 18 lớp**, tất cả đều thành công.
 
-| Công cụ | Phiên bản | Ghi chú |
+### 4.1.1. Lý do không sử dụng cơ sở dữ liệu giả lập
+
+Mọi ca kiểm thử tích hợp dựng một **PostgreSQL 16 thật** bằng Testcontainers.
+Đề tài không giả lập cơ sở dữ liệu, vì phần lớn nội dung đáng kiểm thử ở hệ
+thống này **chính là hành vi của cơ sở dữ liệu**: ràng buộc loại trừ, kiểu
+khoảng, trigger hoãn, mã trạng thái SQL. Giả lập chúng là kiểm thử một thứ không
+tồn tại.
+
+Container được dùng chung cho mọi lớp kiểm thử kế thừa cùng lớp nền, khởi động
+một lần cho cả lần chạy. Dựng lại cơ sở dữ liệu cho từng lớp kiểm thử tốn nhiều
+thời gian hơn phần việc thật.
+
+Hai biến bí mật bắt buộc được **sinh ngẫu nhiên mỗi lần chạy** chứ không ghi sẵn
+vào tệp cấu hình kiểm thử. Cách này vừa tránh đưa giá trị vào kho mã nguồn công
+khai, vừa chứng minh luôn rằng ứng dụng thật sự đòi hai biến đó.
+
+### 4.1.2. Các cấp độ kiểm thử
+
+| Cấp độ | Ví dụ lớp | Kiểm điều gì |
 |---|---|---|
-| Docker | Có Compose phiên bản 2 | Đường chạy khuyến nghị |
-| JDK | 21 | Chỉ cần khi chạy thủ công |
-| Node.js | 20.19 trở lên, hoặc 22.12 trở lên | Yêu cầu của Angular 21 |
-| PostgreSQL | 16 | Chỉ cần khi chạy thủ công. **Bắt buộc**, vì cần phần mở rộng `btree_gist` |
+| Kiểm thử đơn vị | Lọc HTML, xuất tệp CSV | Logic thuần, không cần cơ sở dữ liệu |
+| Kiểm thử tích hợp | Phần lớn các lớp | Nhiều tầng cùng cơ sở dữ liệu thật |
+| Kiểm thử tranh chấp | Đặt phòng đa luồng, đua thanh toán | Nhiều luồng chạy song song thật |
+| Kiểm thử lược đồ | Migration, ràng buộc | Chính cấu trúc cơ sở dữ liệu |
 
-## 4.2. Quy trình phát triển
+Dự án không cấu hình pha kiểm thử tích hợp riêng; công cụ chạy kiểm thử được nới
+để nhận cả lớp có hậu tố chỉ kiểm thử tích hợp, nên lệnh kiểm chứng gồm biên
+dịch, chạy toàn bộ 129 ca và đóng gói.
 
-Đề tài được thực hiện theo **mười giai đoạn** tuần tự, tổng khối lượng ước tính
-khoảng 97 giờ công. Mỗi giai đoạn có tài liệu kế hoạch riêng, tiêu chí nghiệm
-thu riêng, và chỉ được đóng khi mọi tiêu chí đã kiểm chứng được bằng lệnh.
+## 4.2. Kết quả kiểm thử tự động
 
-| Giai đoạn | Nội dung | Khối lượng |
-|---|---|---|
-| 1 | Khởi tạo dự án và hạ tầng phát triển | 5h |
-| 2 | Hệ thống thiết kế và thư viện component | 12h |
-| 3 | Lược đồ cơ sở dữ liệu và migration | 8h |
-| 4 | Xác thực và phân quyền | 7h |
-| 5 | Lõi đặt phòng và chống trùng lịch | 11h |
-| 6 | Thanh toán mã QR, webhook và thư | 10h |
-| 7 | Khu quản trị và trang tổng quan | 14h |
-| 8 | Trang khách, quản lý nội dung và đánh giá | 16h |
-| 9 | Đóng gói, dữ liệu mẫu và tài liệu | 7h |
-| 10 | Lịch khoá phòng theo khoảng ngày | 7h |
+### 4.2.1. Tổng hợp theo nhóm
 
-Hình 4.1 thể hiện sơ đồ phụ thuộc giữa các giai đoạn, trong đó hai cặp giai đoạn
-có thể thực hiện song song vì không dùng chung tệp nào. Hình 4.2 thể hiện tiến
-độ thực hiện theo thời gian.
+| Nhóm | Số lớp | Số ca | Trọng tâm |
+|---|---:|---:|---|
+| Lược đồ và ràng buộc | 3 | 19 | Migration dựng đúng 21 bảng; từng ràng buộc kiểm tra thật sự chặn |
+| Đặt phòng | 4 | 26 | Tranh chấp đa luồng, đếm phòng trống, máy trạng thái, quét hết hạn |
+| Ngày khả dụng | 1 | 9 | Khoảng đóng phòng trừ đúng ở cả bốn truy vấn |
+| Thanh toán | 2 | 15 | Webhook, chống cộng tiền hai lần, cửa sổ tranh chấp |
+| Xác thực và phân quyền | 2 | 10 | Vòng đời token, ma trận 30 tiền tố |
+| Nội dung và đánh giá | 3 | 32 | Lọc HTML, nội dung công khai, quy tắc đánh giá |
+| Báo cáo và lưu trữ | 3 | 23 | Số liệu tổng quan, xuất CSV, tải ảnh |
+| **Tổng** | **18** | **129** | |
+
+Bảng chi tiết từng lớp kiểm thử trình bày ở Phụ lục I.
+
+### 4.2.2. Ba ca kiểm thử trọng tâm
+
+**Thứ nhất, kiểm thử tranh chấp đặt phòng.** Nhiều luồng thật chạy song song
+cùng đặt phòng cuối cùng. Kết quả bắt buộc: **đúng một luồng thắng**, không có
+hai dòng gán phòng chồng lấn trong cơ sở dữ liệu. Đây là bằng chứng trực tiếp
+cho mục đích số 2 của đề tài.
+
+**Thứ hai, kiểm thử phòng đang đóng không bao giờ được gán.** Ba trong bốn truy
+vấn phòng trống chỉ ảnh hưởng thứ khách nhìn thấy; bỏ sót truy vấn chọn phòng
+vật lý thì **đơn vẫn tạo được và phòng đang sửa chữa vẫn bị gán** — lỗi im lặng,
+chỉ lộ ra khi khách tới nhận phòng. Ca kiểm thử này canh đúng chỗ đó.
+
+**Thứ ba, kiểm thử tiền về muộn.** Tiền về **sau khi** đơn đã hết hạn: đơn mở
+lại sang trạng thái chờ đối soát, hệ thống thử giành lại phòng; không giành được
+thì vào hàng đợi hoàn tiền. Đây là bằng chứng cho tiêu chí không nhánh nào để
+tiền biến mất im lặng.
+
+## 4.3. Các lỗi thực tế phát hiện trong quá trình thực hiện
+
+| # | Hiện tượng | Nguyên nhân gốc | Cách khắc phục |
+|---|---|---|---|
+| 1 | Giao dịch thử phòng tiếp theo luôn thất bại | Bắt lỗi ràng buộc rồi thử tiếp **trong cùng giao dịch**; PostgreSQL đã huỷ giao dịch nên mọi lệnh sau trả `25P02` | Mỗi lượt thử chạy trong một giao dịch mới |
+| 2 | Website báo thiếu phòng so với thực tế | Truy vấn lấy tổng trừ đi số đã đặt trừ **hai lần** phòng bảo trì đang có đơn | Đếm trực tiếp phòng vừa khả dụng vừa rảnh |
+| 3 | Giao dịch bị bác khi khách trả phòng | Nhả phòng lúc chuyển sang `CHECKED_OUT` làm trigger kiểm số phòng bác cả giao dịch | Trạng thái `CHECKED_OUT` không nhả phòng |
+| 4 | **Toàn bộ trang web hiển thị không có định kiểu** | Chính sách bảo mật nội dung chặn thuộc tính sự kiện mà công cụ tối ưu định kiểu tự sinh ra | Tắt tính năng tối ưu đó thay vì nới lỏng chính sách bảo mật |
+| 5 | **Mọi nút bấm chính có độ tương phản khoảng 2:1** | Tệp định kiểu nền **không nằm trong tầng CSS** nên thắng mọi lớp tiện ích bất kể độ ưu tiên | Bọc tệp nền trong tầng cơ sở |
+| 6 | Ảnh tải lên trả về lỗi 404 | Khối biểu thức chính quy của máy chủ web thắng khối tiền tố thường | Dùng cú pháp tiền tố ưu tiên cho cả bốn khối chuyển tiếp |
+| 7 | Màn hình thanh toán trắng trơn | Component gọi hàm đọc tham số đầu vào **trong hàm khởi tạo**, trước khi khung ứng dụng gán tham số | Chuyển sang phương thức chạy sau khi khởi tạo |
+| 8 | Bộ nạp dữ liệu mẫu cộng dồn mỗi lần khởi động | Điều kiện chống trùng khoá theo ngày tương đối nên mỗi ngày lại khớp khác | Đổi điều kiện sang khoá toàn bảng |
+| 9 | Khu quản trị đóng nhầm phòng không hiển thị | Khối giao diện giữ định danh phòng cũ sau khi bộ lọc của màn hình cha thay đổi | Đối chiếu định danh với danh sách phòng đang hiển thị |
+
+**Về lỗi số 4 và số 5:** cả hai chỉ phát hiện được khi **chụp màn hình bằng
+trình duyệt thật**. Việc biên dịch thành công không nói gì về việc trang có hiển
+thị đúng hay không. Hình 4.17 so sánh trước và sau khi khắc phục lỗi tương phản.
+
+**Về lỗi số 9:** lỗi này do một vòng rà soát mã độc lập tìm ra **sau khi** tác
+giả đã tự kiểm thử và cho rằng chức năng đã hoàn chỉnh. Đây là lý do đề tài giữ
+bước rà soát độc lập ở cuối mỗi giai đoạn.
+
+## 4.4. Kiểm thử phi chức năng
+
+### 4.4.1. Khả năng tiếp cận
+
+Quét tự động trên 7 màn hình công khai và 6 màn hình quản trị: **không còn lỗi
+vi phạm** hướng dẫn khả năng tiếp cận nội dung web phiên bản 2.0 và 2.1 ở mức A
+và AA [13].
+
+Đo vùng chạm ở 3 độ rộng màn hình: **không còn vùng chạm dưới 44×44 điểm ảnh**.
+
+Hình 4.1 thể hiện kết quả quét.
 
 [Hình 4.1]
 
+### 4.4.2. Kiểm thử bảo mật
+
+Chín kịch bản tấn công được thử trên hệ thống đang chạy, **tất cả đều bị chặn**:
+giả mạo tiêu đề địa chỉ để vượt giới hạn tần suất; gọi endpoint quản trị không
+token hoặc bằng token vai trò khách; dùng token cũ sau khi đổi mật khẩu; gọi
+webhook không khoá xác thực; gửi lại cùng một webhook; chèn thẻ kịch bản vào nội
+dung quản lý; xem trạng thái thanh toán chỉ bằng mã đơn; và truy cập đơn của
+người khác qua tham số đường dẫn. Bảng chi tiết từng kịch bản và kết quả trình
+bày ở Phụ lục M.
+
+### 4.4.3. Kiểm thử đáp ứng
+
+Hình 4.2 thể hiện giao diện trên ba kích thước màn hình: điện thoại, máy tính
+bảng và máy tính để bàn.
+
 [Hình 4.2]
 
-**Số liệu quy mô mã nguồn** tại thời điểm hoàn thành:
+### 4.4.4. Kiểm thử phía tầng giao diện
 
-| Chỉ số | Giá trị |
+Tầng giao diện **không có bộ kiểm thử tự động thường trực**. Chất lượng được
+canh bằng ba cổng kiểm tra:
+
+1. Biên dịch, kiểm kiểu và kiểm mẫu hiển thị của khung ứng dụng.
+2. Script kiểm tra mã màu viết trực tiếp.
+3. Công cụ kiểm tra quy ước mã nguồn.
+
+Kiểm thử giao diện trong các giai đoạn trước thực hiện bằng trình duyệt thật và
+được ghi lại trong báo cáo từng giai đoạn, không phải một bộ kiểm thử thường
+trực. **Đây là một giới hạn đã biết**, trình bày ở mục 4.7.
+
+## 4.5. Kiểm thử thủ công trước khi bảo vệ
+
+Ngoài bộ kiểm thử tự động, đề tài xác định một danh sách **mười bước kiểm thử
+thủ công** cần chạy trên bản đóng gói trước khi trình diễn, phủ toàn bộ luồng
+nghiệp vụ chính: từ xem trang chủ, đặt đơn tới khi ra mã QR, tra cứu và huỷ đơn,
+đăng nhập quản trị và đổi mật khẩu bắt buộc, đối soát thanh toán, sửa nội dung
+trang chủ, xem thư xác nhận, tới đóng phòng theo khoảng ngày và kiểm chứng số
+phòng giảm đúng một. Danh sách đầy đủ trình bày ở Phụ lục N.
+
+## 4.6. Đánh giá kết quả đạt được
+
+### 4.6.1. Đối chiếu với mục đích ban đầu
+
+| # | Mục đích | Kết quả | Bằng chứng |
+|---|---|---|---|
+| 1 | Khách tìm và đặt phòng thành công | Đạt | Kiểm thử thủ công và 6 ca tự động |
+| 2 | Không bao giờ bán trùng phòng | Đạt | 3 ca kiểm thử đa luồng thật |
+| 3 | Thanh toán mã QR và webhook tự xác nhận | Đạt | 10 ca kiểm thử webhook |
+| 4 | Không để tiền biến mất im lặng | Đạt | 5 ca kiểm thử đua thanh toán |
+| 5 | Quản lý phòng, giá, số khách, ngày khả dụng | Đạt | 9 ca kiểm thử khoảng đóng phòng |
+| 6 | Giao diện đạt chuẩn thương mại | Đạt | Không còn lỗi vi phạm WCAG mức A và AA |
+| 7 | Một lệnh là đủ để chạy toàn hệ thống | Đạt có điều kiện | Xem mục 4.6.3 |
+| 8 | Tài liệu kỹ thuật đầy đủ | Đạt | 12 tài liệu |
+
+### 4.6.2. Đối chiếu với yêu cầu của đề tài
+
+| Yêu cầu | Đáp ứng |
 |---|---|
-| Số commit | 31 |
-| Thời gian thực hiện | 07/09/2026 – 20/09/2026 |
-| Tệp mã nguồn Java | 174 tệp, 15 644 dòng |
-| Tệp mã nguồn TypeScript | 100 tệp, 12 737 dòng |
-| Migration cơ sở dữ liệu | 8 tệp |
-| Lớp kiểm thử | 18 lớp, 129 ca |
-
-## 4.3. Cài đặt các chức năng chính
-
-### 4.3.1. Chức năng tìm phòng trống
-
-Đây là chức năng có yêu cầu kỹ thuật cao nhất ở tầng truy vấn. Hệ thống có **bốn
-truy vấn phòng trống** phục vụ bốn màn hình khác nhau, tất cả đặt trong một lớp
-truy cập dữ liệu duy nhất:
-
-| Truy vấn | Phục vụ | Hậu quả nếu sai |
-|---|---|---|
-| Đếm phòng trống theo loại | Trang danh sách phòng, bước hai của luồng đặt phòng | Khách thấy sai số phòng còn lại |
-| **Chọn phòng vật lý để gán** | **Lúc tạo đơn** | **Gán nhầm phòng — lỗi im lặng, chỉ lộ ra khi khách tới nhận phòng** |
-| Lịch từng đêm toàn homestay | Thanh tìm phòng ở trang chủ | Lịch chặn sai ngày |
-| Lịch từng đêm một loại phòng | Trang chi tiết phòng | Lịch chặn sai ngày |
-
-**Điểm kỹ thuật thứ nhất: đếm trực tiếp thay vì lấy tổng trừ đi.** Truy vấn đếm
-phòng trống đếm trực tiếp số phòng vừa khả dụng vừa rảnh.
-
-Cách lấy tổng trừ đi số đã đặt sai ở chỗ nó trừ mọi đơn đang giữ chỗ của loại
-phòng đó, kể cả đơn nằm trên phòng đã chuyển sang bảo trì. Một phòng bảo trì
-đang có đơn cũ bị trừ **hai lần**: một lần vì nó không còn khả dụng, một lần nữa
-vì nó vẫn có đơn. Website báo thiếu phòng và mất doanh thu mà không có dấu hiệu
-nào.
-
-**Điểm kỹ thuật thứ hai: gộp cả khoảng ngày vào một câu lệnh.** Truy vấn lịch
-toàn homestay dùng hàm sinh chuỗi ngày của PostgreSQL để trả về mọi đêm trong
-một lần gọi, thay vì lặp từng đêm. Khoảng tối đa là 120 ngày, và 120 lượt đi về
-cơ sở dữ liệu cho một lần mở lịch đủ để người dùng cảm nhận được độ trễ.
-
-**Điểm kỹ thuật thứ ba: vị trí của điều kiện lọc trong phép nối trái.** Truy vấn
-lịch toàn homestay dùng phép nối trái để bảo đảm mọi đêm đều xuất hiện trong kết
-quả, kể cả đêm không còn phòng nào. Điều kiện lọc khoảng đóng phòng phải nằm
-trong mệnh đề điều kiện nối, không phải mệnh đề lọc. Đặt sai chỗ sẽ biến phép
-nối trái thành phép nối trong, và những đêm hết phòng biến mất khỏi kết quả thay
-vì trả về số không — trong khi tầng giao diện hiểu ngày vắng mặt là ngày không
-bị chặn.
-
-Hình 4.3 thể hiện trang chủ với thanh tìm phòng và lịch chọn ngày đang mở, trong
-đó các ngày đã kín phòng bị chặn sẵn. Hình 4.4 thể hiện kết quả tìm phòng với
-nhãn số phòng còn lại và tổng tiền cả kỳ. Hình 4.5 thể hiện trang chi tiết loại
-phòng với thư viện ảnh và danh sách tiện nghi nhóm theo loại.
-
-[Hình 4.3]
-
-[Hình 4.4]
-
-[Hình 4.5]
-
-### 4.3.2. Chức năng đặt phòng và vòng thử gán phòng
-
-Thuật toán gán phòng là nơi lý thuyết trình bày ở Chương 2 được hiện thực hoá:
-
-```
-Với mỗi phòng ứng viên còn rảnh:
-    Mở một giao dịch MỚI
-    Thử ghi dòng gán phòng
-    Nếu cơ sở dữ liệu trả về SQLSTATE 23P01:
-        → một khách khác vừa chiếm mất phòng này
-        → huỷ giao dịch, thử phòng tiếp theo
-    Nếu thành công:
-        → xác nhận giao dịch và kết thúc
-Hết phòng để thử → trả về lỗi ROOM_NOT_AVAILABLE mã 409
-```
-
-**Dòng "mở một giao dịch mới" không phải tuỳ chọn.** Khi PostgreSQL bác một câu
-lệnh vì vi phạm ràng buộc, toàn bộ giao dịch bị đánh dấu hỏng; mọi câu lệnh tiếp
-theo trong cùng giao dịch đó trả về mã `25P02` chứ không thực thi. Việc thử phòng
-tiếp theo trong cùng giao dịch là **không thể thành công**.
-
-Hệ thống cũng chỉ bắt **đúng** mã `23P01`. Bắt chung mọi lỗi toàn vẹn dữ liệu sẽ
-khiến một lỗi khoá ngoại — tức là lỗi lập trình thật — bị báo cho khách thành hết
-phòng, và lỗi đó không bao giờ được phát hiện.
-
-Hình 4.6 thể hiện ba bước của luồng đặt phòng.
-
-[Hình 4.6]
-
-### 4.3.3. Chức năng thanh toán
-
-Hệ thống sinh mã QR theo chuẩn VietQR, kèm nội dung chuyển khoản gồm **mã đơn
-ghép hai chữ số thứ tự lần thử**. Hai chữ số này cho phép phân biệt các lần
-chuyển khoản khác nhau của cùng một đơn.
-
-Màn hình thanh toán có đồng hồ đếm ngược 15 phút tương ứng với hạn giữ chỗ **có
-thật** trong cơ sở dữ liệu, không phải đồng hồ trang trí.
-
-Hình 4.7 thể hiện màn hình thanh toán.
-
-[Hình 4.7]
-
-**Xử lý webhook** theo bảng quyết định sau:
-
-| Tình huống | Xử lý |
-|---|---|
-| Đủ tiền cọc | Chuyển sang `CONFIRMED`, gửi thư xác nhận |
-| Thiếu tiền | Chuyển sang `AWAITING_REVIEW`, đánh dấu cần đối soát |
-| Thừa tiền | Đánh dấu cần hoàn lại phần thừa |
-| Webhook gửi lại lần hai | Bỏ qua, không cộng tiền hai lần |
-| Không khớp đơn nào | Vẫn ghi vào nhật ký webhook để người đối soát xử lý |
-| Tiền về sau khi đơn đã đóng | Mở lại sang `AWAITING_REVIEW`, thử giành lại phòng |
-
-**Nguyên tắc thiết kế xuyên suốt:** không nhánh nào để tiền của khách biến mất
-im lặng. Mọi khoản tiền không xử lý tự động được đều vào hàng đợi đối soát thủ
-công, chứ không bị bỏ qua.
-
-### 4.3.4. Chức năng quản lý ngày khả dụng
-
-Trước giai đoạn mười, hệ thống chỉ có công tắc trạng thái vận hành cho phòng.
-Công tắc đó **không gắn với ngày**. Chủ homestay muốn ghi nhận rằng một phòng sơn
-lại trong năm ngày thì phải tự nhớ tắt rồi tự nhớ bật, và ngày quên bật là ngày
-mất doanh thu mà không có dấu hiệu nào.
-
-Giải pháp gồm ba phần: bảng `room_closures` với cột sinh tự động dùng cùng quy
-ước nửa mở, ràng buộc loại trừ chống chồng lấn, và một điều kiện lọc thêm vào
-**cả bốn** truy vấn phòng trống.
-
-**Phần thưởng kiến trúc.** Tầng giao diện phía khách **không phải sửa một dòng
-mã nào**. Trang chủ, danh sách phòng, trang chi tiết và luồng đặt phòng đều đọc
-phòng trống qua bốn truy vấn đó, nên việc sửa ở tầng dữ liệu làm cả bốn màn hình
-tự đúng theo. Đây là kết quả của việc gom mọi truy vấn phòng trống vào một lớp
-duy nhất từ giai đoạn năm.
-
-### 4.3.5. Khu quản trị
-
-Khu quản trị gồm **mười một màn hình**, nạp lười theo tuyến.
-
-Hình 4.8 thể hiện trang tổng quan với biểu đồ doanh thu theo tháng, tỉ lệ lấp
-đầy và tỉ lệ huỷ. Hình 4.9 thể hiện màn hình đối soát thanh toán với các khoản
-thiếu tiền và thừa tiền. Hình 4.10 thể hiện danh sách đơn đặt phòng kèm bộ lọc
-theo trạng thái. Hình 4.11 thể hiện chi tiết một đơn với dòng thời gian lịch sử
-trạng thái, các lần thanh toán, thư đã gửi và ghi chú nội bộ. Hình 4.12 thể hiện
-màn hình quản lý nội dung trang chủ.
-
-[Hình 4.8]
-
-[Hình 4.9]
-
-[Hình 4.10]
-
-[Hình 4.11]
-
-[Hình 4.12]
-
-### 4.3.6. Quản lý nội dung và lọc HTML
-
-Khu quản trị cho phép soạn nội dung HTML cho trang chủ và tin tức. Đây là một bề
-mặt tấn công chèn mã kịch bản cổ điển [11].
-
-Hệ thống lọc HTML **ở tầng vào**, trước khi lưu, bằng thư viện lọc của OWASP với
-**danh sách thẻ cho phép tường minh** — không phải danh sách thẻ cấm. Lý do:
-danh sách cấm luôn thiếu; mỗi khi xuất hiện một thẻ hoặc thuộc tính nguy hiểm
-mới thì danh sách cấm lại lỗi thời, còn danh sách cho phép vẫn đúng.
-
-Với nội dung do **khách** nhập, ví dụ đánh giá, hệ thống không lọc HTML mà hiển
-thị dưới dạng văn bản thuần, vì khách không có nhu cầu định dạng.
-
-## 4.4. Cài đặt mô hình bảo mật
-
-### 4.4.1. Xác thực và buộc đổi mật khẩu tạm
-
-Tài khoản quản trị của bản trình diễn được sinh với **mật khẩu ngẫu nhiên, chỉ
-in một lần vào nhật ký container**, không ghi vào bất kỳ tệp nào trong mã nguồn.
-
-Tài khoản đó mang cờ buộc đổi mật khẩu. Một bộ lọc chặn **mọi** đường dẫn trừ ba
-đường tối thiểu — xem thông tin bản thân, đổi mật khẩu, đăng xuất — cho tới khi
-mật khẩu được đổi. Lý do: mật khẩu tạm đã đi qua nhật ký nên **không còn là bí
-mật**.
-
-Hình 4.13 thể hiện màn hình buộc đổi mật khẩu.
-
-[Hình 4.13]
-
-### 4.4.2. Phân biệt mã đơn và mã truy cập
-
-Một quyết định bảo mật tinh tế: hệ thống dùng **hai mã khác nhau** cho một đơn.
-
-**Mã đơn** xuất hiện trên sao kê ngân hàng vì nó nằm trong nội dung chuyển
-khoản. Nghĩa là bất kỳ ai nhìn thấy sao kê đều biết mã đơn của người khác.
-
-**Mã truy cập** là bí mật thao tác, chỉ có trong liên kết ở thư xác nhận.
-
-Vì thế endpoint xem trạng thái thanh toán **bắt buộc** mã truy cập: nếu chỉ cần
-mã đơn là xem được, ai thấy sao kê cũng theo dõi được đơn của người khác.
-
-### 4.4.3. Giới hạn tần suất sau máy chủ web
-
-Ứng dụng nằm sau máy chủ web, nên mọi yêu cầu đến đều mang địa chỉ mạng của
-container máy chủ web. Giới hạn theo địa chỉ đó là giới hạn **toàn bộ người dùng
-chung một hạn mức**.
-
-Giải pháp là để máy chủ web **ghi đè** trường tiêu đề chứa địa chỉ thật của
-người gọi. Nhưng trường này do phía khách gửi lên nên **giả mạo được**, trừ khi
-hai điều kiện cùng thoả mãn:
-
-1. Máy chủ web **ghi đè** trường đó chứ không nối thêm vào giá trị có sẵn [7].
-2. Cổng của ứng dụng **không mở ra ngoài**, nên không ai gọi thẳng vào được.
-
-Hai điều kiện này phải đi cùng nhau; thiếu một là lớp giới hạn tần suất trở
-thành hình thức.
-
-### 4.4.4. Quản lý bí mật
-
-Hai biến bí mật của hệ thống **không có giá trị mặc định ở bất kỳ đâu**: không
-trong tệp cấu hình, không trong tệp biến môi trường mẫu, không trong tệp đóng
-gói. Ứng dụng **dừng khởi động** khi thiếu, ở mọi cấu hình.
-
-Lý do: kho mã nguồn này công khai. Một giá trị mặc định được cho là an toàn cho
-bản trình diễn nằm trong kho đồng nghĩa với việc bất kỳ ai sao chép về cũng **tự
-ký được token vai trò quản trị** cho mọi bản triển khai dùng kho này.
-
-Một script riêng là đường **duy nhất** tạo ra các giá trị thật, sinh ngẫu nhiên
-vào tệp biến môi trường với quyền truy cập hạn chế.
-
-### 4.4.5. Các lớp bảo vệ khác
-
-| Lớp | Biện pháp |
-|---|---|
-| Tiêu đề bảo mật | Chính sách bảo mật nội dung, chống nhúng khung, chống đoán kiểu tệp |
-| Ảnh tải lên | Kiểm định dạng, giới hạn dung lượng, giải mã lại và đổi tên thành định danh ngẫu nhiên |
-| Xuất tệp CSV | Thoát ký tự đầu dòng để chống chèn công thức bảng tính [12] |
-| Mật khẩu | Băm bằng thuật toán bcrypt |
-
-## 4.5. Đóng gói và triển khai
-
-### 4.5.1. Kiến trúc đóng gói
-
-Bốn dịch vụ:
-
-| Dịch vụ | Ảnh nền | Cổng mở ra máy chủ |
-|---|---|---|
-| Máy chủ web | `nginx:alpine` | **80** |
-| Ứng dụng | `eclipse-temurin:21-jre-alpine` | Không |
-| Cơ sở dữ liệu | `postgres:16` | Không |
-| Máy chủ thư giả lập | `mailpit` | **8025** |
-
-**Việc ứng dụng và cơ sở dữ liệu không mở cổng là một quyết định bảo mật**, không
-phải tối giản cấu hình — đó là điều kiện để tin được thông tin địa chỉ mà máy chủ
-web chuyển tiếp, như đã trình bày ở mục 4.4.3.
-
-Ảnh ứng dụng chạy bằng **người dùng không có quyền quản trị**, và được dựng bằng
-tệp Dockerfile nhiều tầng nên ảnh cuối không chứa công cụ biên dịch.
-
-### 4.5.2. Cấu hình máy chủ web
-
-Máy chủ web phải chuyển tiếp **bốn nhóm đường dẫn** chứ không chỉ nhóm giao diện
-lập trình ứng dụng:
-
-| Đường dẫn | Hậu quả nếu quên chuyển tiếp |
-|---|---|
-| `/api/**` | Toàn bộ hệ thống không hoạt động |
-| `/swagger-ui/**` | Trả về trang ứng dụng kèm mã 200 — **trông giống như thành công** |
-| `/v3/api-docs/**` | Tương tự |
-| `/uploads/**` | Mọi ảnh tải lên trả về lỗi 404 |
-
-Cả bốn khối phải dùng cú pháp tiền tố ưu tiên. Nguyên nhân: khối cuối tệp xử lý
-tệp tĩnh là một khối biểu thức chính quy, và máy chủ web cho khối biểu thức chính
-quy thắng mọi khối tiền tố thường [7]. Không có tiền tố ưu tiên thì ảnh tải lên
-rơi vào khối tĩnh và trả về lỗi.
-
-### 4.5.3. Hai cấu hình chạy
-
-Hệ thống chỉ có **hai** cấu hình, cố ý không nhiều hơn:
-
-| Cấu hình | Sử dụng khi | Bao gồm |
-|---|---|---|
-| Trình diễn | Phát triển và bản đem bảo vệ | Dữ liệu mẫu, tài liệu tương tác, trang thư viện component |
-| Thật | Triển khai thật | Không dữ liệu mẫu, không tài liệu tương tác, không trang thư viện |
-
-Việc đổi cấu hình trên cùng một khối dữ liệu là **an toàn** — đây chính là lý do
-dữ liệu mẫu không nằm trong lịch sử migration.
-
-### 4.5.4. Dữ liệu mẫu
-
-Cấu hình trình diễn nạp sẵn: 4 loại phòng, 15 phòng vật lý, 12 tiện nghi, **40
-đơn đặt phòng trải đủ tám trạng thái**, 3 khoản cần đối soát, 3 mã khuyến mãi
-với ba tình trạng khác nhau, 8 đánh giá, 1 khoảng đóng phòng, và nội dung trang
-chủ đầy đủ.
-
-**Mọi ngày trong dữ liệu mẫu là tương đối** so với ngày hiện tại, nên bộ dữ liệu
-không cũ đi theo thời gian: ngày bảo vệ vẫn có đơn trong tương lai để trình diễn.
-
-### 4.5.5. Xử lý múi giờ
-
-Toàn hệ thống chạy theo múi giờ Việt Nam, đặt ở **bốn tầng độc lập**: biến môi
-trường của container, tham số máy ảo Java, cấu hình chuyển đổi dữ liệu sang JSON,
-và cấu hình kết nối cơ sở dữ liệu.
-
-Chỉ đặt cấu hình chuyển đổi JSON là **không đủ** — thuộc tính đó chỉ chi phối
-cách dữ liệu được biểu diễn khi trả về, không đổi múi giờ mặc định của máy ảo.
-Hệ quả nếu làm sai: đơn tạo trong khung nửa đêm tới rạng sáng giờ Việt Nam bị
-gom nhóm vào **tháng trước** ở trang tổng quan, trong khi đồng hồ đếm ngược trên
-màn hình thanh toán vẫn đúng — sai một phần nên rất khó nghi ngờ.
-
-Endpoint kiểm tra tình trạng hệ thống phơi bày cả múi giờ ứng dụng lẫn múi giờ
-mặc định của máy ảo để kiểm tra được điều này trực tiếp.
-
-### 4.5.6. Quy trình triển khai ba lệnh
-
-```bash
-git clone <địa-chỉ-kho> homestay-tvh && cd homestay-tvh
-./scripts/init-env.sh          # sinh bí mật ngẫu nhiên
-docker compose up -d --build   # dựng và chạy 4 dịch vụ
-```
-
-Hình 4.14 thể hiện trạng thái bốn dịch vụ sau khi khởi động, và Hình 4.15 thể
-hiện hộp thư giả lập với thư xác nhận đã gửi.
-
-[Hình 4.14]
-
-[Hình 4.15]
+| Hiển thị phòng, tiện nghi và hình ảnh | Đạt |
+| Tìm phòng theo ngày | Đạt |
+| Gửi yêu cầu đặt phòng | Đạt |
+| Quản lý trạng thái đơn | Đạt — tám trạng thái, máy trạng thái có kiểm thử |
+| Quản trị thông tin phòng | Đạt |
+| Quản trị viên cập nhật phòng, giá, số lượng khách và **ngày khả dụng** | Đạt đủ bốn vế |
+| Hệ thống kiểm tra trùng ngày | Đạt — thực hiện ở tầng cơ sở dữ liệu |
+| Tính chi phí dự kiến | Đạt — một nơi tính tiền duy nhất |
+| Không yêu cầu thanh toán thật | Đạt — có endpoint mô phỏng |
+| Có dữ liệu minh hoạ để trình diễn | Đạt — 40 đơn đủ tám trạng thái |
+
+### 4.6.3. Những điều chưa kiểm chứng được
+
+Đề tài nêu rõ giới hạn của chính quá trình kiểm thử:
+
+- Quá trình phát triển chạy trong môi trường có proxy chặn kho phụ thuộc bên
+  ngoài từ bên trong container dựng ảnh, nên **bước dựng ảnh trong quy trình
+  đóng gói chưa được chạy trọn vẹn một lần** trong môi trường đó. Hệ thống đã
+  được kiểm chứng bằng PostgreSQL thật cộng ứng dụng chạy trực tiếp, và mọi số
+  liệu trong chương này lấy từ hệ thống chạy thật. **Cần chạy lại đủ ba lệnh
+  triển khai trên máy có kết nối mạng bình thường trước khi bảo vệ.**
+- Tầng giao diện **không có bộ kiểm thử tự động thường trực**, như đã nêu ở mục
+  5.4.4. Hồi quy giao diện hiện phải phát hiện bằng mắt.
+
+## 4.7. Các giới hạn đã biết của hệ thống
+
+| # | Giới hạn | Ảnh hưởng | Hướng khắc phục |
+|---|---|---|---|
+| 1 | Giới hạn tần suất lưu trong bộ nhớ tiến trình | Chỉ đúng khi chạy **một** bản ứng dụng | Chuyển sang bộ nhớ đệm dùng chung khi mở rộng |
+| 2 | Webhook xác thực bằng khoá tĩnh, không phải chữ ký | Khoá lộ thì giả mạo được | Dùng chữ ký băm khi nhà cung cấp hỗ trợ |
+| 3 | Không có token chống giả mạo yêu cầu liên trang | Rủi ro thấp vì token nằm trong tiêu đề, không phải cookie | Bổ sung nếu chuyển sang xác thực bằng cookie |
+| 4 | Hoàn tiền là thao tác thủ công | Người quản trị phải tự chuyển khoản lại | Tích hợp giao diện hoàn tiền của nhà cung cấp |
+| 5 | Không có nhật ký kiểm toán cho thao tác quản trị | Không truy được ai đã sửa gì | Bổ sung bảng nhật ký kiểm toán |
+| 6 | Mật khẩu chỉ yêu cầu độ dài, không yêu cầu độ phức tạp | Người dùng đặt được mật khẩu yếu | Bổ sung kiểm tra độ mạnh |
+| 7 | **Không có giao thức bảo mật HTTPS trong bản đóng gói** | Mật khẩu và token đi qua mạng dạng rõ | Bổ sung chứng chỉ khi có tên miền |
+
+**Giới hạn số 7 là quan trọng nhất** nếu đưa hệ thống ra sử dụng thật. Bản đóng
+gói phục vụ giao thức không mã hoá vì nó chạy trên máy cục bộ khi trình diễn.

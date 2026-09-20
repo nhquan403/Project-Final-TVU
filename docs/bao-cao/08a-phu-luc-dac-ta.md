@@ -1,53 +1,286 @@
-## 3.2. Thiết kế cơ sở dữ liệu
+# PHỤ LỤC
 
-### 3.2.1. Tổng quan
+## Phụ lục A — Đặc tả chín use case còn lại
 
-Lược đồ gồm **21 bảng nghiệp vụ**, dựng bởi **tám migration** Flyway từ `V1` tới
-`V8`. Bảng thứ 22 trong lược đồ công khai là sổ ghi chép của chính Flyway, không
-thuộc mô hình nghiệp vụ.
+Hai use case trọng tâm (UC1, UC2) đã đặc tả đầy đủ ở mục 3.1.3. Phụ lục này
+trình bày chín use case còn lại theo cùng khuôn mẫu, sắp xếp theo số hiệu.
 
-Hình 3.3 thể hiện sơ đồ quan hệ thực thể tổng thể.
+#### UC3 — Thanh toán cọc
 
-[Hình 3.3]
+| Mục | Nội dung |
+|---|---|
+| **Mã** | UC3 |
+| **Tác nhân chính** | Khách vãng lai, Khách có tài khoản |
+| **Mô tả** | Khách chuyển khoản tiền cọc theo mã QR và hệ thống tự xác nhận |
+| **Tiền điều kiện** | Đơn đang ở `PENDING_PAYMENT` và còn trong hạn giữ chỗ |
+| **Hậu điều kiện** | Đơn chuyển sang `CONFIRMED` nếu đủ tiền |
 
-| Nhóm | Migration | Các bảng | Vai trò |
-|---|---|---|---|
-| Người dùng và xác thực | V1 | `users`, `refresh_tokens` | Tài khoản, vai trò, phiên đăng nhập |
-| Phòng và tiện nghi | V2 | `amenities`, `room_types`, `rooms`, `room_type_images`, `room_type_amenities` | Danh mục sản phẩm |
-| Đặt phòng | V3 | `bookings`, `booking_rooms`, `booking_status_history` | **Lõi nghiệp vụ** |
-| Thanh toán và thư | V4 | `payments`, `payment_webhook_events`, `outbound_emails` | Tiền và liên lạc |
-| Khuyến mãi và đánh giá | V5 | `promotions`, `reviews` | Tiếp thị và uy tín |
-| Nội dung | V6 | `site_contents`, `banners`, `gallery_images`, `posts` | Trang chủ, tin tức |
-| Ghi chú nội bộ | V7 | `booking_notes` | Trao đổi nội bộ trên đơn |
-| Ngày khả dụng | V8 | `room_closures` | Khoảng ngày phòng không nhận khách |
+**Luồng sự kiện chính**
 
-Hình 3.4 thể hiện chi tiết nhóm bảng đặt phòng, nơi đặt ràng buộc quan trọng
-nhất của hệ thống.
+1. Hệ thống hiển thị mã QR kèm thông tin chuyển khoản dạng chữ và đồng hồ đếm
+   ngược tương ứng hạn giữ chỗ thật.
+2. Khách quét mã và chuyển khoản.
+3. Nhà cung cấp thanh toán phát hiện biến động số dư và gọi webhook.
+4. Hệ thống xác thực khoá, đối chiếu nội dung chuyển khoản với mã đơn và số tiền.
+5. Đủ tiền cọc, hệ thống chuyển đơn sang `CONFIRMED` và gửi thư xác nhận.
+6. Trình duyệt hỏi trạng thái định kỳ và tự chuyển sang trang hoàn tất.
 
-[Hình 3.4]
+**Luồng thay thế**
 
-### 3.2.2. Mô tả chi tiết các bảng
+- *4a. Thiếu tiền* → đơn sang `AWAITING_REVIEW`, đánh dấu cần đối soát.
+- *4b. Thừa tiền* → đánh dấu cần hoàn lại phần thừa.
+- *4c. Webhook gửi lại lần hai* → bỏ qua, không cộng tiền hai lần.
+- *4d. Không khớp đơn nào* → vẫn ghi vào nhật ký webhook cho người đối soát.
+- *4e. Sai khoá xác thực* → từ chối.
+- **3a. Tiền về sau khi đơn đã hết hạn** → mở lại đơn sang `AWAITING_REVIEW`,
+  thử giành lại phòng; không giành được thì vào hàng đợi hoàn tiền.
+- *2a. Hết hạn giữ chỗ mà không có tiền* → bộ quét chuyển đơn sang `EXPIRED` và
+  nhả phòng.
 
-### Nhóm V1 — Người dùng và xác thực
+---
 
-**Bảng `users` — tài khoản người dùng**
+#### UC9 — Đặt ngày khả dụng của phòng
 
-| Tên cột | Kiểu | Mô tả và ràng buộc |
-|---|---|---|
-| `id` | bigserial | Khoá chính |
-| `email` | varchar(255) | `uq_users_email` duy nhất; `ck_users_email_lower` buộc lưu chữ thường |
-| `password_hash` | varchar(72) | Băm mật khẩu theo thuật toán bcrypt |
-| `full_name` | varchar(150) | Họ tên, bắt buộc |
-| `phone` | varchar(20) | Số điện thoại, có thể rỗng |
-| `role` | varchar(20) | `ck_users_role` giới hạn hai giá trị `CUSTOMER` và `ADMIN` |
-| `enabled` | boolean | Mặc định bật; tắt để khoá tài khoản |
-| `must_change_password` | boolean | Cờ buộc đổi mật khẩu tạm ở lần đăng nhập đầu |
-| `token_version` | integer | `ck_users_token_version` không âm. Tăng khi đăng xuất hoặc đổi mật khẩu để vô hiệu hoá token cũ ngay |
-| `created_at`, `updated_at` | timestamptz | Thời điểm tạo và cập nhật |
+| Mục | Nội dung |
+|---|---|
+| **Mã** | UC9 |
+| **Tác nhân chính** | Quản trị viên |
+| **Mô tả** | Đóng một phòng vật lý trong một khoảng ngày; hệ thống tự mở lại khi hết khoảng |
+| **Tiền điều kiện** | Đã đăng nhập vai trò `ADMIN`, đã đổi mật khẩu tạm |
+| **Hậu điều kiện** | Phòng biến mất khỏi kết quả tìm phòng trong đúng khoảng ngày đó; **không đơn nào bị huỷ** |
 
-Ràng buộc `ck_users_email_lower` buộc lưu email chữ thường **ở tầng dữ liệu**
-thay vì phó mặc cho tầng ứng dụng. Chỉ cần một chỗ quên chuẩn hoá là tạo được
-hai tài khoản cho cùng một hộp thư.
+**Luồng sự kiện chính**
+
+1. Quản trị viên mở màn hình quản lý phòng và chọn một phòng vật lý.
+2. Hệ thống hiển thị các khoảng đóng còn hiệu lực của phòng đó.
+3. Quản trị viên chọn ngày bắt đầu đóng và ngày mở bán lại, nhập lý do.
+4. Hệ thống ghi khoảng đóng và cơ sở dữ liệu kiểm tra ràng buộc chống chồng lấn.
+5. Hệ thống trả về danh sách các đơn đang giao với khoảng vừa đóng, chỉ để cảnh
+   báo.
+
+**Luồng thay thế**
+
+- *3a. Ngày mở bán lại không sau ngày bắt đầu* → `INVALID_ADMIN_REQUEST` mã 400.
+- *4a. Khoảng mới chồng lên một khoảng đã có* → `CLOSURE_OVERLAP` mã 409.
+- *5a. Không có đơn nào trong khoảng* → không hiện cảnh báo.
+
+**Điểm thiết kế đáng lưu ý.** Hệ thống **cố ý không chặn** việc đóng một phòng
+đang có đơn. Nếu chặn, chủ homestay không ghi nhận được sự thật rằng phòng hỏng
+từ ngày mai chỉ vì hệ thống còn một đơn cũ — trong khi sự thật đó vẫn xảy ra dù
+hệ thống có cho ghi hay không. Vai trò của hệ thống là **liệt kê** đúng các đơn
+bị ảnh hưởng để người quyết định nhìn thấy, không phải quyết định thay.
+
+Hình 3.2 thể hiện màn hình quản lý ngày khả dụng.
+
+[Hình 3.2]
+
+---
+
+#### UC4 — Đối soát thanh toán
+
+| Mục | Nội dung |
+|---|---|
+| **Mã** | UC4 |
+| **Tác nhân chính** | Quản trị viên |
+| **Mô tả** | Xử lý các khoản tiền không khớp tự động được |
+| **Tiền điều kiện** | Đã đăng nhập vai trò `ADMIN`, đã đổi mật khẩu tạm |
+| **Hậu điều kiện** | Khoản tiền chuyển sang trạng thái đã xử lý |
+
+**Luồng sự kiện chính**
+
+1. Quản trị viên mở màn hình đối soát, thấy danh sách các khoản cần xử lý.
+2. Chọn một khoản, xem chi tiết đơn và lịch sử thanh toán.
+3. Quyết định: xác nhận thủ công, hoặc đánh dấu đã xử lý.
+4. Hệ thống ghi lại quyết định và cập nhật trạng thái đối soát.
+
+**Luồng thay thế**
+
+- *3a. Khoản thừa tiền* → đánh dấu cần hoàn tiền; **hệ thống không tự hoàn
+  tiền**, việc chuyển khoản lại do người thực hiện bên ngoài.
+- *3b. Khoản không khớp đơn nào* → giữ trong nhật ký để tra cứu.
+
+---
+
+#### UC5 — Tra cứu và huỷ đơn
+
+| Mục | Nội dung |
+|---|---|
+| **Mã** | UC5 |
+| **Tác nhân chính** | Khách vãng lai, Khách có tài khoản |
+| **Mô tả** | Khách tra cứu đơn và huỷ đơn mà không cần tài khoản |
+| **Tiền điều kiện** | Khách có mã đơn và số điện thoại đã dùng khi đặt, hoặc có mã truy cập |
+| **Hậu điều kiện** | Với thao tác huỷ: đơn sang `CANCELLED`, các phòng được nhả |
+
+**Luồng sự kiện chính**
+
+1. Khách nhập mã đơn và số điện thoại.
+2. Hệ thống xác thực và trả về thông tin đơn.
+3. Khách chọn huỷ đơn.
+4. Hệ thống chuyển trạng thái, nhả phòng và hoàn lượt khuyến mãi nếu có.
+
+**Luồng thay thế**
+
+- *2a. Mã đơn sai hoặc số điện thoại không khớp* → trả về **cùng một thông báo
+  lỗi** `BOOKING_NOT_FOUND` cho cả hai trường hợp, để không ai dò được mã đơn
+  nào có thật.
+- *3a. Trạng thái không cho phép huỷ* → `INVALID_STATE_TRANSITION` mã 409.
+- *1a. Vượt giới hạn tần suất tra cứu* → `TOO_MANY_REQUESTS` mã 429.
+
+---
+
+#### UC6 — Quản lý đơn đặt phòng
+
+| Mục | Nội dung |
+|---|---|
+| **Mã** | UC6 |
+| **Tác nhân chính** | Quản trị viên |
+| **Mô tả** | Theo dõi và chuyển trạng thái đơn theo máy trạng thái |
+| **Tiền điều kiện** | Đã đăng nhập vai trò `ADMIN` |
+| **Hậu điều kiện** | Trạng thái đơn thay đổi và một dòng lịch sử được ghi |
+
+**Luồng sự kiện chính**
+
+1. Quản trị viên mở danh sách đơn, lọc theo trạng thái và khoảng ngày.
+2. Mở chi tiết một đơn: thấy lịch sử trạng thái, các lần thanh toán, thư đã gửi
+   và ghi chú nội bộ.
+3. Chọn trạng thái mới trong số các trạng thái hợp lệ.
+4. Hệ thống kiểm tra bước chuyển, ghi nhật ký, và thực hiện các việc kèm theo
+   như nhả phòng hoặc hoàn lượt khuyến mãi.
+
+**Luồng thay thế**
+
+- *3a. Bước chuyển không hợp lệ* → `INVALID_STATE_TRANSITION` mã 409.
+- *4a. Chuyển sang `CHECKED_OUT`* → **không nhả phòng**, xem giải thích ở mục
+  3.3.2.
+
+---
+
+#### UC7 — Xem lại toàn bộ đơn đã đặt
+
+| Mục | Nội dung |
+|---|---|
+| **Mã** | UC7 |
+| **Tác nhân chính** | Khách có tài khoản |
+| **Mô tả** | Khách đã đăng nhập xem lại toàn bộ đơn đã đặt ở một nơi |
+| **Tiền điều kiện** | Đã đăng nhập với vai trò `CUSTOMER` |
+| **Hậu điều kiện** | Không ghi dữ liệu; truy vấn chỉ đọc |
+
+**Luồng sự kiện chính**
+
+1. Khách đăng nhập và mở trang danh sách đơn đã đặt.
+2. Hệ thống trả về danh sách đơn có phân trang, mặc định 10 đơn mỗi trang.
+3. Khách mở chi tiết một đơn bằng mã đơn.
+
+**Luồng thay thế**
+
+- *2a. Chưa có đơn nào* → hiện trạng thái rỗng kèm liên kết tới trang đặt phòng.
+- *3a. Mã đơn không thuộc về tài khoản đang đăng nhập* → từ chối.
+
+**Điểm thiết kế đáng lưu ý.** Danh sách đơn được lọc theo định danh lấy từ
+**token của phiên**, không theo tham số trên đường dẫn. Nếu lọc theo tham số,
+người dùng chỉ cần đổi số trên thanh địa chỉ là xem được đơn của người khác. Số
+phần tử mỗi trang cũng bị giới hạn trần ở phía máy chủ để một yêu cầu không kéo
+về toàn bộ bảng.
+
+---
+
+#### UC8 — Xem báo cáo doanh thu
+
+| Mục | Nội dung |
+|---|---|
+| **Mã** | UC8 |
+| **Tác nhân chính** | Quản trị viên |
+| **Mô tả** | Xem tổng quan doanh thu, tỉ lệ lấp đầy và tỉ lệ huỷ theo tháng |
+| **Tiền điều kiện** | Đã đăng nhập vai trò `ADMIN` |
+| **Hậu điều kiện** | Không ghi dữ liệu |
+
+**Luồng sự kiện chính**
+
+1. Quản trị viên mở trang tổng quan.
+2. Hệ thống tính khoảng thời gian mặc định là một số tháng gần nhất tính tới đầu
+   tháng sau.
+3. Hệ thống truy vấn và trả về: giá trị đơn theo tháng, số tiền thực nhận theo
+   tháng, tỉ lệ lấp đầy theo tháng, số đơn mới theo tháng, các loại phòng bán
+   chạy nhất, tổng số đơn, số đơn huỷ, tỉ lệ huỷ, và số khoản chờ đối soát.
+4. Quản trị viên xuất danh sách đơn ra tệp CSV nếu cần.
+
+**Luồng thay thế**
+
+- *2a. Quản trị viên chọn khoảng thời gian khác* → hệ thống chuẩn hoá về đầu
+  tháng rồi tính lại.
+- *3a. Không có đơn nào trong kỳ* → tỉ lệ huỷ trả về 0 thay vì gây lỗi chia cho
+  không.
+
+---
+
+#### UC10 — Soạn nội dung trang chủ
+
+| Mục | Nội dung |
+|---|---|
+| **Mã** | UC10 |
+| **Tác nhân chính** | Quản trị viên |
+| **Mô tả** | Cập nhật các khối nội dung trang chủ, biểu ngữ, thư viện ảnh và tin tức |
+| **Tiền điều kiện** | Đã đăng nhập vai trò `ADMIN` |
+| **Hậu điều kiện** | Nội dung đã lọc được lưu; trang công khai hiển thị nội dung mới |
+
+**Luồng sự kiện chính**
+
+1. Quản trị viên mở một trong bốn màn hình quản lý nội dung.
+2. Sửa nội dung, có thể nhập đoạn HTML cho phần thân.
+3. Tải ảnh lên nếu cần.
+4. Lưu. Hệ thống **lọc HTML ở tầng vào** theo danh sách thẻ cho phép tường minh
+   trước khi ghi vào cơ sở dữ liệu.
+5. Nội dung đã đăng xuất hiện trên trang công khai.
+
+**Luồng thay thế**
+
+- *4a. Nội dung chứa thẻ nguy hiểm* → các thẻ đó bị gỡ bỏ, phần còn lại vẫn lưu.
+- *3a. Tệp tải lên sai định dạng hoặc vượt dung lượng* → từ chối với mã lỗi
+  tương ứng.
+- *5a. Bài viết chưa đánh dấu đã đăng* → không xuất hiện trên trang công khai.
+
+---
+
+#### UC11 — Viết đánh giá
+
+| Mục | Nội dung |
+|---|---|
+| **Mã** | UC11 |
+| **Tác nhân chính** | Khách đã trả phòng |
+| **Mô tả** | Khách gửi đánh giá về kỳ lưu trú vừa qua |
+| **Tiền điều kiện** | Đơn ở trạng thái `CHECKED_OUT`; khách có mã truy cập hoặc số điện thoại |
+| **Hậu điều kiện** | Đánh giá được lưu ở trạng thái `PENDING`, chờ duyệt |
+
+**Luồng sự kiện chính**
+
+1. Khách mở liên kết đánh giá và nhập điểm từ 1 tới 5, tiêu đề và nội dung.
+2. Hệ thống xác thực khách qua mã truy cập hoặc số điện thoại.
+3. Hệ thống kiểm tra đơn đã ở trạng thái `CHECKED_OUT`.
+4. Hệ thống lưu đánh giá, **chụp tên khách từ đơn** chứ không nhận từ dữ liệu
+   gửi lên, và đặt trạng thái chờ duyệt.
+5. Quản trị viên duyệt, từ chối hoặc trả lời đánh giá.
+6. Chỉ đánh giá đã duyệt mới hiển thị công khai.
+
+**Luồng thay thế**
+
+- *2a. Xác thực thất bại* → `BOOKING_NOT_FOUND`.
+- *3a. Đơn chưa trả phòng* → từ chối kèm thông báo nêu rõ trạng thái hiện tại.
+- *4a. Đơn đã có đánh giá* → từ chối. Cột khoá đơn có ràng buộc duy nhất nên cơ
+  sở dữ liệu vẫn là chốt chặn cuối cùng; việc kiểm ở tầng dịch vụ chỉ để trả về
+  một thông báo dễ hiểu thay vì lỗi ràng buộc thô.
+
+**Điểm thiết kế đáng lưu ý.** Nội dung đánh giá do khách nhập được lưu **nguyên
+văn** và hiển thị dưới dạng văn bản thuần, không lọc HTML. Lý do: khách không có
+nhu cầu định dạng, nên cách an toàn nhất là không diễn giải nội dung đó như mã
+đánh dấu.
+
+---
+
+## Phụ lục B — Mô tả mười bảy bảng còn lại
+
+Bốn bảng cốt lõi (`users`, `bookings`, `booking_rooms`, `room_closures`) đã mô
+tả ở mục 3.2.2. Phụ lục này mô tả mười bảy bảng còn lại theo cùng mẫu ba cột,
+sắp xếp theo thứ tự migration.
 
 **Bảng `refresh_tokens` — phiên đăng nhập dài hạn**
 
@@ -135,63 +368,6 @@ Quan hệ nhiều–nhiều giữa loại phòng và tiện nghi được ánh x
 số thực thể là **20** trong khi tổng số bảng là **21**.
 
 ### Nhóm V3 — Đặt phòng
-
-**Bảng `bookings` — đơn đặt phòng**
-
-| Tên cột | Kiểu | Mô tả và ràng buộc |
-|---|---|---|
-| `id` | bigserial | Khoá chính |
-| `code` | varchar(20) | `uq_bookings_code` duy nhất. Mã đơn khách dùng để tra cứu |
-| `access_token` | char(32) | `uq_bookings_access_token` duy nhất. **Mã truy cập — bí mật thao tác, khác mã đơn** |
-| `user_id` | bigint | Khoá ngoại tới `users`, **rỗng với khách vãng lai** |
-| `guest_name` | varchar(150) | Họ tên khách |
-| `guest_email` | varchar(255) | Thư điện tử khách |
-| `guest_phone` | varchar(20) | Số điện thoại khách |
-| `check_in`, `check_out` | date | `ck_bookings_dates` buộc ngày trả sau ngày nhận |
-| `adults` | integer | `ck_bookings_adults` tối thiểu 1 |
-| `children` | integer | `ck_bookings_children` không âm |
-| `room_type_id` | bigint | Khoá ngoại tới `room_types` |
-| `room_type_name_snapshot` | varchar(150) | Tên loại phòng chụp tại thời điểm đặt |
-| `unit_price_snapshot` | numeric(12,2) | `ck_bookings_unit_price` lớn hơn 0. Giá chụp tại thời điểm đặt |
-| `room_quantity` | integer | `ck_bookings_room_qty` tối thiểu 1 |
-| `subtotal_amount` | numeric(12,2) | `ck_bookings_subtotal` không âm |
-| `discount_amount` | numeric(12,2) | `ck_bookings_discount` không âm |
-| `total_amount` | numeric(12,2) | `ck_bookings_total` không âm |
-| `deposit_amount` | numeric(12,2) | `ck_bookings_deposit` không âm |
-| `promotion_id` | bigint | Khoá ngoại `fk_bookings_promotion` thêm ở V5 |
-| `status` | varchar(20) | `ck_bookings_status` liệt kê **tám trạng thái** |
-| `payment_status` | varchar(20) | `ck_bookings_pay_status` liệt kê bảy trạng thái thanh toán |
-| `special_request` | text | Yêu cầu đặc biệt của khách |
-| `hold_expires_at` | timestamptz | Hạn giữ chỗ |
-| `client_ip` | inet | Địa chỉ mạng của người đặt |
-| `user_agent` | varchar(255) | Thông tin trình duyệt |
-| `cancelled_at`, `cancel_reason` | timestamptz, text | Thời điểm và lý do huỷ |
-| `created_at`, `updated_at` | timestamptz | Thời điểm tạo và cập nhật |
-
-Bốn cột kết thúc bằng `_snapshot` lưu bản sao giá trị tại thời điểm đặt. Khi
-quản trị viên đổi giá hoặc đổi tên loại phòng sau này, đơn cũ vẫn giữ nguyên số
-tiền và tên mà khách đã nhìn thấy lúc đặt.
-
-**Bảng `booking_rooms` — gán phòng vật lý cho đơn**
-
-| Tên cột | Kiểu | Mô tả và ràng buộc |
-|---|---|---|
-| `id` | bigserial | Khoá chính |
-| `booking_id` | bigint | Khoá ngoại tới `bookings`, xoá theo tầng |
-| `room_id` | bigint | Khoá ngoại tới `rooms` |
-| `check_in`, `check_out` | date | `ck_booking_rooms_dates` buộc ngày trả sau ngày nhận |
-| `stay` | daterange | **Cột sinh tự động** `GENERATED ALWAYS AS (daterange(check_in, check_out, '[)')) STORED` |
-| `status` | varchar(20) | `ck_booking_rooms_status` giới hạn `ACTIVE` và `RELEASED` |
-
-Ràng buộc quyết định của toàn hệ thống nằm trên bảng này:
-
-```sql
-EXCLUDE USING gist (room_id WITH =, stay WITH &&) WHERE (status = 'ACTIVE')
-```
-
-Bảng này còn mang hai trigger ràng buộc hoãn bảo đảm số dòng `ACTIVE` luôn khớp
-`room_quantity` của đơn, đặt ở cả hai phía: khi sửa `booking_rooms` và khi sửa
-`room_quantity` trên `bookings`.
 
 **Bảng `booking_status_history` — nhật ký chuyển trạng thái**
 
@@ -370,123 +546,4 @@ nào đọc bảng này.
 
 ### Nhóm V8 — Ngày khả dụng
 
-**Bảng `room_closures` — khoảng ngày phòng không nhận khách**
-
-| Tên cột | Kiểu | Mô tả và ràng buộc |
-|---|---|---|
-| `id` | bigserial | Khoá chính |
-| `room_id` | bigint | Khoá ngoại tới `rooms`, xoá theo tầng |
-| `from_date` | date | Đêm đầu tiên bị chặn |
-| `to_date` | date | Ngày mở bán lại. `ck_room_closures_dates` buộc lớn hơn `from_date` |
-| `blocked` | daterange | **Cột sinh tự động** theo quy ước nửa mở, cùng quy ước với `booking_rooms.stay` |
-| `reason` | varchar(300) | Lý do đóng phòng |
-| `created_by` | bigint | Khoá ngoại tới `users`, đặt rỗng khi tài khoản bị xoá |
-| `created_at` | timestamptz | Thời điểm tạo |
-
-Ràng buộc `room_closures_no_overlap` chống hai khoảng đóng chồng nhau trên cùng
-một phòng.
-
-### 3.2.3. Hai lần sử dụng ràng buộc loại trừ
-
-Cùng một cơ chế được sử dụng cho hai bài toán khác nhau, cho thấy lựa chọn
-PostgreSQL không nhằm phục vụ một trường hợp duy nhất.
-
-| Lần | Bảng | Ràng buộc | Chống điều gì |
-|---|---|---|---|
-| 1 | `booking_rooms` | `booking_rooms_no_overlap` | Hai đơn cùng giữ một phòng trong những ngày giao nhau |
-| 2 | `room_closures` | `room_closures_no_overlap` | Hai khoảng đóng chồng nhau trên cùng một phòng |
-
-Lần thứ hai giải quyết một lỗi rất khó chẩn đoán từ phía người dùng. Nếu cho
-phép hai khoảng đóng chồng nhau, màn hình quản trị hiển thị hai dòng mô tả cùng
-một điều, và việc xoá một dòng **không mở lại được phòng**: người dùng nhấn xoá,
-thấy dòng biến mất, rồi vẫn không bán được phòng mà không có cách nào hiểu vì
-sao.
-
-Khác biệt giữa hai ràng buộc: `booking_rooms_no_overlap` có mệnh đề điều kiện
-`WHERE (status = 'ACTIVE')` vì dòng gán phòng có trạng thái và cần giữ lịch sử;
-`room_closures_no_overlap` không có, vì khoảng đóng không có trạng thái và xoá
-là xoá hẳn.
-
-### 3.2.4. Chuẩn hoá dữ liệu
-
-Lược đồ đạt **dạng chuẩn 3**. Hai điểm đáng nêu:
-
-**Tách `room_types` và `rooms` là quyết định mô hình hoá quan trọng nhất.**
-Khách đặt một **loại phòng**, nhưng ràng buộc chống trùng lịch phải đặt lên
-**phòng vật lý**. Gộp hai khái niệm vào một bảng thì hoặc không chống trùng
-được, hoặc buộc khách phải chọn đúng số phòng — điều không nền tảng đặt phòng
-nào thực hiện.
-
-**Các chỗ cố ý phi chuẩn hoá.** Cột `guest_name_snapshot` trong bảng `reviews`
-và bốn cột kết thúc bằng `_snapshot` trong bảng `bookings` lưu bản sao giá trị
-tại thời điểm phát sinh, thay vì tham chiếu. Lý do: những giá trị này phải **đóng
-băng** tại thời điểm đó. Khách đổi tên tài khoản hoặc quản trị viên đổi giá
-phòng sau này không được phép làm thay đổi nội dung đã phát sinh.
-
-## 3.3. Thiết kế lớp và máy trạng thái
-
-### 3.3.1. Biểu đồ lớp
-
-Hệ thống có **20 thực thể** ánh xạ tới 20 trong số 21 bảng. Hình 3.5 thể hiện
-biểu đồ lớp của các thực thể cốt lõi thuộc nhóm đặt phòng và thanh toán.
-
-[Hình 3.5]
-
-Hai lớp cơ sở trừu tượng được dùng lại cho nhiều thực thể:
-
-| Lớp cơ sở | Cột cung cấp | Dùng cho nhóm bảng nào |
-|---|---|---|
-| `BaseAuditEntity` | `created_at` và `updated_at` | Bảng có vòng đời dài, có sửa đổi |
-| `BaseCreatedEntity` | Chỉ `created_at` | Bảng chỉ ghi thêm, không bao giờ sửa |
-
-Việc tách hai lớp cơ sở là bắt buộc chứ không phải lựa chọn phong cách. Chế độ
-kiểm tra lược đồ báo lỗi ngay nếu một thực thể khai báo một cột mà migration
-không có, nên không thể dùng chung một lớp cơ sở cho cả hai nhóm bảng.
-
-### 3.3.2. Máy trạng thái đơn đặt phòng
-
-Đơn đặt phòng có **tám trạng thái**. Mọi lần chuyển trạng thái đều đi qua một
-thành phần duy nhất, vì mỗi lần chuyển kéo theo ba việc phụ dễ bỏ sót: ghi nhật
-ký, nhả phòng khi đơn không diễn ra, và hoàn lượt khuyến mãi.
-
-| Trạng thái | Ý nghĩa |
-|---|---|
-| `PENDING_PAYMENT` | Vừa tạo, đang giữ chỗ chờ tiền cọc |
-| `AWAITING_REVIEW` | Có tiền nhưng không khớp, cần người đối soát |
-| `CONFIRMED` | Đã nhận đủ cọc, phòng được giữ chắc chắn |
-| `CHECKED_IN` | Khách đã nhận phòng |
-| `CHECKED_OUT` | Khách đã trả phòng |
-| `CANCELLED` | Khách hoặc quản trị viên huỷ |
-| `EXPIRED` | Quá hạn giữ chỗ mà không có tiền |
-| `NO_SHOW` | Đã xác nhận nhưng khách không đến |
-
-Hình 3.6 thể hiện biểu đồ trạng thái đầy đủ, trong đó hai đường chuyển từ
-`CANCELLED` và `EXPIRED` về `AWAITING_REVIEW` là nhánh xử lý tiền về muộn.
-
-[Hình 3.6]
-
-**Một quy tắc phản trực giác cần giải thích.** Trạng thái `CHECKED_OUT` **không**
-nhả phòng. Trực giác cho rằng khách trả phòng thì phòng phải được trả về kho.
-Nhưng nhả phòng nghĩa là chuyển dòng gán phòng sang `RELEASED`, trong khi trigger
-kiểm tra số phòng lại đòi đơn phải luôn giữ đúng số phòng đã đặt — nên nhả phòng
-lúc trả phòng làm cơ sở dữ liệu bác cả giao dịch. Quy tắc này phát sinh từ một
-lỗi thật gặp phải trong quá trình thực hiện, và có một ca kiểm thử riêng canh nó.
-
-### 3.3.3. Biểu đồ tuần tự
-
-Ba luồng xử lý quan trọng nhất được mô hình hoá bằng biểu đồ tuần tự.
-
-Hình 3.7 thể hiện luồng đặt phòng từ lúc khách chọn ngày tới lúc nhận mã QR, với
-bốn đối tượng tham gia: khách, trình duyệt, máy chủ ứng dụng và cơ sở dữ liệu.
-
-[Hình 3.7]
-
-Hình 3.8 thể hiện luồng thanh toán và webhook, bổ sung hai đối tượng bên ngoài
-là ngân hàng và nhà cung cấp dịch vụ trung gian.
-
-[Hình 3.8]
-
-Hình 3.9 thể hiện nhánh tiền về muộn — trường hợp tiền tới sau khi đơn đã hết
-hạn — cùng hai kết quả có thể xảy ra.
-
-[Hình 3.9]
+---

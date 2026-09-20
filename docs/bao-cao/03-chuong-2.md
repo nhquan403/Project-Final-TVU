@@ -1,4 +1,4 @@
-# CHƯƠNG 2 — CƠ SỞ LÝ THUYẾT VÀ CÔNG NGHỆ SỬ DỤNG
+# CHƯƠNG 2. NGHIÊN CỨU LÝ THUYẾT
 
 ## 2.1. Kiến trúc ứng dụng web tách rời
 
@@ -9,15 +9,11 @@ dụng độc lập, giao tiếp qua giao diện lập trình ứng dụng trả
 dạng JSON. Tầng giao diện không truy cập cơ sở dữ liệu; tầng máy chủ không sinh
 HTML.
 
-So sánh với kiến trúc nguyên khối kết xuất phía máy chủ:
-
-| Tiêu chí | Kết xuất phía máy chủ | **Tách rời — lựa chọn của đề tài** |
-|---|---|---|
-| Độ phức tạp ban đầu | Thấp hơn | Cao hơn |
-| Trải nghiệm người dùng | Tải lại toàn bộ trang | Chuyển trang không tải lại |
-| Tái sử dụng cho ứng dụng di động | Phải viết lại | **Dùng lại nguyên giao diện lập trình ứng dụng** |
-| Phân chia công việc | Khó tách | Tách rõ hai tầng |
-| Tối ưu công cụ tìm kiếm | Dễ hơn | Cần thêm công sức |
+So với kiến trúc nguyên khối kết xuất phía máy chủ, kiến trúc tách rời phức
+tạp hơn lúc khởi đầu và cần thêm công sức tối ưu công cụ tìm kiếm, nhưng đổi
+lại cho trải nghiệm chuyển trang không tải lại, tách rõ công việc hai tầng, và
+quan trọng nhất là **dùng lại được nguyên giao diện lập trình ứng dụng** nếu sau
+này phát triển ứng dụng di động.
 
 Lý do lựa chọn kiến trúc tách rời: hệ thống có **hai giao diện rất khác nhau** —
 trang bán hàng cho khách và khu quản trị mật độ cao. Dùng chung một giao diện
@@ -37,7 +33,7 @@ Hình 2.1 thể hiện kiến trúc tổng thể của hệ thống khi triển 
   với phòng.
 - **Mã trạng thái HTTP mang ngữ nghĩa.** Mã 201 khi tạo mới, 204 khi xoá thành
   công, 409 khi xung đột trạng thái, 429 khi vượt giới hạn tần suất.
-- **Lỗi theo chuẩn RFC 7807 [9].** Mọi phản hồi lỗi có cấu trúc thống nhất kèm
+- **Lỗi theo chuẩn RFC 7807 [4].** Mọi phản hồi lỗi có cấu trúc thống nhất kèm
   trường `code` do hệ thống tự thêm. Tầng giao diện đọc trường `code`, không đọc
   câu chữ mô tả, nên việc sửa câu chữ ở tầng máy chủ không làm hỏng màn hình.
 
@@ -45,20 +41,16 @@ Hình 2.1 thể hiện kiến trúc tổng thể của hệ thống khi triển 
 
 ### 2.2.1. Java 21
 
-Java 21 là phiên bản hỗ trợ dài hạn. Các tính năng ngôn ngữ được đề tài sử dụng:
-
-- **Kiểu `record`** — dùng cho toàn bộ đối tượng truyền dữ liệu. Một `record` là
-  bất biến, tự sinh các phương thức so sánh và hiển thị, và không thể vô tình bị
-  sửa giữa các tầng.
-- **Lớp niêm phong `sealed`** — dùng cho cây ngoại lệ nghiệp vụ. Trình biên dịch
-  biết đủ danh sách lớp con, nên việc thêm một loại lỗi mới mà quên xử lý sẽ bị
-  báo ngay lúc biên dịch.
-- **Khối văn bản** — dùng để viết các câu truy vấn SQL nhiều dòng còn đọc được.
+Java 21 là phiên bản hỗ trợ dài hạn. Đề tài sử dụng ba tính năng ngôn ngữ: kiểu
+`record` cho toàn bộ đối tượng truyền dữ liệu, bảo đảm tính bất biến và không
+thể vô tình bị sửa giữa các tầng; lớp niêm phong `sealed` cho cây ngoại lệ
+nghiệp vụ, giúp trình biên dịch báo ngay khi thêm một loại lỗi mới mà quên xử
+lý; và khối văn bản để viết các câu truy vấn SQL nhiều dòng còn đọc được.
 
 ### 2.2.2. Spring Boot 3.5.6
 
 Spring Boot là nền tảng xây dựng ứng dụng Java theo mô hình cấu hình sẵn, giảm
-lượng cấu hình thủ công mà nhà phát triển phải viết [5]. Các mô-đun được đề tài
+lượng cấu hình thủ công mà nhà phát triển phải viết [11]. Các mô-đun được đề tài
 sử dụng:
 
 | Mô-đun | Vai trò trong đề tài |
@@ -80,7 +72,7 @@ quán, tính cô lập và tính bền vững.
 bác một câu lệnh vì vi phạm ràng buộc, **toàn bộ giao dịch bị đánh dấu hỏng**.
 Mọi câu lệnh tiếp theo trong cùng giao dịch đó trả về mã lỗi `25P02` chứ không
 thực thi. Spring Framework cũng đánh dấu giao dịch chỉ được huỷ khi gặp ngoại lệ
-thời gian chạy [4].
+thời gian chạy [12].
 
 Hệ quả trực tiếp lên thiết kế: vòng thử gán phòng tiếp theo **bắt buộc** phải
 chạy trong một giao dịch mới. Chi tiết cài đặt ở mục 4.3.2.
@@ -101,38 +93,21 @@ khớp hoàn toàn với lược đồ do Flyway dựng ra.
 
 ## 2.3. Ngôn ngữ và nền tảng tầng giao diện
 
-### 2.3.1. Angular 21
+Tầng giao diện dùng **Angular 21** với ba đặc điểm: component độc lập, không còn
+khái niệm mô-đun [2]; cơ chế phản ứng signals, đủ cho quy mô này nên đề tài
+không dùng thư viện quản lý trạng thái bên ngoài; và nạp lười theo tuyến, nhờ đó
+người truy cập trang đặt phòng không phải tải mã của mười một màn hình quản trị.
 
-Đề tài sử dụng Angular 21 với ba đặc điểm hiện đại:
+Về định kiểu, đề tài **không dùng thư viện giao diện dựng sẵn** mà tự xây thư
+viện component trên nền **Tailwind CSS 4**. Lý do: thư viện dựng sẵn mang theo
+ngôn ngữ thị giác của nó, làm trang web mang dáng dấp ứng dụng gốc chứ không
+giống một trang đặt phòng. Tự xây cho phép kiểm soát hoàn toàn bảng màu, khoảng
+cách và trạng thái.
 
-- **Component độc lập.** Không còn khái niệm mô-đun; mỗi component tự khai báo
-  những thành phần nó sử dụng [6].
-- **Signals.** Cơ chế phản ứng của Angular. Một signal là một giá trị có thể
-  theo dõi; giá trị dẫn xuất tự cập nhật khi nguồn thay đổi. Đề tài **không sử
-  dụng thư viện quản lý trạng thái bên ngoài**: signals đủ cho quy mô này, và
-  thêm một thư viện là thêm một thành phần phải giải thích.
-- **Nạp lười theo tuyến.** Khu quản trị gồm mười một màn hình được tải riêng.
-  Người truy cập trang đặt phòng không tải mã của những màn hình không sử dụng.
-
-### 2.3.2. Tailwind CSS 4 và hệ thống thiết kế tự xây
-
-Đề tài **không sử dụng** thư viện giao diện dựng sẵn, mà tự xây thư viện
-component trên nền Tailwind CSS 4.
-
-Lý do: thư viện dựng sẵn mang theo ngôn ngữ thị giác của nó. Sử dụng một thư
-viện phổ biến làm trang web mang dáng dấp của ứng dụng gốc chứ không giống một
-trang đặt phòng. Tự xây cho phép kiểm soát hoàn toàn bảng màu, khoảng cách và
-trạng thái, và biến việc thiết kế giao diện thành một phần có thể trình bày được
-của đồ án thay vì một tuỳ chọn cấu hình.
-
-**Khái niệm tầng CSS.** Tailwind 4 đặt các lớp tiện ích trong tầng `utilities`.
-Một quy tắc CSS **không nằm trong tầng nào** luôn thắng mọi quy tắc nằm trong
-tầng, bất kể độ ưu tiên. Đây là nguồn gốc của một lỗi thật gặp phải trong quá
-trình thực hiện, trình bày ở mục 5.3.
-
-Hình 2.2 thể hiện bảng token màu của hệ thống.
-
-[Hình 2.2]
+Một khái niệm cần nắm là **tầng CSS**: Tailwind 4 đặt các lớp tiện ích trong
+tầng `utilities`, và một quy tắc CSS không nằm trong tầng nào luôn thắng mọi quy
+tắc nằm trong tầng, bất kể độ ưu tiên. Đây là nguồn gốc của một lỗi thật gặp
+phải trong quá trình thực hiện, trình bày ở mục 4.3.
 
 ## 2.4. Hệ quản trị cơ sở dữ liệu PostgreSQL 16
 
@@ -141,7 +116,7 @@ Hình 2.2 thể hiện bảng token màu của hệ thống.
 
 ### 2.4.1. Mức cô lập giao dịch và giới hạn của nó
 
-PostgreSQL mặc định chạy ở mức cô lập **Read Committed** [2]. Ở mức này, một câu
+PostgreSQL mặc định chạy ở mức cô lập **Read Committed** [9]. Ở mức này, một câu
 `SELECT` chỉ thấy ảnh chụp dữ liệu tại **thời điểm câu lệnh đó bắt đầu chạy** —
 nó chỉ thấy dữ liệu đã được commit trước đó, không thấy thay đổi chưa commit của
 giao dịch song song.
@@ -149,18 +124,18 @@ giao dịch song song.
 Điều quan trọng là: **Read Committed không ngăn được hai giao dịch song song
 cùng đọc rồi cùng ghi.** Tài liệu PostgreSQL nêu rõ ví dụ một giao dịch cập nhật
 giá trị trong khi giao dịch khác đang tìm theo giá trị cũ, dẫn tới kết quả không
-như mong đợi [2].
+như mong đợi [9].
 
 Nâng lên mức **Repeatable Read** thì mọi câu lệnh trong cùng giao dịch dùng chung
 một ảnh chụp tại thời điểm bắt đầu giao dịch, ngăn được hiện tượng đọc ảo. Mức
 **Serializable** ngăn thêm được bất thường tuần tự hoá, nhưng đánh đổi bằng việc
 giao dịch có thể bị bác với mã lỗi `40001` và ứng dụng phải thử lại toàn bộ từ
-đầu [2].
+đầu [9].
 
 Điểm mấu chốt cho đề tài: **ngay cả ở mức Serializable, tài liệu PostgreSQL vẫn
 khuyến cáo không dựa vào việc kiểm tra ở tầng ứng dụng trước khi ghi.** Tài liệu
 nêu rõ vẫn có thể gặp vi phạm ràng buộc duy nhất do xung đột giữa các giao dịch
-chồng lấn, kể cả sau khi đã kiểm tra tường minh rằng khoá chưa tồn tại [2].
+chồng lấn, kể cả sau khi đã kiểm tra tường minh rằng khoá chưa tồn tại [9].
 Khuyến nghị là **sử dụng ràng buộc toàn vẹn** thay vì kiểm tra ở tầng ứng dụng.
 
 Đây chính là căn cứ lý thuyết cho toàn bộ thiết kế của đồ án.
@@ -168,7 +143,7 @@ Khuyến nghị là **sử dụng ràng buộc toàn vẹn** thay vì kiểm tra
 ### 2.4.2. Kiểu dữ liệu khoảng
 
 PostgreSQL có kiểu `daterange` biểu diễn một khoảng ngày như một giá trị duy
-nhất, kèm toán tử `&&` kiểm tra hai khoảng có giao nhau hay không [1]:
+nhất, kèm toán tử `&&` kiểm tra hai khoảng có giao nhau hay không [8]:
 
 ```sql
 SELECT daterange('2026-03-08','2026-03-10','[)')
@@ -212,9 +187,9 @@ song song.
 Với ràng buộc loại trừ, PostgreSQL bác một trong hai giao dịch ngay trong động
 cơ lưu trữ, bằng mã lỗi `SQLSTATE 23P01`. Không còn khe hở nào để chen vào.
 
-Hình 2.3 so sánh trực quan hai cách xử lý tranh chấp.
+Hình 2.2 so sánh trực quan hai cách xử lý tranh chấp.
 
-[Hình 2.3]
+[Hình 2.2]
 
 **Thứ hai, nó đúng ngữ nghĩa nửa mở** mà không cần một dòng mã ứng dụng nào.
 
@@ -232,12 +207,12 @@ hay không.
 
 **GiST** là viết tắt của Generalized Search Tree — cây tìm kiếm tổng quát. Tài
 liệu PostgreSQL định nghĩa nó là một phương thức truy cập có cấu trúc cây cân
-bằng, đóng vai trò khuôn mẫu cơ sở để cài đặt các lược đồ đánh chỉ mục tuỳ ý [3].
+bằng, đóng vai trò khuôn mẫu cơ sở để cài đặt các lược đồ đánh chỉ mục tuỳ ý [7].
 
 Điểm khác biệt cốt lõi so với B-tree: B-tree có cấu trúc cố định dựa trên thứ tự
 tuyến tính, còn GiST cho phép định nghĩa **lớp toán tử tuỳ chỉnh** cho từng kiểu
 dữ liệu. Nhờ đó GiST xử lý được các phép toán như giao nhau, bao hàm, khoảng
-cách — những phép toán không quy về được thứ tự tuyến tính [3].
+cách — những phép toán không quy về được thứ tự tuyến tính [7].
 
 Ràng buộc của đề tài trộn hai toán tử: `room_id WITH =` thuộc về B-tree và
 `stay WITH &&` thuộc về GiST. Phần mở rộng **`btree_gist`** cho phép đưa cả hai
@@ -267,54 +242,43 @@ việc kiểm tra tới **thời điểm commit**, khi mọi dòng đã ghi xong
 
 ## 2.5. Xác thực và phân quyền bằng JSON Web Token
 
-JSON Web Token là một chuỗi ký tự gồm ba phần — phần đầu, phần tải và chữ ký —
-nối bằng dấu chấm, đã được ký bằng khoá bí mật của máy chủ. Máy chủ không cần
-lưu phiên làm việc; nó chỉ cần xác minh chữ ký.
+JSON Web Token là chuỗi ký tự gồm phần đầu, phần tải và chữ ký, đã ký bằng khoá
+bí mật của máy chủ. Máy chủ không cần lưu phiên làm việc, chỉ cần xác minh chữ
+ký.
 
-Đề tài sử dụng **hai loại token với hai vòng đời khác nhau**:
+Đề tài dùng **hai loại token với hai vòng đời**: token truy cập sống ngắn, lưu
+trong bộ nhớ của trang và gửi kèm mỗi yêu cầu; token làm mới sống dài, lưu trong
+cookie mà mã kịch bản không đọc được. Tách đôi như vậy vì token truy cập có thể
+bị mã độc chèn vào trang lấy được, nhưng nó hết hạn sau vài phút; còn token làm
+mới sống lâu thì nằm ngoài tầm với của mã kịch bản.
 
-| | Token truy cập | Token làm mới |
-|---|---|---|
-| Vòng đời | Ngắn, tính bằng phút | Dài, tính bằng ngày |
-| Nơi lưu | Bộ nhớ của trang | Cookie chỉ đọc bởi máy chủ |
-| Mục đích | Gửi kèm mỗi yêu cầu | Xin token truy cập mới |
-| Mã kịch bản đọc được | Có | **Không** |
-
-Lý do tách đôi: token truy cập nằm trong bộ nhớ nên mã độc chèn vào trang có thể
-lấy được, nhưng nó hết hạn sau vài phút. Token làm mới sống lâu nhưng nằm trong
-cookie mà mã kịch bản không đọc được.
-
-**Thu hồi tức thì.** Nhược điểm cố hữu của JWT là không thu hồi được trước hạn.
-Đề tài khắc phục bằng một số phiên bản lưu trong bảng người dùng và nhúng vào
-token. Khi đổi mật khẩu hoặc đăng xuất, số đó tăng lên và mọi token cũ mất hiệu
-lực ngay.
+Nhược điểm cố hữu của JWT là không thu hồi được trước hạn. Đề tài khắc phục bằng
+một **số phiên bản** lưu trong bảng người dùng và nhúng vào token: khi đổi mật
+khẩu hoặc đăng xuất, số đó tăng lên và mọi token cũ mất hiệu lực ngay.
 
 ## 2.6. Quản lý phiên bản lược đồ bằng Flyway
 
-Flyway thực thi các tệp SQL đánh số theo thứ tự, và ghi lại tệp nào đã chạy kèm
-**giá trị băm** của nó.
+Flyway thực thi các tệp SQL đánh số theo thứ tự và ghi lại tệp nào đã chạy kèm
+giá trị băm của nó. Nguyên tắc **bất biến**: migration đã phát hành không bao
+giờ được sửa, vì sửa làm giá trị băm thay đổi và Flyway chặn khởi động. Muốn đổi
+lược đồ thì thêm một migration mới. Hệ thống hiện có tám migration.
 
-**Nguyên tắc bất biến:** migration đã phát hành không bao giờ được sửa. Sửa làm
-giá trị băm thay đổi và Flyway chặn khởi động. Muốn đổi lược đồ thì **thêm** một
-migration mới. Hệ thống hiện có **tám migration** từ `V1` tới `V8`.
-
-**Dữ liệu mẫu cố ý không đi qua Flyway.** Nếu dữ liệu minh hoạ là một migration,
-thì việc chuyển sang môi trường thật trên cùng khối dữ liệu sẽ mang theo cả 40
-đơn giả. Dữ liệu mẫu được nạp bởi một thành phần riêng chỉ kích hoạt ở cấu hình
+Dữ liệu mẫu **cố ý không đi qua Flyway**. Nếu dữ liệu minh hoạ là một migration,
+việc chuyển sang môi trường thật trên cùng khối dữ liệu sẽ mang theo cả 40 đơn
+giả. Dữ liệu mẫu được nạp bởi một thành phần riêng chỉ kích hoạt ở cấu hình
 trình diễn.
 
 ## 2.7. Đóng gói bằng Docker và Docker Compose
 
-- **Ảnh Docker** là bản đóng gói gồm ứng dụng và mọi thành phần nó cần để chạy.
-- **Tệp Dockerfile nhiều tầng.** Tầng đầu chứa công cụ biên dịch, tầng sau chỉ
-  chứa kết quả biên dịch. Ảnh cuối không mang theo trình biên dịch nên nhỏ hơn
-  nhiều và ít bề mặt tấn công hơn.
-- **Docker Compose** mô tả nhiều dịch vụ trong một tệp cấu hình.
+Ảnh Docker là bản đóng gói gồm ứng dụng và mọi thành phần nó cần để chạy. Đề tài
+dùng **tệp Dockerfile nhiều tầng**: tầng đầu chứa công cụ biên dịch, tầng sau
+chỉ chứa kết quả biên dịch, nên ảnh cuối không mang theo trình biên dịch và có ít
+bề mặt tấn công hơn. Docker Compose mô tả nhiều dịch vụ trong một tệp cấu hình.
 
 Hệ thống gồm bốn dịch vụ: máy chủ web, ứng dụng, cơ sở dữ liệu và máy chủ thư
-giả lập. **Chỉ máy chủ web và giao diện xem thư mở cổng ra máy chủ**; ứng dụng
-và cơ sở dữ liệu không mở cổng nào. Đây là điều kiện để tin được thông tin địa
-chỉ mà máy chủ web chuyển tiếp, giải thích ở mục 4.4.3.
+giả lập. **Chỉ máy chủ web và giao diện xem thư mở cổng ra máy chủ**; ứng dụng và
+cơ sở dữ liệu không mở cổng nào, và đây là điều kiện để tin được thông tin địa
+chỉ mà máy chủ web chuyển tiếp, giải thích ở mục 3.10.3.
 
 ## 2.8. Thanh toán qua mã QR và webhook
 
@@ -322,7 +286,7 @@ chỉ mà máy chủ web chuyển tiếp, giải thích ở mục 4.4.3.
 điền sẵn số tài khoản, số tiền và nội dung chuyển khoản.
 
 **SePay** là dịch vụ trung gian đọc biến động số dư của tài khoản ngân hàng và
-gọi webhook tới hệ thống khi có tiền về [8].
+gọi webhook tới hệ thống khi có tiền về [14].
 
 **Webhook** là cơ chế ngược với việc hỏi liên tục: thay vì hệ thống hỏi có tiền
 chưa mỗi vài giây, nhà cung cấp chủ động gọi vào một endpoint do hệ thống cung
@@ -338,32 +302,9 @@ Ba vấn đề kỹ thuật phải giải quyết:
 
 ## 2.9. Kiểm thử với Testcontainers
 
-Testcontainers là thư viện khởi động một container Docker thật trong lúc chạy
-kiểm thử.
-
-Lý do đề tài bắt buộc sử dụng nó: phần lớn nội dung đáng kiểm thử ở hệ thống này
-**chính là hành vi của cơ sở dữ liệu** — ràng buộc loại trừ, kiểu khoảng, trigger
-hoãn, mã trạng thái SQL. Cơ sở dữ liệu trong bộ nhớ không có những tính năng đó.
-Kiểm thử chạy trên nền giả lập sẽ thành công mà không chứng minh được điều duy
+Testcontainers khởi động một container Docker thật trong lúc chạy kiểm thử. Đề
+tài bắt buộc dùng nó vì phần lớn nội dung đáng kiểm thử ở hệ thống này **chính
+là hành vi của cơ sở dữ liệu**: ràng buộc loại trừ, kiểu khoảng, trigger hoãn,
+mã trạng thái SQL. Cơ sở dữ liệu trong bộ nhớ không có những tính năng đó, nên
+kiểm thử chạy trên nền giả lập sẽ thành công mà không chứng minh được điều duy
 nhất đáng chứng minh.
-
-## 2.10. Bảng tổng hợp công nghệ
-
-| Tầng | Công nghệ | Phiên bản |
-|---|---|---|
-| Ngôn ngữ tầng máy chủ | Java | 21 (LTS) |
-| Nền tảng tầng máy chủ | Spring Boot | 3.5.6 |
-| Truy cập dữ liệu | Spring Data JPA / Hibernate, Spring JDBC | theo nền tảng |
-| Bảo mật | Spring Security và JWT | theo nền tảng |
-| Cơ sở dữ liệu | PostgreSQL | 16 |
-| Quản lý lược đồ | Flyway | theo nền tảng |
-| Giới hạn tần suất | bucket4j | — |
-| Lọc HTML | OWASP java-html-sanitizer | 20240325.1 |
-| Kiểm thử | JUnit 5, AssertJ, Testcontainers | — |
-| Ngôn ngữ tầng giao diện | TypeScript | theo Angular |
-| Nền tảng tầng giao diện | Angular | 21 |
-| Định kiểu | Tailwind CSS | 4 |
-| Máy chủ web | nginx | alpine |
-| Đóng gói | Docker, Docker Compose | Engine 24+, Compose v2 |
-| Thư trong môi trường trình diễn | Mailpit | — |
-| Thanh toán | SePay và VietQR | — |

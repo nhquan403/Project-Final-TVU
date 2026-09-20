@@ -1,4 +1,4 @@
-# CHƯƠNG 1 — TỔNG QUAN VỀ ĐỀ TÀI
+# CHƯƠNG 1. TỔNG QUAN
 
 ## 1.1. Giới thiệu bài toán
 
@@ -51,17 +51,12 @@ cơ sở homestay quy mô nhỏ, cùng ba điểm rủi ro chính.
 
 [Hình 1.2]
 
-Bảng dưới đây đối chiếu từng bước của quy trình với nhược điểm tương ứng.
-
-| Bước | Cách làm hiện tại | Nhược điểm |
-|---|---|---|
-| Tìm hiểu thông tin | Xem ảnh trên trang mạng xã hội | Ảnh lẫn lộn, không có giá rõ ràng, không biết còn phòng hay không |
-| Hỏi phòng trống | Nhắn tin, chờ chủ nhà trả lời | Phụ thuộc giờ giấc chủ nhà; khách nhắn lúc nửa đêm phải chờ tới sáng |
-| Kiểm tra lịch | Chủ nhà tra sổ hoặc nhớ lại | **Nguồn gốc của việc đặt trùng phòng** |
-| Báo giá | Chủ nhà tự tính nhẩm | Dễ nhầm khi khách ở nhiều đêm hoặc đặt nhiều phòng |
-| Đặt cọc | Chuyển khoản, gửi ảnh biên lai | Chủ nhà phải tự đối chiếu sao kê bằng mắt |
-| Xác nhận | Nhắn tin xác nhận | Không có bằng chứng nào ngoài đoạn hội thoại |
-| Quản lý | Sổ giấy hoặc bảng tính | Không thống kê được; mất sổ là mất toàn bộ dữ liệu |
+Bảy bước của quy trình đều có nhược điểm. Khách xem ảnh trên trang mạng xã hội
+nên không biết giá và tình trạng phòng. Việc hỏi phòng trống phụ thuộc giờ giấc
+chủ nhà. **Bước tra lịch bằng trí nhớ là nguồn gốc của việc đặt trùng phòng.**
+Báo giá tính nhẩm dễ nhầm khi khách ở nhiều đêm hoặc đặt nhiều phòng. Đối chiếu
+tiền cọc làm bằng mắt trên sao kê. Xác nhận không để lại bằng chứng nào ngoài
+đoạn hội thoại. Và toàn bộ dữ liệu nằm trên sổ giấy, không thống kê được.
 
 ### 1.2.2. Khảo sát người dùng
 
@@ -90,94 +85,48 @@ khan hiếm.
 
 [Hình 1.3]
 
-Hình 1.4 thể hiện lịch chọn ngày của Agoda, trong đó giá từng đêm hiển thị trực
-tiếp trên ô ngày và các ngày hết phòng bị chặn sẵn.
+### 1.3.1. So sánh với hệ thống của đề tài
 
-[Hình 1.4]
-
-### 1.3.1. Bảng so sánh
-
-| Tiêu chí | Booking.com | Agoda | Airbnb | **Homestay TVH** |
-|---|---|---|---|---|
-| Đối tượng | Khách sạn, mọi phân khúc | Khách sạn, mạnh ở châu Á | Lưu trú cá nhân | **Một homestay duy nhất** |
-| Hoa hồng | 15–18% | 15–20% | Thu cả chủ và khách | **0%** |
-| Đặt không cần tài khoản | Có | Có | Không | **Có** |
-| Phương thức thanh toán | Thẻ hoặc trả tại nơi ở | Thẻ | Thẻ | **Chuyển khoản mã QR** |
-| Hiện tổng tiền cả kỳ | Có | Có | Có | **Có, ở mọi bước** |
-| Chặn sẵn ngày hết phòng | Có | Có | Có | **Có** |
-| Nhãn khan hiếm | Có, rất mạnh | Có | Vừa phải | **Có, nhưng chỉ dùng số thật** |
-| Hiển thị số người đang xem | Có | Có | Không | **Cố ý không có** |
+Điểm khác biệt căn bản: ba nền tảng trên là **sàn trung gian nhiều cơ sở**, thu
+hoa hồng 15–20% mỗi đơn, còn hệ thống của đề tài phục vụ **một cơ sở duy nhất**
+và không thu hoa hồng. Về chức năng, đề tài giữ những điểm mạnh đã được kiểm
+chứng của cả ba: cho đặt phòng không cần tài khoản, hiển thị tổng tiền cả kỳ ở
+mọi bước, và chặn sẵn ngày hết phòng ngay trong lịch chọn ngày. Khác biệt về
+thanh toán: ba nền tảng dùng thẻ, đề tài dùng chuyển khoản mã QR — phù hợp với
+thói quen thanh toán trong nước và không đòi hỏi tài khoản cổng thanh toán quốc
+tế.
 
 ### 1.3.2. Mẫu thiết kế áp dụng và mẫu cố ý không áp dụng
 
 Đề tài áp dụng các mẫu thiết kế đã được kiểm chứng qua nghiên cứu hành vi người
-dùng trên nền tảng đặt chỗ lưu trú [13], nhưng **từ chối** nhóm mẫu gây áp lực
-giả (dark pattern) được phân tích trong khảo sát đối sánh hai nền tảng [14].
+dùng trên nền tảng đặt chỗ lưu trú [1], nhưng **từ chối** nhóm mẫu gây áp lực giả
+được phân tích trong khảo sát đối sánh hai nền tảng [10].
 
-| Áp dụng từ hai nền tảng | Cố ý làm khác |
-|---|---|
-| Khoảng trắng rộng, tương phản cao | Nhãn "còn N phòng" lấy trực tiếp từ cơ sở dữ liệu, có ràng buộc loại trừ bảo chứng là đúng |
-| Tổng tiền cả kỳ hiển thị ở mọi bước, không chỉ giá mỗi đêm | Đồng hồ đếm ngược chỉ dùng cho hạn giữ chỗ có thật trong cơ sở dữ liệu |
-| Thanh điều hướng cố định ở trang chi tiết | Không hiển thị số người đang xem — hệ thống không đo được nên không hiển thị |
-| Chặn sẵn ngày hết phòng trong lịch chọn ngày | Không hiển thị thông báo vừa có người đặt nếu không có người đặt thật |
-| Khối đánh giá đặt ngay dưới phần chọn phòng | |
+Cụ thể, đề tài giữ lại nhãn "còn N phòng" nhưng buộc con số đó lấy trực tiếp từ
+cơ sở dữ liệu, có ràng buộc loại trừ bảo chứng là đúng. Đồng hồ đếm ngược chỉ
+dùng cho hạn giữ chỗ **có thật** trong cơ sở dữ liệu, không phải để thúc ép.
+Và hệ thống **không hiển thị số người đang xem** — vì hệ thống không đo được số
+đó.
 
-Luận điểm của đề tài: các nhãn khan hiếm trên nền tảng lớn thường không tương
-ứng với dữ liệu thật. Đồ án giữ lại **hình thức** của chúng, vì chúng thật sự
-giúp khách quyết định nhanh, nhưng buộc mọi con số phải có nguồn gốc kiểm chứng
-được. Lựa chọn này khả thi chính vì ràng buộc ở tầng cơ sở dữ liệu bảo đảm con
-số phòng còn trống luôn đúng.
+Luận điểm: các nhãn khan hiếm trên nền tảng lớn thường không tương ứng với dữ
+liệu thật. Đồ án giữ lại hình thức của chúng, vì chúng thật sự giúp khách quyết
+định nhanh, nhưng buộc mọi con số phải có nguồn gốc kiểm chứng được. Lựa chọn
+này khả thi chính vì ràng buộc ở tầng cơ sở dữ liệu bảo đảm con số phòng còn
+trống luôn đúng.
 
 ## 1.4. Xác định yêu cầu
 
 ### 1.4.1. Yêu cầu chức năng
 
-**Nhóm A — Dành cho khách**
+Đề tài xác định **32 yêu cầu chức năng** chia ba nhóm theo tác nhân:
 
-| Mã | Yêu cầu |
-|---|---|
-| CN-01 | Xem danh sách loại phòng kèm tiện nghi, hình ảnh, giá |
-| CN-02 | Xem chi tiết một loại phòng, xem thư viện ảnh |
-| CN-03 | Tìm phòng trống theo khoảng ngày, số người lớn, trẻ em, số phòng |
-| CN-04 | Xem lịch từng đêm: đêm nào còn phòng, đêm nào hết |
-| CN-05 | Gửi yêu cầu đặt phòng, nhận mã đơn |
-| CN-06 | Xem chi phí dự kiến trước khi xác nhận đơn |
-| CN-07 | Áp dụng mã khuyến mãi và thấy ngay số tiền được giảm |
-| CN-08 | Thanh toán đặt cọc bằng mã QR |
-| CN-09 | Tra cứu đơn bằng mã đơn và số điện thoại |
-| CN-10 | Huỷ đơn |
-| CN-11 | Nhận thư xác nhận qua thư điện tử |
-| CN-12 | Viết đánh giá sau khi trả phòng |
-| CN-13 | Đăng ký, đăng nhập, xem lại toàn bộ đơn đã đặt |
-| CN-14 | Đọc tin tức, xem thư viện ảnh của homestay |
+| Nhóm | Mã | Số lượng | Nội dung chính |
+|---|---|---:|---|
+| **A — Khách** | CN-01…CN-14 | 14 | Xem loại phòng và tiện nghi; tìm phòng theo ngày; xem lịch từng đêm; gửi yêu cầu đặt phòng; xem chi phí dự kiến; áp mã khuyến mãi; thanh toán mã QR; tra cứu và huỷ đơn; nhận thư xác nhận; viết đánh giá; đăng ký và xem lại đơn; đọc tin tức |
+| **B — Quản trị viên** | CN-15…CN-28 | 14 | Đăng nhập và buộc đổi mật khẩu tạm; quản lý đơn và chuyển trạng thái; ghi chú nội bộ; đối soát thanh toán; quản lý loại phòng, phòng vật lý, **ngày khả dụng**, khuyến mãi, đánh giá, nội dung trang chủ; xem tổng quan; xuất báo cáo CSV |
+| **C — Hệ thống tự động** | CN-29…CN-32 | 4 | Nhận webhook và tự xác nhận đơn; quét đơn quá hạn và nhả phòng; gửi thư qua hàng đợi; xử lý tiền về muộn |
 
-**Nhóm B — Dành cho quản trị viên**
-
-| Mã | Yêu cầu |
-|---|---|
-| CN-15 | Đăng nhập khu quản trị; buộc đổi mật khẩu tạm ở lần đầu |
-| CN-16 | Xem danh sách đơn, lọc theo trạng thái và khoảng ngày |
-| CN-17 | Xem chi tiết đơn: lịch sử trạng thái, thanh toán, thư đã gửi, ghi chú |
-| CN-18 | Chuyển trạng thái đơn theo máy trạng thái hợp lệ |
-| CN-19 | Ghi chú nội bộ trên đơn |
-| CN-20 | Đối soát thanh toán: xác nhận thủ công, xử lý khoản lệch |
-| CN-21 | Quản lý loại phòng: thêm, sửa, xoá, gán tiện nghi, tải ảnh |
-| CN-22 | Quản lý phòng vật lý: thêm, sửa, đổi trạng thái vận hành |
-| CN-23 | **Đóng phòng theo khoảng ngày** — quản lý ngày khả dụng |
-| CN-24 | Quản lý mã khuyến mãi |
-| CN-25 | Duyệt, từ chối, trả lời đánh giá của khách |
-| CN-26 | Quản lý nội dung trang chủ, biểu ngữ, thư viện ảnh, tin tức |
-| CN-27 | Xem tổng quan: doanh thu, tỉ lệ lấp đầy, tỉ lệ huỷ |
-| CN-28 | Xuất báo cáo đơn ra tệp định dạng CSV |
-
-**Nhóm C — Hệ thống tự động**
-
-| Mã | Yêu cầu |
-|---|---|
-| CN-29 | Nhận webhook khi có tiền về, tự đối chiếu và xác nhận đơn |
-| CN-30 | Tự chuyển đơn quá hạn giữ chỗ sang trạng thái hết hạn và nhả phòng |
-| CN-31 | Gửi thư qua hàng đợi, ghi nhận mọi thư đã gửi |
-| CN-32 | Xử lý tiền về muộn: mở lại đơn, thử giành lại phòng |
+Danh sách chi tiết từng yêu cầu trình bày ở Phụ lục K.
 
 ### 1.4.2. Yêu cầu phi chức năng
 
@@ -190,7 +139,7 @@ số phòng còn trống luôn đúng.
 | PCN-05 | Bảo mật | Chống dò mật khẩu và spam đặt phòng | Giới hạn tần suất theo 9 khoá |
 | PCN-06 | Bảo mật | Không có bí mật nào nằm trong mã nguồn | Ứng dụng dừng khởi động khi thiếu biến |
 | PCN-07 | Khả dụng | Giao diện sử dụng được trên điện thoại | Kiểm ở 3 độ rộng màn hình |
-| PCN-08 | Khả dụng | Đạt chuẩn WCAG 2.1 mức A và AA [10] | Quét tự động |
+| PCN-08 | Khả dụng | Đạt chuẩn WCAG 2.1 mức A và AA [13] | Quét tự động |
 | PCN-09 | Khả dụng | Mọi vùng chạm tối thiểu 44×44 điểm ảnh | Đo tự động |
 | PCN-10 | Hiệu năng | Lịch cả kỳ lấy trong một truy vấn, không lặp từng đêm | Đọc mã truy vấn |
 | PCN-11 | Triển khai | Ba lệnh từ lúc sao chép mã nguồn tới lúc chạy | Thực nghiệm |

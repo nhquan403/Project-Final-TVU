@@ -1,43 +1,89 @@
 # CÁC TRANG ĐẦU
 
-## Trang bìa
+> Thứ tự các trang đầu theo đúng mục 1 "CẤU TRÚC" của quy định và bộ biểu mẫu
+> BM5 của Khoa Kỹ thuật và Công nghệ — Trường Đại học Trà Vinh.
 
-BỘ GIÁO DỤC VÀ ĐÀO TẠO
-TRƯỜNG ĐẠI HỌC TRÀ VINH
-KHOA CÔNG NGHỆ THÔNG TIN
+## 1. Bìa chính
 
-*(logo trường)*
+*(In trên bìa cứng, chữ nhũ vàng)*
 
-**ĐỒ ÁN TỐT NGHIỆP**
+TRƯỜNG ĐẠI HỌC TRÀ VINH *(Bold, size 16)*
+KHOA KỸ THUẬT VÀ CÔNG NGHỆ *(Bold, size 16)*
+
+*(logo trường, căn giữa)*
+
+**ĐỒ ÁN THỰC TẬP CHUYÊN NGÀNH** *(Bold, size 16)*
 
 **XÂY DỰNG WEBSITE GIỚI THIỆU VÀ ĐẶT PHÒNG HOMESTAY
 — HOMESTAY TVH —**
+*(Bold, size 18–30 tuỳ số chữ của tên đề tài)*
 
-Giảng viên hướng dẫn: ...............................
-Sinh viên thực hiện: ...............................
-Mã số sinh viên: ...............................
-Lớp: ...............................
+Giảng viên hướng dẫn: ......................... *(Bold, size 14, in hoa)*
+Sinh viên thực hiện: ......................... *(Bold, size 14, in hoa)*
+Mã số sinh viên: ......................... *(Bold, size 14, in hoa)*
+Lớp: ......................... *(Bold, size 14, in hoa)*
+Khoá: ......................... *(Bold, size 14, in hoa)*
 
-TRÀ VINH – 20...
+Trà Vinh, tháng ... năm ... *(Bold, size 13)*
+
+## 2. Bìa phụ (trang lót)
+
+*(In giấy thường, nội dung giống bìa chính)*
+
+## 3. Nhận xét của cơ quan thực tập
+
+*(Bold, size 14 — xếp sau trang Lời cảm ơn theo biểu mẫu; để trống nếu không có
+cơ quan thực tập)*
+
+## 4. Nhận xét của giảng viên hướng dẫn
+
+*(Hai biểu mẫu: trang nhận xét tự do, và BẢN NHẬN XÉT ĐỒ ÁN THỰC TẬP CHUYÊN
+NGÀNH theo mẫu có tiêu đề UBND tỉnh Trà Vinh. Để trống, giảng viên ghi)*
+
+## 5. Nhận xét của giảng viên chấm
+
+*(Hai biểu mẫu: trang nhận xét tự do, và BẢN NHẬN XÉT của cán bộ chấm đồ án có
+mục "Các vấn đề cần làm rõ". Để trống)*
 
 ---
 
-## Lời cảm ơn
+## 6. LỜI MỞ ĐẦU
+
+*(Bold, size 14 — xếp sau trang lót)*
+
+Du lịch homestay tại Trà Vinh đang phát triển cùng làn sóng du lịch trải nghiệm
+và du lịch cộng đồng. Phần lớn cơ sở trong nhóm này do hộ gia đình tự vận hành,
+nhận đặt phòng qua tin nhắn và quản lý lịch phòng bằng trí nhớ hoặc sổ giấy.
+Cách làm đó dẫn tới một rủi ro thường trực: hai khách nhắn tin gần như cùng lúc
+và cùng được trả lời là còn phòng, sai sót chỉ lộ ra vào ngày nhận phòng.
+
+Đồ án xây dựng một website giới thiệu và đặt phòng cho cơ sở lưu trú Homestay
+TVH, gồm ba khối: trang bán hàng cho khách, khu quản trị cho chủ homestay và
+giao diện lập trình ứng dụng kết nối hai khối đó.
+
+Điểm trọng tâm về kỹ thuật của đồ án không nằm ở số lượng chức năng, mà ở cách
+giải bài toán chống đặt trùng phòng. Đồ án đặt ràng buộc toàn vẹn ở tầng cơ sở
+dữ liệu thay vì kiểm tra ở tầng ứng dụng, và chứng minh tính đúng đắn bằng kiểm
+thử đa luồng trên hệ quản trị cơ sở dữ liệu thật.
+
+Do thời gian và kiến thức còn hạn chế, đồ án không tránh khỏi thiếu sót. Em rất
+mong nhận được ý kiến đóng góp của quý Thầy Cô.
+
+## 7. LỜI CẢM ƠN
+
+*(Bold, size 14 — xếp sau trang Lời mở đầu)*
 
 Em xin gửi lời cảm ơn chân thành đến Thầy/Cô ......................... đã tận
-tình hướng dẫn, góp ý và tạo điều kiện cho em hoàn thành đồ án tốt nghiệp này.
-Những nhận xét thẳng thắn của Thầy/Cô trong các buổi báo cáo tiến độ đã giúp em
-nhận ra nhiều thiếu sót mà bản thân không tự thấy được.
+tình hướng dẫn, góp ý và tạo điều kiện cho em hoàn thành đồ án này. Những nhận
+xét thẳng thắn của Thầy/Cô trong các buổi báo cáo tiến độ đã giúp em nhận ra
+nhiều thiếu sót mà bản thân không tự thấy được.
 
-Em cũng xin cảm ơn quý Thầy/Cô Khoa Công nghệ Thông tin — Trường Đại học Trà
+Em cũng xin cảm ơn quý Thầy Cô Khoa Kỹ thuật và Công nghệ — Trường Đại học Trà
 Vinh đã truyền đạt kiến thức nền tảng trong suốt quá trình học tập. Đặc biệt,
-những kiến thức về cơ sở dữ liệu và hệ thống phân tán đã trực tiếp giúp em giải
-quyết bài toán cốt lõi của đề tài này.
+những kiến thức về cơ sở dữ liệu đã trực tiếp giúp em giải quyết bài toán cốt
+lõi của đề tài này.
 
 Cuối cùng, em xin cảm ơn gia đình và những người đã luôn ủng hộ em.
-
-Do thời gian và kiến thức còn hạn chế, đồ án chắc chắn còn nhiều thiếu sót. Em
-rất mong nhận được ý kiến đóng góp của quý Thầy/Cô.
 
 Em xin chân thành cảm ơn!
 
@@ -46,89 +92,79 @@ Em xin chân thành cảm ơn!
 
 ---
 
-## Lời cam đoan
+## 8. MỤC LỤC
 
-Em xin cam đoan đồ án tốt nghiệp **"Xây dựng website giới thiệu và đặt phòng
-homestay — Homestay TVH"** là công trình do chính em thực hiện dưới sự hướng dẫn
-của Thầy/Cô ..........................
+*(Bold, size 14 — sinh tự động. In đậm và in hoa tiêu đề các chương và mục lớn.
+Các tiểu mục trình bày trong mục lục **không quá 04 cấp**)*
 
-Toàn bộ mã nguồn của hệ thống do em tự viết. Các thư viện, framework và công cụ
-mã nguồn mở được sử dụng đều được nêu rõ trong Chương 2 và trong danh mục tài
-liệu tham khảo. Số liệu và kết quả kiểm thử trình bày trong đồ án được lấy trực
-tiếp từ hệ thống đang chạy, trung thực và chưa từng được công bố trong bất kỳ
-công trình nào khác.
+## 9. DANH MỤC CÁC BẢNG, SƠ ĐỒ, HÌNH
 
-Những nội dung tham khảo từ tài liệu bên ngoài đều được trích dẫn đầy đủ nguồn
-gốc theo đúng quy định.
+*(In đậm, in hoa, size 14 — xếp sau trang Mục lục)*
 
-Em xin chịu hoàn toàn trách nhiệm về lời cam đoan này.
+Đánh số theo quy ước: chữ số thứ nhất chỉ tên chương, chữ số thứ hai chỉ thứ tự
+trong chương. Ở cuối mỗi bảng, sơ đồ, hình phải có ghi chú, giải thích, **nêu rõ
+nguồn trích hoặc sao chụp**.
 
-*Trà Vinh, ngày ... tháng ... năm 20...*
-*Sinh viên thực hiện*
-*(Ký và ghi rõ họ tên)*
+| Loại | Số lượng |
+|---|---|
+| HÌNH | 28 |
+| BẢNG | *(sinh tự động từ caption)* |
+| SƠ ĐỒ | *(các biểu đồ UML được đánh là SƠ ĐỒ)* |
+
+## 10. KÍ HIỆU CÁC CỤM TỪ VIẾT TẮT
+
+*(size 14 — xếp sau trang Danh mục các bảng, sơ đồ, hình. Xếp theo thứ tự bảng
+chữ cái. Không lạm dụng chữ viết tắt)*
+
+| Viết tắt | Nghĩa đầy đủ |
+|---|---|
+| ACID | Atomicity, Consistency, Isolation, Durability — bốn tính chất của giao dịch |
+| API | Application Programming Interface — giao diện lập trình ứng dụng |
+| CMS | Content Management System — hệ quản trị nội dung |
+| CSDL | Cơ sở dữ liệu |
+| CSS | Cascading Style Sheets — ngôn ngữ định kiểu trang web |
+| CSV | Comma-Separated Values — định dạng tệp phân cách bằng dấu phẩy |
+| ERD | Entity Relationship Diagram — sơ đồ quan hệ thực thể |
+| GiST | Generalized Search Tree — cây tìm kiếm tổng quát |
+| HTML | HyperText Markup Language — ngôn ngữ đánh dấu siêu văn bản |
+| HTTP | HyperText Transfer Protocol — giao thức truyền siêu văn bản |
+| JPA | Jakarta Persistence API — chuẩn ánh xạ đối tượng quan hệ của Java |
+| JSON | JavaScript Object Notation — định dạng trao đổi dữ liệu |
+| JWT | JSON Web Token — chuẩn token xác thực |
+| QR | Quick Response — mã phản hồi nhanh |
+| REST | REpresentational State Transfer — kiểu kiến trúc giao diện lập trình |
+| SQL | Structured Query Language — ngôn ngữ truy vấn có cấu trúc |
+| UML | Unified Modeling Language — ngôn ngữ mô hình hoá thống nhất |
+| WCAG | Web Content Accessibility Guidelines — hướng dẫn khả năng tiếp cận web |
+| XSS | Cross-Site Scripting — tấn công chèn mã kịch bản |
 
 ---
 
-## Nhận xét của giảng viên hướng dẫn
+## 11. TÓM TẮT ĐỒ ÁN
 
-*(Để trống — giảng viên hướng dẫn ghi)*
+Đồ án xây dựng website giới thiệu và đặt phòng cho cơ sở lưu trú Homestay TVH,
+giải quyết ba vấn đề của quy trình đặt phòng thủ công hiện nay: kênh đặt phòng
+phân mảnh, rủi ro đặt trùng phòng, và chi phí hoa hồng của sàn trung gian.
 
-## Nhận xét của giảng viên phản biện
+**Vấn đề nghiên cứu.** Bài toán cốt lõi là bảo đảm không bao giờ tồn tại hai đơn
+đặt phòng còn hiệu lực cùng giữ một phòng vật lý trong những ngày giao nhau.
+Đây là một bài toán tranh chấp dữ liệu, không giải được đúng bằng mẫu kiểm tra
+rồi ghi ở tầng ứng dụng vì giữa hai thao tác luôn tồn tại một khe hở thời gian.
 
-*(Để trống — giảng viên phản biện ghi)*
+**Hướng tiếp cận.** Đồ án đặt ràng buộc toàn vẹn ở tầng lưu trữ bằng ràng buộc
+loại trừ `EXCLUDE USING gist` trên kiểu dữ liệu khoảng `daterange` của
+PostgreSQL. Hướng này có căn cứ từ chính tài liệu PostgreSQL, vốn khuyến cáo
+dùng ràng buộc toàn vẹn thay vì kiểm tra ở tầng ứng dụng ngay cả ở mức cô lập
+giao dịch cao nhất.
 
----
+**Cách giải quyết.** Hệ thống xây dựng theo kiến trúc tách rời: tầng máy chủ
+dùng Java 21 và Spring Boot 3.5.6, tầng giao diện dùng Angular 21, cơ sở dữ liệu
+PostgreSQL 16, đóng gói bằng Docker Compose. Thanh toán đặt cọc qua mã QR theo
+chuẩn VietQR với webhook tự xác nhận.
 
-## Mục lục
-
-*(Sinh tự động bằng chức năng Table of Contents của trình soạn thảo, tối đa ba
-cấp tiêu đề)*
-
-## Danh mục hình ảnh
-
-*(Sinh tự động từ caption. Đồ án gồm 40 hình)*
-
-## Danh mục bảng biểu
-
-*(Sinh tự động từ caption)*
-
----
-
-## Danh mục từ viết tắt
-
-| Từ viết tắt | Tiếng Anh đầy đủ | Nghĩa tiếng Việt |
-|---|---|---|
-| ACID | Atomicity, Consistency, Isolation, Durability | Bốn tính chất của giao dịch cơ sở dữ liệu |
-| API | Application Programming Interface | Giao diện lập trình ứng dụng |
-| CMS | Content Management System | Hệ quản trị nội dung |
-| CRUD | Create, Read, Update, Delete | Bốn thao tác dữ liệu cơ bản |
-| CSP | Content Security Policy | Chính sách bảo mật nội dung |
-| CSRF | Cross-Site Request Forgery | Giả mạo yêu cầu liên trang |
-| CSS | Cascading Style Sheets | Ngôn ngữ định kiểu trang web |
-| CSV | Comma-Separated Values | Định dạng tệp phân cách bằng dấu phẩy |
-| DTO | Data Transfer Object | Đối tượng truyền dữ liệu giữa các tầng |
-| ERD | Entity Relationship Diagram | Sơ đồ quan hệ thực thể |
-| GiST | Generalized Search Tree | Cây tìm kiếm tổng quát — loại chỉ mục của PostgreSQL |
-| HTML | HyperText Markup Language | Ngôn ngữ đánh dấu siêu văn bản |
-| HTTP/HTTPS | HyperText Transfer Protocol (Secure) | Giao thức truyền siêu văn bản (bảo mật) |
-| IDE | Integrated Development Environment | Môi trường phát triển tích hợp |
-| JDBC | Java Database Connectivity | Giao diện kết nối cơ sở dữ liệu của Java |
-| JPA | Jakarta Persistence API | Chuẩn ánh xạ đối tượng — quan hệ của Java |
-| JSON | JavaScript Object Notation | Định dạng trao đổi dữ liệu |
-| JVM | Java Virtual Machine | Máy ảo Java |
-| JWT | JSON Web Token | Chuẩn token xác thực |
-| LTS | Long-Term Support | Phiên bản hỗ trợ dài hạn |
-| MVCC | Multi-Version Concurrency Control | Điều khiển tương tranh đa phiên bản |
-| ORM | Object-Relational Mapping | Ánh xạ đối tượng — quan hệ |
-| QR | Quick Response (code) | Mã phản hồi nhanh |
-| RBAC | Role-Based Access Control | Kiểm soát truy cập theo vai trò |
-| REST | REpresentational State Transfer | Kiểu kiến trúc giao diện lập trình ứng dụng |
-| RFC | Request For Comments | Tài liệu tiêu chuẩn của tổ chức IETF |
-| SMTP | Simple Mail Transfer Protocol | Giao thức gửi thư |
-| SQL | Structured Query Language | Ngôn ngữ truy vấn có cấu trúc |
-| UI/UX | User Interface / User Experience | Giao diện / Trải nghiệm người dùng |
-| UML | Unified Modeling Language | Ngôn ngữ mô hình hoá thống nhất |
-| UUID | Universally Unique Identifier | Định danh duy nhất toàn cục |
-| WCAG | Web Content Accessibility Guidelines | Hướng dẫn khả năng tiếp cận nội dung web |
-| XSS | Cross-Site Scripting | Tấn công chèn mã kịch bản |
-| 3NF | Third Normal Form | Dạng chuẩn 3 |
+**Kết quả đạt được.** Hệ thống hoàn chỉnh với 80 thao tác trên 63 đường dẫn, 21
+bảng dữ liệu dựng bởi 8 migration, 20 thực thể. Bộ kiểm thử tự động gồm 129 ca
+trong 18 lớp chạy trên PostgreSQL thật, tất cả thành công, trong đó ba ca kiểm
+thử đa luồng chứng minh trực tiếp rằng hệ thống không bán trùng phòng. Giao diện
+không còn lỗi vi phạm chuẩn khả năng tiếp cận mức A và AA. Toàn hệ thống chạy
+được bằng ba lệnh kèm dữ liệu minh hoạ đủ tám trạng thái đơn.
