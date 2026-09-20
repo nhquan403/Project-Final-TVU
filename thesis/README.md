@@ -7,8 +7,8 @@ Trường Đại học Trà Vinh.
 
 | Thư mục | Chứa gì | Trạng thái |
 |---|---|---|
-| `doc/` | Tài liệu dạng `.DOC` — quyển báo cáo bản Word | Chờ xuất từ `docs/bao-cao/` |
-| `pdf/` | Tài liệu dạng `.PDF` — quyển báo cáo bản PDF | Chờ xuất |
+| `doc/` | Tài liệu dạng `.DOC` — quyển báo cáo bản Word | ✅ đã xuất — xem `doc/README.md` |
+| `pdf/` | Tài liệu dạng `.PDF` — quyển báo cáo bản PDF | ✅ đã xuất |
 | `html/` | Tài liệu dạng web | Chờ xuất |
 | `abs/` | Báo cáo trình bày: `.PPT`, `.AVI`, poster | Chờ làm |
 | `refs/` | Tài liệu, văn bản tham khảo khi thực hiện đồ án | Chờ bổ sung |

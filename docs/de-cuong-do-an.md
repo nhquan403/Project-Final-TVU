@@ -24,7 +24,7 @@
 
 | Hạng mục | Quy định | Trạng thái |
 |---|---|---|
-| **Độ dài nội dung** | **30–50 trang A4.** Không kể bìa, lời cảm ơn, mục lục, tài liệu tham khảo, phụ lục | ⚠️ ước lượng ~52 trang — xem mục 5 |
+| **Độ dài nội dung** | **30–50 trang A4.** Không kể bìa, lời cảm ơn, mục lục, tài liệu tham khảo, phụ lục | ⚠️ **đo thật: 57 trang** — phải cắt 7 trang, xem mục 5.3 |
 | Font | Times New Roman, **13pt** | Áp khi xuất Word |
 | Giãn dòng | **1.5 lines** | Áp khi xuất Word |
 | Cách đoạn | Before **6pt**, After **6pt** | Áp khi xuất Word |
