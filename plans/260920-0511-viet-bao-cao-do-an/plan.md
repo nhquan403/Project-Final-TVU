@@ -19,11 +19,31 @@ nhiều mục mới có khung và ví dụ mẫu, chưa viết đủ; chưa có 
 
 Việc còn lại là **mở rộng và hoàn thiện**, không phải viết lại từ đầu.
 
-## Mẫu trình bày tham chiếu
+## Mẫu trình bày — ĐÃ CÓ BẢN CHÍNH THỨC (20/09/2026)
 
-Mẫu của Khoa CNTT — ĐH Trà Vinh **không công khai**. Đã tra được một quy định
-đầy đủ và cụ thể của **Khoa Kỹ thuật — Công nghệ, ĐH Văn Hiến** (văn bản
-"Quy định về học phần Đồ án/Khóa luận tốt nghiệp", 12 trang) để làm mẫu neo:
+> **Cập nhật quan trọng.** Người dùng đã cung cấp hai văn bản chính thức của
+> **Khoa Kỹ thuật và Công nghệ — Trường Đại học Trà Vinh**: *"Một số quy định về
+> hình thức trình bày thực tập đồ án cơ sở ngành và chuyên ngành"* và bộ biểu
+> mẫu **BM5**. Toàn bộ kế hoạch này trước đó neo theo mẫu của ĐH Văn Hiến và
+> **đã sai ở nhiều điểm căn bản**, quan trọng nhất là độ dài.
+>
+> | Hạng mục | Neo cũ (VHU) | **TVU thật** |
+> |---|---|---|
+> | Độ dài | ≥ 60 trang | **30–50 trang, không vượt 50** |
+> | Giãn dòng | 1.3 | **1.5 lines** |
+> | Lề phải | 1.5cm | **2cm** |
+> | Cách đoạn | before 6pt | **before và after 6pt** |
+> | Số trang | La Mã + Ả Rập | **góc phải dưới**, từ Chương 1 |
+> | Footer | chương + tên chương | **GVHD / SVTH** |
+> | TLTK | tự do | **IEEE**, thứ tự từ điển |
+> | Lời cam đoan | bắt buộc | **không yêu cầu** |
+> | Tóm tắt đồ án | không có | **bắt buộc** |
+> | Cấu trúc | Phần I/II/III | **5 chương có tên cố định** |
+>
+> Báo cáo đã được tái cấu trúc theo mẫu thật ở commit `c6c7a0a`. Bảng dưới đây
+> giữ lại để đối chiếu lịch sử — **không dùng làm căn cứ nữa**.
+
+### Mẫu neo cũ (ĐH Văn Hiến) — chỉ để đối chiếu lịch sử
 
 | Hạng mục | Quy định (VHU) |
 |---|---|
@@ -84,7 +104,7 @@ Danh mục bảng biểu, hình vẽ → Danh mục từ viết tắt
 
 | # | Phase | Trạng thái | Phụ thuộc | Công |
 |---|---|---|---|---|
-| 0 | [Chốt mẫu trình bày của khoa](#phase-0) | Todo | — | 0.5h |
+| 0 | [Chốt mẫu trình bày của khoa](#phase-0) | **Done** | — | 0.5h |
 | 1 | [Phần đầu và khung tài liệu](#phase-1) | Done | 0 | 3h |
 | 2 | [Mở đầu + Chương 1](#phase-2) | Done | 1 | 5h |
 | 3 | [Chương 2 — Cơ sở lý thuyết](#phase-3) | Done | 1 | 6h |
@@ -92,9 +112,10 @@ Danh mục bảng biểu, hình vẽ → Danh mục từ viết tắt
 | 5 | [Chương 4 — Xây dựng và triển khai](#phase-5) | Done | 1 | 6h |
 | 6 | [Chương 5 — Kiểm thử và đánh giá](#phase-6) | Done | 1 | 4h |
 | 7 | [Kết luận, TLTK, Phụ lục](#phase-7) | Done | 2–6 | 3h |
-| 8 | [40 hình ảnh](#phase-8) | Todo | — (song song) | 9h |
+| 8 | [28 hình ảnh](#phase-8) | Todo | — (song song) | 9h |
 | 9 | [Xuất Word và định dạng](#phase-9) | Todo | 0, 7, 8 | 4h |
 | 10 | [Slide bảo vệ và tập phản biện](#phase-10) | Todo | 9 | 6h |
+| 11 | [Hoàn tất yêu cầu GitHub và nộp](#phase-11) | Todo | 9 | 2h |
 
 **Tổng: ~46 giờ.** Phase 8 chạy song song được với Phase 2–7 vì nó không phụ
 thuộc nội dung chữ.
@@ -310,17 +331,19 @@ chỉ việc đổ nội dung vào.
 
 ---
 
-## Phase 8 — 40 hình ảnh {#phase-8}
+## Phase 8 — 28 hình ảnh {#phase-8}
 
-**Chạy song song với Phase 2–7.** Danh sách đầy đủ ở Phụ lục D của
-`docs/de-cuong-do-an.md`.
+**Chạy song song với Phase 2–7.** Danh sách đầy đủ 28 hình, kèm mô tả từng hình
+phải thể hiện điều gì và lấy ở đâu, nằm ở **mục 3 của `docs/de-cuong-do-an.md`**.
 
-- [ ] Nhóm 1 — 15 ảnh chụp màn hình (3 đã có sẵn)
-- [ ] Nhóm 2 — 11 sơ đồ UML/kiến trúc
-- [ ] Nhóm 3 — 5 sơ đồ tự vẽ minh hoạ lý thuyết
-- [ ] Nhóm 4 — 5 ảnh kết quả kiểm thử
-- [ ] Nhóm 5 — 3 ảnh tham khảo bên ngoài
-- [ ] **Bổ sung: biểu đồ lớp** (từ Phase 4)
+⚠️ Quy định TVU bắt buộc **mỗi hình và mỗi bảng phải có chú thích nêu rõ nguồn
+trích hoặc sao chụp**. Đây là yêu cầu tường minh, không phải tuỳ chọn.
+
+- [ ] Nhóm A — 4 sơ đồ tự vẽ minh hoạ lý thuyết (khó nhất, làm điểm cao nhất)
+- [ ] Nhóm B — 10 sơ đồ UML và kiến trúc (hầu hết đã có mã Mermaid sẵn)
+- [ ] Nhóm C — 12 ảnh chụp màn hình (3 ảnh đã có sẵn)
+- [ ] Nhóm D — 2 ảnh kết quả đo đạc
+- [ ] Viết chú thích nêu nguồn cho cả 28 hình
 
 **Skill dùng:**
 
@@ -460,3 +483,33 @@ buổi tối.**
 3. Có khảo sát được **homestay thật** ở Trà Vinh không? Nếu có thì mục 1.2 mạnh
    hơn hẳn và ăn điểm "mức độ thời sự".
 4. Nộp **bản in + CD** hay chỉ nộp file? Ảnh hưởng Phase 9.
+
+---
+
+## Phase 11 — Hoàn tất yêu cầu GitHub và nộp {#phase-11}
+
+Mục 4 của quy định có yêu cầu riêng về quản lý đồ án bằng GitHub, và **lịch sử
+commit là tiêu chí chấm điểm tiến độ**.
+
+- [x] Tạo `progress-report/` [bắt buộc] kèm mẫu báo cáo tuần
+- [x] Tạo `thesis/` [bắt buộc] với `doc/ pdf/ html/ abs/ refs/`
+- [x] Tạo `setup/` kèm hướng dẫn cài đặt và dữ liệu thử
+- [x] Bổ sung cấu trúc kho và chỗ điền thông tin liên lạc vào `README.md` gốc
+- [ ] **Điền thông tin liên lạc thật** (email, điện thoại) vào `README.md`
+- [ ] **Đổi tên repo** theo cú pháp `cn-<malop>-<hotenkhongdau>-<shortname>`
+- [ ] **Mời GVHD làm Collaborator**
+- [ ] Viết báo cáo tiến độ hồi cứu vào `progress-report/` — hỏi GVHD hướng xử lý
+      việc lịch sử commit chỉ trải 2 tuần
+- [ ] Đặt bản Word vào `thesis/doc/`, PDF vào `thesis/pdf/`, slide và poster vào
+      `thesis/abs/`
+- [ ] Nộp link GitHub qua biểu mẫu Google Form của bộ môn
+- [ ] Fork repo về tài khoản chung của bộ môn, cùng GVHD
+
+**Rủi ro lớn nhất:** quy định ghi rõ *"Nếu trong lịch sử commit không ghi nhận
+tiến độ cập nhật dự án (dù có báo cáo tiến độ) xem như sinh viên không hoàn
+thành báo cáo tiến độ."* Repo hiện có 37 commit nhưng chỉ trải **hai tuần**
+(tuần 37 và 38 năm 2026). Lịch sử không sửa được một cách trung thực — cần hỏi
+GVHD hướng xử lý.
+
+**Điểm cộng bỏ lỡ nếu quên:** poster 90cm × 60cm hướng đứng được **cộng tối đa
+1 điểm** và được tham gia buổi showcase.

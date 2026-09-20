@@ -1,14 +1,36 @@
 # Homestay TVH — Website giới thiệu & đặt phòng
 
-Đồ án tốt nghiệp: hệ thống giới thiệu và đặt phòng homestay, gồm trang bán hàng
-cho khách, khu quản trị cho chủ homestay, và REST API.
+**Đồ án thực tập chuyên ngành** — Khoa Kỹ thuật và Công nghệ, Trường Đại học Trà Vinh
 
-| Thành phần | Công nghệ |
+Hệ thống giới thiệu và đặt phòng homestay, gồm trang bán hàng cho khách, khu
+quản trị cho chủ homestay, và REST API.
+
+## Thông tin sinh viên thực hiện
+
+| | |
 |---|---|
-| `backend/` | Java 21 · Spring Boot 3.5.6 · PostgreSQL 16 · Flyway · Spring Security |
-| `frontend/` | Angular 21 · Tailwind CSS 4 · design system tự viết |
-| `docs/` | Tài liệu kỹ thuật tiếng Việt |
-| `plans/` | Kế hoạch triển khai 10 phase |
+| **Họ và tên** | *(điền)* |
+| **MSSV** | *(điền)* |
+| **Lớp** | *(điền)* |
+| **Khoá** | *(điền)* |
+| **Email** | *(điền)* |
+| **Điện thoại** | *(điền)* |
+| **Giảng viên hướng dẫn** | *(điền)* |
+
+## Cấu trúc kho mã nguồn
+
+| Thư mục | Nội dung |
+|---|---|
+| `backend/` | Mã nguồn tầng máy chủ — Java 21, Spring Boot 3.5.6 |
+| `frontend/` | Mã nguồn tầng giao diện — Angular 21, Tailwind CSS 4 |
+| `docs/` | Tài liệu kỹ thuật và **nội dung quyển báo cáo** (`docs/bao-cao/`) |
+| `progress-report/` | **[bắt buộc]** Báo cáo tiến độ hàng tuần |
+| `thesis/` | **[bắt buộc]** Tài liệu văn bản: `doc/ pdf/ html/ abs/ refs/` |
+| `setup/` | Hướng dẫn cài đặt và dữ liệu thử |
+| `plans/` | Kế hoạch triển khai theo giai đoạn |
+
+Hướng dẫn thi công quyển báo cáo — danh sách hình cần chuẩn bị, việc còn lại
+trước khi nộp: [`docs/de-cuong-do-an.md`](docs/de-cuong-do-an.md).
 
 Điểm kỹ thuật cốt lõi: **chống đặt trùng phòng khoá ở tầng cơ sở dữ liệu** bằng
 `EXCLUDE USING gist` trên kiểu `daterange` của PostgreSQL, không phụ thuộc kiểm
