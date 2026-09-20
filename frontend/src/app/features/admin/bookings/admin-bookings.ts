@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AdminBookingService, type BookingFilter } from '../../../core/services/admin-booking.service';
 import type { AdminBookingRow, Page } from '../../../core/services/admin.types';
 import {
@@ -38,7 +38,7 @@ const MONEY = new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 0 });
 @Component({
   selector: 'app-admin-bookings',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, UiDataTable, UiFilterChips, UiPagination, UiSelect, UiInput, UiButton],
+  imports: [UiDataTable, UiFilterChips, UiPagination, UiSelect, UiInput, UiButton],
   template: `
     <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
       <h1 class="text-xl font-bold text-text">Đơn đặt phòng</h1>
@@ -89,14 +89,7 @@ const MONEY = new Intl.NumberFormat('vi-VN', { maximumFractionDigits: 0 });
       }
     }
 
-    <p class="mt-3 text-sm text-text-muted">
-      Bấm vào mã đơn để mở chi tiết.
-      @if (rows().length) {
-        <a
-          [routerLink]="['/admin/bookings', rows()[0].id]"
-          class="ml-1 text-focus underline">Ví dụ: {{ rows()[0].code }}</a>
-      }
-    </p>
+    <p class="mt-3 text-sm text-text-muted">Bấm vào mã đơn để mở chi tiết đơn.</p>
   `,
 })
 export class AdminBookings {
@@ -120,7 +113,14 @@ export class AdminBookings {
   );
 
   protected readonly columns: TableColumn<AdminBookingRow>[] = [
-    { key: 'code', header: 'Mã đơn', value: (row) => row.code },
+    {
+      key: 'code',
+      header: 'Mã đơn',
+      value: (row) => row.code,
+      // Dòng chữ dưới bảng nói "bấm vào mã đơn để mở chi tiết"; đây là thứ làm
+      // câu đó đúng cho MỌI hàng, không chỉ hàng đầu.
+      link: (row) => ['/admin/bookings', row.id],
+    },
     { key: 'guest', header: 'Khách', value: (row) => `${row.guestName} · ${row.guestPhone}` },
     { key: 'roomType', header: 'Loại phòng', value: (row) => row.roomTypeName },
     { key: 'stay', header: 'Lưu trú', value: (row) => `${row.checkIn} → ${row.checkOut}` },

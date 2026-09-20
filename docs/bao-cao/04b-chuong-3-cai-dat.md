@@ -26,9 +26,9 @@ Quy mô mã nguồn tại thời điểm hoàn thành: 174 tệp Java với 15 6
 TypeScript với 12 737 dòng, 8 migration cơ sở dữ liệu, 18 lớp kiểm thử với 129
 ca, 31 commit trải từ 07/09/2026 tới 20/09/2026.
 
-## 3.9. Cài đặt các chức năng chính
+## 3.8. Cài đặt các chức năng chính
 
-### 3.9.1. Chức năng tìm phòng trống
+### 3.8.1. Chức năng tìm phòng trống
 
 Đây là chức năng có yêu cầu kỹ thuật cao nhất ở tầng truy vấn. Hệ thống có **bốn
 truy vấn phòng trống** phục vụ bốn màn hình khác nhau, tất cả đặt trong một lớp
@@ -71,7 +71,7 @@ nhãn số phòng còn lại và tổng tiền cả kỳ.
 
 [Hình 3.13]
 
-### 3.9.2. Chức năng đặt phòng và vòng thử gán phòng
+### 3.8.2. Chức năng đặt phòng và vòng thử gán phòng
 
 Thuật toán gán phòng là nơi lý thuyết trình bày ở Chương 2 được hiện thực hoá:
 
@@ -100,7 +100,7 @@ Hình 3.14 thể hiện ba bước của luồng đặt phòng.
 
 [Hình 3.14]
 
-### 3.9.3. Chức năng thanh toán
+### 3.8.3. Chức năng thanh toán
 
 Hệ thống sinh mã QR theo chuẩn VietQR, kèm nội dung chuyển khoản gồm **mã đơn
 ghép hai chữ số thứ tự lần thử**. Hai chữ số này cho phép phân biệt các lần
@@ -128,7 +128,7 @@ Hình 3.15 thể hiện màn hình thanh toán.
 im lặng. Mọi khoản tiền không xử lý tự động được đều vào hàng đợi đối soát thủ
 công, chứ không bị bỏ qua.
 
-### 3.9.4. Chức năng quản lý ngày khả dụng
+### 3.8.4. Chức năng quản lý ngày khả dụng
 
 Trước giai đoạn mười, hệ thống chỉ có công tắc trạng thái vận hành cho phòng.
 Công tắc đó **không gắn với ngày**. Chủ homestay muốn ghi nhận rằng một phòng sơn
@@ -145,15 +145,16 @@ phòng trống qua bốn truy vấn đó, nên việc sửa ở tầng dữ li�
 tự đúng theo. Đây là kết quả của việc gom mọi truy vấn phòng trống vào một lớp
 duy nhất từ giai đoạn năm.
 
-### 3.9.5. Khu quản trị
+### 3.8.5. Khu quản trị
 
 Khu quản trị gồm **mười một màn hình**, nạp lười theo tuyến.
 
 Hình 3.16 thể hiện trang tổng quan với biểu đồ doanh thu theo tháng, tỉ lệ lấp
 đầy và tỉ lệ huỷ. Hình 3.17 thể hiện màn hình đối soát thanh toán với các khoản
 thiếu tiền và thừa tiền. Hình 3.18 thể hiện danh sách đơn đặt phòng kèm bộ lọc
-theo trạng thái. Hình 3.19 thể hiện
-màn hình quản lý nội dung trang chủ.
+theo trạng thái. Hình 3.19 thể hiện chi tiết một đơn: dòng thời gian trạng thái,
+các lần thanh toán, hộp thư đi và ghi chú nội bộ — bốn thứ mà chủ homestay cần
+xem cùng lúc khi có việc phải xử lý.
 
 [Hình 3.16]
 
@@ -163,7 +164,7 @@ màn hình quản lý nội dung trang chủ.
 
 [Hình 3.19]
 
-### 3.9.6. Quản lý nội dung và lọc HTML
+### 3.8.6. Quản lý nội dung và lọc HTML
 
 Khu quản trị cho phép soạn nội dung HTML cho trang chủ và tin tức. Đây là một bề
 mặt tấn công chèn mã kịch bản cổ điển [6].
@@ -176,9 +177,9 @@ mới thì danh sách cấm lại lỗi thời, còn danh sách cho phép vẫn 
 Với nội dung do **khách** nhập, ví dụ đánh giá, hệ thống không lọc HTML mà hiển
 thị dưới dạng văn bản thuần, vì khách không có nhu cầu định dạng.
 
-## 3.10. Cài đặt mô hình bảo mật
+## 3.9. Cài đặt mô hình bảo mật
 
-### 3.10.1. Xác thực và buộc đổi mật khẩu tạm
+### 3.9.1. Xác thực và buộc đổi mật khẩu tạm
 
 Tài khoản quản trị của bản trình diễn được sinh với **mật khẩu ngẫu nhiên, chỉ
 in một lần vào nhật ký container**, không ghi vào bất kỳ tệp nào trong mã nguồn.
@@ -188,7 +189,7 @@ Tài khoản đó mang cờ buộc đổi mật khẩu. Một bộ lọc chặn 
 mật khẩu được đổi. Lý do: mật khẩu tạm đã đi qua nhật ký nên **không còn là bí
 mật**.
 
-### 3.10.2. Phân biệt mã đơn và mã truy cập
+### 3.9.2. Phân biệt mã đơn và mã truy cập
 
 Một quyết định bảo mật tinh tế: hệ thống dùng **hai mã khác nhau** cho một đơn.
 
@@ -200,7 +201,7 @@ khoản. Nghĩa là bất kỳ ai nhìn thấy sao kê đều biết mã đơn c
 Vì thế endpoint xem trạng thái thanh toán **bắt buộc** mã truy cập: nếu chỉ cần
 mã đơn là xem được, ai thấy sao kê cũng theo dõi được đơn của người khác.
 
-### 3.10.3. Giới hạn tần suất sau máy chủ web
+### 3.9.3. Giới hạn tần suất sau máy chủ web
 
 Ứng dụng nằm sau máy chủ web, nên mọi yêu cầu đến đều mang địa chỉ mạng của
 container máy chủ web. Giới hạn theo địa chỉ đó là giới hạn **toàn bộ người dùng
@@ -216,7 +217,7 @@ hai điều kiện cùng thoả mãn:
 Hai điều kiện này phải đi cùng nhau; thiếu một là lớp giới hạn tần suất trở
 thành hình thức.
 
-### 3.10.4. Quản lý bí mật
+### 3.9.4. Quản lý bí mật
 
 Hai biến bí mật của hệ thống **không có giá trị mặc định ở bất kỳ đâu**: không
 trong tệp cấu hình, không trong tệp biến môi trường mẫu, không trong tệp đóng
@@ -229,7 +230,7 @@ ký được token vai trò quản trị** cho mọi bản triển khai dùng kh
 Một script riêng là đường **duy nhất** tạo ra các giá trị thật, sinh ngẫu nhiên
 vào tệp biến môi trường với quyền truy cập hạn chế.
 
-### 3.10.5. Các lớp bảo vệ khác
+### 3.9.5. Các lớp bảo vệ khác
 
 | Lớp | Biện pháp |
 |---|---|
@@ -238,9 +239,9 @@ vào tệp biến môi trường với quyền truy cập hạn chế.
 | Xuất tệp CSV | Thoát ký tự đầu dòng để chống chèn công thức bảng tính [5] |
 | Mật khẩu | Băm bằng thuật toán bcrypt |
 
-## 3.11. Đóng gói và triển khai
+## 3.10. Đóng gói và triển khai
 
-### 3.11.1. Kiến trúc đóng gói
+### 3.10.1. Kiến trúc đóng gói
 
 Bốn dịch vụ:
 
@@ -253,12 +254,12 @@ Bốn dịch vụ:
 
 **Việc ứng dụng và cơ sở dữ liệu không mở cổng là một quyết định bảo mật**, không
 phải tối giản cấu hình — đó là điều kiện để tin được thông tin địa chỉ mà máy chủ
-web chuyển tiếp, như đã trình bày ở mục 3.10.3.
+web chuyển tiếp, như đã trình bày ở mục 3.9.3.
 
 Ảnh ứng dụng chạy bằng **người dùng không có quyền quản trị**, và được dựng bằng
 tệp Dockerfile nhiều tầng nên ảnh cuối không chứa công cụ biên dịch.
 
-### 3.11.2. Cấu hình máy chủ web
+### 3.10.2. Cấu hình máy chủ web
 
 Máy chủ web phải chuyển tiếp **bốn nhóm đường dẫn** chứ không chỉ nhóm giao diện
 lập trình ứng dụng:
@@ -275,7 +276,7 @@ tệp tĩnh là một khối biểu thức chính quy, và máy chủ web cho kh
 quy thắng mọi khối tiền tố thường [3]. Không có tiền tố ưu tiên thì ảnh tải lên
 rơi vào khối tĩnh và trả về lỗi.
 
-### 3.11.3. Hai cấu hình chạy
+### 3.10.3. Hai cấu hình chạy
 
 Hệ thống chỉ có **hai** cấu hình, cố ý không nhiều hơn:
 
@@ -287,7 +288,7 @@ Hệ thống chỉ có **hai** cấu hình, cố ý không nhiều hơn:
 Việc đổi cấu hình trên cùng một khối dữ liệu là **an toàn** — đây chính là lý do
 dữ liệu mẫu không nằm trong lịch sử migration.
 
-### 3.11.4. Dữ liệu mẫu
+### 3.10.4. Dữ liệu mẫu
 
 Cấu hình trình diễn nạp sẵn: 4 loại phòng, 15 phòng vật lý, 12 tiện nghi, **40
 đơn đặt phòng trải đủ tám trạng thái**, 3 khoản cần đối soát, 3 mã khuyến mãi
@@ -297,7 +298,7 @@ chủ đầy đủ.
 **Mọi ngày trong dữ liệu mẫu là tương đối** so với ngày hiện tại, nên bộ dữ liệu
 không cũ đi theo thời gian: ngày bảo vệ vẫn có đơn trong tương lai để trình diễn.
 
-### 3.11.5. Xử lý múi giờ
+### 3.10.5. Xử lý múi giờ
 
 Toàn hệ thống chạy theo múi giờ Việt Nam, đặt ở **bốn tầng độc lập**: biến môi
 trường của container, tham số máy ảo Java, cấu hình chuyển đổi dữ liệu sang JSON,
@@ -312,7 +313,7 @@ màn hình thanh toán vẫn đúng — sai một phần nên rất khó nghi ng
 Endpoint kiểm tra tình trạng hệ thống phơi bày cả múi giờ ứng dụng lẫn múi giờ
 mặc định của máy ảo để kiểm tra được điều này trực tiếp.
 
-### 3.11.6. Quy trình triển khai ba lệnh
+### 3.10.6. Quy trình triển khai ba lệnh
 
 ```bash
 git clone <địa-chỉ-kho> homestay-tvh && cd homestay-tvh

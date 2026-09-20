@@ -73,6 +73,9 @@ tiền biến mất im lặng.
 
 ## 4.3. Các lỗi thực tế phát hiện trong quá trình thực hiện
 
+Mười một lỗi dưới đây đều là lỗi **đã xảy ra thật** trong quá trình làm, kèm
+nguyên nhân gốc chứ không phải triệu chứng.
+
 | # | Hiện tượng | Nguyên nhân gốc | Cách khắc phục |
 |---|---|---|---|
 | 1 | Giao dịch thử phòng tiếp theo luôn thất bại | Bắt lỗi ràng buộc rồi thử tiếp **trong cùng giao dịch**; PostgreSQL đã huỷ giao dịch nên mọi lệnh sau trả `25P02` | Mỗi lượt thử chạy trong một giao dịch mới |
@@ -84,6 +87,8 @@ tiền biến mất im lặng.
 | 7 | Màn hình thanh toán trắng trơn | Component gọi hàm đọc tham số đầu vào **trong hàm khởi tạo**, trước khi khung ứng dụng gán tham số | Chuyển sang phương thức chạy sau khi khởi tạo |
 | 8 | Bộ nạp dữ liệu mẫu cộng dồn mỗi lần khởi động | Điều kiện chống trùng khoá theo ngày tương đối nên mỗi ngày lại khớp khác | Đổi điều kiện sang khoá toàn bảng |
 | 9 | Khu quản trị đóng nhầm phòng không hiển thị | Khối giao diện giữ định danh phòng cũ sau khi bộ lọc của màn hình cha thay đổi | Đối chiếu định danh với danh sách phòng đang hiển thị |
+| 10 | **Danh sách đơn nói "bấm vào mã đơn để mở chi tiết" nhưng không bấm được** | Ô mã đơn là ô bảng thường; chỉ một liên kết ví dụ dưới bảng mở được đơn **đầu tiên**, mười chín đơn còn lại không có lối vào | Thêm kiểu cột liên kết cho bảng dữ liệu dùng chung, mã đơn của mọi hàng thành thẻ liên kết thật |
+| 11 | Ô chọn tệp ảnh không có tên cho trình đọc màn hình | Ô ẩn bằng lớp chỉ-đọc-màn-hình nhưng **vẫn nằm trong thứ tự Tab**, thành một điểm dừng không tên | Bỏ ô khỏi thứ tự Tab và đặt nhãn cho nó; nút bấm nhìn thấy được mới là lối vào |
 
 **Về lỗi số 4 và số 5:** cả hai chỉ phát hiện được khi **chụp màn hình bằng
 trình duyệt thật**. Việc biên dịch thành công không nói gì về việc trang có hiển
@@ -95,13 +100,21 @@ thị đúng hay không. Hình 4.3 so sánh trước và sau khi khắc phục l
 giả đã tự kiểm thử và cho rằng chức năng đã hoàn chỉnh. Đây là lý do đề tài giữ
 bước rà soát độc lập ở cuối mỗi giai đoạn.
 
+**Về lỗi số 10 và số 11:** cả hai lộ ra trong lúc **chụp ảnh màn hình cho báo
+cáo**, không phải trong lúc kiểm thử. Lỗi 10 tìm ra khi một kịch bản tự động thử
+mở chi tiết một đơn bất kỳ và không mở được; lỗi 11 tìm ra khi mở rộng phạm vi
+quét khả năng tiếp cận từ sáu lên mười màn hình quản trị. Bài học giống nhau:
+**một màn hình chưa ai thao tác tới là một màn hình chưa được kiểm.**
+
 ## 4.4. Kiểm thử phi chức năng
 
 ### 4.4.1. Khả năng tiếp cận
 
-Quét tự động trên 7 màn hình công khai và 6 màn hình quản trị: **không còn lỗi
-vi phạm** hướng dẫn khả năng tiếp cận nội dung web phiên bản 2.0 và 2.1 ở mức A
-và AA [13].
+Quét tự động bằng axe-core trên **17 màn hình** — 7 công khai và 10 quản trị —
+ngay trên bản đóng gói đang chạy, đi qua đúng máy chủ web và đúng chính sách bảo
+mật nội dung của bản triển khai: **không còn lỗi vi phạm** hướng dẫn khả năng
+tiếp cận nội dung web phiên bản 2.0 và 2.1 ở mức A và AA [13], trên tổng 356 lần
+quy tắc đạt.
 
 Đo vùng chạm ở 3 độ rộng màn hình: **không còn vùng chạm dưới 44×44 điểm ảnh**.
 

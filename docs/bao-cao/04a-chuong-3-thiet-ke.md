@@ -33,75 +33,11 @@ Hình 3.1 thể hiện biểu đồ use case tổng quát của hệ thống.
 
 ### 3.1.3. Đặc tả use case
 
-Hai use case trọng tâm được đặc tả đầy đủ dưới đây theo khuôn mẫu: tác nhân,
-tiền điều kiện, luồng chính, luồng thay thế, hậu điều kiện. Đặc tả của chín use
-case còn lại trình bày ở Phụ lục A.
-
----
-
-### UC1 — Tìm phòng trống
-
-| Mục | Nội dung |
-|---|---|
-| **Mã** | UC1 |
-| **Tác nhân chính** | Khách vãng lai, Khách có tài khoản |
-| **Mô tả** | Khách tìm các loại phòng còn chỗ trong một khoảng ngày |
-| **Tiền điều kiện** | Có ít nhất một loại phòng đang bật bán |
-| **Hậu điều kiện** | Không có dữ liệu nào được ghi; đây là truy vấn chỉ đọc |
-
-**Luồng sự kiện chính**
-
-1. Khách mở trang chủ; thanh tìm phòng nạp sẵn lịch của toàn homestay.
-2. Khách chọn ngày nhận và ngày trả. Ngày quá khứ và ngày đã kín mọi loại phòng
-   bị chặn ngay trong lịch, không cho chọn.
-3. Khách chọn số người lớn, trẻ em, số phòng.
-4. Hệ thống truy vấn và trả về các loại phòng còn chỗ, kèm tổng tiền cả kỳ và số
-   phòng còn lại của từng loại.
-
-**Luồng thay thế**
-
-- *2a. Lịch không tải được:* khách vẫn chọn được ngày; mất phần chặn trước, tầng
-  máy chủ vẫn từ chối ngày kín ở bước sau.
-- *4a. Không loại phòng nào đủ chỗ:* hiện trạng thái rỗng kèm gợi ý đổi ngày
-  hoặc giảm số khách mỗi phòng.
-
----
-
-### UC2 — Đặt phòng
-
-| Mục | Nội dung |
-|---|---|
-| **Mã** | UC2 |
-| **Tác nhân chính** | Khách vãng lai, Khách có tài khoản |
-| **Mô tả** | Khách gửi yêu cầu đặt phòng cho một khoảng ngày và nhận mã đơn |
-| **Tiền điều kiện** | Đã hoàn tất UC1 và chọn được một loại phòng còn chỗ |
-| **Hậu điều kiện** | Đơn ở trạng thái `PENDING_PAYMENT`; các phòng vật lý đã được gán; hạn giữ chỗ 15 phút bắt đầu chạy |
-
-**Luồng sự kiện chính**
-
-1. Khách nhập họ tên, số điện thoại, thư điện tử và ghi chú nếu có.
-2. Khách nhập mã khuyến mãi tuỳ chọn; hệ thống kiểm tra và hiển thị ngay số tiền
-   được giảm.
-3. Khách xác nhận đơn.
-4. Hệ thống mở một giao dịch, tính lại chi phí ở phía máy chủ, không tin số tiền
-   do trình duyệt gửi lên.
-5. Hệ thống chọn các phòng vật lý còn rảnh và ghi vào bảng gán phòng.
-6. Cơ sở dữ liệu kiểm tra ràng buộc loại trừ. Nếu không vi phạm, giao dịch được
-   commit.
-7. Hệ thống sinh mã đơn, mã truy cập, thông tin thanh toán và trả về cho khách.
-8. Hệ thống đưa thư xác nhận vào hàng đợi gửi.
-
-**Luồng thay thế và ngoại lệ**
-
-- *4a. Dữ liệu không hợp lệ* (ngày trả không sau ngày nhận, số khách vượt sức
-  chứa mỗi phòng) → trả lỗi `INVALID_BOOKING_REQUEST` mã 400, không ghi gì.
-- *2a. Mã khuyến mãi không hợp lệ* → `INVALID_PROMOTION` mã 400.
-- *2b. Mã khuyến mãi hết lượt* → `PROMOTION_EXHAUSTED` mã 409.
-- **6a. Ràng buộc loại trừ bị vi phạm** — một khách khác vừa đặt xong phòng đó
-  trong tích tắc. Cơ sở dữ liệu trả `SQLSTATE 23P01`, giao dịch bị huỷ. Hệ thống
-  mở **giao dịch mới** và thử phòng vật lý tiếp theo. Hết phòng để thử thì trả
-  `ROOM_NOT_AVAILABLE` mã 409.
-- *5a. Vượt giới hạn tần suất* → `TOO_MANY_REQUESTS` mã 429.
+Đặc tả đầy đủ của **cả mười một use case** — tác nhân, tiền điều kiện, luồng
+chính, luồng thay thế, hậu điều kiện — trình bày ở Phụ lục A. Hai use case trọng
+tâm là UC1 *Tìm phòng trống* và UC2 *Đặt phòng*: UC1 là nơi truy vấn còn phòng
+chạy, UC2 là nơi ràng buộc loại trừ của cơ sở dữ liệu ra quyết định cuối cùng
+khi hai khách cùng đặt một phòng.
 
 ## 3.2. Thiết kế cơ sở dữ liệu
 
@@ -130,8 +66,6 @@ Hình 3.3 thể hiện chi tiết nhóm bảng đặt phòng, nơi đặt ràng 
 nhất của hệ thống.
 
 [Hình 3.3]
-
-### 3.2.2. Mô tả chi tiết các bảng
 
 ### 3.2.2. Mô tả bốn bảng cốt lõi
 

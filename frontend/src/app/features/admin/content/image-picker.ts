@@ -33,11 +33,18 @@ export interface PickedImage {
         (valueChange)="onUrlTyped($event)" />
 
       <div class="flex flex-wrap items-center gap-2">
+        <!-- Ô chọn tệp thật bị ẩn vì nút bên dưới mới là thứ người dùng thấy.
+             Ẩn bằng sr-only KHÔNG đủ: ô vẫn nằm trong thứ tự Tab, nên người
+             dùng bàn phím gặp hai điểm dừng cho một việc, và điểm dừng ẩn đó
+             không có tên để trình đọc màn hình đọc ra. tabindex="-1" bỏ nó
+             khỏi thứ tự Tab, aria-label đặt tên cho những lối vào còn lại. -->
         <input
           #file
           type="file"
           accept="image/jpeg,image/png,image/webp"
           class="sr-only"
+          tabindex="-1"
+          [attr.aria-label]="'Chọn tệp ảnh cho ' + label()"
           (change)="upload($event)" />
         <ui-button variant="secondary" [loading]="uploading()" (pressed)="file.click()">
           Tải ảnh lên

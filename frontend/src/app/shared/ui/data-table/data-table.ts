@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, output } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { UiSkeleton } from '../skeleton/skeleton';
 import { UiEmptyState } from '../empty-state/empty-state';
 
@@ -10,6 +11,14 @@ export interface TableColumn<T> {
   sortable?: boolean;
   /** Căn phải cho cột số — mắt so sánh số theo hàng đơn vị, không theo chữ đầu. */
   numeric?: boolean;
+  /**
+   * Biến ô thành liên kết tới tuyến trong ứng dụng.
+   *
+   * <p>Là một thẻ `<a>` thật chứ không phải ô bắt sự kiện bấm: người dùng bàn
+   * phím tới được bằng Tab, trình đọc màn hình đọc ra là liên kết, và mở tab
+   * mới bằng chuột giữa vẫn chạy. Ô nào không khai `link` giữ nguyên như cũ.
+   */
+  link?: (row: T) => readonly unknown[];
 }
 
 export interface SortState {
@@ -33,7 +42,7 @@ export interface SortState {
 @Component({
   selector: 'ui-data-table',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [UiSkeleton, UiEmptyState],
+  imports: [UiSkeleton, UiEmptyState, RouterLink],
   template: `
     @if (error(); as message) {
       <div class="rounded-md border border-danger bg-surface p-4" role="alert">
@@ -93,9 +102,15 @@ export interface SortState {
                          hover:bg-surface-2">
                   @for (column of columns(); track column.key) {
                     <td
-                      tabindex="0"
+                      [attr.tabindex]="column.link ? null : 0"
                       [class]="cellClass() + ' ' + (column.numeric ? 'text-right tabular-nums' : '')">
-                      {{ column.value(row) }}
+                      @if (column.link; as target) {
+                        <a [routerLink]="target(row)" class="text-focus underline">
+                          {{ column.value(row) }}
+                        </a>
+                      } @else {
+                        {{ column.value(row) }}
+                      }
                     </td>
                   }
                 </tr>

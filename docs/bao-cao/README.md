@@ -12,7 +12,7 @@ Nội dung quyển báo cáo, tách theo chương để mỗi tệp không vư�
 | 3 | `02-chuong-1.md` | CHƯƠNG 1. TỔNG QUAN | **Có** |
 | 4 | `03-chuong-2.md` | CHƯƠNG 2. NGHIÊN CỨU LÝ THUYẾT | **Có** |
 | 5 | `04a-chuong-3-thiet-ke.md` | CHƯƠNG 3, mục 3.1–3.6 — phân tích và thiết kế | **Có** |
-| 6 | `04b-chuong-3-cai-dat.md` | CHƯƠNG 3, mục 3.7–3.11 — cài đặt và triển khai | **Có** |
+| 6 | `04b-chuong-3-cai-dat.md` | CHƯƠNG 3, mục 3.7–3.10 — cài đặt và triển khai | **Có** |
 | 7 | `05-chuong-4.md` | CHƯƠNG 4. KẾT QUẢ NGHIÊN CỨU | **Có** |
 | 8 | `06-chuong-5.md` | CHƯƠNG 5. KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN | **Có** |
 | 9 | `07-tai-lieu-tham-khao.md` | DANH MỤC TÀI LIỆU THAM KHẢO — định dạng IEEE | Không |

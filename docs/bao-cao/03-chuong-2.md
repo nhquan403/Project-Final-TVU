@@ -278,7 +278,7 @@ bề mặt tấn công hơn. Docker Compose mô tả nhiều dịch vụ trong m
 Hệ thống gồm bốn dịch vụ: máy chủ web, ứng dụng, cơ sở dữ liệu và máy chủ thư
 giả lập. **Chỉ máy chủ web và giao diện xem thư mở cổng ra máy chủ**; ứng dụng và
 cơ sở dữ liệu không mở cổng nào, và đây là điều kiện để tin được thông tin địa
-chỉ mà máy chủ web chuyển tiếp, giải thích ở mục 3.10.3.
+chỉ mà máy chủ web chuyển tiếp, giải thích ở mục 3.9.3.
 
 ## 2.8. Thanh toán qua mã QR và webhook
 

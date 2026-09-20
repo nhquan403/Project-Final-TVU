@@ -93,7 +93,7 @@
 | **1. TỔNG QUAN** | Giới thiệu tổng quan về vấn đề sẽ tập trung nghiên cứu và giải quyết | Bài toán, khảo sát hiện trạng, so sánh hệ thống tương tự, xác định yêu cầu |
 | **2. NGHIÊN CỨU LÝ THUYẾT** | Cơ sở lí thuyết, lí luận, giả thiết khoa học, các công cụ, công nghệ, phần mềm được sử dụng | Kiến trúc tách rời, Java/Spring, Angular, **PostgreSQL: mức cô lập, kiểu khoảng, ràng buộc loại trừ, GiST**, JWT, Flyway, Docker, webhook, Testcontainers |
 | **3. HIỆN THỰC HÓA NGHIÊN CỨU** | Mô tả các bước nghiên cứu đã tiến hành, các bản thiết kế, cách thức cài đặt. Đề tài ứng dụng phải có **hồ sơ thiết kế, cài đặt theo các dạng lược đồ, mô hình phổ biến trong ngành** | Use case, ERD, biểu đồ lớp, biểu đồ trạng thái, biểu đồ tuần tự, kiến trúc phân lớp, thiết kế API, thiết kế giao diện, cài đặt từng chức năng, bảo mật, đóng gói |
-| **4. KẾT QUẢ NGHIÊN CỨU** | Kết quả đạt được. **Có thể đánh giá hiệu năng, trải nghiệm người dùng, hoặc trình bày giao diện chức năng** | 129 ca kiểm thử, 9 lỗi thực tế đã khắc phục, khả năng tiếp cận, bảo mật, đối chiếu mục đích, 7 giới hạn đã biết |
+| **4. KẾT QUẢ NGHIÊN CỨU** | Kết quả đạt được. **Có thể đánh giá hiệu năng, trải nghiệm người dùng, hoặc trình bày giao diện chức năng** | 129 ca kiểm thử, 11 lỗi thực tế đã khắc phục, khả năng tiếp cận, bảo mật, đối chiếu mục đích, 7 giới hạn đã biết |
 | **5. KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN** | Kết quả đạt được, đóng góp mới, đề xuất mới. **Phần kết luận ngắn gọn, không có lời bàn và bình luận thêm** | Kết luận gọn + 11 hướng phát triển chia ngắn/trung/dài hạn |
 
 ---
@@ -275,13 +275,13 @@ tiêu chí chấm điểm tiến độ**.
 
 1. Mục **2.1** — kiến trúc tách rời. Phần so sánh với kiến trúc nguyên khối có
    thể rút còn 3 câu.
-2. Mục **3.9** — cài đặt từng chức năng. Giữ 3.9.1 (tìm phòng trống) và 3.9.2
-   (vòng thử gán phòng) vì đó là lõi; rút gọn 3.9.3 tới 3.9.6.
+2. Mục **3.8** — cài đặt từng chức năng. Giữ 3.8.1 (tìm phòng trống) và 3.8.2
+   (vòng thử gán phòng) vì đó là lõi; rút gọn 3.8.3 tới 3.8.6.
 3. Mục **1.2.2** — khảo sát người dùng. Ba đoạn mô tả nhóm người dùng có thể gộp
    thành một bảng.
 4. Chuyển **bảng 12 yêu cầu phi chức năng** ở mục 1.4.2 xuống Phụ lục.
 
-**Không cắt** mục 2.4 (PostgreSQL), mục 4.3 (chín lỗi thực tế) và mục 4.7 (bảy
+**Không cắt** mục 2.4 (PostgreSQL), mục 4.3 (mười một lỗi thực tế) và mục 4.7 (bảy
 giới hạn đã biết). Ba mục này là phần làm điểm cao nhất.
 
 ---
@@ -331,7 +331,7 @@ docs/
 │   ├── 02-chuong-1.md         ← CHƯƠNG 1. TỔNG QUAN
 │   ├── 03-chuong-2.md         ← CHƯƠNG 2. NGHIÊN CỨU LÝ THUYẾT
 │   ├── 04a-chuong-3-thiet-ke.md   ← CHƯƠNG 3, mục 3.1–3.6
-│   ├── 04b-chuong-3-cai-dat.md    ← CHƯƠNG 3, mục 3.7–3.11
+│   ├── 04b-chuong-3-cai-dat.md    ← CHƯƠNG 3, mục 3.7–3.10
 │   ├── 05-chuong-4.md         ← CHƯƠNG 4. KẾT QUẢ NGHIÊN CỨU
 │   ├── 06-chuong-5.md         ← CHƯƠNG 5. KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN
 │   ├── 07-tai-lieu-tham-khao.md   ← IEEE, 14 mục
