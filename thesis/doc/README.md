@@ -7,7 +7,8 @@ thì sửa Markdown rồi dựng lại; sửa thẳng vào `.docx` sẽ mất �
 |---|---|---:|
 | `bao-cao-noi-dung.docx` | MỞ ĐẦU + Chương 1 → Chương 5 — **đây là phần bị tính trần 30–50 trang** | 52 |
 | `bao-cao-tltk-phu-luc.docx` | Danh mục tài liệu tham khảo + Phụ lục A–Q — *không tính vào số trang* | 30 |
-| `de-cuong-do-an.docx` | **Đề cương** nộp cho GVHD *trước* khi làm — không thuộc quyển báo cáo | 10 |
+| `de-cuong-do-an.docx` | **Đề cương** nộp cho GVHD *trước* khi làm — không thuộc quyển báo cáo | 11 |
+| `de-cuong-xem-truoc.png` | Ảnh xem nhanh cả 11 trang đề cương, không dùng để nộp | — |
 
 Bản PDF tương ứng ở `../pdf/`.
 

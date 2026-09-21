@@ -69,7 +69,28 @@ def body_format(p, size=13, spacing=1.5, before=6, after=6,
 
 INLINE = re.compile(r'(\*\*.+?\*\*|\*[^*]+?\*|`[^`]+?`)')
 
+HTML_TAG = re.compile(r'<(/?)([a-zA-Z][a-zA-Z0-9]*)[^>]*>')
+_da_canh_bao = set()
+
+
+def lam_sach_html(text):
+    """Bo the HTML con sot trong Markdown.
+
+    Word khong hieu HTML, nen mot the <br> viet trong nguon se in ra nguyen
+    van "<br>" giua trang giay. Da dinh mot lan o bang ky ten cua de cuong.
+    <br> doi thanh dau xuong dong; the la thi bo di kem mot dong canh bao,
+    vi im lang la cach loi nay quay lai."""
+    text = re.sub(r'<br\s*/?>', '\n', text, flags=re.I)
+    for m in HTML_TAG.finditer(text):
+        ten = m.group(2).lower()
+        if ten not in _da_canh_bao:
+            _da_canh_bao.add(ten)
+            print('  canh bao: bo the HTML <%s> — Word khong hieu HTML' % ten)
+    return HTML_TAG.sub('', text)
+
+
 def add_inline(p, text, size=13, base_bold=False):
+    text = lam_sach_html(text)
     text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)   # bo lien ket
     for part in INLINE.split(text):
         if not part: continue
@@ -80,7 +101,11 @@ def add_inline(p, text, size=13, base_bold=False):
         elif part.startswith('`') and part.endswith('`'):
             set_font(p.add_run(part[1:-1]), size - 1.5, mono=True)
         else:
-            set_font(p.add_run(part), size, bold=base_bold)
+            for i, dong in enumerate(part.split('\n')):
+                if i:
+                    p.add_run().add_break()
+                if dong:
+                    set_font(p.add_run(dong), size, bold=base_bold)
 
 def shade(cell, hexcolor):
     tcPr = cell._tc.get_or_add_tcPr()
@@ -127,6 +152,22 @@ def add_table(doc, rows, width_cm):
             add_inline(p, cell_text, size=11, base_bold=(i == 0))
             if i == 0:
                 shade(cell, 'EFEDE7')
+    # Bang dai vo sang trang sau thi trang do mat dong tieu de, va nguoi doc
+    # khong con biet cot nao la cot nao. Danh dau dong dau la dong tieu de de
+    # Word tu lap lai no o moi trang.
+    trPr = t.rows[0]._tr.get_or_add_trPr()
+    th = OxmlElement('w:tblHeader')
+    th.set(qn('w:val'), 'true')
+    trPr.append(th)
+    # Dong hoan toan rong giu mot chieu cao toi thieu: do la cach mot bang ky
+    # ten chua duoc cho de ky. Khong dat thi dong rong cao bang mot dong chu.
+    for i, row in enumerate(rows):
+        if i and not any(c.strip() for c in row):
+            pr = t.rows[i]._tr.get_or_add_trPr()
+            h = OxmlElement('w:trHeight')
+            h.set(qn('w:val'), '1400')     # ~2,5cm — vua mot cho ky ten
+            h.set(qn('w:hRule'), 'atLeast')
+            pr.append(h)
     return t
 
 def add_code(doc, lines):
@@ -137,7 +178,11 @@ def add_code(doc, lines):
         if i: p.add_run().add_break()
         set_font(p.add_run(l), 10.5, mono=True)
 
-TABLE_SEP = re.compile(r'^\s*\|?[\s:\-|]+\|[\s:\-|]*$')
+# Dong ke phan cach cua bang PHAI co it nhat mot dau gach. Mau cu chi doi
+# "toan ky tu gach, hai cham, khoang trang va gach dung", nen mot dong RONG
+# kieu "|  |  |" cung khop va bi bo di im lang — dung ba dong trong chua cho
+# ky ten cuoi de cuong bien mat ma khong bao gi.
+TABLE_SEP = re.compile(r'^\s*\|?[\s:\-|]*-[\s:\-|]*\|[\s:\-|]*$')
 
 def render_markdown(doc, path, width_cm, first_chapter_break=True):
     lines = open(path, encoding='utf-8').read().split('\n')
@@ -192,6 +237,15 @@ def render_markdown(doc, path, width_cm, first_chapter_break=True):
                 i += 1
             if rows: add_table(doc, rows, width_cm)
             continue
+        if s == '\\pagebreak':
+            # Dau ngat trang tuong minh. Can cho nhung khoi PHAI nam tron mot
+            # trang — vi du khoi ky ten: vo doi giua bang va dong ngay thang
+            # thi to giay nhin nhu in hong.
+            flush()
+            p = doc.add_paragraph()
+            p.paragraph_format.page_break_before = True
+            p.paragraph_format.space_after = Pt(0)
+            i += 1; continue
         if s in ('---', '***', '___'):
             flush(); i += 1; continue
         if s.startswith('>'):
