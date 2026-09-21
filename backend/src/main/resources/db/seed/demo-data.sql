@@ -562,3 +562,199 @@ SELECT r.id, CURRENT_DATE + 40, CURRENT_DATE + 45, 'Sơn lại phòng và thay r
    AND NOT EXISTS (SELECT 1 FROM room_closures)
  ORDER BY r.room_number
  LIMIT 1;
+
+-- ─── Một cuối tuần CHÁY PHÒNG để lịch có ngày bị chặn ───────────────────────
+-- Không có ngày nào hết phòng thì tính năng quan trọng nhất của đề tài — chặn
+-- sẵn ngày hết phòng ngay trong lịch — không nhìn thấy được lúc trình diễn.
+-- Bốn mươi đơn rải đều 195 ngày gần như không bao giờ dồn đủ để kín một loại
+-- phòng, nên phải dựng có chủ ý.
+--
+-- Chọn loại phòng ÍT PHÒNG NHẤT: kín 3 phòng thì rẻ hơn kín 5, và vẫn chứng
+-- minh đúng điều cần chứng minh. Đặt ở +12..+14 ngày: đủ gần để mở lịch mặc
+-- định là thấy ngay, đủ xa để không đụng khoảng hội đồng hay thử đặt.
+DO $chay_phong$
+DECLARE
+    v_type       record;
+    v_room       record;
+    v_in         date := CURRENT_DATE + 12;
+    v_out        date := CURRENT_DATE + 14;
+    v_i          integer := 0;
+    v_code       varchar(20);
+    v_booking_id bigint;
+    v_total      numeric(12,2);
+    v_names      text[] := ARRAY['Lý Gia Bảo', 'Trương Mỹ Duyên', 'Phan Đức Trí'];
+BEGIN
+    -- Đã dựng rồi thì thôi: seeder chạy lại mỗi lần container khởi động.
+    IF EXISTS (SELECT 1 FROM bookings WHERE code LIKE 'TVHFULL%') THEN
+        RETURN;
+    END IF;
+
+    SELECT rt.* INTO v_type
+      FROM room_types rt
+      JOIN rooms r ON r.room_type_id = rt.id AND r.status = 'AVAILABLE'
+     WHERE rt.active
+     GROUP BY rt.id
+     ORDER BY count(r.id), rt.id
+     LIMIT 1;
+
+    FOR v_room IN
+        SELECT r.* FROM rooms r
+         WHERE r.room_type_id = v_type.id
+           AND r.status = 'AVAILABLE'
+           -- Phòng nào đã bận trong khoảng này thì bỏ qua: ràng buộc loại trừ
+           -- sẽ bác, và bác ở đây nghĩa là cả ứng dụng không khởi động được.
+           AND NOT EXISTS (
+               SELECT 1 FROM booking_rooms br
+                WHERE br.room_id = r.id AND br.status = 'ACTIVE'
+                  AND br.stay && daterange(v_in, v_out, '[)'))
+           AND NOT EXISTS (
+               SELECT 1 FROM room_closures rc
+                WHERE rc.room_id = r.id
+                  AND rc.blocked && daterange(v_in, v_out, '[)'))
+         ORDER BY r.room_number
+    LOOP
+        v_i := v_i + 1;
+        v_code := 'TVHFULL' || lpad(v_i::text, 2, '0');
+        v_total := v_type.base_price * 2;
+
+        INSERT INTO bookings (
+            code, access_token, user_id, guest_name, guest_email, guest_phone,
+            check_in, check_out, adults, children, room_type_id,
+            room_type_name_snapshot, unit_price_snapshot, room_quantity,
+            subtotal_amount, discount_amount, total_amount, deposit_amount,
+            status, payment_status, hold_expires_at, created_at, updated_at)
+        VALUES (
+            v_code, md5(v_code || 'tvh-demo-seed'), NULL,
+            v_names[v_i], 'khach.cuoituan' || v_i || '@example.com',
+            '09' || lpad((10000000 + v_i * 37)::text, 8, '0'),
+            v_in, v_out, LEAST(v_type.capacity_adults, 2), 0, v_type.id,
+            v_type.name, v_type.base_price, 1,
+            v_total, 0, v_total, round(v_total * 0.3, 0),
+            'CONFIRMED', 'DEPOSIT_PAID', NULL,
+            now() - interval '9 days', now() - interval '9 days')
+        RETURNING id INTO v_booking_id;
+
+        INSERT INTO booking_rooms (booking_id, room_id, check_in, check_out, status)
+        VALUES (v_booking_id, v_room.id, v_in, v_out, 'ACTIVE');
+
+        INSERT INTO booking_status_history (booking_id, from_status, to_status, actor, note, created_at)
+        VALUES (v_booking_id, NULL, 'PENDING_PAYMENT', 'GUEST', 'Đơn mẫu — cuối tuần kín phòng',
+                now() - interval '9 days'),
+               (v_booking_id, 'PENDING_PAYMENT', 'CONFIRMED', 'SYSTEM', 'Đã nhận đủ tiền cọc',
+                now() - interval '9 days' + interval '11 minutes');
+
+        INSERT INTO payments (
+            booking_id, attempt_no, provider, amount_expected, amount_received,
+            transfer_content, qr_content, status, reconcile_status,
+            provider_txn_id, paid_at, created_at, updated_at)
+        VALUES (
+            v_booking_id, 1, 'SEPAY', round(v_total * 0.3, 0), round(v_total * 0.3, 0),
+            v_code || '01', 'Chuyen khoan giu cho ' || v_code,
+            'SUCCEEDED', 'NONE', 'DEMOFULL' || lpad(v_i::text, 4, '0'),
+            now() - interval '9 days' + interval '10 minutes',
+            now() - interval '9 days', now());
+    END LOOP;
+END
+$chay_phong$;
+
+-- ─── Hai khoảng đóng phòng nữa: một ĐANG áp dụng, một ĐÃ QUA ────────────────
+-- Khoảng duy nhất ở trên nằm ở +40 ngày, tức là lúc mở khu quản trị thì danh
+-- sách chỉ có một dòng ở tương lai xa. Thêm một khoảng ĐANG có hiệu lực hôm
+-- nay (chứng minh phòng bị trừ khỏi kết quả tìm kiếm ngay bây giờ) và một
+-- khoảng ĐÃ QUA (chứng minh hệ thống tự mở lại phòng, không cần ai nhớ bật).
+INSERT INTO room_closures (room_id, from_date, to_date, reason)
+SELECT r.id, CURRENT_DATE - 1, CURRENT_DATE + 3, 'Máy lạnh hỏng, đang chờ thợ'
+  FROM rooms r
+ WHERE r.status = 'AVAILABLE'
+   AND NOT EXISTS (
+       SELECT 1 FROM booking_rooms br
+        WHERE br.room_id = r.id AND br.status = 'ACTIVE'
+          AND br.stay && daterange(CURRENT_DATE - 1, CURRENT_DATE + 3, '[)'))
+   AND NOT EXISTS (
+       SELECT 1 FROM room_closures rc
+        WHERE rc.room_id = r.id
+          AND rc.blocked && daterange(CURRENT_DATE - 1, CURRENT_DATE + 3, '[)'))
+   -- Chốt idempotent: đã có khoảng nào bắt đầu trước hôm nay thì không thêm nữa.
+   AND NOT EXISTS (SELECT 1 FROM room_closures WHERE from_date < CURRENT_DATE)
+ ORDER BY r.room_number DESC
+ LIMIT 1;
+
+INSERT INTO room_closures (room_id, from_date, to_date, reason)
+SELECT r.id, CURRENT_DATE - 20, CURRENT_DATE - 15, 'Thay toàn bộ ga gối'
+  FROM rooms r
+ WHERE r.status = 'AVAILABLE'
+   AND NOT EXISTS (
+       SELECT 1 FROM booking_rooms br
+        WHERE br.room_id = r.id AND br.status = 'ACTIVE'
+          AND br.stay && daterange(CURRENT_DATE - 20, CURRENT_DATE - 15, '[)'))
+   AND NOT EXISTS (
+       SELECT 1 FROM room_closures rc
+        WHERE rc.room_id = r.id
+          AND rc.blocked && daterange(CURRENT_DATE - 20, CURRENT_DATE - 15, '[)'))
+   AND NOT EXISTS (SELECT 1 FROM room_closures WHERE to_date <= CURRENT_DATE)
+ ORDER BY r.room_number
+ LIMIT 1;
+
+-- ─── Ghi chú nội bộ trên vài đơn ────────────────────────────────────────────
+-- Khối "Ghi chú nội bộ" ở màn hình chi tiết đơn luôn hiện "Chưa có ghi chú nào"
+-- nếu không seed, nên người xem không biết chức năng này tồn tại. Ghi chú viết
+-- theo giọng người trực thật, không phải câu mẫu.
+INSERT INTO booking_notes (booking_id, author_id, content, created_at)
+SELECT b.id,
+       (SELECT id FROM users WHERE email = 'admin@tvh.local'),
+       v.content,
+       b.created_at + interval '1 day'
+  FROM bookings b
+  JOIN (VALUES
+        (1, 'Khách gọi báo tới trễ, khoảng 21h30. Đã dặn bảo vệ để cửa trước.'),
+        (2, 'Xin thêm một nệm phụ cho bé 5 tuổi. Đã chuẩn bị, không tính thêm tiền.'),
+        (3, 'Khách hỏi thuê xe đạp hai chiếc trong hai ngày. Đã báo giá 100k.'),
+        (4, 'Đi cùng nhóm bạn đặt phòng 202 — xếp hai phòng cạnh nhau.'),
+        (5, 'Khách dị ứng hải sản, đã báo bếp đổi món cho bữa sáng.'),
+        (6, 'Đã gọi xác nhận trước một ngày, khách báo vẫn đi đúng lịch.')
+       ) AS v(rn, content)
+    ON v.rn = (
+        SELECT rn FROM (
+            SELECT id, row_number() OVER (ORDER BY check_in DESC) AS rn
+              FROM bookings
+             WHERE code LIKE 'TVHDEMO%' AND status IN ('CONFIRMED', 'CHECKED_IN', 'CHECKED_OUT')
+        ) t WHERE t.id = b.id)
+ WHERE NOT EXISTS (SELECT 1 FROM booking_notes n WHERE n.booking_id = b.id);
+
+-- ─── Hộp thư đi: thư đã gửi và một thư thất bại ─────────────────────────────
+-- Khối "Hộp thư đi" ở chi tiết đơn cũng trống nếu không seed. Quan trọng hơn:
+-- một dòng FAILED là thứ chứng minh hàng đợi thư có nhánh hỏng và có người xử
+-- lý, chứ không phải "gửi xong là xong". Chỉ seed cho đơn đã xác nhận — đơn
+-- chưa trả tiền thì chưa có thư xác nhận nào để gửi.
+--
+-- payload dựng từ chính dữ liệu đơn, không phải chuỗi cố định: thư trong hộp
+-- phải khớp với đơn mà nó nói tới.
+INSERT INTO outbound_emails (booking_id, template, to_email, payload, status,
+                             attempts, last_error, sent_at, created_at)
+SELECT b.id, 'booking-confirmed', b.guest_email,
+       jsonb_build_object(
+           'code', b.code,
+           'guestName', b.guest_name,
+           'roomTypeName', b.room_type_name_snapshot,
+           'checkIn', to_char(b.check_in, 'DD/MM/YYYY'),
+           'checkOut', to_char(b.check_out, 'DD/MM/YYYY'),
+           'nights', (b.check_out - b.check_in),
+           'roomQuantity', b.room_quantity,
+           'adults', b.adults,
+           'children', b.children,
+           'totalAmount', to_char(b.total_amount, 'FM999G999G999') || ' đ',
+           'depositAmount', to_char(b.deposit_amount, 'FM999G999G999') || ' đ',
+           'remainingAmount', to_char(greatest(b.total_amount - b.deposit_amount, 0), 'FM999G999G999') || ' đ'),
+       -- Một đơn duy nhất mang trạng thái FAILED, chọn theo mã đơn cho ổn định.
+       CASE WHEN b.code = 'TVHFULL03' THEN 'FAILED' ELSE 'SENT' END,
+       CASE WHEN b.code = 'TVHFULL03' THEN 5 ELSE 1 END,
+       CASE WHEN b.code = 'TVHFULL03'
+            THEN 'Máy chủ thư trả về 550: hộp thư người nhận không tồn tại'
+            ELSE NULL END,
+       CASE WHEN b.code = 'TVHFULL03' THEN NULL
+            ELSE b.updated_at + interval '2 minutes' END,
+       b.updated_at
+  FROM bookings b
+ WHERE b.status IN ('CONFIRMED', 'CHECKED_IN', 'CHECKED_OUT')
+   AND b.payment_status IN ('DEPOSIT_PAID', 'PAID')
+   AND NOT EXISTS (SELECT 1 FROM outbound_emails e WHERE e.booking_id = b.id);
