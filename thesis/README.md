@@ -10,7 +10,7 @@ Trường Đại học Trà Vinh.
 | `doc/` | Tài liệu dạng `.DOC` — quyển báo cáo bản Word | ✅ đã xuất — xem `doc/README.md` |
 | `pdf/` | Tài liệu dạng `.PDF` — quyển báo cáo bản PDF | ✅ đã xuất |
 | `html/` | Tài liệu dạng web | Chờ xuất |
-| `abs/` | Báo cáo trình bày: `.PPT`, `.AVI`, poster | Chờ làm |
+| `abs/` | Báo cáo trình bày: `.PPT`, `.AVI`, poster | ✅ slide 20 trang + kịch bản nói — còn poster |
 | `refs/` | Tài liệu, văn bản tham khảo khi thực hiện đồ án | Chờ bổ sung |
 
 ## Nguồn nội dung

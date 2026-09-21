@@ -252,12 +252,12 @@ tiêu chí chấm điểm tiến độ**.
 - [ ] **Đổi tên repo** theo cú pháp quy định
 - [ ] **Mời GVHD** làm Collaborator
 - [ ] Chuẩn bị **28 hình** theo mục 3
-- [ ] Viết **chú thích nêu nguồn** cho từng hình và từng bảng
-- [ ] Xuất Word, áp đúng định dạng ở mục 1
-- [ ] **Đếm số trang thật.** Ước lượng hiện tại ~52 trang, **vượt trần 50 khoảng
-      2 trang**. Nếu vượt thật, cắt theo thứ tự ưu tiên ở mục 5.3
+- [x] Viết **chú thích nêu nguồn** cho từng hình — script chèn tự động; **còn Hình 1.3 phải tự sửa dòng nguồn**, và chú thích cho các bảng vẫn phải viết tay trong Word
+- [x] Xuất Word, áp đúng định dạng ở mục 1 — `scripts/xuat-ban-word.py`
+- [x] **Đếm số trang thật.** Đã đo: **52 trang** (từ 66). Còn dư 2 so với trần
+      50 — ba việc cắt tiếp ở mục 5.3
 - [ ] Sinh mục lục, danh mục bảng/sơ đồ/hình tự động
-- [ ] Xuất PDF, đặt vào `thesis/pdf/`, bản Word vào `thesis/doc/`
+- [x] Xuất PDF, đặt vào `thesis/pdf/`, bản Word vào `thesis/doc/`
 - [ ] In bìa cứng chữ nhũ vàng
 - [ ] Nộp link GitHub qua biểu mẫu của bộ môn
 - [ ] Fork repo về tài khoản chung của bộ môn (cùng GVHD)
@@ -266,8 +266,9 @@ tiêu chí chấm điểm tiến độ**.
 
 - [ ] **Poster 90cm × 60cm, hướng đứng** → cộng tối đa **1 điểm**, và được tham
       gia buổi showcase. Nộp cùng quyển báo cáo
-- [ ] Slide báo cáo, đặt vào `thesis/abs/`. Thời gian báo cáo **10–20 phút kể cả
-      hỏi đáp**, nên phần trình bày chỉ nên 10–12 phút
+- [x] Slide báo cáo, đặt vào `thesis/abs/` — **20 slide**, kèm kịch bản nói cho
+      từng slide ở `docs/kich-ban-bao-ve.md`. Còn phải điền thông tin sinh viên
+      ở slide bìa và tập bấm giờ cho đúng 10–12 phút
 - [ ] Chạy lại ba lệnh triển khai trên máy có mạng bình thường và chụp kết quả
       *(xem giới hạn đã biết ở mục 4.6.3 của báo cáo)*
 
