@@ -26,8 +26,24 @@ Dùng `mau-bao-cao-tuan.md` làm khuôn.
 
 ## Danh sách báo cáo
 
-| Tuần | Tệp | Ngày nộp | Nội dung chính |
+| Tuần | Tệp | Kỳ báo cáo | Nội dung chính |
 |---|---|---|---|
-| | | | |
+| 01 | `tuan-01.md` | 07/09 – 12/09/2026 | Kế hoạch, hệ thiết kế, lược đồ cơ sở dữ liệu và ràng buộc chống đặt trùng, xác thực, lõi đặt phòng, thanh toán, khu quản trị, trang bán hàng — **21 commit** |
+| 02 | `tuan-02.md` | 16/09 – 20/09/2026 | Đóng gói Docker, dữ liệu mẫu, quản lý ngày khả dụng, tám tài liệu kỹ thuật, toàn bộ phần chữ báo cáo, 30 hình, script xuất Word — **20 commit** |
+| 03 | `tuan-03.md` | từ 21/09/2026 | Đưa báo cáo từ 66 xuống 52 trang, slide bảo vệ 20 trang kèm kịch bản nói, poster 60×90cm — **3 commit** |
 
-*(Cập nhật bảng này mỗi khi thêm một báo cáo tuần)*
+## Bảng commit lấy từ đâu
+
+Mục 5 của mỗi báo cáo là bảng commit **sinh thẳng từ `git log`**, không chép tay,
+vì quy định lấy lịch sử commit làm tiêu chí chấm điểm tiến độ — bảng trong báo
+cáo phải khớp từng dòng với lịch sử thật.
+
+```sh
+python3 scripts/tao-bao-cao-tuan.py          # liệt kê các tuần có commit
+python3 scripts/tao-bao-cao-tuan.py 38       # bảng commit của tuần ISO 38
+```
+
+## Việc còn phải làm tay
+
+Điền **họ tên, MSSV, lớp và tên GVHD** vào bảng đầu của cả ba báo cáo — hiện để
+dấu chấm, giống các trang bìa của quyển báo cáo.

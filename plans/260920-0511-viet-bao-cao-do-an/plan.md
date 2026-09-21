@@ -93,12 +93,12 @@ Danh mục bảng biểu, hình vẽ → Danh mục từ viết tắt
 |---|---|---|
 | 1 | **Lời cam đoan** — mẫu VHU bắt buộc, đề cương hiện không có | 🔴 Bắt buộc |
 | 2 | Mở đầu mẫu VHU có **7 mục**; đề cương có 6 — thiếu "Nhiệm vụ nghiên cứu" và "Các kết quả đạt được" tách riêng | 🔴 Bắt buộc |
-| 3 | Đặc tả use case: mới viết đủ **2/11** | 🟡 Nội dung chính |
-| 4 | Mô tả bảng CSDL: mới chi tiết **2/21** | 🟡 Nội dung chính |
-| 5 | 40 hình: chưa có hình nào ngoài 3 ảnh chụp sẵn | 🟡 Nội dung chính |
+| 3 | Đặc tả use case: mới viết đủ **2/11** | ✅ đã đủ 11, ở Phụ lục A |
+| 4 | Mô tả bảng CSDL: mới chi tiết **2/21** | ✅ đã đủ 21, ở Phụ lục B |
+| 5 | 40 hình: chưa có hình nào ngoài 3 ảnh chụp sẵn | ✅ 30/31 hình, còn Hình 1.3 |
 | 6 | Chưa có trích dẫn `[1]`, `[2]` trong bài | 🟢 Hình thức |
-| 7 | Chưa có file Word định dạng chuẩn | 🟢 Hình thức |
-| 8 | Chưa có slide bảo vệ | 🔴 1,5 điểm |
+| 7 | Chưa có file Word định dạng chuẩn | ✅ `scripts/xuat-ban-word.py` |
+| 8 | Chưa có slide bảo vệ | ✅ 20 slide + kịch bản nói + poster |
 
 ## Các phase
 
@@ -112,10 +112,10 @@ Danh mục bảng biểu, hình vẽ → Danh mục từ viết tắt
 | 5 | [Chương 4 — Xây dựng và triển khai](#phase-5) | Done | 1 | 6h |
 | 6 | [Chương 5 — Kiểm thử và đánh giá](#phase-6) | Done | 1 | 4h |
 | 7 | [Kết luận, TLTK, Phụ lục](#phase-7) | Done | 2–6 | 3h |
-| 8 | [28 hình ảnh](#phase-8) | Todo | — (song song) | 9h |
-| 9 | [Xuất Word và định dạng](#phase-9) | Todo | 0, 7, 8 | 4h |
-| 10 | [Slide bảo vệ và tập phản biện](#phase-10) | Todo | 9 | 6h |
-| 11 | [Hoàn tất yêu cầu GitHub và nộp](#phase-11) | Todo | 9 | 2h |
+| 8 | [28 hình ảnh](#phase-8) | **Done** — 30/31 hình, còn Hình 1.3 phải tự chụp | — (song song) | 9h |
+| 9 | [Xuất Word và định dạng](#phase-9) | **Done** — 52 trang, dư 2 so với trần 50 | 0, 7, 8 | 4h |
+| 10 | [Slide bảo vệ và tập phản biện](#phase-10) | **Done** — 20 slide + kịch bản nói + poster | 9 | 6h |
+| 11 | [Hoàn tất yêu cầu GitHub và nộp](#phase-11) | Todo — việc của người dùng | 9 | 2h |
 
 **Tổng: ~46 giờ.** Phase 8 chạy song song được với Phase 2–7 vì nó không phụ
 thuộc nội dung chữ.

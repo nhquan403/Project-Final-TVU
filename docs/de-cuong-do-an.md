@@ -217,7 +217,7 @@ tiêu chí chấm điểm tiến độ**.
 | Tên repo `cn-<malop>-<hotenkhongdau>-<shortname>` | ❌ đang là `Project-Final-TVU` — **cần đổi** |
 | Mời GVHD làm Collaborator trong tuần đầu | ❓ cần thực hiện |
 | `README.md` cập nhật liên tục, có **thông tin liên lạc (email, điện thoại)** | ⚠️ đã có README nhưng **thiếu thông tin liên lạc** |
-| `progress-report/` **[bắt buộc]** — báo cáo tiến độ hàng tuần | ✅ đã tạo |
+| `progress-report/` **[bắt buộc]** — báo cáo tiến độ hàng tuần | ✅ đã có **ba báo cáo tuần**, bảng commit sinh từ `git log` |
 | `thesis/` **[bắt buộc]** với `doc/ pdf/ html/ abs/ refs/` | ✅ đã tạo |
 | `setup/` — tệp cài đặt và dữ liệu thử | ✅ đã tạo |
 | `src/` — mã nguồn | ⚠️ mã nguồn đang ở `backend/` và `frontend/` |
