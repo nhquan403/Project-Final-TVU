@@ -9,16 +9,12 @@ dụng độc lập, giao tiếp qua giao diện lập trình ứng dụng trả
 dạng JSON. Tầng giao diện không truy cập cơ sở dữ liệu; tầng máy chủ không sinh
 HTML.
 
-So với kiến trúc nguyên khối kết xuất phía máy chủ, kiến trúc tách rời phức
-tạp hơn lúc khởi đầu và cần thêm công sức tối ưu công cụ tìm kiếm, nhưng đổi
-lại cho trải nghiệm chuyển trang không tải lại, tách rõ công việc hai tầng, và
-quan trọng nhất là **dùng lại được nguyên giao diện lập trình ứng dụng** nếu sau
-này phát triển ứng dụng di động.
-
-Lý do lựa chọn kiến trúc tách rời: hệ thống có **hai giao diện rất khác nhau** —
-trang bán hàng cho khách và khu quản trị mật độ cao. Dùng chung một giao diện
-lập trình ứng dụng cho cả hai, cộng với khả năng mở rộng sang ứng dụng di động
-sau này, bù lại chi phí phức tạp ban đầu.
+So với kiến trúc nguyên khối kết xuất phía máy chủ, kiến trúc tách rời phức tạp
+hơn lúc khởi đầu và cần thêm công sức tối ưu công cụ tìm kiếm. Đổi lại, hệ thống
+có **hai giao diện rất khác nhau** — trang bán hàng cho khách và khu quản trị
+mật độ cao — dùng chung **một** giao diện lập trình ứng dụng. Chính giao diện đó
+cũng dùng lại được nguyên vẹn nếu sau này phát triển ứng dụng di động, nên chi
+phí phức tạp ban đầu được bù lại.
 
 Hình 2.1 thể hiện kiến trúc tổng thể của hệ thống khi triển khai.
 

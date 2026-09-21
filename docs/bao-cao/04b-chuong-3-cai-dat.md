@@ -102,12 +102,10 @@ Hình 3.14 thể hiện ba bước của luồng đặt phòng.
 
 ### 3.8.3. Chức năng thanh toán
 
-Hệ thống sinh mã QR theo chuẩn VietQR, kèm nội dung chuyển khoản gồm **mã đơn
-ghép hai chữ số thứ tự lần thử**. Hai chữ số này cho phép phân biệt các lần
-chuyển khoản khác nhau của cùng một đơn.
-
-Màn hình thanh toán có đồng hồ đếm ngược 15 phút tương ứng với hạn giữ chỗ **có
-thật** trong cơ sở dữ liệu, không phải đồng hồ trang trí.
+Hệ thống sinh mã QR theo chuẩn VietQR, nội dung chuyển khoản là **mã đơn ghép
+hai chữ số thứ tự lần thử** để phân biệt các lần chuyển khoản của cùng một đơn.
+Đồng hồ đếm ngược 15 phút trên màn hình ứng với hạn giữ chỗ **có thật** trong cơ
+sở dữ liệu, không phải đồng hồ trang trí.
 
 Hình 3.15 thể hiện màn hình thanh toán.
 
@@ -130,20 +128,18 @@ công, chứ không bị bỏ qua.
 
 ### 3.8.4. Chức năng quản lý ngày khả dụng
 
-Trước giai đoạn mười, hệ thống chỉ có công tắc trạng thái vận hành cho phòng.
-Công tắc đó **không gắn với ngày**. Chủ homestay muốn ghi nhận rằng một phòng sơn
-lại trong năm ngày thì phải tự nhớ tắt rồi tự nhớ bật, và ngày quên bật là ngày
-mất doanh thu mà không có dấu hiệu nào.
+Trước giai đoạn mười, phòng chỉ có công tắc trạng thái vận hành, và công tắc đó
+**không gắn với ngày**: muốn ghi nhận một phòng sơn lại trong năm ngày thì phải
+tự nhớ tắt rồi tự nhớ bật, mà ngày quên bật là ngày mất doanh thu không dấu vết.
 
 Giải pháp gồm ba phần: bảng `room_closures` với cột sinh tự động dùng cùng quy
 ước nửa mở, ràng buộc loại trừ chống chồng lấn, và một điều kiện lọc thêm vào
 **cả bốn** truy vấn phòng trống.
 
-**Phần thưởng kiến trúc.** Tầng giao diện phía khách **không phải sửa một dòng
-mã nào**. Trang chủ, danh sách phòng, trang chi tiết và luồng đặt phòng đều đọc
-phòng trống qua bốn truy vấn đó, nên việc sửa ở tầng dữ liệu làm cả bốn màn hình
-tự đúng theo. Đây là kết quả của việc gom mọi truy vấn phòng trống vào một lớp
-duy nhất từ giai đoạn năm.
+**Phần thưởng kiến trúc:** tầng giao diện phía khách **không phải sửa một dòng
+mã nào**. Cả bốn màn hình khách đều đọc phòng trống qua bốn truy vấn đó, nên sửa
+ở tầng dữ liệu làm cả bốn tự đúng theo — kết quả của việc gom mọi truy vấn phòng
+trống vào một lớp duy nhất từ giai đoạn năm.
 
 ### 3.8.5. Khu quản trị
 

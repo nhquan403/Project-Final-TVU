@@ -1,28 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Dung ban Word cua bao cao tu Markdown o docs/bao-cao/.
-
-Ap dung dung quy dinh trinh bay cua Khoa Ky thuat va Cong nghe, DH Tra Vinh:
-Times New Roman 13pt, gian dong 1.5, cach doan truoc/sau 6pt, kho A4, le tren
-2cm - duoi 2cm - trai 3cm - phai 2cm, so trang goc phai duoi, chan trang mang
-"GVHD:" ben trai va "SVTH:" ben phai.
-
-Cach dung:
-
-    pip install python-docx
-    python3 scripts/xuat-ban-word.py noi-dung thesis/doc/bao-cao-noi-dung.docx \
-        "Ho ten GVHD" "Ho ten SVTH"
-    python3 scripts/xuat-ban-word.py phu-luc  thesis/doc/bao-cao-tltk-phu-luc.docx
-
-Ba che do: "noi-dung" (MO DAU + Chuong 1-5, day la phan bi tinh 30-50 trang),
-"phu-luc" (tai lieu tham khao + phu luc, khong tinh trang) va "day-du" (ca hai).
-
-Tep docs/bao-cao/00-phan-dau.md KHONG duoc xuat: do la ban dac ta cach trinh bay
-cac trang bia theo bieu mau BM5, phai dung tay trong Word theo dung bieu mau.
-
-Hinh duoc chen tu docs/images/bao-cao/ theo dau cho dat [Hinh X.Y], kem chu
-thich "Hinh X.Y - <mo ta> (Nguon: tac gia)" lay tu chinh cau dan trong phan chu.
-Rieng Hinh 1.3 chup tu trang web ben ngoai nen phai tu sua lai dong nguon.
-"""
+"""Dung ban Word cua bao cao theo dung quy dinh trinh bay cua Khoa KT-CN DH Tra Vinh."""
 import re, os, sys, struct
 from docx import Document
 from docx.shared import Pt, Cm, RGBColor
@@ -121,8 +98,8 @@ def add_figure(doc, num, width_cm):
         w_px, h_px = size
         # khong de mot hinh cao qua 17cm, neu khong no chiem tron trang
         w_cm = min(w_cm, 15.0)
-        if h_px / w_px * w_cm > 11:
-            w_cm = 11 * w_px / h_px
+        if h_px / w_px * w_cm > 10:
+            w_cm = 10 * w_px / h_px
     p = doc.add_paragraph(); body_format(p, before=6, after=2, align=WD_ALIGN_PARAGRAPH.CENTER)
     p.add_run().add_picture(path, width=Cm(w_cm))
     cap = doc.add_paragraph()

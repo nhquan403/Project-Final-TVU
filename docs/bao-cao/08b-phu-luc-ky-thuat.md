@@ -288,3 +288,68 @@ Danh sách tối thiểu cần chạy trên bản đóng gói:
 9. Mở hộp thư giả lập xem thư xác nhận đã gửi.
 10. Đóng một phòng vài ngày; tìm phòng đúng khoảng đó thấy số phòng giảm đúng
     một, và đêm mở bán lại **không** giảm.
+
+---
+
+## Phụ lục O — Mười hai yêu cầu phi chức năng
+
+Bảng đầy đủ của mục 1.4.2. Cột cuối là cách kiểm chứng, không phải lời hứa.
+
+| Mã | Loại | Yêu cầu | Cách kiểm chứng |
+|---|---|---|---|
+| PCN-01 | Toàn vẹn | Không bao giờ bán trùng một phòng, kể cả khi có tranh chấp | Kiểm thử đa luồng thật |
+| PCN-02 | Toàn vẹn | Số phòng đã gán luôn khớp số phòng đơn yêu cầu | Trigger hoãn ở cơ sở dữ liệu |
+| PCN-03 | Toàn vẹn | Không nhánh nào để tiền biến mất im lặng | Kiểm thử cửa sổ tranh chấp webhook |
+| PCN-04 | Bảo mật | Mặc định từ chối mọi endpoint chưa khai quyền | Kiểm thử ma trận 30 tiền tố |
+| PCN-05 | Bảo mật | Chống dò mật khẩu và spam đặt phòng | Giới hạn tần suất theo 9 khoá |
+| PCN-06 | Bảo mật | Không có bí mật nào nằm trong mã nguồn | Ứng dụng dừng khởi động khi thiếu biến |
+| PCN-07 | Khả dụng | Giao diện sử dụng được trên điện thoại | Kiểm ở 3 độ rộng màn hình |
+| PCN-08 | Khả dụng | Đạt chuẩn WCAG 2.1 mức A và AA [13] | Quét tự động |
+| PCN-09 | Khả dụng | Mọi vùng chạm tối thiểu 44×44 điểm ảnh | Đo tự động |
+| PCN-10 | Hiệu năng | Lịch cả kỳ lấy trong một truy vấn, không lặp từng đêm | Đọc mã truy vấn |
+| PCN-11 | Triển khai | Ba lệnh từ lúc sao chép mã nguồn tới lúc chạy | Thực nghiệm |
+| PCN-12 | Bảo trì | Lược đồ do công cụ migration quản lý, migration bất biến | Kiểm thử checksum |
+
+---
+
+## Phụ lục P — Cây gói tầng máy chủ
+
+Cây gói đầy đủ của mục 3.4.2.
+
+```
+com.tvh.homestay
+├── auth/          — đăng nhập, token, phiên làm việc
+├── user/          — người dùng
+├── room/          — loại phòng, phòng, tiện nghi, khoảng đóng
+├── availability/  — truy vấn phòng trống
+├── booking/       — đơn, máy trạng thái, gán phòng, tính giá
+├── payment/       — webhook, đối soát
+├── promotion/     — mã khuyến mãi
+├── review/        — đánh giá
+├── cms/           — thực thể nội dung trang chủ
+├── content/       — điều khiển nội dung công khai và quản trị
+├── admin/         — điều khiển và dịch vụ khu quản trị
+├── report/        — tổng quan, xuất tệp CSV
+├── storage/       — tải ảnh lên
+├── mail/          — hàng đợi thư
+├── common/        — xử lý ngoại lệ, tiện ích dùng chung
+└── demo/          — nạp dữ liệu mẫu, chỉ hoạt động ở cấu hình trình diễn
+```
+
+---
+
+## Phụ lục Q — Chín khoá giới hạn tần suất
+
+Hạn mức đầy đủ của mục 3.5.3.
+
+| Khoá | Hạn mức | Áp dụng cho |
+|---|---|---|
+| `ip:auth` | 10 lần mỗi phút | Mọi endpoint xác thực |
+| `email:login` | 5 lần mỗi phút | Đăng nhập, theo thư điện tử trong thân yêu cầu |
+| `ip:availability` | 60 lần mỗi phút | Truy vấn phòng trống |
+| `ip:promo` | 20 lần mỗi phút | Kiểm tra mã khuyến mãi |
+| `ip:booking-create` | 10 lần mỗi phút | Tạo đơn |
+| `phone:booking` | 10 lần mỗi giờ | Tạo đơn, theo số điện thoại |
+| `ip:lookup` | 10 lần mỗi phút | Tra cứu đơn |
+| `code:lookup` | 5 lần mỗi giờ | Tra cứu đơn, theo mã đơn |
+| `ip:cancel` | 10 lần mỗi phút | Huỷ đơn |

@@ -357,11 +357,12 @@ Hình A.3 thể hiện trang chi tiết một loại phòng.
 
 [Hình A.3]
 
-## Phụ lục B — Mô tả mười bảy bảng còn lại
+## Phụ lục B — Mô tả hai mươi mốt bảng
 
-Bốn bảng cốt lõi (`users`, `bookings`, `booking_rooms`, `room_closures`) đã mô
-tả ở mục 3.2.2. Phụ lục này mô tả mười bảy bảng còn lại theo cùng mẫu ba cột,
-sắp xếp theo thứ tự migration.
+Danh sách cột đầy đủ của cả hai mươi mốt bảng nghiệp vụ, theo cùng mẫu ba cột
+tên cột – kiểu – mô tả và ràng buộc. Bốn bảng cốt lõi xếp lên đầu vì mục 3.2.2
+giải thích vì sao mỗi ràng buộc của chúng tồn tại; mười bảy bảng còn lại xếp
+theo thứ tự migration.
 
 **Bảng `refresh_tokens` — phiên đăng nhập dài hạn**
 
@@ -377,6 +378,79 @@ sắp xếp theo thứ tự migration.
 
 Cột `replaced_by` phục vụ phát hiện token bị đánh cắp: nếu một token đã bị thay
 thế lại được sử dụng, đó là dấu hiệu bất thường và cả chuỗi token bị thu hồi.
+
+### Nhóm cốt lõi — bốn bảng mang ràng buộc quyết định
+
+**Bảng `users` — tài khoản người dùng**
+
+| Tên cột | Kiểu | Mô tả và ràng buộc |
+|---|---|---|
+| `id` | bigserial | Khoá chính |
+| `email` | varchar(255) | `uq_users_email` duy nhất; `ck_users_email_lower` buộc lưu chữ thường |
+| `password_hash` | varchar(72) | Băm mật khẩu theo thuật toán bcrypt |
+| `full_name` | varchar(150) | Họ tên, bắt buộc |
+| `phone` | varchar(20) | Số điện thoại, có thể rỗng |
+| `role` | varchar(20) | `ck_users_role` giới hạn hai giá trị `CUSTOMER` và `ADMIN` |
+| `enabled` | boolean | Mặc định bật; tắt để khoá tài khoản |
+| `must_change_password` | boolean | Cờ buộc đổi mật khẩu tạm ở lần đăng nhập đầu |
+| `token_version` | integer | `ck_users_token_version` không âm. Tăng khi đăng xuất hoặc đổi mật khẩu để vô hiệu hoá token cũ ngay |
+| `created_at`, `updated_at` | timestamptz | Thời điểm tạo và cập nhật |
+
+**Bảng `bookings` — đơn đặt phòng**
+
+| Tên cột | Kiểu | Mô tả và ràng buộc |
+|---|---|---|
+| `id` | bigserial | Khoá chính |
+| `code` | varchar(20) | `uq_bookings_code` duy nhất. Mã đơn khách dùng để tra cứu |
+| `access_token` | char(32) | `uq_bookings_access_token` duy nhất. **Mã truy cập — bí mật thao tác, khác mã đơn** |
+| `user_id` | bigint | Khoá ngoại tới `users`, **rỗng với khách vãng lai** |
+| `guest_name` | varchar(150) | Họ tên khách |
+| `guest_email` | varchar(255) | Thư điện tử khách |
+| `guest_phone` | varchar(20) | Số điện thoại khách |
+| `check_in`, `check_out` | date | `ck_bookings_dates` buộc ngày trả sau ngày nhận |
+| `adults` | integer | `ck_bookings_adults` tối thiểu 1 |
+| `children` | integer | `ck_bookings_children` không âm |
+| `room_type_id` | bigint | Khoá ngoại tới `room_types` |
+| `room_type_name_snapshot` | varchar(150) | Tên loại phòng chụp tại thời điểm đặt |
+| `unit_price_snapshot` | numeric(12,2) | `ck_bookings_unit_price` lớn hơn 0. Giá chụp tại thời điểm đặt |
+| `room_quantity` | integer | `ck_bookings_room_qty` tối thiểu 1 |
+| `subtotal_amount` | numeric(12,2) | `ck_bookings_subtotal` không âm |
+| `discount_amount` | numeric(12,2) | `ck_bookings_discount` không âm |
+| `total_amount` | numeric(12,2) | `ck_bookings_total` không âm |
+| `deposit_amount` | numeric(12,2) | `ck_bookings_deposit` không âm |
+| `promotion_id` | bigint | Khoá ngoại `fk_bookings_promotion` thêm ở V5 |
+| `status` | varchar(20) | `ck_bookings_status` liệt kê **tám trạng thái** |
+| `payment_status` | varchar(20) | `ck_bookings_pay_status` liệt kê bảy trạng thái thanh toán |
+| `special_request` | text | Yêu cầu đặc biệt của khách |
+| `hold_expires_at` | timestamptz | Hạn giữ chỗ |
+| `client_ip` | inet | Địa chỉ mạng của người đặt |
+| `user_agent` | varchar(255) | Thông tin trình duyệt |
+| `cancelled_at`, `cancel_reason` | timestamptz, text | Thời điểm và lý do huỷ |
+| `created_at`, `updated_at` | timestamptz | Thời điểm tạo và cập nhật |
+
+**Bảng `booking_rooms` — gán phòng vật lý cho đơn**
+
+| Tên cột | Kiểu | Mô tả và ràng buộc |
+|---|---|---|
+| `id` | bigserial | Khoá chính |
+| `booking_id` | bigint | Khoá ngoại tới `bookings`, xoá theo tầng |
+| `room_id` | bigint | Khoá ngoại tới `rooms` |
+| `check_in`, `check_out` | date | `ck_booking_rooms_dates` buộc ngày trả sau ngày nhận |
+| `stay` | daterange | **Cột sinh tự động** `GENERATED ALWAYS AS (daterange(check_in, check_out, '[)')) STORED` |
+| `status` | varchar(20) | `ck_booking_rooms_status` giới hạn `ACTIVE` và `RELEASED` |
+
+**Bảng `room_closures` — khoảng ngày phòng không nhận khách**
+
+| Tên cột | Kiểu | Mô tả và ràng buộc |
+|---|---|---|
+| `id` | bigserial | Khoá chính |
+| `room_id` | bigint | Khoá ngoại tới `rooms`, xoá theo tầng |
+| `from_date` | date | Đêm đầu tiên bị chặn |
+| `to_date` | date | Ngày mở bán lại. `ck_room_closures_dates` buộc lớn hơn `from_date` |
+| `blocked` | daterange | **Cột sinh tự động** theo quy ước nửa mở, cùng quy ước với `booking_rooms.stay` |
+| `reason` | varchar(300) | Lý do đóng phòng |
+| `created_by` | bigint | Khoá ngoại tới `users`, đặt rỗng khi tài khoản bị xoá |
+| `created_at` | timestamptz | Thời điểm tạo |
 
 ### Nhóm V2 — Phòng và tiện nghi
 

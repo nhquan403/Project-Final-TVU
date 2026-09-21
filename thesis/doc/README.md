@@ -5,8 +5,8 @@ thì sửa Markdown rồi dựng lại; sửa thẳng vào `.docx` sẽ mất �
 
 | Tệp | Chứa gì | Số trang đo được |
 |---|---|---:|
-| `bao-cao-noi-dung.docx` | MỞ ĐẦU + Chương 1 → Chương 5 — **đây là phần bị tính trần 30–50 trang** | 57 |
-| `bao-cao-tltk-phu-luc.docx` | Danh mục tài liệu tham khảo + Phụ lục A–N — *không tính vào số trang* | 25 |
+| `bao-cao-noi-dung.docx` | MỞ ĐẦU + Chương 1 → Chương 5 — **đây là phần bị tính trần 30–50 trang** | 52 |
+| `bao-cao-tltk-phu-luc.docx` | Danh mục tài liệu tham khảo + Phụ lục A–Q — *không tính vào số trang* | 30 |
 
 Bản PDF tương ứng ở `../pdf/`.
 
@@ -37,5 +37,6 @@ chỗ đặt `[Hình X.Y]` kèm chú thích và dòng nguồn.
    sau khi đã ghép xong; không quá bốn cấp tiểu mục.
 3. **Chú thích Hình 1.3.** Ảnh chụp từ trang web bên ngoài nên dòng nguồn phải
    ghi địa chỉ và ngày chụp, không phải "Nguồn: tác giả".
-4. **Cắt cho vừa 50 trang.** Phần nội dung đang 57 trang. Thứ tự cắt đã được
-   chuẩn bị sẵn ở mục 5.3 của `docs/de-cuong-do-an.md`.
+4. **Hai trang cuối cùng.** Phần nội dung đã từ 66 xuống 52 trang, còn dư 2 so
+   với trần 50. Mục 5.3 của `docs/de-cuong-do-an.md` ghi rõ đã cắt những gì và
+   ba việc cắt tiếp nếu thầy hướng dẫn yêu cầu đúng 50.

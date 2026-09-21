@@ -69,23 +69,11 @@ nhất của hệ thống.
 
 ### 3.2.2. Mô tả bốn bảng cốt lõi
 
-Bốn bảng dưới đây là các bảng mang ràng buộc quyết định của hệ thống. Mô tả
-đầy đủ 21 bảng theo mẫu ba cột trình bày ở Phụ lục B.
+Bốn bảng dưới đây mang các ràng buộc quyết định của hệ thống; phần này giải
+thích **vì sao** mỗi ràng buộc tồn tại. Danh sách cột đầy đủ của cả 21 bảng,
+theo mẫu ba cột tên cột – kiểu – mô tả và ràng buộc, trình bày ở Phụ lục B.
 
 **Bảng `users` — tài khoản người dùng**
-
-| Tên cột | Kiểu | Mô tả và ràng buộc |
-|---|---|---|
-| `id` | bigserial | Khoá chính |
-| `email` | varchar(255) | `uq_users_email` duy nhất; `ck_users_email_lower` buộc lưu chữ thường |
-| `password_hash` | varchar(72) | Băm mật khẩu theo thuật toán bcrypt |
-| `full_name` | varchar(150) | Họ tên, bắt buộc |
-| `phone` | varchar(20) | Số điện thoại, có thể rỗng |
-| `role` | varchar(20) | `ck_users_role` giới hạn hai giá trị `CUSTOMER` và `ADMIN` |
-| `enabled` | boolean | Mặc định bật; tắt để khoá tài khoản |
-| `must_change_password` | boolean | Cờ buộc đổi mật khẩu tạm ở lần đăng nhập đầu |
-| `token_version` | integer | `ck_users_token_version` không âm. Tăng khi đăng xuất hoặc đổi mật khẩu để vô hiệu hoá token cũ ngay |
-| `created_at`, `updated_at` | timestamptz | Thời điểm tạo và cập nhật |
 
 Ràng buộc `ck_users_email_lower` buộc lưu email chữ thường **ở tầng dữ liệu**
 thay vì phó mặc cho tầng ứng dụng. Chỉ cần một chỗ quên chuẩn hoá là tạo được
@@ -93,50 +81,11 @@ hai tài khoản cho cùng một hộp thư.
 
 **Bảng `bookings` — đơn đặt phòng**
 
-| Tên cột | Kiểu | Mô tả và ràng buộc |
-|---|---|---|
-| `id` | bigserial | Khoá chính |
-| `code` | varchar(20) | `uq_bookings_code` duy nhất. Mã đơn khách dùng để tra cứu |
-| `access_token` | char(32) | `uq_bookings_access_token` duy nhất. **Mã truy cập — bí mật thao tác, khác mã đơn** |
-| `user_id` | bigint | Khoá ngoại tới `users`, **rỗng với khách vãng lai** |
-| `guest_name` | varchar(150) | Họ tên khách |
-| `guest_email` | varchar(255) | Thư điện tử khách |
-| `guest_phone` | varchar(20) | Số điện thoại khách |
-| `check_in`, `check_out` | date | `ck_bookings_dates` buộc ngày trả sau ngày nhận |
-| `adults` | integer | `ck_bookings_adults` tối thiểu 1 |
-| `children` | integer | `ck_bookings_children` không âm |
-| `room_type_id` | bigint | Khoá ngoại tới `room_types` |
-| `room_type_name_snapshot` | varchar(150) | Tên loại phòng chụp tại thời điểm đặt |
-| `unit_price_snapshot` | numeric(12,2) | `ck_bookings_unit_price` lớn hơn 0. Giá chụp tại thời điểm đặt |
-| `room_quantity` | integer | `ck_bookings_room_qty` tối thiểu 1 |
-| `subtotal_amount` | numeric(12,2) | `ck_bookings_subtotal` không âm |
-| `discount_amount` | numeric(12,2) | `ck_bookings_discount` không âm |
-| `total_amount` | numeric(12,2) | `ck_bookings_total` không âm |
-| `deposit_amount` | numeric(12,2) | `ck_bookings_deposit` không âm |
-| `promotion_id` | bigint | Khoá ngoại `fk_bookings_promotion` thêm ở V5 |
-| `status` | varchar(20) | `ck_bookings_status` liệt kê **tám trạng thái** |
-| `payment_status` | varchar(20) | `ck_bookings_pay_status` liệt kê bảy trạng thái thanh toán |
-| `special_request` | text | Yêu cầu đặc biệt của khách |
-| `hold_expires_at` | timestamptz | Hạn giữ chỗ |
-| `client_ip` | inet | Địa chỉ mạng của người đặt |
-| `user_agent` | varchar(255) | Thông tin trình duyệt |
-| `cancelled_at`, `cancel_reason` | timestamptz, text | Thời điểm và lý do huỷ |
-| `created_at`, `updated_at` | timestamptz | Thời điểm tạo và cập nhật |
-
 Bốn cột kết thúc bằng `_snapshot` lưu bản sao giá trị tại thời điểm đặt. Khi
 quản trị viên đổi giá hoặc đổi tên loại phòng sau này, đơn cũ vẫn giữ nguyên số
 tiền và tên mà khách đã nhìn thấy lúc đặt.
 
 **Bảng `booking_rooms` — gán phòng vật lý cho đơn**
-
-| Tên cột | Kiểu | Mô tả và ràng buộc |
-|---|---|---|
-| `id` | bigserial | Khoá chính |
-| `booking_id` | bigint | Khoá ngoại tới `bookings`, xoá theo tầng |
-| `room_id` | bigint | Khoá ngoại tới `rooms` |
-| `check_in`, `check_out` | date | `ck_booking_rooms_dates` buộc ngày trả sau ngày nhận |
-| `stay` | daterange | **Cột sinh tự động** `GENERATED ALWAYS AS (daterange(check_in, check_out, '[)')) STORED` |
-| `status` | varchar(20) | `ck_booking_rooms_status` giới hạn `ACTIVE` và `RELEASED` |
 
 Ràng buộc quyết định của toàn hệ thống nằm trên bảng này:
 
@@ -149,17 +98,6 @@ Bảng này còn mang hai trigger ràng buộc hoãn bảo đảm số dòng `AC
 `room_quantity` trên `bookings`.
 
 **Bảng `room_closures` — khoảng ngày phòng không nhận khách**
-
-| Tên cột | Kiểu | Mô tả và ràng buộc |
-|---|---|---|
-| `id` | bigserial | Khoá chính |
-| `room_id` | bigint | Khoá ngoại tới `rooms`, xoá theo tầng |
-| `from_date` | date | Đêm đầu tiên bị chặn |
-| `to_date` | date | Ngày mở bán lại. `ck_room_closures_dates` buộc lớn hơn `from_date` |
-| `blocked` | daterange | **Cột sinh tự động** theo quy ước nửa mở, cùng quy ước với `booking_rooms.stay` |
-| `reason` | varchar(300) | Lý do đóng phòng |
-| `created_by` | bigint | Khoá ngoại tới `users`, đặt rỗng khi tài khoản bị xoá |
-| `created_at` | timestamptz | Thời điểm tạo |
 
 Ràng buộc `room_closures_no_overlap` chống hai khoảng đóng chồng nhau trên cùng
 một phòng.
@@ -297,27 +235,11 @@ khuyến mãi gọi lại đúng thành phần tính giá mà lúc tạo đơn s
 
 ### 3.4.2. Cấu trúc gói tầng máy chủ
 
-Mã nguồn tổ chức theo **tính năng**, không theo loại kỹ thuật:
-
-```
-com.tvh.homestay
-├── auth/          — đăng nhập, token, phiên làm việc
-├── user/          — người dùng
-├── room/          — loại phòng, phòng, tiện nghi, khoảng đóng
-├── availability/  — truy vấn phòng trống
-├── booking/       — đơn, máy trạng thái, gán phòng, tính giá
-├── payment/       — webhook, đối soát
-├── promotion/     — mã khuyến mãi
-├── review/        — đánh giá
-├── cms/           — thực thể nội dung trang chủ
-├── content/       — điều khiển nội dung công khai và quản trị
-├── admin/         — điều khiển và dịch vụ khu quản trị
-├── report/        — tổng quan, xuất tệp CSV
-├── storage/       — tải ảnh lên
-├── mail/          — hàng đợi thư
-├── common/        — xử lý ngoại lệ, tiện ích dùng chung
-└── demo/          — nạp dữ liệu mẫu, chỉ hoạt động ở cấu hình trình diễn
-```
+Mã nguồn tổ chức theo **tính năng**, không theo loại kỹ thuật: mười sáu gói dưới
+`com.tvh.homestay`, mỗi gói là một vùng nghiệp vụ — `auth`, `user`, `room`,
+`availability`, `booking`, `payment`, `promotion`, `review`, `cms`, `content`,
+`admin`, `report`, `storage`, `mail`, `common` và `demo`. Cây gói đầy đủ kèm chú
+thích từng gói trình bày ở Phụ lục P.
 
 Lý do chọn cách tổ chức này: gom theo loại kỹ thuật khiến một thay đổi nghiệp vụ
 nhỏ phải sửa tệp ở ba thư mục xa nhau. Gom theo tính năng thì mọi thành phần liên
@@ -377,23 +299,16 @@ Hình 3.10 thể hiện giao diện tài liệu tương tác của hệ thống 
 
 ### 3.5.3. Giới hạn tần suất
 
-Hệ thống giới hạn tần suất theo **chín khoá** khác nhau:
+Hệ thống giới hạn tần suất theo **chín khoá** khác nhau, chia ba nhóm: theo địa
+chỉ mạng (`ip:auth`, `ip:availability`, `ip:promo`, `ip:booking-create`,
+`ip:lookup`, `ip:cancel`), theo danh tính người dùng (`email:login`,
+`phone:booking`) và theo mã đơn (`code:lookup`). Hạn mức đầy đủ của từng khoá
+trình bày ở Phụ lục Q.
 
-| Khoá | Hạn mức | Áp dụng cho |
-|---|---|---|
-| `ip:auth` | 10 lần mỗi phút | Mọi endpoint xác thực |
-| `email:login` | 5 lần mỗi phút | Đăng nhập, theo thư điện tử trong thân yêu cầu |
-| `ip:availability` | 60 lần mỗi phút | Truy vấn phòng trống |
-| `ip:promo` | 20 lần mỗi phút | Kiểm tra mã khuyến mãi |
-| `ip:booking-create` | 10 lần mỗi phút | Tạo đơn |
-| `phone:booking` | 10 lần mỗi giờ | Tạo đơn, theo số điện thoại |
-| `ip:lookup` | 10 lần mỗi phút | Tra cứu đơn |
-| `code:lookup` | 5 lần mỗi giờ | Tra cứu đơn, theo mã đơn |
-| `ip:cancel` | 10 lần mỗi phút | Huỷ đơn |
-
-Khi hai khoá cùng áp cho một yêu cầu, khoá chặt hơn chặn trước. Đăng nhập sai
-liên tục cùng một thư điện tử bị chặn ở lần thứ sáu, còn đổi thư điện tử mỗi lần
-thì bị chặn ở lần thứ mười một.
+Điểm thiết kế: khi hai khoá cùng áp cho một yêu cầu, **khoá chặt hơn chặn
+trước**. Đăng nhập sai liên tục cùng một thư điện tử bị chặn ở lần thứ sáu, còn
+đổi thư điện tử mỗi lần thì bị chặn ở lần thứ mười một — hai lớp bổ sung cho
+nhau, một lớp chặn dò mật khẩu một tài khoản, lớp kia chặn quét nhiều tài khoản.
 
 ### 3.5.4. Thiết kế mã lỗi
 

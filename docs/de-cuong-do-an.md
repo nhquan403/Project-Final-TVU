@@ -24,7 +24,7 @@
 
 | Hạng mục | Quy định | Trạng thái |
 |---|---|---|
-| **Độ dài nội dung** | **30–50 trang A4.** Không kể bìa, lời cảm ơn, mục lục, tài liệu tham khảo, phụ lục | ⚠️ **đo thật: 57 trang** — phải cắt 7 trang, xem mục 5.3 |
+| **Độ dài nội dung** | **30–50 trang A4.** Không kể bìa, lời cảm ơn, mục lục, tài liệu tham khảo, phụ lục | ⚠️ **đo thật: 52 trang** (từ 66 ban đầu) — còn dư 2 trang, xem mục 5.3 |
 | Font | Times New Roman, **13pt** | Áp khi xuất Word |
 | Giãn dòng | **1.5 lines** | Áp khi xuất Word |
 | Cách đoạn | Before **6pt**, After **6pt** | Áp khi xuất Word |
@@ -271,18 +271,37 @@ tiêu chí chấm điểm tiến độ**.
 - [ ] Chạy lại ba lệnh triển khai trên máy có mạng bình thường và chụp kết quả
       *(xem giới hạn đã biết ở mục 4.6.3 của báo cáo)*
 
-### 5.3. Nếu vượt 50 trang, cắt theo thứ tự này
+### 5.3. Số trang: đã cắt những gì, còn lại gì
 
-1. Mục **2.1** — kiến trúc tách rời. Phần so sánh với kiến trúc nguyên khối có
-   thể rút còn 3 câu.
-2. Mục **3.8** — cài đặt từng chức năng. Giữ 3.8.1 (tìm phòng trống) và 3.8.2
-   (vòng thử gán phòng) vì đó là lõi; rút gọn 3.8.3 tới 3.8.6.
-3. Mục **1.2.2** — khảo sát người dùng. Ba đoạn mô tả nhóm người dùng có thể gộp
-   thành một bảng.
-4. Chuyển **bảng 12 yêu cầu phi chức năng** ở mục 1.4.2 xuống Phụ lục.
+Số đo thật, lấy bằng `scripts/xuat-ban-word.py` rồi chuyển sang PDF và đếm trang:
+**66 trang → 52 trang.** Trần quy định là 50, nên còn dư **2 trang**.
 
-**Không cắt** mục 2.4 (PostgreSQL), mục 4.3 (mười một lỗi thực tế) và mục 4.7 (bảy
-giới hạn đã biết). Ba mục này là phần làm điểm cao nhất.
+**Đã làm — không mất một câu chữ nào:**
+
+| Việc | Tiết kiệm |
+|---|---|
+| Chỉnh cách trình bày: bỏ đoạn trống thừa sau mỗi bảng, ô bảng sát hơn, giới hạn chiều cao hình ở 10cm, tiêu đề dính với đoạn sau | 9 trang |
+| Chuyển đặc tả **UC1, UC2** xuống Phụ lục A — phụ lục giờ đủ cả 11 use case | 2 trang |
+| Chuyển **danh sách cột của bốn bảng cốt lõi** xuống Phụ lục B — phụ lục giờ đủ cả 21 bảng. Phần giải thích *vì sao* từng ràng buộc tồn tại vẫn ở Chương 3 | 2 trang |
+| Chuyển **bảng 12 yêu cầu phi chức năng** xuống Phụ lục O, **cây gói** xuống Phụ lục P, **bảng 9 khoá giới hạn tần suất** xuống Phụ lục Q | 1 trang |
+
+**Đã làm — có sửa câu chữ:**
+
+- Mục **2.1**: gộp hai đoạn so sánh kiến trúc nguyên khối thành một.
+- Mục **1.2.2**: ba đoạn mô tả nhóm người dùng gộp thành một bảng ba cột.
+- Mục **3.8.3** và **3.8.4**: rút gọn phần mở đầu.
+
+**Nếu thầy hướng dẫn yêu cầu đúng 50 trang, cắt tiếp theo thứ tự này:**
+
+1. Chuyển **bảng endpoint theo nhóm** ở mục 3.5.2 xuống Phụ lục E (đã có bảng
+   đầy đủ ở đó) — khoảng nửa trang.
+2. Rút mục **3.8.5** còn một đoạn, chuyển hai trong bốn ảnh khu quản trị
+   (Hình 3.17, 3.18) xuống phụ lục — khoảng một trang.
+3. Chuyển **bảng 32 yêu cầu chức năng** ở mục 1.4.1 xuống Phụ lục K (đã có bảng
+   đầy đủ ở đó) — khoảng nửa trang.
+
+**Không cắt** mục 2.4 (PostgreSQL), mục 4.3 (mười một lỗi thực tế) và mục 4.7
+(bảy giới hạn đã biết). Ba mục này là phần làm điểm cao nhất.
 
 ---
 
@@ -335,8 +354,8 @@ docs/
 │   ├── 05-chuong-4.md         ← CHƯƠNG 4. KẾT QUẢ NGHIÊN CỨU
 │   ├── 06-chuong-5.md         ← CHƯƠNG 5. KẾT LUẬN VÀ HƯỚNG PHÁT TRIỂN
 │   ├── 07-tai-lieu-tham-khao.md   ← IEEE, 14 mục
-│   ├── 08a-phu-luc-dac-ta.md  ← Phụ lục A–B: 9 use case, 17 bảng
-│   └── 08b-phu-luc-ky-thuat.md← Phụ lục C–N: mã nguồn, bảng tra cứu
+│   ├── 08a-phu-luc-dac-ta.md  ← Phụ lục A–B: 11 use case, 21 bảng
+│   └── 08b-phu-luc-ky-thuat.md← Phụ lục C–O: mã nguồn, bảng tra cứu
 └── (12 tài liệu kỹ thuật khác — nguồn số liệu và mã Mermaid)
 
 progress-report/               ← [bắt buộc] báo cáo tiến độ hàng tuần

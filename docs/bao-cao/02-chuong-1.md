@@ -62,17 +62,11 @@ tiền cọc làm bằng mắt trên sao kê. Xác nhận không để lại b�
 
 Đề tài xác định **ba nhóm người dùng** với nhu cầu khác hẳn nhau.
 
-**Khách vãng lai — chiếm đa số.** Họ muốn xem phòng, biết giá, và đặt được
-phòng. Họ không muốn tạo tài khoản. Việc bắt buộc đăng ký trước khi đặt là chỗ
-mất khách nhiều nhất của một trang đặt phòng. Đây là một quyết định thiết kế
-quan trọng của đồ án: tài khoản là **tuỳ chọn**, không phải điều kiện.
-
-**Khách có tài khoản.** Thực hiện được mọi thao tác của khách vãng lai, cộng
-thêm việc xem lại toàn bộ đơn đã đặt ở một nơi.
-
-**Quản trị viên — chủ homestay và nhân viên.** Cần nhìn thấy toàn bộ đơn, xử lý
-tiền, và cập nhật thông tin phòng. Họ sử dụng hệ thống hằng ngày nên màn hình
-quản trị ưu tiên mật độ thông tin cao hơn là tính thẩm mỹ.
+| Nhóm | Cần gì | Hệ quả thiết kế |
+|---|---|---|
+| **Khách vãng lai** — chiếm đa số | Xem phòng, biết giá, đặt được phòng; không muốn tạo tài khoản | Tài khoản là **tuỳ chọn**, không phải điều kiện. Bắt đăng ký trước khi đặt là chỗ mất khách nhiều nhất của một trang đặt phòng |
+| **Khách có tài khoản** | Mọi thao tác của khách vãng lai, thêm việc xem lại toàn bộ đơn ở một nơi | Một màn hình danh sách đơn của riêng tài khoản |
+| **Quản trị viên** — chủ homestay và nhân viên | Nhìn thấy toàn bộ đơn, xử lý tiền, cập nhật thông tin phòng; dùng hằng ngày | Khu quản trị ưu tiên **mật độ thông tin** cao hơn tính thẩm mỹ |
 
 ## 1.3. Khảo sát các hệ thống tương tự
 
@@ -130,20 +124,13 @@ Danh sách chi tiết từng yêu cầu trình bày ở Phụ lục K.
 
 ### 1.4.2. Yêu cầu phi chức năng
 
-| Mã | Loại | Yêu cầu | Cách kiểm chứng |
-|---|---|---|---|
-| PCN-01 | Toàn vẹn | Không bao giờ bán trùng một phòng, kể cả khi có tranh chấp | Kiểm thử đa luồng thật |
-| PCN-02 | Toàn vẹn | Số phòng đã gán luôn khớp số phòng đơn yêu cầu | Trigger hoãn ở cơ sở dữ liệu |
-| PCN-03 | Toàn vẹn | Không nhánh nào để tiền biến mất im lặng | Kiểm thử cửa sổ tranh chấp webhook |
-| PCN-04 | Bảo mật | Mặc định từ chối mọi endpoint chưa khai quyền | Kiểm thử ma trận 30 tiền tố |
-| PCN-05 | Bảo mật | Chống dò mật khẩu và spam đặt phòng | Giới hạn tần suất theo 9 khoá |
-| PCN-06 | Bảo mật | Không có bí mật nào nằm trong mã nguồn | Ứng dụng dừng khởi động khi thiếu biến |
-| PCN-07 | Khả dụng | Giao diện sử dụng được trên điện thoại | Kiểm ở 3 độ rộng màn hình |
-| PCN-08 | Khả dụng | Đạt chuẩn WCAG 2.1 mức A và AA [13] | Quét tự động |
-| PCN-09 | Khả dụng | Mọi vùng chạm tối thiểu 44×44 điểm ảnh | Đo tự động |
-| PCN-10 | Hiệu năng | Lịch cả kỳ lấy trong một truy vấn, không lặp từng đêm | Đọc mã truy vấn |
-| PCN-11 | Triển khai | Ba lệnh từ lúc sao chép mã nguồn tới lúc chạy | Thực nghiệm |
-| PCN-12 | Bảo trì | Lược đồ do công cụ migration quản lý, migration bất biến | Kiểm thử checksum |
+Mười hai yêu cầu phi chức năng chia theo năm loại: **toàn vẹn** ba yêu cầu,
+**bảo mật** ba, **khả dụng** ba, **hiệu năng** một, **triển khai** một và
+**bảo trì** một. Mỗi yêu cầu đi kèm một cách kiểm chứng cụ thể chứ không phải
+một lời hứa — ví dụ "không bao giờ bán trùng một phòng" được kiểm bằng ca kiểm
+thử đa luồng thật, "mặc định từ chối mọi endpoint chưa khai quyền" được kiểm
+bằng ma trận ba mươi tiền tố đường dẫn. Bảng đầy đủ mười hai yêu cầu kèm cách
+kiểm chứng trình bày ở Phụ lục O.
 
 ## 1.5. Phạm vi và giới hạn của hệ thống
 
