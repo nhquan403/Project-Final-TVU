@@ -20,7 +20,7 @@ dạng Markdown, tách theo chương. Xem `docs/bao-cao/README.md` để biết 
 ghép tệp và quy định định dạng phải áp dụng khi xuất Word.
 
 Hướng dẫn thi công đầy đủ — danh sách hình cần chuẩn bị, việc còn lại trước khi
-nộp — ở **`docs/de-cuong-do-an.md`**.
+nộp — ở **`docs/huong-dan-lam-bao-cao.md`**.
 
 ## Quy ước đặt tên tệp tham khảo
 

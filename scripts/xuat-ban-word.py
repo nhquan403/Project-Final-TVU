@@ -9,7 +9,8 @@ from docx.enum.section import WD_SECTION
 from docx.oxml.ns import qn
 from docx.oxml import OxmlElement
 
-DOCS = '/home/user/Project-Final-TVU/docs/bao-cao'
+ROOT = '/home/user/Project-Final-TVU'
+DOCS = os.path.join(ROOT, 'docs', 'bao-cao')
 IMGS = '/home/user/Project-Final-TVU/docs/images/bao-cao'
 
 # ── kich thuoc PNG doc truc tiep tu IHDR, khong can thu vien anh ──────────────
@@ -273,10 +274,16 @@ if __name__ == '__main__':
     # '00-phan-dau.md' KHONG xuat ra Word: tep do la ban dac ta cach trinh bay
     # cac trang bia theo BM5 (kem chu thich co chu, kieu chu), phai dung tay
     # trong Word theo dung bieu mau chu khong phai chep sang.
-    files = {'noi-dung': CONTENT, 'phu-luc': SAU, 'day-du': CONTENT + SAU}[which]
+    # Che do thu tu: mot duong dan tep Markdown bat ky, de xuat de cuong hoac
+    # bat cu tai lieu nao khac theo cung mot dinh dang.
+    if which.endswith('.md'):
+        files = [which if os.path.isabs(which) else os.path.join(ROOT, which)]
+    else:
+        files = {'noi-dung': CONTENT, 'phu-luc': SAU, 'day-du': CONTENT + SAU}[which]
     doc, w = new_doc(gvhd, svth)
     for n, f in enumerate(files):
-        render_markdown(doc, os.path.join(DOCS, f), w, first_chapter_break=(n > 0))
+        path = f if os.path.isabs(f) else os.path.join(DOCS, f)
+        render_markdown(doc, path, w, first_chapter_break=(n > 0))
     doc.save(out)
     print(f'  -> {out}  ({len(files)} tệp, {os.path.getsize(out)/1024:.0f} KB)')
     print(f'  hình có chú thích: {len(CAPTIONS)}/{len(FIGS)}')

@@ -13,7 +13,7 @@ repo: nhquan403/Project-Final-TVU
 
 ## Bối cảnh
 
-Hệ thống đã xong 10 phase. `docs/de-cuong-do-an.md` (2086 dòng) đã có **nội
+Hệ thống đã xong 10 phase. `docs/huong-dan-lam-bao-cao.md` (2086 dòng) đã có **nội
 dung** đủ cho cả 5 chương, nhưng đó là đề cương chứ chưa phải quyển báo cáo:
 nhiều mục mới có khung và ví dụ mẫu, chưa viết đủ; chưa có hình; chưa định dạng.
 
@@ -334,7 +334,7 @@ chỉ việc đổ nội dung vào.
 ## Phase 8 — 28 hình ảnh {#phase-8}
 
 **Chạy song song với Phase 2–7.** Danh sách đầy đủ 28 hình, kèm mô tả từng hình
-phải thể hiện điều gì và lấy ở đâu, nằm ở **mục 3 của `docs/de-cuong-do-an.md`**.
+phải thể hiện điều gì và lấy ở đâu, nằm ở **mục 3 của `docs/huong-dan-lam-bao-cao.md`**.
 
 ⚠️ Quy định TVU bắt buộc **mỗi hình và mỗi bảng phải có chú thích nêu rõ nguồn
 trích hoặc sao chụp**. Đây là yêu cầu tường minh, không phải tuỳ chọn.

@@ -29,8 +29,12 @@ quản trị cho chủ homestay, và REST API.
 | `setup/` | Hướng dẫn cài đặt và dữ liệu thử |
 | `plans/` | Kế hoạch triển khai theo giai đoạn |
 
+**Đề cương đồ án** nộp cho giảng viên hướng dẫn — tên đề tài, lý do chọn, mục
+tiêu và câu hỏi nghiên cứu, đối tượng và phạm vi, phương pháp, dàn ý dự kiến,
+tiến độ theo tuần: [`docs/de-cuong-do-an.md`](docs/de-cuong-do-an.md).
+
 Hướng dẫn thi công quyển báo cáo — danh sách hình cần chuẩn bị, việc còn lại
-trước khi nộp: [`docs/de-cuong-do-an.md`](docs/de-cuong-do-an.md).
+trước khi nộp: [`docs/huong-dan-lam-bao-cao.md`](docs/huong-dan-lam-bao-cao.md).
 
 Điểm kỹ thuật cốt lõi: **chống đặt trùng phòng khoá ở tầng cơ sở dữ liệu** bằng
 `EXCLUDE USING gist` trên kiểu `daterange` của PostgreSQL, không phụ thuộc kiểm
