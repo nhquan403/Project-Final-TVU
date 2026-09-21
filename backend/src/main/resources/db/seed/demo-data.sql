@@ -566,12 +566,15 @@ SELECT r.id, CURRENT_DATE + 40, CURRENT_DATE + 45, 'Sơn lại phòng và thay r
 -- ─── Một cuối tuần CHÁY PHÒNG để lịch có ngày bị chặn ───────────────────────
 -- Không có ngày nào hết phòng thì tính năng quan trọng nhất của đề tài — chặn
 -- sẵn ngày hết phòng ngay trong lịch — không nhìn thấy được lúc trình diễn.
--- Bốn mươi đơn rải đều 195 ngày gần như không bao giờ dồn đủ để kín một loại
--- phòng, nên phải dựng có chủ ý.
+-- Bốn mươi đơn rải đều 195 ngày gần như không bao giờ dồn đủ để kín cả nhà,
+-- nên phải dựng có chủ ý.
 --
--- Chọn loại phòng ÍT PHÒNG NHẤT: kín 3 phòng thì rẻ hơn kín 5, và vẫn chứng
--- minh đúng điều cần chứng minh. Đặt ở +12..+14 ngày: đủ gần để mở lịch mặc
--- định là thấy ngay, đủ xa để không đụng khoảng hội đồng hay thử đặt.
+-- Phải kín MỌI loại phòng, không phải một loại. Lịch ở bước 1 của luồng đặt
+-- phòng chạy TRƯỚC khi khách chọn loại phòng nên nó gộp cả nhà lại: một ngày
+-- chỉ bị chặn khi mọi loại phòng đều hết. Kín một loại thôi thì ngày đó vẫn
+-- bấm chọn được, và phần trình diễn không chứng minh được điều nó định chứng
+-- minh. Đặt ở +12..+14 ngày: đủ gần để mở lịch mặc định là thấy ngay, đủ xa để
+-- không đụng khoảng hội đồng hay thử đặt.
 DO $chay_phong$
 DECLARE
     v_type       record;
@@ -582,25 +585,20 @@ DECLARE
     v_code       varchar(20);
     v_booking_id bigint;
     v_total      numeric(12,2);
-    v_names      text[] := ARRAY['Lý Gia Bảo', 'Trương Mỹ Duyên', 'Phan Đức Trí'];
+    v_names      text[] := ARRAY[
+        'Lý Gia Bảo', 'Trương Mỹ Duyên', 'Phan Đức Trí', 'Hồ Nhật Minh',
+        'Vũ Khánh Linh', 'Đỗ Trung Kiên', 'Cao Thuỳ Trang', 'Mai Văn Lộc',
+        'Tạ Bích Ngọc', 'Chu Anh Khoa', 'Lâm Tuyết Nhi', 'Đinh Hữu Phước',
+        'Quách Diễm My', 'Tô Gia Hân'];
 BEGIN
     -- Đã dựng rồi thì thôi: seeder chạy lại mỗi lần container khởi động.
     IF EXISTS (SELECT 1 FROM bookings WHERE code LIKE 'TVHFULL%') THEN
         RETURN;
     END IF;
 
-    SELECT rt.* INTO v_type
-      FROM room_types rt
-      JOIN rooms r ON r.room_type_id = rt.id AND r.status = 'AVAILABLE'
-     WHERE rt.active
-     GROUP BY rt.id
-     ORDER BY count(r.id), rt.id
-     LIMIT 1;
-
     FOR v_room IN
         SELECT r.* FROM rooms r
-         WHERE r.room_type_id = v_type.id
-           AND r.status = 'AVAILABLE'
+         WHERE r.status = 'AVAILABLE'
            -- Phòng nào đã bận trong khoảng này thì bỏ qua: ràng buộc loại trừ
            -- sẽ bác, và bác ở đây nghĩa là cả ứng dụng không khởi động được.
            AND NOT EXISTS (
@@ -613,6 +611,7 @@ BEGIN
                   AND rc.blocked && daterange(v_in, v_out, '[)'))
          ORDER BY r.room_number
     LOOP
+        SELECT * INTO v_type FROM room_types WHERE id = v_room.room_type_id;
         v_i := v_i + 1;
         v_code := 'TVHFULL' || lpad(v_i::text, 2, '0');
         v_total := v_type.base_price * 2;
@@ -625,7 +624,8 @@ BEGIN
             status, payment_status, hold_expires_at, created_at, updated_at)
         VALUES (
             v_code, md5(v_code || 'tvh-demo-seed'), NULL,
-            v_names[v_i], 'khach.cuoituan' || v_i || '@example.com',
+            v_names[1 + ((v_i - 1) % array_length(v_names, 1))],
+            'khach.cuoituan' || v_i || '@example.com',
             '09' || lpad((10000000 + v_i * 37)::text, 8, '0'),
             v_in, v_out, LEAST(v_type.capacity_adults, 2), 0, v_type.id,
             v_type.name, v_type.base_price, 1,
@@ -746,12 +746,12 @@ SELECT b.id, 'booking-confirmed', b.guest_email,
            'depositAmount', to_char(b.deposit_amount, 'FM999G999G999') || ' đ',
            'remainingAmount', to_char(greatest(b.total_amount - b.deposit_amount, 0), 'FM999G999G999') || ' đ'),
        -- Một đơn duy nhất mang trạng thái FAILED, chọn theo mã đơn cho ổn định.
-       CASE WHEN b.code = 'TVHFULL03' THEN 'FAILED' ELSE 'SENT' END,
-       CASE WHEN b.code = 'TVHFULL03' THEN 5 ELSE 1 END,
-       CASE WHEN b.code = 'TVHFULL03'
+       CASE WHEN b.code = 'TVHFULL01' THEN 'FAILED' ELSE 'SENT' END,
+       CASE WHEN b.code = 'TVHFULL01' THEN 5 ELSE 1 END,
+       CASE WHEN b.code = 'TVHFULL01'
             THEN 'Máy chủ thư trả về 550: hộp thư người nhận không tồn tại'
             ELSE NULL END,
-       CASE WHEN b.code = 'TVHFULL03' THEN NULL
+       CASE WHEN b.code = 'TVHFULL01' THEN NULL
             ELSE b.updated_at + interval '2 minutes' END,
        b.updated_at
   FROM bookings b

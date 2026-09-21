@@ -26,3 +26,10 @@ uploads/
 # Hệ điều hành
 .DS_Store
 Thumbs.db
+
+# Mat khau quan tri sinh ra khi quay video trinh dien. Khong bao gio commit.
+.demo-new-pw
+thesis/abs/.demo-new-pw
+# Ban webm goc cua video trinh dien: dung lai duoc tu scripts/quay-demo.mjs,
+# va da co ban .mp4 nho hon mot phan nam trong repo.
+thesis/abs/*.webm
