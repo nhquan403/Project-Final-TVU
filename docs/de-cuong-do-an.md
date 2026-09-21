@@ -264,8 +264,9 @@ tiêu chí chấm điểm tiến độ**.
 
 ### 5.2. Nên làm — cộng điểm
 
-- [ ] **Poster 90cm × 60cm, hướng đứng** → cộng tối đa **1 điểm**, và được tham
-      gia buổi showcase. Nộp cùng quyển báo cáo
+- [x] **Poster 90cm × 60cm, hướng đứng** → cộng tối đa **1 điểm**, và được tham
+      gia buổi showcase. Đã dựng ở `thesis/abs/poster.pdf`, đúng kích thước vật
+      lý — còn phải điền tên và **đem đi in**
 - [x] Slide báo cáo, đặt vào `thesis/abs/` — **20 slide**, kèm kịch bản nói cho
       từng slide ở `docs/kich-ban-bao-ve.md`. Còn phải điền thông tin sinh viên
       ở slide bìa và tập bấm giờ cho đúng 10–12 phút
