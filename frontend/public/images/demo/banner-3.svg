@@ -1,6 +1,12 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" width="960" height="360" role="img" aria-label="Ưu đãi Tết đã kết thúc">
-<rect width="960" height="360" fill="#8C8071"/>
-<circle cx="825" cy="79" r="150" fill="#FFFFFF" opacity="0.10"/>
-<circle cx="96" cy="324" r="110" fill="#FFFFFF" opacity="0.08"/>
-<text x="56" y="180" font-family="system-ui,-apple-system,sans-serif" font-size="40" font-weight="700" fill="#FFFFFF">Ưu đãi Tết đã kết thúc</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" width="960" height="360" role="img" aria-label="Ảnh minh hoạ ưu đãi Tết đã kết thúc">
+<rect width="960" height="360" fill="#7A8E9D"/>
+<g fill="#FFFFFF" opacity="0.12">
+  <circle cx="838" cy="70" r="168"/>
+  <circle cx="96" cy="330" r="124"/>
+</g>
+<g stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" opacity="0.30">
+  <line x1="56" y1="126" x2="212" y2="126"/>
+  <line x1="56" y1="180" x2="332" y2="180"/>
+  <line x1="56" y1="234" x2="164" y2="234"/>
+</g>
 </svg>

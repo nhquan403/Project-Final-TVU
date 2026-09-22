@@ -1,10 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Đường vào homestay">
-<rect width="800" height="600" fill="#F2EEE8"/>
-<rect y="348" width="800" height="252" fill="#0F5C4C"/>
-<polygon points="320,348 480,348 800,600 0,600" fill="#B03A0B"/>
-<rect x="104" y="216" width="16" height="144" fill="#8C8071"/>
-<circle cx="112" cy="192" r="70" fill="#0F5C4C"/>
-<rect x="680" y="216" width="16" height="144" fill="#8C8071"/>
-<circle cx="688" cy="192" r="70" fill="#0F5C4C"/>
-<text x="400" y="582" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-size="16" fill="#1C1917">Đường vào homestay</text>
+<rect width="800" height="600" fill="#E8F2F9"/>
+<rect y="348" width="800" height="252" fill="#0A6C9E"/>
+<polygon points="320,348 480,348 800,600 0,600" fill="#C2410C"/>
+<rect x="104" y="216" width="16" height="144" fill="#7A8E9D"/>
+<circle cx="112" cy="192" r="70" fill="#0A6C9E"/>
+<rect x="680" y="216" width="16" height="144" fill="#7A8E9D"/>
+<circle cx="688" cy="192" r="70" fill="#0A6C9E"/>
 </svg>

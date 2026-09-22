@@ -1,11 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Vườn xoài">
-<rect width="800" height="600" fill="#F2EEE8"/>
-<rect y="348" width="800" height="252" fill="#0F5C4C"/>
-<rect x="184" y="240" width="16" height="132" fill="#8C8071"/>
-<circle cx="192" cy="216" r="96" fill="#0F5C4C" opacity="0.85"/>
-<rect x="360" y="240" width="16" height="132" fill="#8C8071"/>
-<circle cx="368" cy="216" r="68" fill="#0F5C4C" opacity="0.85"/>
-<rect x="552" y="240" width="16" height="132" fill="#8C8071"/>
-<circle cx="560" cy="216" r="84" fill="#0F5C4C" opacity="0.85"/>
-<text x="400" y="582" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-size="16" fill="#1C1917">Vườn xoài</text>
+<rect width="800" height="600" fill="#E8F2F9"/>
+<rect y="348" width="800" height="252" fill="#0A6C9E"/>
+<rect x="184" y="240" width="16" height="132" fill="#7A8E9D"/>
+<circle cx="192" cy="216" r="96" fill="#0A6C9E" opacity="0.85"/>
+<rect x="360" y="240" width="16" height="132" fill="#7A8E9D"/>
+<circle cx="368" cy="216" r="68" fill="#0A6C9E" opacity="0.85"/>
+<rect x="552" y="240" width="16" height="132" fill="#7A8E9D"/>
+<circle cx="560" cy="216" r="84" fill="#0A6C9E" opacity="0.85"/>
 </svg>

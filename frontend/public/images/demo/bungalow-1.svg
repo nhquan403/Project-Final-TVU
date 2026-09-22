@@ -1,11 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Bungalow ven sông">
-<rect width="800" height="600" fill="#0F5C4C"/>
-<rect y="348" width="800" height="252" fill="#0B4B3E"/>
-<rect x="0" y="396" width="800" height="6" fill="#FFFFFF" opacity="0.45"/>
-<rect x="40" y="444" width="800" height="6" fill="#FFFFFF" opacity="0.45"/>
-<rect x="0" y="491" width="800" height="6" fill="#FFFFFF" opacity="0.45"/>
-<rect x="40" y="540" width="800" height="6" fill="#FFFFFF" opacity="0.45"/>
-<rect x="463" y="204" width="240" height="144" fill="#8C8071"/>
-<polygon points="440,204 584,108 728,204" fill="#0B4B3E"/>
-<text x="400" y="582" text-anchor="middle" font-family="system-ui,-apple-system,sans-serif" font-size="16" fill="#1C1917">Bungalow ven sông</text>
+<!--
+  Bốn loại phòng nằm cạnh nhau trên cùng một lưới thẻ ở /phong và trang chủ.
+  Ảnh này trước đây là tấm DUY NHẤT có nền kín màu đậm, nên trong lưới nó trông
+  như một thẻ bị lỗi chứ không phải một loại phòng khác. Nền sáng, dải nước dồn
+  xuống đáy — giống ba tấm còn lại.
+-->
+<rect width="800" height="600" fill="#E8F2F9"/>
+<rect y="432" width="800" height="168" fill="#0A6C9E"/>
+<polygon points="380,240 540,132 700,240" fill="#075474"/>
+<rect x="404" y="240" width="272" height="144" fill="#FFFFFF"/>
+<rect x="404" y="240" width="272" height="144" fill="none" stroke="#7A8E9D" stroke-width="5"/>
+<rect x="440" y="276" width="76" height="72" fill="#E8F2F9"/>
+<rect x="564" y="276" width="76" height="72" fill="#E8F2F9"/>
+<rect x="420" y="384" width="16" height="52" fill="#075474"/>
+<rect x="644" y="384" width="16" height="52" fill="#075474"/>
+<g fill="#075474">
+  <path d="M170 436c-10-84 2-154 30-214l20 10c-22 58-32 124-24 204z"/>
+  <ellipse cx="222" cy="226" rx="74" ry="17" transform="rotate(-24 222 226)"/>
+  <ellipse cx="222" cy="226" rx="74" ry="17" transform="rotate(24 222 226)"/>
+  <ellipse cx="222" cy="226" rx="68" ry="16" transform="rotate(-68 222 226)"/>
+  <ellipse cx="222" cy="226" rx="68" ry="16" transform="rotate(68 222 226)"/>
+</g>
+<g stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity="0.30">
+  <line x1="60" y1="480" x2="300" y2="480"/>
+  <line x1="480" y1="516" x2="740" y2="516"/>
+  <line x1="150" y1="556" x2="560" y2="556"/>
+</g>
 </svg>

@@ -81,13 +81,20 @@ import { SearchBar } from './search-bar';
           </p>
         }
 
-        <div class="mx-auto mt-8 max-w-3xl text-left">
+        <div class="mx-auto mt-8 max-w-5xl text-left">
           <app-search-bar />
         </div>
       </div>
     </section>
 
-    <!-- KHUYẾN MÃI ĐANG CHẠY -->
+    <!--
+      KHUYẾN MÃI ĐANG CHẠY
+
+      Thuộc tính alt để rỗng là có chủ đích, không phải quên: tiêu đề đã hiện
+      thành chữ thật ngay dưới ảnh. Đặt tiêu đề vào alt nữa thì trình đọc màn
+      hình đọc hai lần cùng một câu. Ảnh ở đây đi kèm chú thích nhìn thấy
+      được, nên nó là ảnh trang trí.
+    -->
     @if (content()?.banners?.length) {
       <section class="mx-auto max-w-6xl px-4 py-8" aria-labelledby="tieu-de-khuyen-mai">
         <h2 id="tieu-de-khuyen-mai" class="text-h2 font-bold text-text">Ưu đãi đang có</h2>
@@ -98,7 +105,7 @@ import { SearchBar } from './search-bar';
                 <a [href]="banner.linkUrl" class="block">
                   <img
                     [src]="banner.imageUrl"
-                    [alt]="banner.title"
+                    alt=""
                     width="960"
                     height="360"
                     loading="lazy"
@@ -108,7 +115,7 @@ import { SearchBar } from './search-bar';
               } @else {
                 <img
                   [src]="banner.imageUrl"
-                  [alt]="banner.title"
+                  alt=""
                   width="960"
                   height="360"
                   loading="lazy"

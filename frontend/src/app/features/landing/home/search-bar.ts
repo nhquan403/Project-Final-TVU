@@ -29,7 +29,7 @@ const CALENDAR_DAYS = 120;
       (submit)="submit($event)"
       (focusin)="focused.emit(true)"
       (focusout)="focused.emit(false)">
-      <div class="grid gap-3 md:grid-cols-[2fr_1fr_1fr_auto]">
+      <div class="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto_auto_auto] md:items-end">
         <ui-date-range-picker
           [availability]="calendar()"
           [loading]="loadingCalendar()"

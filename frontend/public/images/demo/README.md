@@ -15,6 +15,15 @@ sinh ra để chặn mã màu lọt vào *mã giao diện*, nơi mọi màu ph�
 Tài nguyên tĩnh là chuyện khác: một tệp SVG không có cách nào đọc biến CSS của
 trang khi nó được nạp qua thẻ `<img>`.
 
+**Không vẽ chữ vào những tệp này.** Tên loại phòng, chú thích thư viện ảnh và
+tiêu đề khuyến mãi đều đã hiện thành chữ THẬT ngay cạnh ảnh trong giao diện.
+Vẽ thêm vào ảnh là in cùng một câu hai lần, và chữ trong SVG không phóng to
+theo thiết lập cỡ chữ của người dùng.
+
+**Nền sáng, không nền kín màu đậm.** Bốn ảnh loại phòng nằm cạnh nhau trên cùng
+một lưới thẻ; một tấm nền đậm giữa ba tấm nền sáng trông như thẻ bị lỗi chứ
+không phải một loại phòng khác.
+
 **Thay bằng ảnh thật:** chép ảnh chụp vào đây với đúng tên tệp cũ, hoặc đổi
 đường dẫn trong `backend/src/main/resources/db/seed/demo-data.sql`. Không cần
 sửa một dòng mã nào.

@@ -21,33 +21,41 @@
   --color-*: initial;
 
   /* --- Nền và bề mặt ---------------------------------------------------- */
-  --color-bg: #FBF9F6;         /* nền trang, giấy ấm */
+  /* Nền trang gần trắng, ngả xanh rất nhẹ. Nền phụ là sắc nhạt của chính màu
+     thương hiệu chứ không phải một màu trung tính riêng: nhờ vậy dải hero và
+     hàng bảng xen kẽ đọc ra là "một mảng của cùng hệ màu", không phải một
+     mảng xám dính vào trang. */
+  --color-bg: #F6FAFD;         /* nền trang */
   --color-surface: #FFFFFF;    /* thẻ, modal, bảng */
-  --color-surface-2: #F2EEE8;  /* nền phụ, hàng bảng xen kẽ */
+  --color-surface-2: #E8F2F9;  /* nền phụ, hàng bảng xen kẽ, dải hero */
 
   /* --- Chữ -------------------------------------------------------------- */
-  --color-text: #1C1917;       /* 16.64:1 trên bg · 17.49:1 trên surface */
-  --color-text-muted: #6B625A; /*  5.68:1 trên bg ·  5.97:1 trên surface */
+  --color-text: #15212B;       /* 15.58:1 trên bg · 16.35:1 trên surface · 14.40:1 trên surface-2 */
+  --color-text-muted: #5A6B7A; /*  5.24:1 trên bg ·  5.50:1 trên surface ·  4.84:1 trên surface-2 */
   --color-text-invert: #FFFFFF;
 
   /* --- Thương hiệu và hành động ----------------------------------------- */
-  --color-primary: #0F5C4C;       /* 7.53:1 trên bg; chữ trắng trên nó 7.91:1 */
-  --color-primary-hover: #0B4B3E; /* chữ trắng trên nó 10.05:1 */
-  --color-price: #B03A0B;         /* 5.78:1 trên bg · 6.08:1 trên surface */
+  /* Màu thương hiệu buộc phải đủ tối, vì nó là NỀN của nút chính và chữ trên
+     nút là màu trắng. Đó là trần trên của độ sáng, không phải lựa chọn thẩm
+     mỹ: sáng hơn nữa thì chữ trắng tụt xuống dưới 4.5:1. */
+  --color-primary: #0A6C9E;       /* 5.48:1 trên bg · 5.75:1 trên surface; chữ trắng trên nó 5.75:1 */
+  --color-primary-hover: #075474; /* chữ trắng trên nó 8.30:1 */
+  --color-price: #C2410C;         /* 4.93:1 trên bg · 5.18:1 trên surface */
 
   /* --- Trạng thái ------------------------------------------------------- */
-  --color-success: #15803D;    /* 4.77:1 trên bg */
-  --color-warning: #9A5B08;    /* 5.16:1 trên bg */
-  --color-danger: #B91C1C;     /* 6.16:1 trên bg; chữ trắng trên nó 6.47:1 */
-  --color-focus: #1D4ED8;      /* 6.38:1 trên bg */
+  --color-success: #15803D;    /* 4.78:1 trên bg */
+  --color-warning: #9A5B08;    /* 5.17:1 trên bg */
+  --color-danger: #C02626;     /* 5.64:1 trên bg; chữ trắng trên nó 5.92:1 */
+  --color-focus: #1D4ED8;      /* 6.39:1 trên bg · 6.70:1 trên surface */
 
   /* --- Viền: HAI token, có chủ đích ------------------------------------- */
-  /* Vạch phân cách trang trí. 1.31:1 — không đạt và không cần đạt 3:1, vì
-     nó không phải ranh giới của thành phần tương tác. */
-  --color-border: #E2DBD1;
-  /* Viền ô nhập và nút. 3.67:1 — đạt WCAG 1.4.11. Dùng --color-border ở đây
-     sẽ khiến ô nhập biến mất với người thị lực kém. */
-  --color-border-strong: #8C8071;
+  /* Vạch phân cách trang trí. 1.24:1 trên bg — không đạt và không cần đạt
+     3:1, vì nó không phải ranh giới của thành phần tương tác. */
+  --color-border: #D6E4EE;
+  /* Viền ô nhập và nút. 3.40:1 trên surface · 3.24:1 trên bg — đạt WCAG
+     1.4.11. Dùng --color-border ở đây sẽ khiến ô nhập biến mất với người thị
+     lực kém. */
+  --color-border-strong: #7A8E9D;
 
   /* --- Khoảng cách: thang bội số của 4px --------------------------------- */
   /* Tailwind tính p-4 = calc(var(--spacing) * 4) = 16px. */
@@ -59,9 +67,9 @@
   --radius-lg: 12px;
 
   /* --- Đổ bóng: ba mức, không hơn --------------------------------------- */
-  --shadow-1: 0 1px 2px rgb(28 25 23 / 0.06);
-  --shadow-2: 0 4px 12px rgb(28 25 23 / 0.10);
-  --shadow-3: 0 12px 32px rgb(28 25 23 / 0.16);
+  --shadow-1: 0 1px 2px rgb(21 33 43 / 0.06);
+  --shadow-2: 0 4px 12px rgb(21 33 43 / 0.10);
+  --shadow-3: 0 12px 32px rgb(21 33 43 / 0.16);
 
   /* --- Chữ: co giãn theo màn hình bằng clamp() -------------------------- */
   --text-display: clamp(2rem, 1.4rem + 2.6vw, 2.75rem);  /* 32 → 44px */
