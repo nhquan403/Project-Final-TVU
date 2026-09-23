@@ -3,7 +3,8 @@
 import re, os, sys, struct
 from docx import Document
 from docx.shared import Pt, Cm, RGBColor
-from docx.enum.text import WD_ALIGN_PARAGRAPH, WD_LINE_SPACING, WD_BREAK
+from docx.enum.text import (WD_ALIGN_PARAGRAPH, WD_LINE_SPACING, WD_BREAK,
+                            WD_TAB_ALIGNMENT, WD_TAB_LEADER)
 from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.enum.section import WD_SECTION
 from docx.oxml.ns import qn
@@ -195,7 +196,36 @@ def add_figure(doc, num, width_cm):
     set_font(cap.add_run(f'Hình {num}'), 12, bold=True)
     set_font(cap.add_run(f' — {desc} ({nguon})' if desc else f' ({nguon})'), 12, italic=True)
 
+def add_muc_luc(doc, rows):
+    """Muc luc kieu tai lieu in: ten muc — dau cham noi — so trang.
+
+    Ve bang mot doan van co mot diem dung tab CAN PHAI kem dau dan la dau
+    cham. Dung bang hai cot thi so trang khong thang hang voi nhau khi ten
+    muc dai ngan khac nhau, va nhin ra ngay la bang chu khong phai muc luc."""
+    p = doc.add_paragraph()
+    body_format(p, size=14, spacing=1.15, before=6, after=10,
+                align=WD_ALIGN_PARAGRAPH.CENTER)
+    set_font(p.add_run('MỤC LỤC'), 14, bold=True)
+    for ten, trang in rows[1:]:          # bo dong tieu de 'Muc | Trang'
+        tho = ten.replace('**', '').strip()
+        # Muc cap hai ('2.1.', '6.4.') thut vao; muc cap mot in dam.
+        cap_hai = bool(re.match(r'^\d+\.\d+\.', tho))
+        p = doc.add_paragraph()
+        body_format(p, size=13, spacing=1.15, before=1, after=1,
+                    align=WD_ALIGN_PARAGRAPH.LEFT)
+        if cap_hai:
+            p.paragraph_format.left_indent = Cm(0.8)
+        p.paragraph_format.tab_stops.add_tab_stop(
+            Cm(15.8), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.DOTS)
+        set_font(p.add_run(tho), 13, bold=not cap_hai)
+        set_font(p.add_run('\t' + trang.strip()), 13, bold=not cap_hai)
+
 def add_table(doc, rows, width_cm):
+    # Bang co dong tieu de dung hai chu 'Muc' va 'Trang' la MUC LUC, khong
+    # phai mot bang du lieu — ve bang dau cham noi cho dung kieu tai lieu in.
+    if len(rows) > 1 and [c.strip() for c in rows[0][:2]] == ['Mục', 'Trang']:
+        add_muc_luc(doc, rows)
+        return
     ncol = max(len(r) for r in rows)
     rows = [r + [''] * (ncol - len(r)) for r in rows]
     t = doc.add_table(rows=len(rows), cols=ncol)
@@ -316,6 +346,13 @@ def render_markdown(doc, path, width_cm, first_chapter_break=True):
             p.paragraph_format.page_break_before = True
             p.paragraph_format.space_after = Pt(0)
             i += 1; continue
+        if s.startswith('<!--'):
+            # Chu thich Markdown la sieu du lieu danh cho bo chuyen (ten de
+            # tai, ten ngan tren dau trang), khong phai noi dung de in ra.
+            flush()
+            while i < len(lines) and '-->' not in lines[i]:
+                i += 1
+            i += 1; continue
         if s in ('---', '***', '___'):
             flush(); i += 1; continue
         if s.startswith('>'):
@@ -328,6 +365,19 @@ def render_markdown(doc, path, width_cm, first_chapter_break=True):
                 p.paragraph_format.left_indent = Cm(0.8)
                 add_inline(p, txt)
             continue
+        m_cap = re.match(r'^\*\*(Bảng|Hình) (\d+)\. (.+)\*\*$', s)
+        if m_cap:
+            # Chu thich bang dat TREN bang, chu thich hinh dat DUOI hinh —
+            # dung quy uoc trinh bay cua khoa. Ca hai cung can giua, in dam,
+            # co chu nho hon chu than de khong tranh voi tieu de muc.
+            flush()
+            cap = doc.add_paragraph()
+            body_format(cap, size=12, spacing=1.15, before=8, after=3,
+                        align=WD_ALIGN_PARAGRAPH.CENTER)
+            set_font(cap.add_run('%s %s. ' % (m_cap.group(1), m_cap.group(2))),
+                     12, bold=True)
+            set_font(cap.add_run(m_cap.group(3)), 12, bold=True)
+            i += 1; continue
         m = re.match(r'^([-*+]|\d+\.)\s+(.*)', s)
         if m:
             flush()
@@ -359,7 +409,6 @@ def footer_and_numbering(section, gvhd, svth):
     pf = p.paragraph_format
     pf.space_before = Pt(0); pf.space_after = Pt(0)
     # hai diem dung tab: giua (SVTH) va phai (so trang); dung API cua python-docx
-    from docx.enum.text import WD_TAB_ALIGNMENT
     pf.tab_stops.add_tab_stop(Cm(8), WD_TAB_ALIGNMENT.CENTER)
     pf.tab_stops.add_tab_stop(Cm(16), WD_TAB_ALIGNMENT.RIGHT)
     set_font(p.add_run(f'GVHD: {gvhd}'), 11)
@@ -374,6 +423,97 @@ def footer_and_numbering(section, gvhd, svth):
         for k, v in attrs.items(): e.set(qn(k), v)
         if txt: e.text = txt
         r._r.append(e)
+
+LOGO = os.path.join(ROOT, 'docs', 'images', 'logo-tvu.jpg')
+
+def _duong_ke(p, canh='bottom'):
+    """Ke mot duong mong o tren hoac duoi doan van — vien cua header/footer."""
+    pPr = p._element.get_or_add_pPr()
+    pBdr = OxmlElement('w:pBdr'); pPr.append(pBdr)
+    e = OxmlElement('w:' + canh)
+    for k, v in (('w:val', 'single'), ('w:sz', '6'), ('w:space', '4'),
+                 ('w:color', '000000')):
+        e.set(qn(k), v)
+    pBdr.append(e)
+
+def header_de_cuong(section, tieu_de):
+    """Dau trang: nhan tai lieu ben trai, ten de tai ben phai, co duong ke duoi."""
+    h = section.header
+    h.is_linked_to_previous = False
+    p = h.paragraphs[0]; p.text = ''
+    pf = p.paragraph_format
+    pf.space_before = Pt(0); pf.space_after = Pt(0)
+    pf.tab_stops.add_tab_stop(Cm(16), WD_TAB_ALIGNMENT.RIGHT)
+    set_font(p.add_run('Đề cương đồ án'), 11, italic=True)
+    set_font(p.add_run('\t'), 11)
+    set_font(p.add_run(tieu_de.upper()), 11, bold=True, italic=True)
+    _duong_ke(p, 'bottom')
+
+def footer_de_cuong(section):
+    """Chan trang: cho trong de sinh vien dien ho ten, MSSV, lop; so trang ben phai."""
+    f = section.footer
+    f.is_linked_to_previous = False
+    p = f.paragraphs[0]; p.text = ''
+    pf = p.paragraph_format
+    pf.space_before = Pt(0); pf.space_after = Pt(0)
+    pf.tab_stops.add_tab_stop(Cm(16), WD_TAB_ALIGNMENT.RIGHT)
+    _duong_ke(p, 'top')
+    set_font(p.add_run('. . . . . . . . . . . . . . . . . .  -  MSSV '
+                       '. . . . . . . . . . . .  -  Lớp . . . . . . . . . . . .'), 11)
+    set_font(p.add_run('\t'), 11)
+    _so_trang(p)
+
+def _so_trang(p):
+    """Chen truong PAGE — so trang do Word tu dien, khong go cung."""
+    r = p.add_run(); set_font(r, 11)
+    for el, attrs, txt in (('w:fldChar', {'w:fldCharType': 'begin'}, None),
+                           ('w:instrText', {'xml:space': 'preserve'}, ' PAGE '),
+                           ('w:fldChar', {'w:fldCharType': 'end'}, None)):
+        e = OxmlElement(el)
+        for k, v in attrs.items(): e.set(qn(k), v)
+        if txt: e.text = txt
+        r._r.append(e)
+
+def trang_bia(doc, tieu_de, loai='ĐỀ CƯƠNG CHI TIẾT', noi='Trà Vinh'):
+    """Trang bia rieng: khong co dau trang, khong co chan trang, khong co so trang.
+
+    Trang nay dung mot section rieng. Word chi bo dau/chan trang cho section
+    dau tien khi section do KHONG lien ket voi section truoc — day cung la ly
+    do phai tao section thu hai roi moi dat header/footer len no."""
+    from datetime import date
+    def dong(txt, co, dam=False, ngh=False, truoc=0, sau=0,
+             canh=WD_ALIGN_PARAGRAPH.CENTER):
+        p = doc.add_paragraph()
+        body_format(p, size=co, spacing=1.2, before=truoc, after=sau, align=canh)
+        set_font(p.add_run(txt), co, bold=dam, italic=ngh)
+        return p
+
+    dong('TRƯỜNG ĐẠI HỌC TRÀ VINH', 14, truoc=24, sau=2)
+    dong('KHOA KỸ THUẬT VÀ CÔNG NGHỆ', 14, dam=True, sau=18)
+
+    if os.path.exists(LOGO):
+        p = doc.add_paragraph()
+        body_format(p, before=6, after=18, align=WD_ALIGN_PARAGRAPH.CENTER)
+        p.add_run().add_picture(LOGO, width=Cm(3.2))
+    else:
+        # Khong co logo thi de trong dung phan cho no, khong xe dich bo cuc.
+        dong(' ', 13, truoc=40, sau=40)
+
+    dong(loai, 24, dam=True, truoc=12, sau=14)
+    dong(tieu_de.upper(), 15, dam=True, sau=48)
+
+    for nhan, gt in (('Giảng viên hướng dẫn:', ' . . . . . . . . . . . . . . . . . . . . . . .'),
+                     ('Sinh viên thực hiện:', ''),
+                     ('Họ và tên:', ' . . . . . . . . . . . . . . . . . . . . . . .'),
+                     ('Mã số sinh viên:', ' . . . . . . . . . . . . . . .'),
+                     ('Lớp:', ' . . . . . . . . . . . . . . .')):
+        p = doc.add_paragraph()
+        body_format(p, spacing=1.3, before=2, after=2, align=WD_ALIGN_PARAGRAPH.LEFT)
+        p.paragraph_format.left_indent = Cm(3)
+        set_font(p.add_run(nhan), 13, bold=True)
+        if gt: set_font(p.add_run(gt), 13)
+
+    dong('%s, tháng . . . năm 20 . . .' % noi, 13, ngh=True, truoc=48)
 
 def new_doc(gvhd='...', svth='...'):
     doc = Document()
@@ -408,7 +548,46 @@ if __name__ == '__main__':
         files = [which if os.path.isabs(which) else os.path.join(ROOT, which)]
     else:
         files = {'noi-dung': CONTENT, 'phu-luc': SAU, 'day-du': CONTENT + SAU}[which]
-    doc, w = new_doc(gvhd, svth)
+    # Tep Markdown co dong '<!-- de-cuong: TEN DE TAI -->' o dau duoc xuat
+    # theo kieu de cuong: trang bia rieng khong danh so, dau trang mang ten de
+    # tai tu trang thu hai tro di.
+    ten_de_tai = None
+    if len(files) == 1:
+        dau_tep = open(files[0], encoding='utf-8').read(400)
+        m_dc = re.search(r'<!--\s*de-cuong:\s*(.+?)\s*-->', dau_tep)
+        if m_dc:
+            ten_de_tai = m_dc.group(1)
+        # Ten de tai day du thuong dai qua mot dong o co chu 11pt. Dai qua thi
+        # dau trang xuong hai dong va diem dung tab can phai mat tac dung — hai
+        # phan dinh lai vao nhau. Nen dau trang dung mot ten ngan rieng.
+        m_ng = re.search(r'<!--\s*dau-trang:\s*(.+?)\s*-->', dau_tep)
+        ten_dau_trang = m_ng.group(1) if m_ng else ten_de_tai
+
+    if ten_de_tai:
+        doc = Document()
+        st = doc.styles['Normal']
+        st.font.name = FONT; st.font.size = Pt(13)
+        st.element.rPr.rFonts.set(qn('w:eastAsia'), FONT)
+        pf = st.paragraph_format
+        pf.line_spacing_rule = WD_LINE_SPACING.MULTIPLE; pf.line_spacing = 1.5
+        pf.space_before = Pt(6); pf.space_after = Pt(6)
+        for sec in (doc.sections[0],):
+            sec.page_width, sec.page_height = Cm(21), Cm(29.7)
+            sec.top_margin, sec.bottom_margin = Cm(2), Cm(2)
+            sec.left_margin, sec.right_margin = Cm(3), Cm(2)
+        trang_bia(doc, ten_de_tai)
+        # Section thu hai bat dau o trang moi va mang dau/chan trang; section
+        # dau (trang bia) khong dat gi nen no trong — dung y do.
+        sec2 = doc.add_section(WD_SECTION.NEW_PAGE)
+        sec2.page_width, sec2.page_height = Cm(21), Cm(29.7)
+        sec2.top_margin, sec2.bottom_margin = Cm(2), Cm(2)
+        sec2.left_margin, sec2.right_margin = Cm(3), Cm(2)
+        header_de_cuong(sec2, ten_dau_trang)
+        footer_de_cuong(sec2)
+        w = 21 - 3 - 2
+    else:
+        doc, w = new_doc(gvhd, svth)
+
     for n, f in enumerate(files):
         path = f if os.path.isabs(f) else os.path.join(DOCS, f)
         render_markdown(doc, path, w, first_chapter_break=(n > 0))

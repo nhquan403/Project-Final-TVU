@@ -1,17 +1,38 @@
-# ĐỀ CƯƠNG ĐỒ ÁN THỰC TẬP CHUYÊN NGÀNH
+<!-- de-cuong: Xây dựng website giới thiệu và đặt phòng trực tuyến cho Homestay TVH tại Trà Vinh -->
+<!-- dau-trang: Đặt phòng trực tuyến cho Homestay TVH -->
 
-**Trường Đại học Trà Vinh — Khoa Kỹ thuật và Công nghệ**
 
-| | |
-|---|---|
-| **Họ và tên sinh viên** | . . . . . . . . . . . . . . . . . . . . . . . . . . . |
-| **Mã số sinh viên** | . . . . . . . . . . . . . . . |
-| **Lớp** | . . . . . . . . . . . . . . . |
-| **Ngành** | Công nghệ thông tin |
-| **Giảng viên hướng dẫn** | . . . . . . . . . . . . . . . . . . . . . . . . . . . |
-| **Thời gian thực hiện** | . . . / . . . / 20 . . .  →  . . . / . . . / 20 . . . |
+| Mục | Trang |
+|---|:---:|
+| **1. TÊN ĐỀ TÀI** | 3 |
+| **2. LÝ DO CHỌN ĐỀ TÀI** | 3 |
+| 2.1. Tính cấp thiết về thực tiễn | 3 |
+| 2.2. Ý nghĩa khoa học | 4 |
+| 2.3. Tổng quan tình hình nghiên cứu và giải pháp hiện có | 4 |
+| **3. MỤC TIÊU VÀ CÂU HỎI NGHIÊN CỨU** | 6 |
+| 3.1. Mục tiêu tổng quát | 6 |
+| 3.2. Mục tiêu cụ thể và tiêu chí nghiệm thu | 6 |
+| 3.3. Câu hỏi nghiên cứu | 6 |
+| **4. ĐỐI TƯỢNG VÀ PHẠM VI** | 7 |
+| 4.1. Đối tượng nghiên cứu | 7 |
+| 4.2. Phạm vi nghiên cứu | 7 |
+| 4.3. Giới hạn — những gì đề tài KHÔNG làm | 8 |
+| 4.4. Giả thuyết nghiên cứu | 8 |
+| **5. NHIỆM VỤ NGHIÊN CỨU** | 9 |
+| **6. PHƯƠNG PHÁP NGHIÊN CỨU** | 9 |
+| 6.1. Phương pháp nghiên cứu lý thuyết | 9 |
+| 6.2. Phương pháp nghiên cứu thực tiễn | 9 |
+| 6.3. Phương pháp kiểm chứng | 10 |
+| 6.4. Công nghệ và công cụ dự kiến | 10 |
+| **7. ĐÓNG GÓP DỰ KIẾN CỦA ĐỀ TÀI** | 10 |
+| **8. KẾT CẤU DỰ KIẾN CỦA ĐỒ ÁN** | 11 |
+| **9. KẾ HOẠCH VÀ TIẾN ĐỘ THỰC HIỆN** | 13 |
+| 9.1. Tiến độ theo tuần | 13 |
+| 9.2. Rủi ro và phương án dự phòng | 14 |
+| **10. TÀI LIỆU THAM KHẢO DỰ KIẾN** | 15 |
+| **11. Ý KIẾN CỦA GIẢNG VIÊN HƯỚNG DẪN** | 17 |
 
----
+\pagebreak
 
 ## 1. TÊN ĐỀ TÀI
 
@@ -20,48 +41,14 @@
 
 Tên đề tài nêu đủ bốn thành phần:
 
+**Bảng 1. Bốn thành phần của tên đề tài**
+
 | Thành phần | Nội dung |
 |---|---|
 | **Vấn đề nghiên cứu** | Chống đặt trùng phòng khi nhiều khách đặt đồng thời |
 | **Sản phẩm** | Website giới thiệu và đặt phòng trực tuyến |
 | **Đối tượng áp dụng** | Homestay TVH — cơ sở lưu trú quy mô nhỏ do hộ gia đình vận hành |
 | **Phạm vi không gian** | Tỉnh Trà Vinh |
-
-\pagebreak
-
-## MỤC LỤC
-
-| Mục | Trang |
-|---|:---:|
-| **1. TÊN ĐỀ TÀI** | 1 |
-| **2. LÝ DO CHỌN ĐỀ TÀI** | 3 |
-| 2.1. Tính cấp thiết về thực tiễn | 3 |
-| 2.2. Ý nghĩa khoa học | 3 |
-| 2.3. Tổng quan tình hình nghiên cứu và giải pháp hiện có | 4 |
-| **3. MỤC TIÊU VÀ CÂU HỎI NGHIÊN CỨU** | 5 |
-| 3.1. Mục tiêu tổng quát | 5 |
-| 3.2. Mục tiêu cụ thể và tiêu chí nghiệm thu | 5 |
-| 3.3. Câu hỏi nghiên cứu | 6 |
-| **4. ĐỐI TƯỢNG VÀ PHẠM VI** | 7 |
-| 4.1. Đối tượng nghiên cứu | 7 |
-| 4.2. Phạm vi nghiên cứu | 7 |
-| 4.3. Giới hạn — những gì đề tài KHÔNG làm | 7 |
-| 4.4. Giả thuyết nghiên cứu | 8 |
-| **5. NHIỆM VỤ NGHIÊN CỨU** | 8 |
-| **6. PHƯƠNG PHÁP NGHIÊN CỨU** | 9 |
-| 6.1. Phương pháp nghiên cứu lý thuyết | 9 |
-| 6.2. Phương pháp nghiên cứu thực tiễn | 9 |
-| 6.3. Phương pháp kiểm chứng | 9 |
-| 6.4. Công nghệ và công cụ dự kiến | 10 |
-| **7. ĐÓNG GÓP DỰ KIẾN CỦA ĐỀ TÀI** | 10 |
-| **8. KẾT CẤU DỰ KIẾN CỦA ĐỒ ÁN** | 10 |
-| **9. KẾ HOẠCH VÀ TIẾN ĐỘ THỰC HIỆN** | 12 |
-| 9.1. Tiến độ theo tuần | 12 |
-| 9.2. Rủi ro và phương án dự phòng | 13 |
-| **10. TÀI LIỆU THAM KHẢO DỰ KIẾN** | 14 |
-| **11. Ý KIẾN CỦA GIẢNG VIÊN HƯỚNG DẪN** | 16 |
-
-\pagebreak
 
 ## 2. LÝ DO CHỌN ĐỀ TÀI
 
@@ -150,6 +137,8 @@ không tồn tại.
 
 #### 2.3.4. Khoảng trống mà đề tài nhắm tới
 
+**Bảng 2. Đối chiếu đề tài với các giải pháp hiện có**
+
 | Tiêu chí | Sàn đặt phòng | Phần mềm quản lý | Đề tài cùng chủ đề | **Đề tài này** |
 |---|:---:|:---:|:---:|:---:|
 | Chống đặt trùng phòng đúng khi có tranh chấp | Có | Có (hộp đen) | Thường không | **Có** |
@@ -176,6 +165,8 @@ bài toán giới thiệu và đặt phòng homestay, trong đó tính đúng đ
 ### 3.2. Mục tiêu cụ thể và tiêu chí nghiệm thu
 
 Mỗi mục tiêu đi kèm **một tiêu chí đo được**, không phải một lời hứa:
+
+**Bảng 3. Mục tiêu cụ thể và tiêu chí nghiệm thu**
 
 | # | Mục tiêu cụ thể | Tiêu chí nghiệm thu |
 |---|---|---|
@@ -222,6 +213,8 @@ bằng kết quả kiểm thử.
 | **Đối tượng khảo sát** | Homestay TVH (Trà Vinh) và các trang đặt phòng thương mại đang hoạt động |
 
 ### 4.2. Phạm vi nghiên cứu
+
+**Bảng 4. Phạm vi nghiên cứu**
 
 | Chiều | Giới hạn |
 |---|---|
@@ -319,6 +312,8 @@ luận.
 
 Đây là phần quyết định chất lượng đề tài, nên nêu cụ thể:
 
+**Bảng 5. Cách kiểm chứng từng điều cần chứng minh**
+
 | Điều cần chứng minh | Cách chứng minh |
 |---|---|
 | Không bán trùng phòng | **Kiểm thử đa luồng** trên cơ sở dữ liệu thật (không giả lập bằng cơ sở dữ liệu trong bộ nhớ, vì ràng buộc cần kiểm lại không tồn tại ở đó): cho nhiều giao dịch cùng đặt một phòng và kiểm tra đúng một luồng thắng |
@@ -328,6 +323,8 @@ luận.
 | Triển khai lại được | Chạy lại quy trình triển khai từ đầu trên máy sạch |
 
 ### 6.4. Công nghệ và công cụ dự kiến
+
+**Bảng 6. Công nghệ và công cụ dự kiến**
 
 | Tầng | Công nghệ | Lý do chọn |
 |---|---|---|
@@ -418,6 +415,8 @@ Phạm vi nghiên cứu
 
 ### 9.1. Tiến độ theo tuần
 
+**Bảng 7. Kế hoạch thực hiện theo tuần**
+
 | Tuần | Nội dung công việc | Sản phẩm phải có | Ghi chú |
 |:---:|---|---|---|
 | **1** | Khảo sát hiện trạng, phân tích hệ thống tương tự, chốt yêu cầu | Danh sách yêu cầu chức năng và phi chức năng | |
@@ -448,6 +447,8 @@ Phạm vi nghiên cứu
 Kế hoạch mười bốn tuần ở trên giả định mọi việc diễn ra đúng dự tính. Phần này
 nêu những chỗ dễ trật nhất và cách xử lý đã chuẩn bị sẵn, để khi gặp thì không
 mất tuần nào cho việc nghĩ cách.
+
+**Bảng 8. Rủi ro và phương án dự phòng**
 
 | # | Rủi ro | Khả năng | Ảnh hưởng | Phương án dự phòng |
 |:---:|---|:---:|:---:|---|
