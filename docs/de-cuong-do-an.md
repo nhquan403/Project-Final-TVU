@@ -222,7 +222,7 @@ và 2.4.3), Chương 3 trả lời CH3 và CH4 bằng thiết kế và cài đ�
 | Chiều | Giới hạn |
 |---|---|
 | **Không gian** | Một cơ sở lưu trú tại Trà Vinh. Hệ thống phục vụ **một** homestay, không phải sàn nhiều cơ sở |
-| **Thời gian** | . . . tuần, từ . . . / . . . / 20 . . . đến . . . / . . . / 20 . . . |
+| **Thời gian** | 8 tuần, từ . . . / . . . / 20 . . . đến . . . / . . . / 20 . . . |
 | **Nội dung** | Ba khối: trang bán hàng cho khách, khu quản trị cho chủ homestay, giao diện lập trình ứng dụng dùng chung |
 | **Dữ liệu** | Dữ liệu minh hoạ do đề tài tự sinh, phản ánh đủ mọi trạng thái đơn. Không sử dụng dữ liệu khách hàng thật |
 
@@ -427,20 +427,14 @@ Phạm vi nghiên cứu
 
 | Tuần | Nội dung công việc | Sản phẩm phải có | Ghi chú |
 |:---:|---|---|---|
-| **1** | Khảo sát hiện trạng, phân tích hệ thống tương tự, chốt yêu cầu | Danh sách yêu cầu chức năng và phi chức năng | |
-| **2** | Nghiên cứu lý thuyết về giao dịch, mức cô lập, ràng buộc loại trừ | Bản ghi chú lý thuyết trả lời CH1, CH2 | Quyết định chọn hệ quản trị CSDL |
-| **3** | Thiết kế cơ sở dữ liệu và kiến trúc hệ thống | Lược đồ quan hệ thực thể, biểu đồ use case, biểu đồ lớp | **Mốc: duyệt thiết kế với GVHD** |
-| **4** | Cài đặt lược đồ và **ràng buộc chống đặt trùng phòng** | Migration chạy được, ca kiểm thử đa luồng đầu tiên | Mốc quan trọng nhất |
-| **5** | Cài đặt xác thực, phân quyền, truy vấn phòng trống | Đăng nhập, ma trận phân quyền | |
-| **6** | Cài đặt luồng đặt phòng và vòng thử gán phòng | Đặt được đơn từ đầu tới cuối | Trả lời CH3 |
-| **7** | Cài đặt thanh toán, webhook, hàng đợi thư | Đơn tự xác nhận khi tiền về | Trả lời CH4 |
-| **8** | Cài đặt khu quản trị và trang bán hàng cho khách | Giao diện hoàn chỉnh hai khối | |
-| **9** | Quản lý ngày khả dụng, đóng gói bằng container, dữ liệu mẫu | Dựng được toàn hệ thống trên máy sạch bằng ba lệnh | |
-| **10** | Kiểm thử toàn diện, sửa lỗi, đo khả năng tiếp cận | Bộ kiểm thử đạt 100%, không còn lỗi vi phạm | |
-| **11** | Viết báo cáo: mở đầu và Chương 1, 2 | Bản thảo hai chương đầu | **Mốc: nộp bản thảo cho GVHD** |
-| **12** | Viết báo cáo: Chương 3, 4, 5; chuẩn bị hình minh hoạ | Bản thảo đầy đủ + bộ hình | |
-| **13** | Hoàn thiện, xuất Word đúng định dạng, kiểm số trang | Quyển báo cáo hoàn chỉnh | Đếm trang trên bản đã xuất |
-| **14** | Làm slide, poster, tập bảo vệ và trả lời phản biện | Slide 15–20 trang, poster, kịch bản nói | **Mốc: nộp** |
+| **1** | Khảo sát hiện trạng, phân tích hệ thống tương tự, chốt yêu cầu; nghiên cứu lý thuyết về giao dịch, mức cô lập và ràng buộc loại trừ | Danh sách yêu cầu chức năng và phi chức năng; bản ghi chú lý thuyết | Trả lời CH1, CH2. Quyết định chọn hệ quản trị CSDL |
+| **2** | Thiết kế cơ sở dữ liệu và kiến trúc hệ thống | Lược đồ quan hệ thực thể, biểu đồ use case, biểu đồ lớp | **Mốc: duyệt thiết kế với GVHD** |
+| **3** | Cài đặt lược đồ và **ràng buộc chống đặt trùng phòng** | Migration chạy được, ca kiểm thử đa luồng đầu tiên | Mốc quan trọng nhất |
+| **4** | Cài đặt xác thực, phân quyền, truy vấn phòng trống, luồng đặt phòng và vòng thử gán phòng | Đăng nhập, ma trận phân quyền, đặt được đơn từ đầu tới cuối | Trả lời CH3 |
+| **5** | Cài đặt thanh toán, webhook, hàng đợi thư và quản lý ngày khả dụng | Đơn tự xác nhận khi tiền về; đóng được phòng theo khoảng ngày | Trả lời CH4 |
+| **6** | Cài đặt khu quản trị và trang bán hàng cho khách; đóng gói bằng container, dữ liệu mẫu | Giao diện hoàn chỉnh hai khối; dựng được toàn hệ thống trên máy sạch bằng ba lệnh | |
+| **7** | Kiểm thử toàn diện, sửa lỗi, đo khả năng tiếp cận; viết báo cáo mở đầu và Chương 1, 2 | Bộ kiểm thử đạt 100%, không còn lỗi vi phạm; bản thảo hai chương đầu | **Mốc: nộp bản thảo cho GVHD** |
+| **8** | Viết Chương 3, 4, 5 kèm hình minh hoạ; xuất Word đúng định dạng; làm slide, poster và tập bảo vệ | Quyển báo cáo hoàn chỉnh; slide 15–20 trang, poster, kịch bản nói | **Mốc: nộp**. Đếm trang trên bản đã xuất |
 
 > **Cách dùng bảng này:** điền ngày bắt đầu thật của từng tuần vào cột đầu trước
 > khi nộp. Ba dòng in đậm là ba mốc cần GVHD duyệt trước khi đi tiếp.
@@ -452,18 +446,18 @@ Phạm vi nghiên cứu
 
 ### 9.2. Rủi ro và phương án dự phòng
 
-Kế hoạch mười bốn tuần ở trên giả định mọi việc diễn ra đúng dự tính. Mục này
+Kế hoạch tám tuần ở trên giả định mọi việc diễn ra đúng dự tính. Mục này
 liệt kê những chỗ dễ trật nhất cùng phương án xử lý đã chuẩn bị trước.
 
 **Bảng 8. Rủi ro và phương án dự phòng**
 
 | # | Rủi ro | Khả năng | Ảnh hưởng | Phương án dự phòng |
 |:---:|---|:---:|:---:|---|
-| 1 | Ràng buộc chống đặt trùng phòng cài xong nhưng kiểm thử đa luồng vẫn sinh đơn trùng | Trung bình | **Nghiêm trọng** — đây là mục tiêu số 2 | Tuần 4 là mốc sớm có chủ đích, còn đủ thời gian đổi cách: chuyển sang khoá bi quan trên hàng dữ liệu phòng. Chậm hơn nhưng vẫn đúng, và sự chênh lệch đó tự nó là kết quả nghiên cứu đáng báo cáo |
-| 2 | Không xin được tài khoản thử của dịch vụ thanh toán | Trung bình | Lớn — chặn tuần 7 | Tự dựng bộ giả lập webhook gọi đúng giao diện lập trình ứng dụng thật. Luồng nghiệp vụ và phần kiểm thử không đổi; chỉ nguồn gọi là giả |
+| 1 | Ràng buộc chống đặt trùng phòng cài xong nhưng kiểm thử đa luồng vẫn sinh đơn trùng | Trung bình | **Nghiêm trọng** — đây là mục tiêu số 2 | Tuần 3 là mốc sớm có chủ đích, còn đủ thời gian đổi cách: chuyển sang khoá bi quan trên hàng dữ liệu phòng. Chậm hơn nhưng vẫn đúng, và sự chênh lệch đó tự nó là kết quả nghiên cứu đáng báo cáo |
+| 2 | Không xin được tài khoản thử của dịch vụ thanh toán | Trung bình | Lớn — chặn tuần 5 | Tự dựng bộ giả lập webhook gọi đúng giao diện lập trình ứng dụng thật. Luồng nghiệp vụ và phần kiểm thử không đổi; chỉ nguồn gọi là giả |
 | 3 | Kiểm thử tích hợp cần cơ sở dữ liệu thật trong container, máy cá nhân không chạy nổi | Thấp | Trung bình | Hạ số ca chạy song song và chạy theo nhóm; chấp nhận bộ kiểm thử chạy lâu hơn, không chấp nhận giả lập cơ sở dữ liệu |
 | 4 | Phạm vi phình ra vì phát sinh yêu cầu mới giữa chừng | **Cao** | Lớn | Mục 4.3 đã liệt kê sẵn những gì đề tài KHÔNG làm. Mọi yêu cầu mới ghi vào mục "hướng phát triển", không đưa vào phạm vi nghiệm thu |
-| 5 | Viết báo cáo dồn vào cuối, không kịp | **Cao** | Lớn | Tuần 11 và 12 dành riêng cho viết báo cáo, và mốc nộp bản thảo hai chương đầu ở tuần 11 buộc phải viết sớm thay vì dồn |
+| 5 | Viết báo cáo dồn vào cuối, không kịp | **Cao** | **Nghiêm trọng** — tám tuần không có tuần nào dành riêng cho việc viết | Viết dần từ tuần 1: mỗi tuần ghi lại quyết định và kết quả đo được ngay khi còn nhớ, để tuần 7 và 8 chỉ còn việc biên tập lại. Mốc nộp bản thảo hai chương đầu ở tuần 7 là chốt chặn |
 | 6 | Quên nộp báo cáo tiến độ hoặc không commit đủ tuần | Trung bình | Lớn — là tiêu chí chấm điểm | Coi việc commit và nộp báo cáo tiến độ là một hạng mục cố định cuối mỗi tuần, ngang với công việc kỹ thuật của tuần đó |
 
 Trong sáu rủi ro trên, ba rủi ro số 1, 4 và 5 cần theo dõi sát nhất. Rủi ro số 1
