@@ -495,8 +495,8 @@ Danh mục dự kiến, ghi theo định dạng IEEE và **đánh số theo th�
 
 ...........................................................................
 
-\phai *Ngày . . . tháng . . . năm 20 . . .*
+\khoiky *Ngày . . . tháng . . . năm 20 . . .*
 
-\phai **Giảng viên hướng dẫn**
+\khoiky **Giảng viên hướng dẫn**
 
-\phai *(Ký và ghi rõ họ tên)*
+\khoiky *(Ký và ghi rõ họ tên)*
