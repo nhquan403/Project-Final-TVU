@@ -500,4 +500,4 @@ Danh mục dự kiến, ghi theo định dạng IEEE và **đánh số theo th�
 | *(Ký và ghi rõ họ tên)* | *(Ký và ghi rõ họ tên)* |
 |  |  |
 
-*TP. Hồ Chí Minh, ngày . . . tháng . . . năm 20 . . .*
+*Ngày . . . tháng . . . năm 20 . . .*
