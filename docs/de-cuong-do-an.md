@@ -27,10 +27,8 @@
 | **7. ĐÓNG GÓP DỰ KIẾN CỦA ĐỀ TÀI** | 11 |
 | **8. KẾT CẤU DỰ KIẾN CỦA ĐỒ ÁN** | 11 |
 | **9. KẾ HOẠCH VÀ TIẾN ĐỘ THỰC HIỆN** | 13 |
-| 9.1. Tiến độ theo tuần | 13 |
-| 9.2. Rủi ro và phương án dự phòng | 14 |
-| **10. TÀI LIỆU THAM KHẢO DỰ KIẾN** | 16 |
-| **11. Ý KIẾN CỦA GIẢNG VIÊN HƯỚNG DẪN** | 17 |
+| **10. TÀI LIỆU THAM KHẢO DỰ KIẾN** | 15 |
+| **11. Ý KIẾN CỦA GIẢNG VIÊN HƯỚNG DẪN** | 16 |
 
 \pagebreak
 
@@ -421,7 +419,7 @@ Phạm vi nghiên cứu
 
 ## 9. KẾ HOẠCH VÀ TIẾN ĐỘ THỰC HIỆN
 
-### 9.1. Tiến độ theo tuần
+Đề tài thực hiện trong tám tuần, phân chia theo bảng dưới đây.
 
 **Bảng 7. Kế hoạch thực hiện theo tuần**
 
@@ -443,27 +441,6 @@ Phạm vi nghiên cứu
 > và nộp báo cáo tiến độ hàng tuần vào thư mục `progress-report/`. Lịch sử commit
 > là **một tiêu chí chấm điểm tiến độ**. Không có commit thì dù có báo cáo tiến
 > độ vẫn bị xem như không hoàn thành.
-
-### 9.2. Rủi ro và phương án dự phòng
-
-Kế hoạch tám tuần ở trên giả định mọi việc diễn ra đúng dự tính. Mục này
-liệt kê những chỗ dễ trật nhất cùng phương án xử lý đã chuẩn bị trước.
-
-**Bảng 8. Rủi ro và phương án dự phòng**
-
-| # | Rủi ro | Khả năng | Ảnh hưởng | Phương án dự phòng |
-|:---:|---|:---:|:---:|---|
-| 1 | Ràng buộc chống đặt trùng phòng cài xong nhưng kiểm thử đa luồng vẫn sinh đơn trùng | Trung bình | **Nghiêm trọng** — đây là mục tiêu số 2 | Tuần 3 là mốc sớm có chủ đích, còn đủ thời gian đổi cách: chuyển sang khoá bi quan trên hàng dữ liệu phòng. Chậm hơn nhưng vẫn đúng, và sự chênh lệch đó tự nó là kết quả nghiên cứu đáng báo cáo |
-| 2 | Không xin được tài khoản thử của dịch vụ thanh toán | Trung bình | Lớn — chặn tuần 5 | Tự dựng bộ giả lập webhook gọi đúng giao diện lập trình ứng dụng thật. Luồng nghiệp vụ và phần kiểm thử không đổi; chỉ nguồn gọi là giả |
-| 3 | Kiểm thử tích hợp cần cơ sở dữ liệu thật trong container, máy cá nhân không chạy nổi | Thấp | Trung bình | Hạ số ca chạy song song và chạy theo nhóm; chấp nhận bộ kiểm thử chạy lâu hơn, không chấp nhận giả lập cơ sở dữ liệu |
-| 4 | Phạm vi phình ra vì phát sinh yêu cầu mới giữa chừng | **Cao** | Lớn | Mục 4.3 đã liệt kê sẵn những gì đề tài KHÔNG làm. Mọi yêu cầu mới ghi vào mục "hướng phát triển", không đưa vào phạm vi nghiệm thu |
-| 5 | Viết báo cáo dồn vào cuối, không kịp | **Cao** | **Nghiêm trọng** — tám tuần không có tuần nào dành riêng cho việc viết | Viết dần từ tuần 1: mỗi tuần ghi lại quyết định và kết quả đo được ngay khi còn nhớ, để tuần 7 và 8 chỉ còn việc biên tập lại. Mốc nộp bản thảo hai chương đầu ở tuần 7 là chốt chặn |
-| 6 | Quên nộp báo cáo tiến độ hoặc không commit đủ tuần | Trung bình | Lớn — là tiêu chí chấm điểm | Coi việc commit và nộp báo cáo tiến độ là một hạng mục cố định cuối mỗi tuần, ngang với công việc kỹ thuật của tuần đó |
-
-Trong sáu rủi ro trên, ba rủi ro số 1, 4 và 5 cần theo dõi sát nhất. Rủi ro số 1
-quyết định đề tài có đạt mục tiêu cốt lõi hay không; rủi ro số 4 và số 5 là hai
-nguyên nhân thường gặp khiến một đồ án đủ năng lực vẫn không hoàn thành đúng
-hạn.
 
 ---
 
