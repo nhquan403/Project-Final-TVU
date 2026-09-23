@@ -12,7 +12,7 @@
 | **3. MỤC TIÊU VÀ CÂU HỎI NGHIÊN CỨU** | 6 |
 | 3.1. Mục tiêu tổng quát | 6 |
 | 3.2. Mục tiêu cụ thể và tiêu chí nghiệm thu | 6 |
-| 3.3. Câu hỏi nghiên cứu | 6 |
+| 3.3. Câu hỏi nghiên cứu | 7 |
 | **4. ĐỐI TƯỢNG VÀ PHẠM VI** | 7 |
 | 4.1. Đối tượng nghiên cứu | 7 |
 | 4.2. Phạm vi nghiên cứu | 7 |
@@ -21,10 +21,10 @@
 | **5. NHIỆM VỤ NGHIÊN CỨU** | 9 |
 | **6. PHƯƠNG PHÁP NGHIÊN CỨU** | 9 |
 | 6.1. Phương pháp nghiên cứu lý thuyết | 9 |
-| 6.2. Phương pháp nghiên cứu thực tiễn | 9 |
+| 6.2. Phương pháp nghiên cứu thực tiễn | 10 |
 | 6.3. Phương pháp kiểm chứng | 10 |
 | 6.4. Công nghệ và công cụ dự kiến | 10 |
-| **7. ĐÓNG GÓP DỰ KIẾN CỦA ĐỀ TÀI** | 10 |
+| **7. ĐÓNG GÓP DỰ KIẾN CỦA ĐỀ TÀI** | 11 |
 | **8. KẾT CẤU DỰ KIẾN CỦA ĐỒ ÁN** | 11 |
 | **9. KẾ HOẠCH VÀ TIẾN ĐỘ THỰC HIỆN** | 13 |
 | 9.1. Tiến độ theo tuần | 13 |
@@ -36,19 +36,22 @@
 
 ## 1. TÊN ĐỀ TÀI
 
-> **Xây dựng website giới thiệu và đặt phòng trực tuyến cho Homestay TVH tại
-> Trà Vinh, có cơ chế chống đặt trùng phòng ở tầng cơ sở dữ liệu**
+> **Xây dựng website giới thiệu và đặt phòng trực tuyến cho Homestay TVH
+> tại Trà Vinh**
 
-Tên đề tài nêu đủ bốn thành phần:
+Tên đề tài gọn, nêu ba thành phần nhận ra được ngay. Vấn đề nghiên cứu cốt lõi
+không đưa vào tên mà trình bày ở mục 2.2 và mục 3.3 — tên đề tài cho biết
+**làm cái gì cho ai ở đâu**, còn **giải bài toán nào** là nội dung của phần lý
+do và câu hỏi nghiên cứu.
 
-**Bảng 1. Bốn thành phần của tên đề tài**
+**Bảng 1. Các thành phần của đề tài và nơi trình bày**
 
-| Thành phần | Nội dung |
-|---|---|
-| **Vấn đề nghiên cứu** | Chống đặt trùng phòng khi nhiều khách đặt đồng thời |
-| **Sản phẩm** | Website giới thiệu và đặt phòng trực tuyến |
-| **Đối tượng áp dụng** | Homestay TVH — cơ sở lưu trú quy mô nhỏ do hộ gia đình vận hành |
-| **Phạm vi không gian** | Tỉnh Trà Vinh |
+| Thành phần | Nội dung | Nêu ở đâu |
+|---|---|---|
+| **Sản phẩm** | Website giới thiệu và đặt phòng trực tuyến | Trong tên đề tài |
+| **Đối tượng áp dụng** | Homestay TVH — cơ sở lưu trú quy mô nhỏ do hộ gia đình vận hành | Trong tên đề tài |
+| **Phạm vi không gian** | Tỉnh Trà Vinh | Trong tên đề tài |
+| **Vấn đề nghiên cứu** | Chống đặt trùng phòng khi nhiều khách đặt đồng thời | Mục 2.2 và mục 3.3 |
 
 ## 2. LÝ DO CHỌN ĐỀ TÀI
 
