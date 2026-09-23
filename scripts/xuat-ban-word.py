@@ -349,6 +349,16 @@ def render_markdown(doc, path, width_cm, first_chapter_break=True):
                 i += 1
             if rows: add_table(doc, rows, width_cm, can_le)
             continue
+        if s.startswith('\\phai '):
+            # Khoi ky ten cua giang vien nam ben phai to giay theo le trinh
+            # bay van ban hanh chinh. Markdown khong co cu phap can phai nen
+            # dung mot chi thi rieng, cung kieu voi '\\pagebreak'.
+            flush()
+            p = doc.add_paragraph()
+            body_format(p, spacing=1.3, before=2, after=2,
+                        align=WD_ALIGN_PARAGRAPH.RIGHT)
+            add_inline(p, s[len('\\phai '):].strip())
+            i += 1; continue
         if s == '\\pagebreak':
             # Dau ngat trang tuong minh. Can cho nhung khoi PHAI nam tron mot
             # trang — vi du khoi ky ten: vo doi giua bang va dong ngay thang
