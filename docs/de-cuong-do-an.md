@@ -1,6 +1,8 @@
 <!-- de-cuong: Xây dựng website giới thiệu và đặt phòng trực tuyến cho Homestay TVH tại Trà Vinh -->
 <!-- dau-trang: Đặt phòng trực tuyến cho Homestay TVH -->
 <!-- sinh-vien: Nguyễn Hồng Quân | 170123592 | DX23TT11 -->
+<!-- gvhd: ThS. Nguyễn Nhứt Lam -->
+<!-- noi-ngay: TP. Hồ Chí Minh, tháng 9 năm 2026 -->
 
 
 | Mục | Trang |
@@ -498,4 +500,4 @@ Danh mục dự kiến, ghi theo định dạng IEEE và **đánh số theo th�
 | *(Ký và ghi rõ họ tên)* | *(Ký và ghi rõ họ tên)* |
 |  |  |
 
-*Trà Vinh, ngày . . . tháng . . . năm 20 . . .*
+*TP. Hồ Chí Minh, ngày . . . tháng . . . năm 20 . . .*

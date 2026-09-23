@@ -479,7 +479,8 @@ def _so_trang(p):
         if txt: e.text = txt
         r._r.append(e)
 
-def trang_bia(doc, tieu_de, loai='ĐỀ CƯƠNG CHI TIẾT', noi='Trà Vinh', sv=None):
+def trang_bia(doc, tieu_de, loai='ĐỀ CƯƠNG CHI TIẾT',
+              noi_ngay=None, sv=None, gvhd=None):
     """Trang bia rieng: khong co dau trang, khong co chan trang, khong co so trang.
 
     Trang nay dung mot section rieng. Word chi bo dau/chan trang cho section
@@ -508,7 +509,8 @@ def trang_bia(doc, tieu_de, loai='ĐỀ CƯƠNG CHI TIẾT', noi='Trà Vinh', sv
     dong(tieu_de.upper(), 15, dam=True, sau=48)
 
     ten, mssv, lop = (sv or (None, None, None))
-    for nhan, gt in (('Giảng viên hướng dẫn:', ' . . . . . . . . . . . . . . . . . . . . . . .'),
+    for nhan, gt in (('Giảng viên hướng dẫn:',
+                      ' ' + (gvhd or '. . . . . . . . . . . . . . . . . . . . . . .')),
                      ('Sinh viên thực hiện:', ''),
                      ('Họ và tên:', ' ' + (ten or '. . . . . . . . . . . . . . . . . . . . . . .')),
                      ('Mã số sinh viên:', ' ' + (mssv or TRONG)),
@@ -519,7 +521,7 @@ def trang_bia(doc, tieu_de, loai='ĐỀ CƯƠNG CHI TIẾT', noi='Trà Vinh', sv
         set_font(p.add_run(nhan), 13, bold=True)
         if gt: set_font(p.add_run(gt), 13)
 
-    dong('%s, tháng . . . năm 20 . . .' % noi, 13, ngh=True, truoc=48)
+    dong(noi_ngay or 'Trà Vinh, tháng . . . năm 20 . . .', 13, ngh=True, truoc=48)
 
 def new_doc(gvhd='...', svth='...'):
     doc = Document()
@@ -570,6 +572,10 @@ if __name__ == '__main__':
         ten_dau_trang = m_ng.group(1) if m_ng else ten_de_tai
         # '<!-- sinh-vien: Ho ten | MSSV | Lop -->'. Thieu truong nao thi
         # trang bia va chan trang de dau cham cho cho do.
+        m_gv = re.search(r'<!--\s*gvhd:\s*(.+?)\s*-->', dau_tep)
+        ten_gvhd = m_gv.group(1) if m_gv else None
+        m_nn = re.search(r'<!--\s*noi-ngay:\s*(.+?)\s*-->', dau_tep)
+        noi_ngay = m_nn.group(1) if m_nn else None
         m_sv = re.search(r'<!--\s*sinh-vien:\s*(.+?)\s*-->', dau_tep)
         sinh_vien = None
         if m_sv:
@@ -589,7 +595,8 @@ if __name__ == '__main__':
             sec.page_width, sec.page_height = Cm(21), Cm(29.7)
             sec.top_margin, sec.bottom_margin = Cm(2), Cm(2)
             sec.left_margin, sec.right_margin = Cm(3), Cm(2)
-        trang_bia(doc, ten_de_tai, sv=sinh_vien)
+        trang_bia(doc, ten_de_tai, noi_ngay=noi_ngay, sv=sinh_vien,
+                  gvhd=ten_gvhd)
         # Section thu hai bat dau o trang moi va mang dau/chan trang; section
         # dau (trang bia) khong dat gi nen no trong — dung y do.
         sec2 = doc.add_section(WD_SECTION.NEW_PAGE)
