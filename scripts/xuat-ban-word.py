@@ -549,7 +549,12 @@ def trang_bia(doc, tieu_de, loai='ĐỀ CƯƠNG CHI TIẾT',
         set_font(p.add_run(nhan), 13, bold=True)
         if gt: set_font(p.add_run(gt), 13)
 
-    dong(noi_ngay or 'Trà Vinh, tháng . . . năm 20 . . .', 13, ngh=True, truoc=48)
+    # Dong noi - ngay nam sat le duoi trang bia. Word khong co cach neo mot
+    # doan vao day trang, nen khoang cach truoc duoc do tu ban xuat: khoi noi
+    # dung cua trang bia co do cao co dinh, doan nay ket thuc cach le duoi
+    # khoang 1,5 cm. Doi bo cuc trang bia thi phai do lai con so nay.
+    dong(noi_ngay or 'Trà Vinh, tháng . . . năm 20 . . .', 13, ngh=True,
+         truoc=258)
 
 def new_doc(gvhd='...', svth='...'):
     doc = Document()
