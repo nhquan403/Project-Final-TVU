@@ -220,7 +220,14 @@ def add_muc_luc(doc, rows):
         set_font(p.add_run(tho), 13, bold=not cap_hai)
         set_font(p.add_run('\t' + trang.strip()), 13, bold=not cap_hai)
 
-def add_table(doc, rows, width_cm):
+def doc_can_le(o):
+    """':---:' -> can giua, '---:' -> can phai, con lai -> can trai."""
+    o = o.strip()
+    if o.startswith(':') and o.endswith(':'): return WD_ALIGN_PARAGRAPH.CENTER
+    if o.endswith(':'):                       return WD_ALIGN_PARAGRAPH.RIGHT
+    return WD_ALIGN_PARAGRAPH.LEFT
+
+def add_table(doc, rows, width_cm, can_le=None):
     # Bang co dong tieu de dung hai chu 'Muc' va 'Trang' la MUC LUC, khong
     # phai mot bang du lieu — ve bang dau cham noi cho dung kieu tai lieu in.
     if len(rows) > 1 and [c.strip() for c in rows[0][:2]] == ['Mục', 'Trang']:
@@ -237,8 +244,9 @@ def add_table(doc, rows, width_cm):
             cell = t.cell(i, j)
             cell.text = ''
             p = cell.paragraphs[0]
-            body_format(p, size=11, spacing=1.0, before=1, after=1,
-                        align=WD_ALIGN_PARAGRAPH.LEFT)
+            cot = (can_le[j] if can_le and j < len(can_le)
+                   else WD_ALIGN_PARAGRAPH.LEFT)
+            body_format(p, size=11, spacing=1.0, before=1, after=1, align=cot)
             add_inline(p, cell_text, size=11, base_bold=(i == 0))
             if i == 0:
                 shade(cell, 'EFEDE7')
@@ -328,14 +336,18 @@ def render_markdown(doc, path, width_cm, first_chapter_break=True):
             add_figure(doc, re.match(r'^\[Hình ([0-9A-Z]+\.[0-9]+)\]$', s).group(1), width_cm)
             i += 1; continue
         if s.startswith('|'):
-            flush(); rows = []
+            flush(); rows, can_le = [], []
             while i < len(lines) and lines[i].strip().startswith('|'):
                 raw = lines[i].strip()
-                if not TABLE_SEP.match(raw):
+                if TABLE_SEP.match(raw):
+                    # Dong phan cach khong phai du lieu, nhung no cho biet
+                    # tung cot can le the nao.
+                    can_le = [doc_can_le(c) for c in raw.strip().strip('|').split('|')]
+                else:
                     cells = [c.strip() for c in raw.strip('|').split('|')]
                     rows.append(cells)
                 i += 1
-            if rows: add_table(doc, rows, width_cm)
+            if rows: add_table(doc, rows, width_cm, can_le)
             continue
         if s == '\\pagebreak':
             # Dau ngat trang tuong minh. Can cho nhung khoi PHAI nam tron mot
@@ -494,8 +506,8 @@ def trang_bia(doc, tieu_de, loai='ĐỀ CƯƠNG CHI TIẾT',
         set_font(p.add_run(txt), co, bold=dam, italic=ngh)
         return p
 
-    dong('TRƯỜNG ĐẠI HỌC TRÀ VINH', 14, truoc=24, sau=2)
-    dong('KHOA KỸ THUẬT VÀ CÔNG NGHỆ', 14, dam=True, sau=18)
+    dong('TRƯỜNG KỸ THUẬT VÀ CÔNG NGHỆ', 14, truoc=24, sau=2)
+    dong('KHOA CÔNG NGHỆ THÔNG TIN', 14, dam=True, sau=18)
 
     if os.path.exists(LOGO):
         p = doc.add_paragraph()
