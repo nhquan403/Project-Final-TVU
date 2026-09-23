@@ -29,8 +29,8 @@
 | **9. KẾ HOẠCH VÀ TIẾN ĐỘ THỰC HIỆN** | 13 |
 | 9.1. Tiến độ theo tuần | 13 |
 | 9.2. Rủi ro và phương án dự phòng | 14 |
-| **10. TÀI LIỆU THAM KHẢO DỰ KIẾN** | 17 |
-| **11. Ý KIẾN CỦA GIẢNG VIÊN HƯỚNG DẪN** | 18 |
+| **10. TÀI LIỆU THAM KHẢO DỰ KIẾN** | 16 |
+| **11. Ý KIẾN CỦA GIẢNG VIÊN HƯỚNG DẪN** | 17 |
 
 \pagebreak
 
@@ -39,10 +39,8 @@
 > **Xây dựng website giới thiệu và đặt phòng trực tuyến cho Homestay TVH
 > tại Trà Vinh**
 
-Tên đề tài gọn, nêu ba thành phần nhận ra được ngay. Vấn đề nghiên cứu cốt lõi
-không đưa vào tên mà trình bày ở mục 2.2 và mục 3.3 — tên đề tài cho biết
-**làm cái gì cho ai ở đâu**, còn **giải bài toán nào** là nội dung của phần lý
-do và câu hỏi nghiên cứu.
+Tên đề tài cho biết sản phẩm, đối tượng áp dụng và phạm vi không gian. Vấn đề
+nghiên cứu không đưa vào tên cho gọn, và được trình bày ở mục 2.2 cùng mục 3.3.
 
 **Bảng 1. Các thành phần của đề tài và nơi trình bày**
 
@@ -62,7 +60,7 @@ Du lịch homestay tại Đồng bằng sông Cửu Long nói chung và Trà Vin
 khách sạn, homestay thường do hộ gia đình tự vận hành, quy mô từ vài phòng tới
 vài chục phòng, và không có bộ phận lễ tân trực suốt ngày đêm.
 
-Khảo sát thực tế vận hành của nhóm cơ sở lưu trú này cho thấy **ba vấn đề**:
+Khảo sát thực tế vận hành của nhóm cơ sở lưu trú này cho thấy ba vấn đề sau.
 
 1. **Kênh đặt phòng phân mảnh.** Chủ homestay nhận đặt phòng qua nhiều kênh tin
    nhắn khác nhau và đôi khi qua sàn trung gian. Mỗi kênh là một danh sách riêng
@@ -71,72 +69,73 @@ Khảo sát thực tế vận hành của nhóm cơ sở lưu trú này cho th�
 
 2. **Rủi ro đặt trùng phòng là rủi ro thường trực.** Khi hai khách liên hệ gần
    như cùng lúc và chủ nhà trả lời "còn phòng" cho cả hai, sai sót chỉ lộ ra vào
-   ngày nhận phòng — lúc không còn cách khắc phục nào ngoài việc từ chối một
-   khách đã đi đường xa tới nơi. Đây không phải lỗi bất cẩn mà là **hệ quả tất
-   yếu** của việc quản lý lịch phòng bằng trí nhớ con người.
+   ngày nhận phòng, lúc không còn cách khắc phục nào ngoài việc từ chối một
+   khách đã đi đường xa tới nơi. Đây không phải lỗi bất cẩn mà là hệ quả tất yếu
+   của việc quản lý lịch phòng bằng trí nhớ con người.
 
 3. **Chi phí hoa hồng của sàn trung gian.** Các sàn đặt phòng trực tuyến thu
    khoảng 15–20% giá trị mỗi đơn. Với homestay quy mô nhỏ, đó là phần lớn biên
    lợi nhuận. Nhưng rời sàn thì mất luôn kênh tiếp cận khách.
 
-Một website đặt phòng riêng giải quyết cả ba: gom mọi đơn về một nơi, để **cơ sở
-dữ liệu** chứ không phải trí nhớ con người bảo đảm không bán trùng phòng, và giữ
-lại toàn bộ doanh thu.
+Một website đặt phòng riêng giải quyết cả ba vấn đề: gom mọi đơn về một nơi, để
+cơ sở dữ liệu chứ không phải trí nhớ con người bảo đảm không bán trùng phòng, và
+giữ lại toàn bộ doanh thu.
 
 ### 2.2. Ý nghĩa khoa học
 
-Đề tài không dừng ở mức "làm một trang web quản lý". Bài toán cốt lõi —
-**không được bán trùng một phòng khi có nhiều yêu cầu đồng thời** — là một bài
-toán tranh chấp dữ liệu kinh điển, và là bài toán **không giải đúng được** bằng
-cách kiểm tra thông thường ở tầng ứng dụng.
+Đề tài không dừng ở mức làm một trang web quản lý. Bài toán cốt lõi là không
+được bán trùng một phòng khi có nhiều yêu cầu đồng thời. Đây là một bài toán
+tranh chấp dữ liệu kinh điển, và không giải đúng được bằng cách kiểm tra thông
+thường ở tầng ứng dụng.
 
 Mẫu quen thuộc *kiểm-tra-rồi-ghi* (đọc "còn phòng không?", nếu còn thì ghi) để
 lại một khe hở giữa lúc đọc và lúc ghi. Hai luồng cùng đọc thấy "còn", cùng ghi,
 và phòng bị bán hai lần. Mức cô lập giao dịch mặc định của hầu hết hệ quản trị
-cơ sở dữ liệu **không đóng được** khe hở này.
+cơ sở dữ liệu không đóng được khe hở này.
 
-Giải quyết đúng đòi hỏi hiểu biết về giao dịch, mức cô lập và **ràng buộc toàn
-vẹn ở tầng lưu trữ** — những nội dung cốt lõi của ngành mà một đề tài quản lý
+Giải quyết đúng đòi hỏi hiểu biết về giao dịch, mức cô lập và ràng buộc toàn vẹn
+ở tầng lưu trữ. Đây là những nội dung cốt lõi của ngành mà một đề tài quản lý
 thông thường (thêm, sửa, xoá, tìm kiếm) không chạm tới. Đây là lý do học thuật
 để chọn đề tài này thay vì một đề tài quản lý khác.
 
 ### 2.3. Tổng quan tình hình nghiên cứu và giải pháp hiện có
 
-Trước khi khẳng định đề tài có chỗ đứng, cần trả lời: bài toán này đã có ai giải
-chưa, và giải tới đâu. Các giải pháp đang tồn tại chia thành ba nhóm.
+Bài toán đặt phòng trực tuyến đã có nhiều lời giải. Mục này khảo sát ba nhóm
+giải pháp đang tồn tại và chỉ ra phần mà chúng chưa đáp ứng cho một homestay
+quy mô nhỏ.
 
 #### 2.3.1. Nhóm sàn đặt phòng trực tuyến
 
-Các sàn trung gian (Booking.com, Agoda, Airbnb, Traveloka) giải quyết rất tốt hai
-việc mà một homestay đơn lẻ không tự làm được: **mang khách tới** và **giữ chỗ
-đúng**. Về mặt kỹ thuật, bài toán chống bán trùng phòng ở quy mô đó đã được giải
-từ lâu và không còn là vấn đề mở.
+Các sàn trung gian (Booking.com, Agoda, Airbnb, Traveloka) làm tốt hai việc mà
+một homestay đơn lẻ không tự làm được, là mang khách tới và giữ chỗ đúng. Về mặt
+kỹ thuật, bài toán chống bán trùng phòng ở quy mô đó đã được giải từ lâu và không
+còn là vấn đề mở.
 
-Điều các sàn **không** giải quyết cho chủ homestay là chi phí và quyền kiểm soát.
+Phần các sàn không giải quyết cho chủ homestay là chi phí và quyền kiểm soát.
 Theo biểu phí công bố trên trang dành cho đối tác của các sàn, mức hoa hồng phổ
-biến nằm trong khoảng 15–20% giá trị mỗi đơn; ngoài ra cơ sở lưu trú không nắm
-dữ liệu khách của chính mình và không đặt được quy tắc đặt phòng riêng. Khi dùng
-nhiều sàn cùng lúc mà không đồng bộ lịch, rủi ro đặt trùng phòng **quay trở lại**
-ở chỗ khác: giữa các sàn với nhau.
+biến nằm trong khoảng 15–20% giá trị mỗi đơn. Cơ sở lưu trú cũng không nắm dữ
+liệu khách của chính mình và không đặt được quy tắc đặt phòng riêng. Ngoài ra,
+khi dùng nhiều sàn cùng lúc mà không đồng bộ lịch, rủi ro đặt trùng phòng xuất
+hiện trở lại ở một chỗ khác, là giữa các sàn với nhau.
 
 #### 2.3.2. Nhóm phần mềm quản lý cơ sở lưu trú
 
 Các phần mềm quản lý khách sạn thương mại trong nước đáp ứng đủ nghiệp vụ, nhưng
 được thiết kế cho khách sạn có lễ tân và bộ phận vận hành. Chúng thu phí theo
-tháng hoặc theo số phòng, cần đào tạo để dùng, và phần lớn là hệ thống đóng —
-không mở mã nguồn, nên **không thể dùng làm đối tượng nghiên cứu** về cách chúng
-bảo đảm tính đúng đắn của việc giữ chỗ.
+tháng hoặc theo số phòng, cần đào tạo để dùng, và phần lớn là hệ thống đóng.
+Vì không mở mã nguồn, chúng không dùng được làm đối tượng nghiên cứu về cách bảo
+đảm tính đúng đắn của việc giữ chỗ.
 
 #### 2.3.3. Nhóm đề tài học thuật trong nước
 
 Đề tài "quản lý khách sạn", "đặt phòng trực tuyến" là chủ đề quen thuộc ở bậc
 đại học. Khảo sát các đồ án và khoá luận cùng chủ đề cho thấy một khuôn mẫu lặp
-lại: trọng tâm đặt vào **độ phủ chức năng** (thêm, sửa, xoá, tìm kiếm, báo cáo,
+lại: trọng tâm đặt vào độ phủ chức năng (thêm, sửa, xoá, tìm kiếm, báo cáo,
 thống kê) và vào giao diện. Việc kiểm tra phòng trống hầu hết được cài ở tầng
-ứng dụng theo mẫu *kiểm-tra-rồi-ghi* đã nêu ở mục 2.2, và **kịch bản nhiều người
-đặt cùng lúc thường không được kiểm thử**. Hệ quả là lỗi đặt trùng phòng không
-xuất hiện khi chạy thử một người, nên không bị phát hiện — chứ không phải là
-không tồn tại.
+ứng dụng theo mẫu *kiểm-tra-rồi-ghi* đã nêu ở mục 2.2, và kịch bản nhiều người
+đặt cùng lúc thường không được kiểm thử. Lỗi đặt trùng phòng vì vậy không xuất
+hiện khi chạy thử một người, nên không bị phát hiện, chứ không phải là không
+tồn tại.
 
 #### 2.3.4. Khoảng trống mà đề tài nhắm tới
 
@@ -150,10 +149,10 @@ không tồn tại.
 | Chủ cơ sở giữ dữ liệu khách | Không | Tuỳ | — | **Có** |
 | Mã nguồn đọc và học được | Không | Không | Có | **Có** |
 
-Khoảng trống vì thế không nằm ở chỗ "chưa ai làm website đặt phòng", mà ở chỗ:
-**chưa có một lời giải mở, ở quy mô một homestay, đặt tính đúng đắn của việc giữ
-chỗ ở tầng cơ sở dữ liệu và chứng minh được điều đó bằng kiểm thử.** Đó là chỗ
-đứng của đề tài.
+Khoảng trống không nằm ở chỗ chưa ai làm website đặt phòng, mà ở chỗ chưa có một
+lời giải mở, ở quy mô một homestay, đặt tính đúng đắn của việc giữ chỗ ở tầng cơ
+sở dữ liệu và chứng minh được điều đó bằng kiểm thử. Đề tài này nhắm vào khoảng
+trống đó.
 
 ---
 
@@ -161,13 +160,13 @@ chỗ ở tầng cơ sở dữ liệu và chứng minh được điều đó b�
 
 ### 3.1. Mục tiêu tổng quát
 
-Xây dựng một website **hoạt động được**, có dữ liệu minh hoạ, giải quyết đúng
-bài toán giới thiệu và đặt phòng homestay, trong đó tính đúng đắn của việc chống
-đặt trùng phòng được **chứng minh bằng kiểm thử** chứ không phải bằng lập luận.
+Xây dựng một website chạy được, có dữ liệu minh hoạ, giải quyết bài toán giới
+thiệu và đặt phòng cho homestay. Tính đúng đắn của việc chống đặt trùng phòng
+được chứng minh bằng kiểm thử.
 
 ### 3.2. Mục tiêu cụ thể và tiêu chí nghiệm thu
 
-Mỗi mục tiêu đi kèm **một tiêu chí đo được**, không phải một lời hứa:
+Mỗi mục tiêu đi kèm một tiêu chí nghiệm thu đo được:
 
 **Bảng 3. Mục tiêu cụ thể và tiêu chí nghiệm thu**
 
@@ -184,7 +183,7 @@ Mỗi mục tiêu đi kèm **một tiêu chí đo được**, không phải mộ
 
 ### 3.3. Câu hỏi nghiên cứu
 
-Đồ án trả lời **bốn câu hỏi**, xếp theo thứ tự phụ thuộc:
+Đồ án trả lời bốn câu hỏi, xếp theo thứ tự phụ thuộc:
 
 > **CH1.** Vì sao việc kiểm tra "còn phòng hay không" ở tầng ứng dụng **không
 > đủ** để ngăn đặt trùng phòng, kể cả khi đã dùng giao dịch?
@@ -227,25 +226,24 @@ và 2.4.3), Chương 3 trả lời CH3 và CH4 bằng thiết kế và cài đ�
 | **Nội dung** | Ba khối: trang bán hàng cho khách, khu quản trị cho chủ homestay, giao diện lập trình ứng dụng dùng chung |
 | **Dữ liệu** | Dữ liệu minh hoạ do đề tài tự sinh, phản ánh đủ mọi trạng thái đơn. Không sử dụng dữ liệu khách hàng thật |
 
-### 4.3. Giới hạn — những gì đề tài KHÔNG làm
+### 4.3. Giới hạn — những nội dung đề tài không thực hiện
 
-Nêu rõ giới hạn ngay từ đề cương để tránh hiểu nhầm phạm vi khi nghiệm thu:
+Những nội dung sau nằm ngoài phạm vi nghiệm thu:
 
-- **Không** xây dựng ứng dụng di động riêng. Giao diện web đáp ứng được trên
-  điện thoại; ứng dụng di động là hướng phát triển.
-- **Không** tích hợp cổng thanh toán quốc tế. Đề tài dùng hình thức chuyển khoản
-  trong nước qua mã QR và webhook xác nhận.
-- **Không** làm bảng giá theo từng đêm. Giá theo loại phòng; bảng giá theo mùa
-  là hướng phát triển.
-- **Không** đồng bộ lịch hai chiều với sàn trung gian.
-- **Không** tự động hoàn tiền. Khoản thừa được ghi nhận và đưa vào hàng đợi để
-  người xử lý, vì hoàn tiền tự động vượt quá phạm vi một đồ án.
+- Xây dựng ứng dụng di động riêng. Giao diện web đáp ứng được trên điện thoại;
+  ứng dụng di động là hướng phát triển.
+- Tích hợp cổng thanh toán quốc tế. Đề tài dùng hình thức chuyển khoản trong
+  nước qua mã QR và webhook xác nhận.
+- Bảng giá theo từng đêm. Giá tính theo loại phòng; bảng giá theo mùa là hướng
+  phát triển.
+- Đồng bộ lịch hai chiều với sàn trung gian.
+- Tự động hoàn tiền. Khoản thừa được ghi nhận và đưa vào hàng đợi để người xử
+  lý, vì hoàn tiền tự động vượt quá phạm vi một đồ án.
 
 ### 4.4. Giả thuyết nghiên cứu
 
-Bốn câu hỏi ở mục 3.3 tương ứng với ba giả thuyết. Mỗi giả thuyết nêu kèm **cách
-bác bỏ nó** — một giả thuyết không thể bác bỏ thì không phải giả thuyết nghiên
-cứu, chỉ là một lời khẳng định.
+Bốn câu hỏi ở mục 3.3 tương ứng với ba giả thuyết. Mỗi giả thuyết nêu kèm điều
+kiện bác bỏ nó, để việc kiểm chứng ở mục 6.3 có căn cứ rõ ràng.
 
 > **GT1.** Với mức cô lập giao dịch mặc định, mẫu *kiểm-tra-rồi-ghi* ở tầng ứng
 > dụng **không** ngăn được đặt trùng phòng khi hai giao dịch chạy song song.
@@ -267,17 +265,16 @@ cứu, chỉ là một lời khẳng định.
 > *Bác bỏ nếu:* dựng được một kịch bản (tiền về muộn, thiếu, thừa, webhook gửi
 > lại, đơn đã huỷ) mà khoản tiền không xuất hiện ở bất kỳ đâu trong hệ thống.
 
-Ba giả thuyết này được kiểm chứng bằng các phép đo ở mục 6.3, không bằng lập
-luận.
+Cách kiểm chứng từng giả thuyết trình bày ở mục 6.3.
 
 ---
 
 ## 5. NHIỆM VỤ NGHIÊN CỨU
 
-Để đạt tám mục tiêu ở mục 3.2, đề tài thực hiện **sáu nhiệm vụ**:
+Để đạt tám mục tiêu ở mục 3.2, đề tài thực hiện sáu nhiệm vụ sau.
 
-1. **Khảo sát hiện trạng** quy trình đặt phòng thủ công của homestay và **phân
-   tích các trang đặt phòng thương mại** để rút ra mẫu thiết kế nên áp dụng và
+1. **Khảo sát hiện trạng** quy trình đặt phòng thủ công của homestay và phân
+   tích các trang đặt phòng thương mại, để rút ra mẫu thiết kế nên áp dụng và
    mẫu cố ý không áp dụng.
 2. **Nghiên cứu cơ sở lý thuyết** về giao dịch, mức cô lập, kiểu dữ liệu khoảng
    và ràng buộc loại trừ trong hệ quản trị cơ sở dữ liệu quan hệ.
@@ -286,7 +283,7 @@ luận.
    thiết kế giao diện lập trình ứng dụng và giao diện người dùng.
 4. **Cài đặt hệ thống** theo thiết kế, gồm cả cơ chế chống đặt trùng phòng và
    luồng thanh toán không đồng bộ.
-5. **Kiểm thử**, trọng tâm là **kiểm thử đa luồng** trên cơ sở dữ liệu thật để
+5. **Kiểm thử**, trọng tâm là kiểm thử đa luồng trên cơ sở dữ liệu thật để
    chứng minh mục tiêu số 2, cùng kiểm thử phân quyền và khả năng tiếp cận.
 6. **Đóng gói và viết tài liệu** để hệ thống chạy lại được bằng ba lệnh và
    người khác tiếp nhận được dự án.
@@ -314,7 +311,8 @@ luận.
 
 ### 6.3. Phương pháp kiểm chứng
 
-Đây là phần quyết định chất lượng đề tài, nên nêu cụ thể:
+Mỗi điều cần chứng minh đi kèm một cách kiểm chứng cụ thể và mục tiêu tương
+ứng:
 
 **Bảng 5. Cách kiểm chứng từng điều cần chứng minh**
 
@@ -327,10 +325,9 @@ luận.
 | Đạt chuẩn khả năng tiếp cận | **Quét tự động** bằng công cụ kiểm tra khả năng tiếp cận trên toàn bộ màn hình | Mục tiêu 6 |
 | Triển khai lại được | Chạy lại quy trình triển khai từ đầu trên máy sạch | Mục tiêu 7 |
 
-Bảng 5 không có dòng cho mục tiêu 8 (bộ tài liệu kỹ thuật), vì chất lượng tài
-liệu không đo được bằng một phép kiểm tự động. Mục tiêu đó được nghiệm thu bằng
-cách đối chiếu: mở từng mục tài liệu và kiểm xem nó có khớp với hệ thống đang
-chạy hay không.
+Mục tiêu 8 (bộ tài liệu kỹ thuật) không có dòng trong Bảng 5, vì chất lượng tài
+liệu không đo được bằng một phép kiểm tự động. Mục tiêu này được nghiệm thu bằng
+cách đối chiếu từng mục tài liệu với hệ thống đang chạy.
 
 ### 6.4. Công nghệ và công cụ dự kiến
 
@@ -356,8 +353,8 @@ chạy hay không.
    trùng phòng, đặt ở tầng cơ sở dữ liệu thay vì tầng ứng dụng, kèm bộ kiểm thử
    đa luồng chứng minh tính đúng đắn.
 3. **Về tài liệu:** bộ tài liệu kỹ thuật và báo cáo phân tích rõ **vì sao** cách
-   làm thông thường không đủ — phần có giá trị tham khảo cho các đề tài sau gặp
-   bài toán tranh chấp dữ liệu tương tự.
+   làm thông thường không đủ. Đây là phần có giá trị tham khảo cho các đề tài sau
+   gặp bài toán tranh chấp dữ liệu tương tự.
 
 ---
 
@@ -450,14 +447,13 @@ Phạm vi nghiên cứu
 >
 > **Ràng buộc từ quy định khoa:** commit lên GitHub **ít nhất một lần mỗi tuần**
 > và nộp báo cáo tiến độ hàng tuần vào thư mục `progress-report/`. Lịch sử commit
-> là **một tiêu chí chấm điểm tiến độ** — không có commit thì dù có báo cáo tiến
+> là **một tiêu chí chấm điểm tiến độ**. Không có commit thì dù có báo cáo tiến
 > độ vẫn bị xem như không hoàn thành.
 
 ### 9.2. Rủi ro và phương án dự phòng
 
-Kế hoạch mười bốn tuần ở trên giả định mọi việc diễn ra đúng dự tính. Phần này
-nêu những chỗ dễ trật nhất và cách xử lý đã chuẩn bị sẵn, để khi gặp thì không
-mất tuần nào cho việc nghĩ cách.
+Kế hoạch mười bốn tuần ở trên giả định mọi việc diễn ra đúng dự tính. Mục này
+liệt kê những chỗ dễ trật nhất cùng phương án xử lý đã chuẩn bị trước.
 
 **Bảng 8. Rủi ro và phương án dự phòng**
 
@@ -470,9 +466,10 @@ mất tuần nào cho việc nghĩ cách.
 | 5 | Viết báo cáo dồn vào cuối, không kịp | **Cao** | Lớn | Tuần 11 và 12 dành riêng cho viết báo cáo, và mốc nộp bản thảo hai chương đầu ở tuần 11 buộc phải viết sớm thay vì dồn |
 | 6 | Quên nộp báo cáo tiến độ hoặc không commit đủ tuần | Trung bình | Lớn — là tiêu chí chấm điểm | Coi việc commit và nộp báo cáo tiến độ là một hạng mục cố định cuối mỗi tuần, ngang với công việc kỹ thuật của tuần đó |
 
-Ba rủi ro số 1, 4 và 5 là ba rủi ro cần theo dõi sát nhất: rủi ro số 1 quyết định
-đề tài có đạt mục tiêu cốt lõi hay không, còn số 4 và 5 là hai nguyên nhân phổ
-biến nhất khiến một đồ án đủ năng lực vẫn không hoàn thành đúng hạn.
+Trong sáu rủi ro trên, ba rủi ro số 1, 4 và 5 cần theo dõi sát nhất. Rủi ro số 1
+quyết định đề tài có đạt mục tiêu cốt lõi hay không; rủi ro số 4 và số 5 là hai
+nguyên nhân thường gặp khiến một đồ án đủ năng lực vẫn không hoàn thành đúng
+hạn.
 
 ---
 
@@ -480,13 +477,13 @@ biến nhất khiến một đồ án đủ năng lực vẫn không hoàn thàn
 
 ## 10. TÀI LIỆU THAM KHẢO DỰ KIẾN
 
-Đánh số theo IEEE thành **một dãy liên tục**: [1]–[4] công trình học thuật làm
+Đánh số theo IEEE thành một dãy liên tục: [1]–[4] công trình học thuật làm
 nền cho CH1 và CH2, [5]–[10] tài liệu kỹ thuật chính thức, [11]–[14] tiêu chuẩn
 và khuyến nghị, [15]–[16] văn bản của khoa.
 
-> **Cần bổ sung trước khi nộp:** [5]–[14] phải ghi kèm **số phiên bản và ngày
-> truy cập**; mức hoa hồng ở mục 2.3.1 phải dẫn đúng trang biểu phí đối tác của
-> từng sàn kèm ngày truy cập — số liệu không nguồn là chỗ dễ bị hỏi nhất.
+> **Cần bổ sung trước khi nộp:** các tài liệu [5]–[14] phải ghi kèm số phiên bản
+> và ngày truy cập. Mức hoa hồng nêu ở mục 2.3.1 phải dẫn đúng trang biểu phí
+> dành cho đối tác của từng sàn, kèm ngày truy cập.
 
 1. H. Berenson, P. Bernstein, J. Gray, J. Melton, E. O'Neil và P. O'Neil, *"A Critique of ANSI SQL Isolation Levels"*, ACM SIGMOD, 1995.
 2. A. Fekete, D. Liarokapis, E. O'Neil, P. O'Neil và D. Shasha, *"Making Snapshot Isolation Serializable"*, ACM Transactions on Database Systems, 2005.
