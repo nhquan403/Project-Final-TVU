@@ -281,6 +281,8 @@ def add_code(doc, lines):
 # kieu "|  |  |" cung khop va bi bo di im lang — dung ba dong trong chua cho
 # ky ten cuoi de cuong bien mat ma khong bao gi.
 TABLE_SEP = re.compile(r'^\s*\|?[\s:\-|]*-[\s:\-|]*\|[\s:\-|]*$')
+# Dong toan dau cham trong Markdown: dong ke de nguoi doc viet tay.
+DONG_CHAM = re.compile(r'^\.{10,}$')
 
 def render_markdown(doc, path, width_cm, first_chapter_break=True):
     lines = open(path, encoding='utf-8').read().split('\n')
@@ -349,6 +351,21 @@ def render_markdown(doc, path, width_cm, first_chapter_break=True):
                 i += 1
             if rows: add_table(doc, rows, width_cm, can_le)
             continue
+        if DONG_CHAM.match(s):
+            # Dong ke trong de nguoi cham viet tay. Mot chuoi dau cham la MOT
+            # "tu" lien khoi: can deu chi keo gian khoang trang GIUA cac tu,
+            # ma o day khong co khoang trang nao, nen dong dung lai o dau het
+            # cham — do duoc 243,7pt tren 453,5pt be chu, tuc hon nua dong.
+            # Thay bang mot tab co dan dau la dau cham, diem dung dat sat le
+            # phai: Word tu rai cham kin be ngang, khong phu thuoc so cham go
+            # trong Markdown hay co chu dang dung.
+            flush()
+            p = doc.add_paragraph()
+            body_format(p)
+            p.paragraph_format.tab_stops.add_tab_stop(
+                Cm(width_cm), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.DOTS)
+            set_font(p.add_run('\t'), 13)
+            i += 1; continue
         if s.startswith('\\khoiky '):
             # Khoi ky ten nam o nua phai to giay theo le trinh bay van ban
             # hanh chinh, va cac dong trong khoi can giua VOI NHAU — chuc danh
