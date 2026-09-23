@@ -449,8 +449,13 @@ def header_de_cuong(section, tieu_de):
     set_font(p.add_run(tieu_de.upper()), 11, bold=True, italic=True)
     _duong_ke(p, 'bottom')
 
-def footer_de_cuong(section):
-    """Chan trang: cho trong de sinh vien dien ho ten, MSSV, lop; so trang ben phai."""
+TRONG = '. . . . . . . . . . . . . . .'
+
+def footer_de_cuong(section, sv=None):
+    """Chan trang: ho ten, MSSV, lop ben trai; so trang ben phai.
+
+    Truong nao chua biet thi de dau cham cho sinh vien dien tay."""
+    ten, mssv, lop = (sv or (None, None, None))
     f = section.footer
     f.is_linked_to_previous = False
     p = f.paragraphs[0]; p.text = ''
@@ -458,8 +463,8 @@ def footer_de_cuong(section):
     pf.space_before = Pt(0); pf.space_after = Pt(0)
     pf.tab_stops.add_tab_stop(Cm(16), WD_TAB_ALIGNMENT.RIGHT)
     _duong_ke(p, 'top')
-    set_font(p.add_run('. . . . . . . . . . . . . . . . . .  -  MSSV '
-                       '. . . . . . . . . . . .  -  Lớp . . . . . . . . . . . .'), 11)
+    set_font(p.add_run('%s  -  MSSV %s  -  Lớp %s'
+                       % (ten or TRONG, mssv or TRONG, lop or TRONG)), 11)
     set_font(p.add_run('\t'), 11)
     _so_trang(p)
 
@@ -474,7 +479,7 @@ def _so_trang(p):
         if txt: e.text = txt
         r._r.append(e)
 
-def trang_bia(doc, tieu_de, loai='ĐỀ CƯƠNG CHI TIẾT', noi='Trà Vinh'):
+def trang_bia(doc, tieu_de, loai='ĐỀ CƯƠNG CHI TIẾT', noi='Trà Vinh', sv=None):
     """Trang bia rieng: khong co dau trang, khong co chan trang, khong co so trang.
 
     Trang nay dung mot section rieng. Word chi bo dau/chan trang cho section
@@ -502,11 +507,12 @@ def trang_bia(doc, tieu_de, loai='ĐỀ CƯƠNG CHI TIẾT', noi='Trà Vinh'):
     dong(loai, 24, dam=True, truoc=12, sau=14)
     dong(tieu_de.upper(), 15, dam=True, sau=48)
 
+    ten, mssv, lop = (sv or (None, None, None))
     for nhan, gt in (('Giảng viên hướng dẫn:', ' . . . . . . . . . . . . . . . . . . . . . . .'),
                      ('Sinh viên thực hiện:', ''),
-                     ('Họ và tên:', ' . . . . . . . . . . . . . . . . . . . . . . .'),
-                     ('Mã số sinh viên:', ' . . . . . . . . . . . . . . .'),
-                     ('Lớp:', ' . . . . . . . . . . . . . . .')):
+                     ('Họ và tên:', ' ' + (ten or '. . . . . . . . . . . . . . . . . . . . . . .')),
+                     ('Mã số sinh viên:', ' ' + (mssv or TRONG)),
+                     ('Lớp:', ' ' + (lop or TRONG))):
         p = doc.add_paragraph()
         body_format(p, spacing=1.3, before=2, after=2, align=WD_ALIGN_PARAGRAPH.LEFT)
         p.paragraph_format.left_indent = Cm(3)
@@ -562,6 +568,14 @@ if __name__ == '__main__':
         # phan dinh lai vao nhau. Nen dau trang dung mot ten ngan rieng.
         m_ng = re.search(r'<!--\s*dau-trang:\s*(.+?)\s*-->', dau_tep)
         ten_dau_trang = m_ng.group(1) if m_ng else ten_de_tai
+        # '<!-- sinh-vien: Ho ten | MSSV | Lop -->'. Thieu truong nao thi
+        # trang bia va chan trang de dau cham cho cho do.
+        m_sv = re.search(r'<!--\s*sinh-vien:\s*(.+?)\s*-->', dau_tep)
+        sinh_vien = None
+        if m_sv:
+            phan = [x.strip() for x in m_sv.group(1).split('|')]
+            phan += [''] * (3 - len(phan))
+            sinh_vien = tuple(x or None for x in phan[:3])
 
     if ten_de_tai:
         doc = Document()
@@ -575,7 +589,7 @@ if __name__ == '__main__':
             sec.page_width, sec.page_height = Cm(21), Cm(29.7)
             sec.top_margin, sec.bottom_margin = Cm(2), Cm(2)
             sec.left_margin, sec.right_margin = Cm(3), Cm(2)
-        trang_bia(doc, ten_de_tai)
+        trang_bia(doc, ten_de_tai, sv=sinh_vien)
         # Section thu hai bat dau o trang moi va mang dau/chan trang; section
         # dau (trang bia) khong dat gi nen no trong — dung y do.
         sec2 = doc.add_section(WD_SECTION.NEW_PAGE)
@@ -583,7 +597,7 @@ if __name__ == '__main__':
         sec2.top_margin, sec2.bottom_margin = Cm(2), Cm(2)
         sec2.left_margin, sec2.right_margin = Cm(3), Cm(2)
         header_de_cuong(sec2, ten_dau_trang)
-        footer_de_cuong(sec2)
+        footer_de_cuong(sec2, sinh_vien)
         w = 21 - 3 - 2
     else:
         doc, w = new_doc(gvhd, svth)
