@@ -29,8 +29,8 @@
 | **9. KẾ HOẠCH VÀ TIẾN ĐỘ THỰC HIỆN** | 13 |
 | 9.1. Tiến độ theo tuần | 13 |
 | 9.2. Rủi ro và phương án dự phòng | 14 |
-| **10. TÀI LIỆU THAM KHẢO DỰ KIẾN** | 15 |
-| **11. Ý KIẾN CỦA GIẢNG VIÊN HƯỚNG DẪN** | 17 |
+| **10. TÀI LIỆU THAM KHẢO DỰ KIẾN** | 17 |
+| **11. Ý KIẾN CỦA GIẢNG VIÊN HƯỚNG DẪN** | 18 |
 
 \pagebreak
 
@@ -179,7 +179,7 @@ Mỗi mục tiêu đi kèm **một tiêu chí đo được**, không phải mộ
 | 4 | Không có nhánh nào để tiền của khách biến mất im lặng | Mọi khoản không khớp đều vào hàng đợi đối soát thủ công |
 | 5 | Quản trị viên quản lý được phòng, giá, số khách và **ngày khả dụng** | Đóng phòng theo khoảng ngày, hệ thống tự mở lại đúng hạn |
 | 6 | Giao diện đạt chuẩn một trang đặt phòng thương mại | Không còn lỗi vi phạm WCAG 2.1 mức A và AA khi quét tự động |
-| 7 | Một lệnh là đủ để chạy toàn hệ thống kèm dữ liệu mẫu | Ba lệnh từ lúc sao chép mã nguồn tới lúc hệ thống chạy được |
+| 7 | Ba lệnh là đủ để dựng toàn hệ thống kèm dữ liệu mẫu trên một máy sạch | Từ lúc sao chép mã nguồn tới lúc hệ thống chạy được: sao chép, sinh tệp cấu hình, dựng và chạy — không thao tác tay nào khác |
 | 8 | Có tài liệu kỹ thuật để người khác tiếp nhận được dự án | Bộ tài liệu kỹ thuật đối chiếu được với hệ thống đang chạy |
 
 ### 3.3. Câu hỏi nghiên cứu
@@ -199,9 +199,10 @@ Mỗi mục tiêu đi kèm **một tiêu chí đo được**, không phải mộ
 > gọi lại sau), làm thế nào để **không có nhánh nào** khiến tiền của khách biến
 > mất mà không ai biết?
 
-Bốn câu hỏi này là trục xuyên suốt: Chương 2 trả lời CH1 và CH2 về mặt lý thuyết,
-Chương 3 trả lời CH3 và CH4 bằng thiết kế và cài đặt, Chương 4 chứng minh cả bốn
-bằng kết quả kiểm thử.
+Bốn câu hỏi này là trục xuyên suốt của quyển báo cáo, và mục 8 chỉ rõ từng câu
+được trả lời ở mục nào: Chương 2 trả lời CH1 và CH2 về mặt lý thuyết (mục 2.4.1
+và 2.4.3), Chương 3 trả lời CH3 và CH4 bằng thiết kế và cài đặt (mục 3.8 và
+3.9), còn Chương 4 chứng minh cả bốn bằng kết quả kiểm thử (mục 4.5).
 
 ---
 
@@ -209,7 +210,7 @@ bằng kết quả kiểm thử.
 
 ### 4.1. Đối tượng nghiên cứu
 
-| | |
+| Khái niệm | Nội dung |
 |---|---|
 | **Khách thể** | Cơ sở lưu trú quy mô nhỏ do hộ gia đình vận hành (homestay) |
 | **Đối tượng nghiên cứu** | Quy trình đặt phòng trực tuyến và **cơ chế bảo đảm tính đúng đắn của việc giữ chỗ** khi có nhiều yêu cầu đồng thời |
@@ -287,7 +288,7 @@ luận.
    luồng thanh toán không đồng bộ.
 5. **Kiểm thử**, trọng tâm là **kiểm thử đa luồng** trên cơ sở dữ liệu thật để
    chứng minh mục tiêu số 2, cùng kiểm thử phân quyền và khả năng tiếp cận.
-6. **Đóng gói và viết tài liệu** để hệ thống chạy lại được bằng vài lệnh và
+6. **Đóng gói và viết tài liệu** để hệ thống chạy lại được bằng ba lệnh và
    người khác tiếp nhận được dự án.
 
 ---
@@ -317,13 +318,19 @@ luận.
 
 **Bảng 5. Cách kiểm chứng từng điều cần chứng minh**
 
-| Điều cần chứng minh | Cách chứng minh |
-|---|---|
-| Không bán trùng phòng | **Kiểm thử đa luồng** trên cơ sở dữ liệu thật (không giả lập bằng cơ sở dữ liệu trong bộ nhớ, vì ràng buộc cần kiểm lại không tồn tại ở đó): cho nhiều giao dịch cùng đặt một phòng và kiểm tra đúng một luồng thắng |
-| Mặc định từ chối mọi endpoint chưa khai quyền | Kiểm thử **ma trận phân quyền** duyệt toàn bộ tiền tố đường dẫn |
-| Tiền không biến mất im lặng | Kiểm thử **cửa sổ tranh chấp** của webhook: tiền về muộn, tiền thiếu, tiền thừa, webhook gửi lại |
-| Đạt chuẩn khả năng tiếp cận | **Quét tự động** bằng công cụ kiểm tra khả năng tiếp cận trên toàn bộ màn hình |
-| Triển khai lại được | Chạy lại quy trình triển khai từ đầu trên máy sạch |
+| Điều cần chứng minh | Cách chứng minh | Chứng minh cho |
+|---|---|:---:|
+| Không bán trùng phòng | **Kiểm thử đa luồng** trên cơ sở dữ liệu thật (không giả lập bằng cơ sở dữ liệu trong bộ nhớ, vì ràng buộc cần kiểm lại không tồn tại ở đó): cho nhiều giao dịch cùng đặt một phòng và kiểm tra đúng một luồng thắng | Mục tiêu 2 · GT1, GT2 |
+| Khách vẫn đặt được phòng khác khi cơ sở dữ liệu từ chối | Kiểm thử **vòng thử gán phòng**: dựng tình huống trùng lịch rồi kiểm tra khách nhận được phòng thay thế chứ không nhận lỗi | Mục tiêu 1 · CH3 |
+| Tiền không biến mất im lặng | Kiểm thử **cửa sổ tranh chấp** của webhook: tiền về muộn, tiền thiếu, tiền thừa, webhook gửi lại | Mục tiêu 3, 4 · GT3 |
+| Mặc định từ chối mọi endpoint chưa khai quyền | Kiểm thử **ma trận phân quyền** duyệt toàn bộ tiền tố đường dẫn | Mục tiêu 5 — mặt sau: ngoài quản trị viên thì không ai thao tác được |
+| Đạt chuẩn khả năng tiếp cận | **Quét tự động** bằng công cụ kiểm tra khả năng tiếp cận trên toàn bộ màn hình | Mục tiêu 6 |
+| Triển khai lại được | Chạy lại quy trình triển khai từ đầu trên máy sạch | Mục tiêu 7 |
+
+Bảng 5 không có dòng cho mục tiêu 8 (bộ tài liệu kỹ thuật), vì chất lượng tài
+liệu không đo được bằng một phép kiểm tự động. Mục tiêu đó được nghiệm thu bằng
+cách đối chiếu: mở từng mục tài liệu và kiểm xem nó có khớp với hệ thống đang
+chạy hay không.
 
 ### 6.4. Công nghệ và công cụ dự kiến
 
@@ -331,13 +338,13 @@ luận.
 
 | Tầng | Công nghệ | Lý do chọn |
 |---|---|---|
-| **Cơ sở dữ liệu** | PostgreSQL | **Lý do quyết định:** có kiểu dữ liệu khoảng ngày và ràng buộc loại trừ — hai thứ mà bài toán cốt lõi cần và các hệ quản trị phổ biến khác không có |
+| **Cơ sở dữ liệu** | PostgreSQL | **Lý do quyết định:** có kiểu dữ liệu khoảng ngày và ràng buộc loại trừ — hai thứ mà bài toán cốt lõi cần. MySQL và SQL Server không có sẵn cả hai, nên trên chúng phải tự chống trùng ở tầng ứng dụng, đúng chỗ mà mục 2.2 chỉ ra là không đủ |
 | **Máy chủ ứng dụng** | Java + Spring Boot | Hệ sinh thái trưởng thành cho giao dịch cơ sở dữ liệu và bảo mật |
 | **Giao diện** | Angular + Tailwind CSS | Kiến trúc tách rời, dùng lại được giao diện lập trình ứng dụng nếu sau này làm ứng dụng di động |
 | **Quản lý lược đồ** | Công cụ migration | Lược đồ có lịch sử, tái lập được, không sửa bằng tay |
 | **Kiểm thử** | Kiểm thử tích hợp trên cơ sở dữ liệu thật dựng trong container | Ràng buộc cần kiểm là tính năng của hệ quản trị, giả lập thì không kiểm được |
-| **Đóng gói** | Docker Compose | Chạy toàn hệ thống bằng một lệnh, không phụ thuộc máy người chấm |
-| **Quản lý mã nguồn** | Git + GitHub | Theo yêu cầu mục 4 của quy định khoa |
+| **Đóng gói** | Docker Compose | Dựng cả bốn dịch vụ bằng một lệnh duy nhất, không phụ thuộc máy người chấm |
+| **Quản lý mã nguồn** | Git + GitHub | Quy định của khoa có một mục riêng về quản lý đồ án bằng GitHub, và lịch sử commit là một tiêu chí chấm điểm tiến độ |
 
 ---
 
@@ -392,16 +399,17 @@ Phạm vi nghiên cứu
 - 3.5. Thiết kế giao diện lập trình ứng dụng
 - 3.6. Thiết kế giao diện người dùng
 - 3.7. Môi trường và quy trình phát triển
-- 3.8. Cài đặt các chức năng chính → *trả lời CH3*
-- 3.9. Cài đặt mô hình bảo mật
-- 3.10. Đóng gói và triển khai
+- 3.8. Cài đặt luồng đặt phòng và xử lý khi cơ sở dữ liệu từ chối → *trả lời CH3*
+- 3.9. Cài đặt thanh toán không đồng bộ, webhook và hàng đợi đối soát → *trả lời CH4*
+- 3.10. Cài đặt mô hình bảo mật
+- 3.11. Đóng gói và triển khai
 
 **CHƯƠNG 4. KẾT QUẢ NGHIÊN CỨU**
 - 4.1. Chức năng đã hoàn thành
 - 4.2. Kết quả kiểm thử tự động
 - 4.3. Các lỗi thực tế phát hiện trong quá trình thực hiện
 - 4.4. Kiểm thử phi chức năng — khả năng tiếp cận, bảo mật
-- 4.5. Đối chiếu với mục đích đã đặt ra → *trả lời CH4*
+- 4.5. Đối chiếu với mục đích đã đặt ra → *chứng minh cả bốn câu hỏi*
 - 4.6. Những điều chưa kiểm chứng được
 - 4.7. Các giới hạn đã biết của hệ thống
 
@@ -430,7 +438,7 @@ Phạm vi nghiên cứu
 | **6** | Cài đặt luồng đặt phòng và vòng thử gán phòng | Đặt được đơn từ đầu tới cuối | Trả lời CH3 |
 | **7** | Cài đặt thanh toán, webhook, hàng đợi thư | Đơn tự xác nhận khi tiền về | Trả lời CH4 |
 | **8** | Cài đặt khu quản trị và trang bán hàng cho khách | Giao diện hoàn chỉnh hai khối | |
-| **9** | Quản lý ngày khả dụng, đóng gói bằng container, dữ liệu mẫu | Chạy toàn hệ thống bằng một lệnh | |
+| **9** | Quản lý ngày khả dụng, đóng gói bằng container, dữ liệu mẫu | Dựng được toàn hệ thống trên máy sạch bằng ba lệnh | |
 | **10** | Kiểm thử toàn diện, sửa lỗi, đo khả năng tiếp cận | Bộ kiểm thử đạt 100%, không còn lỗi vi phạm | |
 | **11** | Viết báo cáo: mở đầu và Chương 1, 2 | Bản thảo hai chương đầu | **Mốc: nộp bản thảo cho GVHD** |
 | **12** | Viết báo cáo: Chương 3, 4, 5; chuẩn bị hình minh hoạ | Bản thảo đầy đủ + bộ hình | |
@@ -468,13 +476,17 @@ biến nhất khiến một đồ án đủ năng lực vẫn không hoàn thàn
 
 ---
 
+\pagebreak
+
 ## 10. TÀI LIỆU THAM KHẢO DỰ KIẾN
 
-Đánh số theo định dạng IEEE thành **một dãy liên tục**: [1]–[4] là công trình
-học thuật làm nền lý thuyết trả lời CH1 và CH2; [5]–[10] là tài liệu kỹ thuật
-chính thức của các công nghệ dùng trong đề tài; [11]–[14] là tiêu chuẩn và
-khuyến nghị; [15]–[16] là văn bản tiếng Việt của khoa. Danh mục này là dự kiến,
-bản đầy đủ hoàn thiện trong quyển báo cáo.
+Đánh số theo IEEE thành **một dãy liên tục**: [1]–[4] công trình học thuật làm
+nền cho CH1 và CH2, [5]–[10] tài liệu kỹ thuật chính thức, [11]–[14] tiêu chuẩn
+và khuyến nghị, [15]–[16] văn bản của khoa.
+
+> **Cần bổ sung trước khi nộp:** [5]–[14] phải ghi kèm **số phiên bản và ngày
+> truy cập**; mức hoa hồng ở mục 2.3.1 phải dẫn đúng trang biểu phí đối tác của
+> từng sàn kèm ngày truy cập — số liệu không nguồn là chỗ dễ bị hỏi nhất.
 
 1. H. Berenson, P. Bernstein, J. Gray, J. Melton, E. O'Neil và P. O'Neil, *"A Critique of ANSI SQL Isolation Levels"*, ACM SIGMOD, 1995.
 2. A. Fekete, D. Liarokapis, E. O'Neil, P. O'Neil và D. Shasha, *"Making Snapshot Isolation Serializable"*, ACM Transactions on Database Systems, 2005.
@@ -492,11 +504,6 @@ bản đầy đủ hoàn thiện trong quyển báo cáo.
 14. **OWASP Top Ten** — rủi ro bảo mật ứng dụng web, OWASP Foundation.
 15. Văn bản *"Một số quy định về hình thức trình bày thực tập đồ án cơ sở ngành và chuyên ngành"* — Khoa Kỹ thuật và Công nghệ, Trường Đại học Trà Vinh.
 16. Bộ biểu mẫu **BM5** — Khoa Kỹ thuật và Công nghệ, Trường Đại học Trà Vinh.
-
-> **Cần bổ sung trước khi nộp:** mỗi tài liệu kỹ thuật ở mục [5]–[14] phải ghi
-> kèm **số phiên bản và ngày truy cập**; mức hoa hồng nêu ở mục 2.3.1 phải dẫn
-> đúng trang biểu phí dành cho đối tác của từng sàn kèm ngày truy cập. Số liệu
-> không có nguồn là chỗ dễ bị hỏi nhất khi bảo vệ.
 
 ---
 
