@@ -27,7 +27,41 @@ Tên đề tài nêu đủ bốn thành phần:
 | **Đối tượng áp dụng** | Homestay TVH — cơ sở lưu trú quy mô nhỏ do hộ gia đình vận hành |
 | **Phạm vi không gian** | Tỉnh Trà Vinh |
 
----
+\pagebreak
+
+## MỤC LỤC
+
+| Mục | Trang |
+|---|:---:|
+| **1. TÊN ĐỀ TÀI** | 1 |
+| **2. LÝ DO CHỌN ĐỀ TÀI** | 3 |
+| 2.1. Tính cấp thiết về thực tiễn | 3 |
+| 2.2. Ý nghĩa khoa học | 3 |
+| 2.3. Tổng quan tình hình nghiên cứu và giải pháp hiện có | 4 |
+| **3. MỤC TIÊU VÀ CÂU HỎI NGHIÊN CỨU** | 5 |
+| 3.1. Mục tiêu tổng quát | 5 |
+| 3.2. Mục tiêu cụ thể và tiêu chí nghiệm thu | 5 |
+| 3.3. Câu hỏi nghiên cứu | 6 |
+| **4. ĐỐI TƯỢNG VÀ PHẠM VI** | 7 |
+| 4.1. Đối tượng nghiên cứu | 7 |
+| 4.2. Phạm vi nghiên cứu | 7 |
+| 4.3. Giới hạn — những gì đề tài KHÔNG làm | 7 |
+| 4.4. Giả thuyết nghiên cứu | 8 |
+| **5. NHIỆM VỤ NGHIÊN CỨU** | 8 |
+| **6. PHƯƠNG PHÁP NGHIÊN CỨU** | 9 |
+| 6.1. Phương pháp nghiên cứu lý thuyết | 9 |
+| 6.2. Phương pháp nghiên cứu thực tiễn | 9 |
+| 6.3. Phương pháp kiểm chứng | 9 |
+| 6.4. Công nghệ và công cụ dự kiến | 10 |
+| **7. ĐÓNG GÓP DỰ KIẾN CỦA ĐỀ TÀI** | 10 |
+| **8. KẾT CẤU DỰ KIẾN CỦA ĐỒ ÁN** | 10 |
+| **9. KẾ HOẠCH VÀ TIẾN ĐỘ THỰC HIỆN** | 12 |
+| 9.1. Tiến độ theo tuần | 12 |
+| 9.2. Rủi ro và phương án dự phòng | 13 |
+| **10. TÀI LIỆU THAM KHẢO DỰ KIẾN** | 14 |
+| **11. Ý KIẾN CỦA GIẢNG VIÊN HƯỚNG DẪN** | 16 |
+
+\pagebreak
 
 ## 2. LÝ DO CHỌN ĐỀ TÀI
 
@@ -75,6 +109,59 @@ Giải quyết đúng đòi hỏi hiểu biết về giao dịch, mức cô lậ
 vẹn ở tầng lưu trữ** — những nội dung cốt lõi của ngành mà một đề tài quản lý
 thông thường (thêm, sửa, xoá, tìm kiếm) không chạm tới. Đây là lý do học thuật
 để chọn đề tài này thay vì một đề tài quản lý khác.
+
+### 2.3. Tổng quan tình hình nghiên cứu và giải pháp hiện có
+
+Trước khi khẳng định đề tài có chỗ đứng, cần trả lời: bài toán này đã có ai giải
+chưa, và giải tới đâu. Các giải pháp đang tồn tại chia thành ba nhóm.
+
+#### 2.3.1. Nhóm sàn đặt phòng trực tuyến
+
+Các sàn trung gian (Booking.com, Agoda, Airbnb, Traveloka) giải quyết rất tốt hai
+việc mà một homestay đơn lẻ không tự làm được: **mang khách tới** và **giữ chỗ
+đúng**. Về mặt kỹ thuật, bài toán chống bán trùng phòng ở quy mô đó đã được giải
+từ lâu và không còn là vấn đề mở.
+
+Điều các sàn **không** giải quyết cho chủ homestay là chi phí và quyền kiểm soát.
+Theo biểu phí công bố trên trang dành cho đối tác của các sàn, mức hoa hồng phổ
+biến nằm trong khoảng 15–20% giá trị mỗi đơn; ngoài ra cơ sở lưu trú không nắm
+dữ liệu khách của chính mình và không đặt được quy tắc đặt phòng riêng. Khi dùng
+nhiều sàn cùng lúc mà không đồng bộ lịch, rủi ro đặt trùng phòng **quay trở lại**
+ở chỗ khác: giữa các sàn với nhau.
+
+#### 2.3.2. Nhóm phần mềm quản lý cơ sở lưu trú
+
+Các phần mềm quản lý khách sạn thương mại trong nước đáp ứng đủ nghiệp vụ, nhưng
+được thiết kế cho khách sạn có lễ tân và bộ phận vận hành. Chúng thu phí theo
+tháng hoặc theo số phòng, cần đào tạo để dùng, và phần lớn là hệ thống đóng —
+không mở mã nguồn, nên **không thể dùng làm đối tượng nghiên cứu** về cách chúng
+bảo đảm tính đúng đắn của việc giữ chỗ.
+
+#### 2.3.3. Nhóm đề tài học thuật trong nước
+
+Đề tài "quản lý khách sạn", "đặt phòng trực tuyến" là chủ đề quen thuộc ở bậc
+đại học. Khảo sát các đồ án và khoá luận cùng chủ đề cho thấy một khuôn mẫu lặp
+lại: trọng tâm đặt vào **độ phủ chức năng** (thêm, sửa, xoá, tìm kiếm, báo cáo,
+thống kê) và vào giao diện. Việc kiểm tra phòng trống hầu hết được cài ở tầng
+ứng dụng theo mẫu *kiểm-tra-rồi-ghi* đã nêu ở mục 2.2, và **kịch bản nhiều người
+đặt cùng lúc thường không được kiểm thử**. Hệ quả là lỗi đặt trùng phòng không
+xuất hiện khi chạy thử một người, nên không bị phát hiện — chứ không phải là
+không tồn tại.
+
+#### 2.3.4. Khoảng trống mà đề tài nhắm tới
+
+| Tiêu chí | Sàn đặt phòng | Phần mềm quản lý | Đề tài cùng chủ đề | **Đề tài này** |
+|---|:---:|:---:|:---:|:---:|
+| Chống đặt trùng phòng đúng khi có tranh chấp | Có | Có (hộp đen) | Thường không | **Có** |
+| Chứng minh được tính đúng đắn đó | Không công bố | Không công bố | Không kiểm thử | **Kiểm thử đa luồng** |
+| Chi phí cho chủ homestay | 15–20%/đơn | Phí thuê bao | — | **Không** |
+| Chủ cơ sở giữ dữ liệu khách | Không | Tuỳ | — | **Có** |
+| Mã nguồn đọc và học được | Không | Không | Có | **Có** |
+
+Khoảng trống vì thế không nằm ở chỗ "chưa ai làm website đặt phòng", mà ở chỗ:
+**chưa có một lời giải mở, ở quy mô một homestay, đặt tính đúng đắn của việc giữ
+chỗ ở tầng cơ sở dữ liệu và chứng minh được điều đó bằng kiểm thử.** Đó là chỗ
+đứng của đề tài.
 
 ---
 
@@ -156,6 +243,35 @@ Nêu rõ giới hạn ngay từ đề cương để tránh hiểu nhầm phạm 
 - **Không** đồng bộ lịch hai chiều với sàn trung gian.
 - **Không** tự động hoàn tiền. Khoản thừa được ghi nhận và đưa vào hàng đợi để
   người xử lý, vì hoàn tiền tự động vượt quá phạm vi một đồ án.
+
+### 4.4. Giả thuyết nghiên cứu
+
+Bốn câu hỏi ở mục 3.3 tương ứng với ba giả thuyết. Mỗi giả thuyết nêu kèm **cách
+bác bỏ nó** — một giả thuyết không thể bác bỏ thì không phải giả thuyết nghiên
+cứu, chỉ là một lời khẳng định.
+
+> **GT1.** Với mức cô lập giao dịch mặc định, mẫu *kiểm-tra-rồi-ghi* ở tầng ứng
+> dụng **không** ngăn được đặt trùng phòng khi hai giao dịch chạy song song.
+>
+> *Bác bỏ nếu:* chạy kiểm thử đa luồng trên bản cài đặt theo mẫu này mà không
+> lần nào xuất hiện đơn trùng.
+
+> **GT2.** Một ràng buộc loại trừ trên kiểu dữ liệu khoảng ngày, đặt ở tầng cơ
+> sở dữ liệu, ngăn được đặt trùng phòng **mà không cần** khoá bảng và không cần
+> tuần tự hoá toàn bộ giao dịch.
+>
+> *Bác bỏ nếu:* kiểm thử đa luồng vẫn sinh ra đơn trùng, hoặc thông lượng sụt
+> tới mức phải khoá bảng mới đúng.
+
+> **GT3.** Trong luồng thanh toán không đồng bộ, mọi sai lệch giữa số tiền nhận
+> được và số tiền phải thu đều có thể được đưa về **một hàng đợi đối soát hữu
+> hạn**, không có nhánh nào làm mất dấu khoản tiền.
+>
+> *Bác bỏ nếu:* dựng được một kịch bản (tiền về muộn, thiếu, thừa, webhook gửi
+> lại, đơn đã huỷ) mà khoản tiền không xuất hiện ở bất kỳ đâu trong hệ thống.
+
+Ba giả thuyết này được kiểm chứng bằng các phép đo ở mục 6.3, không bằng lập
+luận.
 
 ---
 
@@ -300,6 +416,8 @@ Phạm vi nghiên cứu
 
 ## 9. KẾ HOẠCH VÀ TIẾN ĐỘ THỰC HIỆN
 
+### 9.1. Tiến độ theo tuần
+
 | Tuần | Nội dung công việc | Sản phẩm phải có | Ghi chú |
 |:---:|---|---|---|
 | **1** | Khảo sát hiện trạng, phân tích hệ thống tương tự, chốt yêu cầu | Danh sách yêu cầu chức năng và phi chức năng | |
@@ -325,32 +443,56 @@ Phạm vi nghiên cứu
 > là **một tiêu chí chấm điểm tiến độ** — không có commit thì dù có báo cáo tiến
 > độ vẫn bị xem như không hoàn thành.
 
+### 9.2. Rủi ro và phương án dự phòng
+
+Kế hoạch mười bốn tuần ở trên giả định mọi việc diễn ra đúng dự tính. Phần này
+nêu những chỗ dễ trật nhất và cách xử lý đã chuẩn bị sẵn, để khi gặp thì không
+mất tuần nào cho việc nghĩ cách.
+
+| # | Rủi ro | Khả năng | Ảnh hưởng | Phương án dự phòng |
+|:---:|---|:---:|:---:|---|
+| 1 | Ràng buộc chống đặt trùng phòng cài xong nhưng kiểm thử đa luồng vẫn sinh đơn trùng | Trung bình | **Nghiêm trọng** — đây là mục tiêu số 2 | Tuần 4 là mốc sớm có chủ đích, còn đủ thời gian đổi cách: chuyển sang khoá bi quan trên hàng dữ liệu phòng. Chậm hơn nhưng vẫn đúng, và sự chênh lệch đó tự nó là kết quả nghiên cứu đáng báo cáo |
+| 2 | Không xin được tài khoản thử của dịch vụ thanh toán | Trung bình | Lớn — chặn tuần 7 | Tự dựng bộ giả lập webhook gọi đúng giao diện lập trình ứng dụng thật. Luồng nghiệp vụ và phần kiểm thử không đổi; chỉ nguồn gọi là giả |
+| 3 | Kiểm thử tích hợp cần cơ sở dữ liệu thật trong container, máy cá nhân không chạy nổi | Thấp | Trung bình | Hạ số ca chạy song song và chạy theo nhóm; chấp nhận bộ kiểm thử chạy lâu hơn, không chấp nhận giả lập cơ sở dữ liệu |
+| 4 | Phạm vi phình ra vì phát sinh yêu cầu mới giữa chừng | **Cao** | Lớn | Mục 4.3 đã liệt kê sẵn những gì đề tài KHÔNG làm. Mọi yêu cầu mới ghi vào mục "hướng phát triển", không đưa vào phạm vi nghiệm thu |
+| 5 | Viết báo cáo dồn vào cuối, không kịp | **Cao** | Lớn | Tuần 11 và 12 dành riêng cho viết báo cáo, và mốc nộp bản thảo hai chương đầu ở tuần 11 buộc phải viết sớm thay vì dồn |
+| 6 | Quên nộp báo cáo tiến độ hoặc không commit đủ tuần | Trung bình | Lớn — là tiêu chí chấm điểm | Coi việc commit và nộp báo cáo tiến độ là một hạng mục cố định cuối mỗi tuần, ngang với công việc kỹ thuật của tuần đó |
+
+Ba rủi ro số 1, 4 và 5 là ba rủi ro cần theo dõi sát nhất: rủi ro số 1 quyết định
+đề tài có đạt mục tiêu cốt lõi hay không, còn số 4 và 5 là hai nguyên nhân phổ
+biến nhất khiến một đồ án đủ năng lực vẫn không hoàn thành đúng hạn.
+
 ---
 
 ## 10. TÀI LIỆU THAM KHẢO DỰ KIẾN
 
-**Tiếng Anh**
+Đánh số theo định dạng IEEE thành **một dãy liên tục**: [1]–[4] là công trình
+học thuật làm nền lý thuyết trả lời CH1 và CH2; [5]–[10] là tài liệu kỹ thuật
+chính thức của các công nghệ dùng trong đề tài; [11]–[14] là tiêu chuẩn và
+khuyến nghị; [15]–[16] là văn bản tiếng Việt của khoa. Danh mục này là dự kiến,
+bản đầy đủ hoàn thiện trong quyển báo cáo.
 
-1. Tài liệu chính thức của PostgreSQL — chương về **Transaction Isolation**.
-2. Tài liệu chính thức của PostgreSQL — chương về **Range Types** và
-   **Constraints** (ràng buộc loại trừ).
-3. Tài liệu chính thức của PostgreSQL — chương về **Index Types** (chỉ mục tổng quát).
-4. Tài liệu chính thức của **Spring Framework** — quản lý giao dịch.
-5. Tài liệu chính thức của **Angular**.
-6. **RFC 7807** — Problem Details for HTTP APIs.
-7. **RFC 7519** — JSON Web Token.
-8. **WCAG 2.1** — Web Content Accessibility Guidelines, W3C.
-9. **OWASP Top Ten** — rủi ro bảo mật ứng dụng web.
+1. H. Berenson, P. Bernstein, J. Gray, J. Melton, E. O'Neil và P. O'Neil, *"A Critique of ANSI SQL Isolation Levels"*, ACM SIGMOD, 1995.
+2. A. Fekete, D. Liarokapis, E. O'Neil, P. O'Neil và D. Shasha, *"Making Snapshot Isolation Serializable"*, ACM Transactions on Database Systems, 2005.
+3. D. R. K. Ports và K. Grittner, *"Serializable Snapshot Isolation in PostgreSQL"*, Proceedings of the VLDB Endowment, 2012.
+4. P. A. Bernstein và E. Newcomer, *Principles of Transaction Processing*, tái bản lần 2, Morgan Kaufmann, 2009.
+5. Tài liệu chính thức của **PostgreSQL** — chương **Transaction Isolation**.
+6. Tài liệu chính thức của **PostgreSQL** — chương **Range Types** và **Constraints** (ràng buộc loại trừ).
+7. Tài liệu chính thức của **PostgreSQL** — chương **Index Types** (chỉ mục tổng quát).
+8. Tài liệu chính thức của **Spring Framework** — quản lý giao dịch.
+9. Tài liệu chính thức của **Angular**.
 10. Tài liệu chính thức của **Docker Compose** và **Testcontainers**.
+11. **RFC 7807** — Problem Details for HTTP APIs, IETF.
+12. **RFC 7519** — JSON Web Token, IETF.
+13. **WCAG 2.1** — Web Content Accessibility Guidelines, W3C.
+14. **OWASP Top Ten** — rủi ro bảo mật ứng dụng web, OWASP Foundation.
+15. Văn bản *"Một số quy định về hình thức trình bày thực tập đồ án cơ sở ngành và chuyên ngành"* — Khoa Kỹ thuật và Công nghệ, Trường Đại học Trà Vinh.
+16. Bộ biểu mẫu **BM5** — Khoa Kỹ thuật và Công nghệ, Trường Đại học Trà Vinh.
 
-**Tiếng Việt**
-
-11. Văn bản *"Một số quy định về hình thức trình bày thực tập đồ án cơ sở ngành
-    và chuyên ngành"* — Khoa Kỹ thuật và Công nghệ, Trường Đại học Trà Vinh.
-12. Bộ biểu mẫu **BM5** — Khoa Kỹ thuật và Công nghệ, Trường Đại học Trà Vinh.
-
-> Danh mục đầy đủ theo định dạng IEEE, xếp theo thứ tự từ điển và tách riêng
-> tiếng Việt với tiếng Anh, sẽ hoàn thiện trong quyển báo cáo.
+> **Cần bổ sung trước khi nộp:** mỗi tài liệu kỹ thuật ở mục [5]–[14] phải ghi
+> kèm **số phiên bản và ngày truy cập**; mức hoa hồng nêu ở mục 2.3.1 phải dẫn
+> đúng trang biểu phí dành cho đối tác của từng sàn kèm ngày truy cập. Số liệu
+> không có nguồn là chỗ dễ bị hỏi nhất khi bảo vệ.
 
 ---
 

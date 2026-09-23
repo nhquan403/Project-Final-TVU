@@ -107,6 +107,66 @@ def add_inline(p, text, size=13, base_bold=False):
                 if dong:
                     set_font(p.add_run(dong), size, bold=base_bold)
 
+# ── danh so: moi danh sach mot day rieng ─────────────────────────────────────
+# Style 'List Number' cua Word la MOT day so duy nhat cho ca tai lieu. Dung
+# nguyen no thi muc "Dong gop du kien" noi tiep so cua muc "Nhiem vu" truoc do
+# (1..9 roi 10, 11, 12), va danh muc tai lieu tham khao mo dau bang "13." —
+# trong nhu bi thieu mat 12 muc dau. Moi danh sach vi the phai co numId rieng.
+_DANH_SO = {'abstract': None}
+
+def _phan_numbering(doc):
+    return doc.part.numbering_part.element
+
+def _tao_abstract_num(doc):
+    """Dinh nghia mot kieu danh so thap phan ba cap, dung chung cho moi danh sach."""
+    goc = _phan_numbering(doc)
+    da_co = [int(a.get(qn('w:abstractNumId')))
+             for a in goc.findall(qn('w:abstractNum'))]
+    aid = max(da_co) + 1 if da_co else 0
+    a = OxmlElement('w:abstractNum')
+    a.set(qn('w:abstractNumId'), str(aid))
+    for cap in range(3):
+        lvl = OxmlElement('w:lvl'); lvl.set(qn('w:ilvl'), str(cap))
+        for ten, val in (('w:start', '1'), ('w:numFmt', 'decimal'),
+                         ('w:lvlText', '%%%d.' % (cap + 1)), ('w:lvlJc', 'left')):
+            e = OxmlElement(ten); e.set(qn('w:val'), val); lvl.append(e)
+        pPr = OxmlElement('w:pPr'); ind = OxmlElement('w:ind')
+        ind.set(qn('w:left'), str(360 + 360 * cap)); ind.set(qn('w:hanging'), '360')
+        pPr.append(ind); lvl.append(pPr)
+        a.append(lvl)
+    # Trong numbering.xml moi the w:abstractNum phai dung TRUOC moi the w:num.
+    dau = goc.find(qn('w:num'))
+    dau.addprevious(a) if dau is not None else goc.append(a)
+    return aid
+
+def day_so_moi(doc):
+    """Cap mot numId chua dung, tuc mot bo dem bat dau lai tu 1."""
+    if _DANH_SO['abstract'] is None:
+        _DANH_SO['abstract'] = _tao_abstract_num(doc)
+    goc = _phan_numbering(doc)
+    da_co = [int(n.get(qn('w:numId'))) for n in goc.findall(qn('w:num'))]
+    nid = max(da_co) + 1 if da_co else 1
+    n = OxmlElement('w:num'); n.set(qn('w:numId'), str(nid))
+    ab = OxmlElement('w:abstractNumId'); ab.set(qn('w:val'), str(_DANH_SO['abstract']))
+    n.append(ab)
+    # Bo dem nam o w:abstractNum, KHONG phai o w:num. Nhieu numId cung tro ve
+    # mot abstractNum thi van dem tiep cung mot day — cap numId moi thoi la
+    # chua du. Moi day vi the phai tu khai lai diem bat dau bang startOverride.
+    for cap in range(3):
+        ov = OxmlElement('w:lvlOverride'); ov.set(qn('w:ilvl'), str(cap))
+        st = OxmlElement('w:startOverride'); st.set(qn('w:val'), '1')
+        ov.append(st); n.append(ov)
+    goc.append(n)
+    return nid
+
+def gan_day_so(p, nid, cap=0):
+    """Gan doan van vao day so nid. Dung get_or_add_* de the w:numPr roi
+    dung VI TRI ma lich do OOXML quy dinh trong w:pPr — chen sai cho thi
+    LibreOffice tu choi mo tep, khong bao loi gi ro rang."""
+    numPr = p._element.get_or_add_pPr().get_or_add_numPr()
+    numPr.get_or_add_ilvl().val = cap
+    numPr.get_or_add_numId().val = nid
+
 def shade(cell, hexcolor):
     tcPr = cell._tc.get_or_add_tcPr()
     sh = OxmlElement('w:shd'); sh.set(qn('w:val'),'clear'); sh.set(qn('w:fill'), hexcolor)
@@ -187,6 +247,9 @@ TABLE_SEP = re.compile(r'^\s*\|?[\s:\-|]*-[\s:\-|]*\|[\s:\-|]*$')
 def render_markdown(doc, path, width_cm, first_chapter_break=True):
     lines = open(path, encoding='utf-8').read().split('\n')
     i, para, first_h1 = 0, [], True
+    # numId cua danh sach so dang mo; None nghia la doan truoc khong phai
+    # muc danh so, nen muc tiep theo mo mot day moi bat dau tu 1.
+    day_so_dang_mo = None
     def flush():
         nonlocal para
         if para:
@@ -197,7 +260,14 @@ def render_markdown(doc, path, width_cm, first_chapter_break=True):
         line = lines[i]
         s = line.strip()
         if not s:
+            # Dong trong KHONG dong day so: mot danh sach "thua" (co dong trong
+            # giua cac muc) van la mot danh sach.
             flush(); i += 1; continue
+        if not re.match(r'^\d+\.\s+', s):
+            # Bat cu khoi nao khac — tieu de, bang, gach dau dong, doan van —
+            # deu ket thuc day so dang mo. Dong noi tiep cua mot muc danh sach
+            # khong toi duoc day: nhanh danh sach o duoi da nuot chung.
+            day_so_dang_mo = None
         m = re.match(r'^(#{1,4})\s+(.*)', s)
         if m:
             flush()
@@ -272,6 +342,10 @@ def render_markdown(doc, path, width_cm, first_chapter_break=True):
                     break
             p = doc.add_paragraph(style=style)
             body_format(p, spacing=1.5, before=3, after=3)
+            if style == 'List Number':
+                if day_so_dang_mo is None:
+                    day_so_dang_mo = day_so_moi(doc)
+                gan_day_so(p, day_so_dang_mo)
             add_inline(p, ' '.join(buf))
             continue
         para.append(s); i += 1
