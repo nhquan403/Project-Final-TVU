@@ -439,7 +439,7 @@ Phạm vi nghiên cứu
 > khi nộp. Ba dòng in đậm là ba mốc cần GVHD duyệt trước khi đi tiếp.
 >
 > **Ràng buộc từ quy định khoa:** commit lên GitHub **ít nhất một lần mỗi tuần**
-> và nộp báo cáo tiến độ hàng tuần vào thư mục `progress-report/`. Lịch sử commit
+> và nộp báo cáo tiến độ hàng tuần vào thư mục progress-report. Lịch sử commit
 > là **một tiêu chí chấm điểm tiến độ**. Không có commit thì dù có báo cáo tiến
 > độ vẫn bị xem như không hoàn thành.
 
@@ -449,30 +449,31 @@ Phạm vi nghiên cứu
 
 ## 10. TÀI LIỆU THAM KHẢO DỰ KIẾN
 
-Đánh số theo IEEE thành một dãy liên tục: [1]–[4] công trình học thuật làm
-nền cho CH1 và CH2, [5]–[10] tài liệu kỹ thuật chính thức, [11]–[14] tiêu chuẩn
-và khuyến nghị, [15]–[16] văn bản của khoa.
+Danh mục dự kiến, ghi theo định dạng IEEE và **đánh số theo thứ tự từ điển**
+đúng quy định của khoa. Bản đầy đủ hoàn thiện trong quyển báo cáo.
 
-> **Cần bổ sung trước khi nộp:** các tài liệu [5]–[14] phải ghi kèm số phiên bản
-> và ngày truy cập. Mức hoa hồng nêu ở mục 2.3.1 phải dẫn đúng trang biểu phí
-> dành cho đối tác của từng sàn, kèm ngày truy cập.
-
-1. H. Berenson, P. Bernstein, J. Gray, J. Melton, E. O'Neil và P. O'Neil, *"A Critique of ANSI SQL Isolation Levels"*, ACM SIGMOD, 1995.
-2. A. Fekete, D. Liarokapis, E. O'Neil, P. O'Neil và D. Shasha, *"Making Snapshot Isolation Serializable"*, ACM Transactions on Database Systems, 2005.
-3. D. R. K. Ports và K. Grittner, *"Serializable Snapshot Isolation in PostgreSQL"*, Proceedings of the VLDB Endowment, 2012.
-4. P. A. Bernstein và E. Newcomer, *Principles of Transaction Processing*, tái bản lần 2, Morgan Kaufmann, 2009.
-5. Tài liệu chính thức của **PostgreSQL** — chương **Transaction Isolation**.
-6. Tài liệu chính thức của **PostgreSQL** — chương **Range Types** và **Constraints** (ràng buộc loại trừ).
-7. Tài liệu chính thức của **PostgreSQL** — chương **Index Types** (chỉ mục tổng quát).
-8. Tài liệu chính thức của **Spring Framework** — quản lý giao dịch.
-9. Tài liệu chính thức của **Angular**.
-10. Tài liệu chính thức của **Docker Compose** và **Testcontainers**.
-11. **RFC 7807** — Problem Details for HTTP APIs, IETF.
+1. Angular — tài liệu chính thức.
+2. H. Berenson, P. Bernstein, J. Gray, J. Melton, E. O'Neil và P. O'Neil, "A Critique of ANSI SQL Isolation Levels," ACM SIGMOD, 1995.
+3. P. A. Bernstein và E. Newcomer, *Principles of Transaction Processing*, tái bản lần 2, Morgan Kaufmann, 2009.
+4. Bộ biểu mẫu **BM5** — Khoa Kỹ thuật và Công nghệ, Trường Đại học Trà Vinh.
+5. Docker Compose và Testcontainers — tài liệu chính thức.
+6. A. Fekete, D. Liarokapis, E. O'Neil, P. O'Neil và D. Shasha, "Making Snapshot Isolation Serializable," ACM Transactions on Database Systems, 2005.
+7. **OWASP Top Ten** — rủi ro bảo mật ứng dụng web, OWASP Foundation.
+8. D. R. K. Ports và K. Grittner, "Serializable Snapshot Isolation in PostgreSQL," Proceedings of the VLDB Endowment, 2012.
+9. **PostgreSQL** — tài liệu chính thức, chương Index Types (chỉ mục tổng quát).
+10. **PostgreSQL** — tài liệu chính thức, chương Range Types và Constraints (ràng buộc loại trừ).
+11. **PostgreSQL** — tài liệu chính thức, chương Transaction Isolation.
 12. **RFC 7519** — JSON Web Token, IETF.
-13. **WCAG 2.1** — Web Content Accessibility Guidelines, W3C.
-14. **OWASP Top Ten** — rủi ro bảo mật ứng dụng web, OWASP Foundation.
+13. **RFC 7807** — Problem Details for HTTP APIs, IETF.
+14. **Spring Framework** — tài liệu chính thức, phần quản lý giao dịch.
 15. Văn bản *"Một số quy định về hình thức trình bày thực tập đồ án cơ sở ngành và chuyên ngành"* — Khoa Kỹ thuật và Công nghệ, Trường Đại học Trà Vinh.
-16. Bộ biểu mẫu **BM5** — Khoa Kỹ thuật và Công nghệ, Trường Đại học Trà Vinh.
+16. **WCAG 2.1** — Web Content Accessibility Guidelines, W3C.
+
+> **Cần bổ sung trước khi nộp.** Theo quy định của khoa, bài đăng tạp chí còn
+> thiếu tập, số và số trang; bài báo cáo hội nghị thiếu nơi và thời gian tổ
+> chức; sách thiếu nơi xuất bản; tài liệu kỹ thuật trên mạng thiếu số phiên bản
+> và ngày truy cập. Mức hoa hồng ở mục 2.3.1 phải dẫn đúng trang biểu phí đối
+> tác của từng sàn, kèm ngày truy cập.
 
 ---
 
