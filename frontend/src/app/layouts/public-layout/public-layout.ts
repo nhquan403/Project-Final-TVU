@@ -37,12 +37,12 @@ const NAV: NavItem[] = [
         <div class="khung flex h-[76px] items-center justify-between gap-4">
           <a
             routerLink="/"
-            class="flex min-h-[var(--touch-min)] items-center font-display text-[24px]
-                   font-bold tracking-tight text-text">
+            class="flex min-h-[var(--touch-min)] items-center whitespace-nowrap font-display
+                   text-[24px] font-bold tracking-tight text-text">
             Homestay TVH
           </a>
 
-          <nav class="hidden md:block" aria-label="Điều hướng chính">
+          <nav class="hidden lg:block" aria-label="Điều hướng chính">
             <ul class="flex items-center gap-7">
               @for (item of nav; track item.path) {
                 <li>
@@ -50,8 +50,8 @@ const NAV: NavItem[] = [
                     [routerLink]="item.path"
                     routerLinkActive="border-primary font-semibold text-primary"
                     [routerLinkActiveOptions]="{ exact: item.path === '/' }"
-                    class="flex min-h-[var(--touch-min)] items-center border-b-2
-                           border-transparent px-1 text-sm text-text
+                    class="flex min-h-[var(--touch-min)] items-center whitespace-nowrap
+                           border-b-2 border-transparent px-1 text-sm text-text
                            transition-colors duration-[var(--dur-fast)] hover:text-primary">
                     {{ item.label }}
                   </a>
@@ -64,23 +64,23 @@ const NAV: NavItem[] = [
             @if (auth.isLoggedIn()) {
               <a
                 routerLink="/tai-khoan/dat-phong"
-                class="hidden min-h-[var(--touch-min)] items-center rounded-sm px-3 text-sm
-                       text-text hover:text-primary sm:flex">
+                class="hidden min-h-[var(--touch-min)] items-center whitespace-nowrap rounded-sm
+                       px-3 text-sm text-text hover:text-primary sm:flex">
                 Đơn của tôi
               </a>
             } @else {
               <a
                 routerLink="/dang-nhap"
-                class="hidden min-h-[var(--touch-min)] items-center rounded-sm px-3 text-sm
-                       text-text hover:text-primary sm:flex">
+                class="hidden min-h-[var(--touch-min)] items-center whitespace-nowrap rounded-sm
+                       px-3 text-sm text-text hover:text-primary sm:flex">
                 Đăng nhập
               </a>
             }
 
             <a
               routerLink="/dat-phong"
-              class="inline-flex min-h-[var(--touch-min)] items-center rounded-md bg-primary px-4
-                     text-sm font-semibold text-text-invert
+              class="inline-flex min-h-[var(--touch-min)] items-center whitespace-nowrap
+                     rounded-md bg-primary px-4 text-sm font-semibold text-text-invert
                      transition-colors duration-[var(--dur-fast)] hover:bg-primary-hover">
               Đặt phòng
             </a>
@@ -88,7 +88,7 @@ const NAV: NavItem[] = [
             <button
               type="button"
               class="inline-flex min-h-[var(--touch-min)] min-w-[var(--touch-min)] items-center
-                     justify-center rounded-sm text-text md:hidden"
+                     justify-center rounded-sm text-text lg:hidden"
               [attr.aria-expanded]="menuOpen()"
               aria-controls="menu-mobile"
               aria-label="Mở menu"
@@ -101,7 +101,7 @@ const NAV: NavItem[] = [
         @if (menuOpen()) {
           <nav
             id="menu-mobile"
-            class="border-t border-border bg-surface md:hidden"
+            class="border-t border-border bg-surface lg:hidden"
             aria-label="Điều hướng chính (mobile)">
             <ul class="px-4 py-2">
               @for (item of nav; track item.path) {
