@@ -46,8 +46,18 @@ const CALENDAR_DAYS = 120;
           [error]="error()"
           [(value)]="dates" />
 
-        <ui-guest-stepper label="Người lớn" [min]="1" [max]="20" [(value)]="adults" />
-        <ui-guest-stepper label="Trẻ em" [min]="0" [max]="20" [(value)]="children" />
+        <ui-guest-stepper
+          label="Người lớn"
+          layout="stacked"
+          [min]="1"
+          [max]="20"
+          [(value)]="adults" />
+        <ui-guest-stepper
+          label="Trẻ em"
+          layout="stacked"
+          [min]="0"
+          [max]="20"
+          [(value)]="children" />
 
         <div class="flex items-end sm:col-span-2 lg:col-span-1">
           <ui-button type="submit" [fullWidth]="true">Tìm phòng</ui-button>

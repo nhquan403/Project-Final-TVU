@@ -11,6 +11,9 @@ import {
   signal,
 } from '@angular/core';
 import { EscCloseDirective } from '../../a11y/esc-close.directive';
+import { UiIcon } from '../icon/icon';
+
+let nextId = 0;
 
 /** Thông tin một đêm, lấy từ lịch giá của backend. */
 export interface DayInfo {
@@ -117,27 +120,42 @@ interface DayCell {
 @Component({
   selector: 'ui-date-range-picker',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [EscCloseDirective],
+  imports: [EscCloseDirective, UiIcon],
   template: `
     <div class="relative">
+      <!--
+        Nhãn nằm NGOÀI ô, phía trên — giống ui-input và mọi ô nhập khác trong
+        hệ thống. Trước đây nhãn nằm chồng bên trong nút cùng với giá trị, nên
+        ô ngày cao hơn hẳn hai ô số khách bên cạnh và hàng tìm phòng bị lệch.
+
+        Nhãn là <span> chứ không phải <label>: đích của nó là một <button>, mà
+        <label for> không kích hoạt được button. Liên kết bằng aria-labelledby,
+        trỏ tới cả nhãn lẫn giá trị, nên trình đọc màn hình đọc ra
+        "Ngày nhận – trả phòng, Chọn ngày" thay vì chỉ "Chọn ngày".
+      -->
+      <span
+        [id]="id + '-label'"
+        class="mb-1.5 block text-xs font-medium uppercase tracking-wide text-text-muted">
+        {{ label() }}
+      </span>
+
       <button
         type="button"
         [disabled]="disabled()"
         [attr.aria-expanded]="opened()"
+        [attr.aria-labelledby]="id + '-label ' + id + '-value'"
+        [attr.aria-describedby]="error() ? id + '-err' : null"
         aria-haspopup="dialog"
         [class]="triggerClasses()"
         (click)="toggle()">
-        <span class="flex flex-col items-start">
-          <span class="text-xs font-medium uppercase tracking-wide text-text-muted">
-            {{ label() }}
-          </span>
-          <span class="text-body">{{ summary() }}</span>
-        </span>
-        <span aria-hidden="true" class="text-text-muted">▾</span>
+        <span [id]="id + '-value'" class="text-body">{{ summary() }}</span>
+        <ui-icon name="lich" [size]="20" class="text-text-muted" />
       </button>
 
       @if (error(); as message) {
-        <p class="mt-1 text-xs font-semibold text-danger" aria-live="polite">{{ message }}</p>
+        <p [id]="id + '-err'" class="mt-1.5 text-xs font-semibold text-danger" aria-live="polite">
+          {{ message }}
+        </p>
       }
 
       @if (opened()) {
@@ -158,13 +176,17 @@ interface DayCell {
                 type="button"
                 [class]="navClasses"
                 aria-label="Tháng trước"
-                (click)="shiftMonth(-1)">‹</button>
+                (click)="shiftMonth(-1)">
+                <ui-icon name="mui-trai" [size]="20" />
+              </button>
               <p aria-live="polite" class="text-body font-semibold">{{ monthTitle() }}</p>
               <button
                 type="button"
                 [class]="navClasses"
                 aria-label="Tháng sau"
-                (click)="shiftMonth(1)">›</button>
+                (click)="shiftMonth(1)">
+                <ui-icon name="mui-phai" [size]="20" />
+              </button>
             </div>
 
             <!-- Mobile một tháng, desktop hai tháng cạnh nhau. -->
@@ -226,6 +248,8 @@ export class UiDateRangePicker {
   private readonly host = inject(ElementRef<HTMLElement>);
 
   protected readonly weekdays = WEEKDAYS;
+  protected readonly id = `ui-date-range-${nextId++}`;
+
   protected readonly navClasses =
     'flex h-[var(--touch-min)] w-[var(--touch-min)] items-center justify-center rounded-md ' +
     'text-text transition-colors duration-[var(--dur-fast)] hover:bg-surface-2';

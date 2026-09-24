@@ -14,15 +14,36 @@ let nextId = 0;
   selector: 'ui-guest-stepper',
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <div class="flex items-center justify-between gap-4">
-      <span [id]="id + '-label'" class="flex flex-col">
-        <span class="whitespace-nowrap text-body font-medium">{{ label() }}</span>
+    <!--
+      Hai kiểu đặt nhãn, và lý do cần cả hai:
+
+      inline (mặc định) — nhãn bên trái, nút bên phải. Dùng trong biểu mẫu
+      xếp dọc, nơi các dòng "Người lớn / Trẻ em / Số phòng" đọc xuống thành
+      một danh sách.
+
+      stacked — nhãn viết hoa nhỏ ở trên, nút ở dưới. Dùng trong hàng tìm
+      phòng nằm ngang, để ô này có cùng cấu trúc với ô chọn ngày bên cạnh;
+      trộn hai kiểu trong một hàng làm cả hàng lệch nhau.
+    -->
+    <div [class]="layout() === 'stacked' ? '' : 'flex items-center justify-between gap-4'">
+      <span
+        [id]="id + '-label'"
+        [class]="layout() === 'stacked'
+          ? 'mb-1.5 block text-xs font-medium uppercase tracking-wide text-text-muted'
+          : 'flex flex-col'">
+        <span
+          [class]="layout() === 'stacked'
+            ? 'whitespace-nowrap'
+            : 'whitespace-nowrap text-body font-medium'">{{ label() }}</span>
         @if (hint(); as h) {
-          <span class="text-xs text-text-muted">{{ h }}</span>
+          <span class="block text-xs normal-case tracking-normal text-text-muted">{{ h }}</span>
         }
       </span>
 
-      <div class="flex items-center gap-1">
+      <div
+        [class]="layout() === 'stacked'
+          ? 'flex min-h-[var(--touch-min)] items-center gap-1'
+          : 'flex items-center gap-1'">
         <button
           type="button"
           [class]="buttonClasses"
@@ -55,6 +76,8 @@ export class UiGuestStepper {
   protected readonly id = `ui-stepper-${nextId++}`;
 
   readonly label = input.required<string>();
+  /** Xem chú thích trong template: `inline` cho biểu mẫu dọc, `stacked` cho hàng ngang. */
+  readonly layout = input<'inline' | 'stacked'>('inline');
   readonly hint = input<string | null>(null);
   readonly min = input(0);
   readonly max = input(20);
