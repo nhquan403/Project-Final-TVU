@@ -22,8 +22,8 @@ import { BookingFlowStore } from './booking-flow.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, UiIcon, UiStatusBadge, VndCurrencyPipe],
   template: `
-    <div class="mx-auto max-w-2xl px-4 py-12">
-      <div class="rounded-lg border border-border bg-surface p-6 text-center">
+    <div class="mx-auto max-w-2xl px-6 py-16">
+      <div class="border border-border bg-surface p-6 text-center">
         <ui-icon name="thanh-cong" [size]="56" class="mx-auto text-success" />
         <h1 class="mt-2 text-h1 font-bold text-text">Đặt phòng thành công</h1>
         <p class="mt-2 text-text-muted">
@@ -54,7 +54,7 @@ import { BookingFlowStore } from './booking-flow.store';
               </div>
               <div class="flex justify-between border-t border-border pt-2">
                 <dt class="font-semibold text-text">Tổng cả kỳ</dt>
-                <dd class="font-bold text-price">{{ data.totalAmount | vndCurrency }}</dd>
+                <dd class="tien">{{ data.totalAmount | vndCurrency }}</dd>
               </div>
               <div class="flex justify-between">
                 <dt class="text-text-muted">Đã cọc</dt>

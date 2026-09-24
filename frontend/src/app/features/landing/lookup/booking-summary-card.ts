@@ -19,7 +19,7 @@ const CANCELLABLE = new Set(['PENDING_PAYMENT', 'AWAITING_REVIEW', 'CONFIRMED'])
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, UiButton, UiStatusBadge, VndCurrencyPipe],
   template: `
-    <article class="rounded-lg border border-border bg-surface p-4">
+    <article class="border border-border bg-surface p-4">
       <header class="flex flex-wrap items-start justify-between gap-2">
         <div>
           <p class="font-semibold text-text">{{ booking().roomTypeName }}</p>

@@ -31,8 +31,8 @@ type Mode = 'login' | 'register';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, UiInput, UiButton],
   template: `
-    <div class="mx-auto max-w-md px-4 py-12">
-      <h1 class="text-h1 font-bold text-text">
+    <div class="mx-auto max-w-md px-6 py-16">
+      <h1>
         {{ mode() === 'login' ? 'Đăng nhập' : 'Tạo tài khoản' }}
       </h1>
       <p class="mt-2 text-sm text-text-muted">

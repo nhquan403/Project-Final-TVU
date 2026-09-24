@@ -23,8 +23,9 @@ import { ROOM_PLACEHOLDER_IMAGE } from './room-card.mapper';
   imports: [RouterLink, VndCurrencyPipe],
   template: `
     <article
-      class="flex h-full flex-col overflow-hidden rounded-lg border border-border bg-surface
-             shadow-1 transition-shadow duration-[var(--dur-base)] hover:shadow-2">
+      class="flex h-full flex-col overflow-hidden border border-border bg-surface
+             transition-[box-shadow,transform] duration-[var(--dur-base)]
+             hover:-translate-y-[3px] hover:shadow-2">
       <img
         [src]="coverUrl()"
         [alt]="coverAlt()"
@@ -35,7 +36,7 @@ import { ROOM_PLACEHOLDER_IMAGE } from './room-card.mapper';
         class="aspect-[16/10] w-full object-cover" />
 
       <div class="flex flex-1 flex-col gap-2 p-4">
-        <h3 class="text-h3 font-semibold text-text">{{ room().name }}</h3>
+        <h3>{{ room().name }}</h3>
 
         <p class="text-sm text-text-muted">
           {{ room().capacityAdults }} khách
@@ -51,17 +52,17 @@ import { ROOM_PLACEHOLDER_IMAGE } from './room-card.mapper';
           <p class="line-clamp-2 text-sm text-text-muted">{{ room().shortDescription }}</p>
         }
 
-        <p class="mt-auto pt-2 text-h3 font-bold text-price">
-          <span class="text-sm font-normal text-text-muted">từ</span>
-          {{ room().basePrice | vndCurrency }}
-          <span class="text-sm font-normal text-text-muted">/ đêm</span>
+        <p class="mt-auto flex items-baseline gap-1.5 pt-4">
+          <span class="text-sm text-text-muted">từ</span>
+          <span class="tien text-[26px]">{{ room().basePrice | vndCurrency }}</span>
+          <span class="text-sm text-text-muted">/ đêm</span>
         </p>
 
         <a
           [routerLink]="['/phong', room().slug]"
           class="mt-1 inline-flex min-h-[var(--touch-min)] items-center justify-center rounded-md
-                 border border-primary px-5 text-sm font-semibold text-primary
-                 transition-colors duration-[var(--dur-fast)] hover:bg-primary hover:text-text-invert">
+                 border border-border-strong px-5 text-sm font-semibold text-text
+                 transition-colors duration-[var(--dur-fast)] hover:border-primary hover:bg-primary hover:text-text-invert">
           Xem chi tiết &amp; chọn ngày
         </a>
       </div>

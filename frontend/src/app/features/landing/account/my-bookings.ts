@@ -21,8 +21,8 @@ const PAGE_SIZE = 5;
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [BookingSummaryCard, UiPagination, UiSkeleton, UiEmptyState],
   template: `
-    <div class="mx-auto max-w-3xl px-4 py-8">
-      <h1 class="text-h1 font-bold text-text">Đơn của tôi</h1>
+    <div class="mx-auto max-w-3xl px-6 py-12">
+      <h1>Đơn của tôi</h1>
 
       @if (loading()) {
         <div class="mt-6 flex flex-col gap-3">

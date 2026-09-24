@@ -19,7 +19,7 @@ import type { PublicReview } from '../../../core/services/review.service';
   template: `
     <ul class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       @for (review of reviews(); track review.id) {
-        <li class="flex h-full flex-col gap-2 rounded-lg border border-border bg-surface p-4">
+        <li class="flex h-full flex-col gap-2 border border-border bg-surface p-4">
           <ui-star-rating [value]="review.rating" [readonly]="true" />
 
           @if (review.title) {

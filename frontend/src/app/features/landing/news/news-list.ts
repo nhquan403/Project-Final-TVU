@@ -20,8 +20,8 @@ import { errorMessageOf } from '../shared/api-error';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, DatePipe, UiSkeleton, UiEmptyState],
   template: `
-    <div class="mx-auto max-w-4xl px-4 py-8">
-      <h1 class="text-h1 font-bold text-text">Tin tức &amp; cẩm nang</h1>
+    <div class="mx-auto max-w-4xl px-6 py-12">
+      <h1>Tin tức &amp; cẩm nang</h1>
       <p class="mt-2 text-text-muted">Chuyện ở homestay và gợi ý cho chuyến đi Trà Vinh của bạn.</p>
 
       @if (loading()) {
@@ -47,7 +47,7 @@ import { errorMessageOf } from '../shared/api-error';
       } @else {
         <ul class="mt-6 grid gap-4 sm:grid-cols-2">
           @for (post of posts(); track post.id) {
-            <li class="h-full overflow-hidden rounded-lg border border-border bg-surface">
+            <li class="h-full overflow-hidden border border-border bg-surface">
               <a [routerLink]="['/tin-tuc', post.slug]" class="flex h-full flex-col">
                 @if (post.coverImageUrl) {
                   <img
@@ -59,7 +59,7 @@ import { errorMessageOf } from '../shared/api-error';
                     class="aspect-[16/9] w-full object-cover" />
                 }
                 <div class="flex flex-1 flex-col gap-2 p-4">
-                  <h2 class="text-h3 font-semibold text-text">{{ post.title }}</h2>
+                  <h2 class="text-h3">{{ post.title }}</h2>
                   @if (post.excerpt) {
                     <p class="line-clamp-3 text-sm text-text-muted">{{ post.excerpt }}</p>
                   }

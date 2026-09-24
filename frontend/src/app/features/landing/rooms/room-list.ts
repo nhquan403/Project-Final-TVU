@@ -33,8 +33,8 @@ import { toRoomCard } from '../shared/room-card.mapper';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, RoomCatalogCard, UiRoomCard, UiSkeleton, UiEmptyState],
   template: `
-    <div class="mx-auto max-w-6xl px-4 py-8">
-      <h1 class="text-h1 font-bold text-text">Các loại phòng</h1>
+    <div class="khung py-10">
+      <h1>Các loại phòng</h1>
 
       @if (hasDates()) {
         <p class="mt-2 text-text-muted" aria-live="polite">
@@ -54,9 +54,9 @@ import { toRoomCard } from '../shared/room-card.mapper';
       }
 
       @if (loading()) {
-        <ul class="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <ul class="mt-10 grid gap-7 sm:grid-cols-2 lg:grid-cols-4">
           @for (placeholder of [1, 2, 3]; track placeholder) {
-            <li class="overflow-hidden rounded-lg border border-border bg-surface">
+            <li class="border border-border bg-surface">
               <ui-skeleton shape="card" />
               <div class="flex flex-col gap-2 p-4">
                 <ui-skeleton shape="line" />
@@ -96,7 +96,7 @@ import { toRoomCard } from '../shared/room-card.mapper';
             description="Quản trị viên chưa bật loại phòng nào. Liên hệ homestay để được hỗ trợ trực tiếp." />
         </div>
       } @else if (hasDates()) {
-        <ul class="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <ul class="mt-10 grid gap-7 sm:grid-cols-2 lg:grid-cols-4">
           @for (room of available(); track room.roomTypeId) {
             <li>
               <ui-room-card
@@ -106,7 +106,7 @@ import { toRoomCard } from '../shared/room-card.mapper';
           }
         </ul>
       } @else {
-        <ul class="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <ul class="mt-10 grid gap-7 sm:grid-cols-2 lg:grid-cols-4">
           @for (room of rooms(); track room.id) {
             <li><app-room-catalog-card [room]="room" /></li>
           }

@@ -19,7 +19,7 @@ import { UiEmptyState, UiSkeleton } from '../../../shared/ui';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, DatePipe, UiSkeleton, UiEmptyState],
   template: `
-    <div class="mx-auto max-w-3xl px-4 py-8">
+    <div class="mx-auto max-w-3xl px-6 py-12">
       @if (loading()) {
         <ui-skeleton shape="card" />
         <div class="mt-4 flex flex-col gap-2">

@@ -20,8 +20,8 @@ import { BookingFlowStore } from './booking-flow.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [UiRoomCard, UiSkeleton, UiEmptyState],
   template: `
-    <section class="rounded-lg border border-border bg-surface p-4" aria-labelledby="buoc-2">
-      <h2 id="buoc-2" class="text-h2 font-bold text-text">Chọn loại phòng</h2>
+    <section class="border border-border bg-surface p-4" aria-labelledby="buoc-2">
+      <h2 id="buoc-2" class="text-h3">Chọn loại phòng</h2>
       <p class="mt-1 text-sm text-text-muted">
         Giá hiển thị là tổng cho cả {{ nights() }} đêm, đã tính {{ params().roomQuantity }} phòng.
       </p>
@@ -29,7 +29,7 @@ import { BookingFlowStore } from './booking-flow.store';
       @if (loading()) {
         <ul class="mt-4 grid gap-4 md:grid-cols-2">
           @for (placeholder of [1, 2]; track placeholder) {
-            <li class="overflow-hidden rounded-lg border border-border">
+            <li class="overflow-hidden border border-border">
               <ui-skeleton shape="card" />
               <div class="flex flex-col gap-2 p-4">
                 <ui-skeleton shape="line" />

@@ -35,8 +35,8 @@ const MONEY = new VndCurrencyPipe();
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [UiInput, UiButton, UiToast, UiConfirmDialog, BookingSummaryCard],
   template: `
-    <div class="mx-auto max-w-2xl px-4 py-8">
-      <h1 class="text-h1 font-bold text-text">Tra cứu đơn đặt phòng</h1>
+    <div class="mx-auto max-w-2xl px-6 py-12">
+      <h1>Tra cứu đơn đặt phòng</h1>
       <p class="mt-2 text-text-muted">
         Nhập mã đơn trong thư xác nhận và số điện thoại bạn đã dùng khi đặt.
       </p>

@@ -57,7 +57,7 @@ const CALENDAR_DAYS = 120;
   ],
   template: `
     @if (loading()) {
-      <div class="mx-auto max-w-6xl px-4 py-8">
+      <div class="khung py-10">
         <ui-skeleton shape="card" />
         <div class="mt-4 flex flex-col gap-2">
           <ui-skeleton shape="line" />
@@ -66,7 +66,7 @@ const CALENDAR_DAYS = 120;
         </div>
       </div>
     } @else if (notFound()) {
-      <div class="mx-auto max-w-2xl px-4 py-16">
+      <div class="mx-auto max-w-2xl px-6 py-20">
         <ui-empty-state
           title="Không tìm thấy loại phòng này"
           description="Liên kết có thể đã cũ, hoặc loại phòng đã ngừng bán. Xem các loại phòng đang mở."
@@ -74,7 +74,7 @@ const CALENDAR_DAYS = 120;
           (action)="goToList()" />
       </div>
     } @else if (loadError()) {
-      <div class="mx-auto max-w-2xl px-4 py-16">
+      <div class="mx-auto max-w-2xl px-6 py-20">
         <ui-empty-state
           title="Không tải được thông tin phòng"
           description="Máy chủ chưa trả lời. Thử lại sau giây lát hoặc gọi 0294 3855 246."
@@ -82,7 +82,7 @@ const CALENDAR_DAYS = 120;
           (action)="load()" />
       </div>
     } @else if (room(); as data) {
-      <article class="mx-auto max-w-6xl px-4 py-8 pb-28 lg:pb-8">
+      <article class="khung py-10 pb-28 lg:pb-16">
         <nav aria-label="Đường dẫn" class="text-sm text-text-muted">
           <a
             routerLink="/phong"
@@ -94,10 +94,10 @@ const CALENDAR_DAYS = 120;
         </nav>
 
         <!-- THƯ VIỆN: 1 ảnh lớn + 2 ảnh nhỏ -->
-        <div class="mt-4 grid gap-2 sm:grid-cols-3">
+        <div class="mt-6 grid gap-3 sm:grid-cols-3">
           <button
             type="button"
-            class="overflow-hidden rounded-lg border border-border sm:col-span-2"
+            class="block overflow-hidden border border-border sm:col-span-2"
             [attr.aria-label]="'Xem ảnh lớn của ' + data.name"
             (click)="openLightbox(0)">
             <img
@@ -110,11 +110,16 @@ const CALENDAR_DAYS = 120;
               class="aspect-[3/2] w-full object-cover" />
           </button>
 
-          <div class="grid grid-cols-2 gap-2 sm:grid-cols-1">
+          <!--
+              Hai ô ảnh nhỏ chia đôi chiều cao của ô ảnh lớn. Không ràng buộc
+              chiều cao thì mỗi ô giữ tỉ lệ riêng, cột phải ngắn hơn cột trái
+              và thừa ra một mảng trắng ở đáy.
+            -->
+            <div class="grid grid-cols-2 gap-3 sm:flex sm:flex-col">
             @for (image of images().slice(1, 3); track image.url; let i = $index) {
               <button
                 type="button"
-                class="relative overflow-hidden rounded-lg border border-border"
+                class="relative block overflow-hidden border border-border sm:min-h-0 sm:flex-1"
                 [attr.aria-label]="'Xem ảnh ' + (i + 2) + ' của ' + data.name"
                 (click)="openLightbox(i + 1)">
                 <img
@@ -124,7 +129,7 @@ const CALENDAR_DAYS = 120;
                   height="320"
                   loading="lazy"
                   decoding="async"
-                  class="aspect-[3/2] w-full object-cover" />
+                  class="h-full w-full object-cover sm:aspect-auto" />
                 @if (i === 1 && images().length > 3) {
                   <span
                     class="absolute inset-0 flex items-center justify-center bg-text/50 text-sm
@@ -137,11 +142,11 @@ const CALENDAR_DAYS = 120;
           </div>
         </div>
 
-        <div class="mt-6 grid gap-8 lg:grid-cols-[1fr_360px]">
+        <div class="mt-12 grid gap-12 lg:grid-cols-[1fr_360px] lg:gap-16">
           <!-- CỘT NỘI DUNG -->
           <div>
-            <h1 class="text-h1 font-bold text-text">{{ data.name }}</h1>
-            <p class="mt-2 text-text-muted">
+            <h1>{{ data.name }}</h1>
+            <p class="mt-4 text-text-muted">
               {{ data.capacityAdults }} người lớn
               @if (data.capacityChildren > 0) {
                 · tối đa {{ data.capacityChildren }} trẻ em
@@ -155,17 +160,17 @@ const CALENDAR_DAYS = 120;
             </p>
 
             @if (data.description) {
-              <p class="mt-4 whitespace-pre-line text-text-muted">{{ data.description }}</p>
+              <p class="doc mt-6 whitespace-pre-line text-body-lg text-text-muted">{{ data.description }}</p>
             } @else if (data.shortDescription) {
-              <p class="mt-4 text-text-muted">{{ data.shortDescription }}</p>
+              <p class="doc mt-6 text-body-lg text-text-muted">{{ data.shortDescription }}</p>
             }
 
             @if (roomAmenities().length) {
-              <section class="mt-8" aria-labelledby="tien-ich-phong">
-                <h2 id="tien-ich-phong" class="text-h2 font-bold text-text">Tiện ích trong phòng</h2>
-                <ul class="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+              <section class="mt-12" aria-labelledby="tien-ich-phong">
+                <h2 id="tien-ich-phong" class="text-h3">Tiện ích trong phòng</h2>
+                <ul class="mt-5 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
                   @for (amenity of roomAmenities(); track amenity.code) {
-                    <li class="flex items-center gap-2 text-sm text-text">
+                    <li class="flex items-center gap-3 border-b border-border py-2.5 text-text">
                       @if (tenIcon(amenity.icon); as icon) {
                         <ui-icon [name]="icon" [size]="20" class="text-primary" />
                       }
@@ -177,13 +182,11 @@ const CALENDAR_DAYS = 120;
             }
 
             @if (propertyAmenities().length) {
-              <section class="mt-8" aria-labelledby="tien-ich-chung">
-                <h2 id="tien-ich-chung" class="text-h2 font-bold text-text">
-                  Tiện ích chung của homestay
-                </h2>
-                <ul class="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
+              <section class="mt-12" aria-labelledby="tien-ich-chung">
+                <h2 id="tien-ich-chung" class="text-h3">Tiện ích chung của homestay</h2>
+                <ul class="mt-5 grid grid-cols-1 gap-x-8 gap-y-3 sm:grid-cols-2">
                   @for (amenity of propertyAmenities(); track amenity.code) {
-                    <li class="flex items-center gap-2 text-sm text-text">
+                    <li class="flex items-center gap-3 border-b border-border py-2.5 text-text">
                       @if (tenIcon(amenity.icon); as icon) {
                         <ui-icon [name]="icon" [size]="20" class="text-primary" />
                       }
@@ -200,8 +203,8 @@ const CALENDAR_DAYS = 120;
               nhiều nhất, và ở đây không có gì phải giấu: khách huỷ được bất cứ
               lúc nào trước khi nhận phòng.
             -->
-            <section class="mt-8" aria-labelledby="chinh-sach">
-              <h2 id="chinh-sach" class="text-h2 font-bold text-text">Chính sách đặt và huỷ</h2>
+            <section class="mt-12" aria-labelledby="chinh-sach">
+              <h2 id="chinh-sach" class="text-h3">Chính sách đặt và huỷ</h2>
               <ul class="mt-3 flex flex-col gap-2 text-sm text-text-muted">
                 <li>
                   Sau khi đặt, phòng được giữ <strong class="text-text">15 phút</strong> để bạn
@@ -227,8 +230,8 @@ const CALENDAR_DAYS = 120;
 
           <!-- Ô ĐẶT PHÒNG -->
           <aside class="lg:sticky lg:top-24 lg:self-start">
-            <div class="rounded-lg border border-border bg-surface p-4 shadow-1">
-              <p class="text-h3 font-bold text-price">
+            <div class="border border-border bg-surface p-4 shadow-1">
+              <p class="tien text-h3">
                 <span class="text-sm font-normal text-text-muted">từ</span>
                 {{ data.basePrice | vndCurrency }}
                 <span class="text-sm font-normal text-text-muted">/ đêm</span>
@@ -272,7 +275,7 @@ const CALENDAR_DAYS = 120;
                     </div>
                     <div class="flex justify-between border-t border-border pt-1">
                       <dt class="font-semibold text-text">Tổng cả kỳ</dt>
-                      <dd class="text-h3 font-bold text-price">
+                      <dd class="tien text-h3">
                         {{ found.totalPrice | vndCurrency }}
                       </dd>
                     </div>
@@ -313,12 +316,12 @@ const CALENDAR_DAYS = 120;
             <div class="min-w-0 flex-1">
               @if (quote(); as found) {
                 <p class="truncate text-sm text-text-muted">Tổng {{ found.nights }} đêm</p>
-                <p class="truncate text-h3 font-bold text-price">
+                <p class="truncate tien text-h3">
                   {{ found.totalPrice | vndCurrency }}
                 </p>
               } @else {
                 <p class="truncate text-sm text-text-muted">Giá từ</p>
-                <p class="truncate text-h3 font-bold text-price">
+                <p class="truncate tien text-h3">
                   {{ data.basePrice | vndCurrency }} / đêm
                 </p>
               }

@@ -38,8 +38,8 @@ const STEPS: StepLabel[] = [
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [StepDates, StepRoom, StepGuest],
   template: `
-    <div class="mx-auto max-w-5xl px-4 py-8">
-      <h1 class="text-h1 font-bold text-text">Đặt phòng</h1>
+    <div class="khung py-10">
+      <h1>Đặt phòng</h1>
 
       <!-- THANH TIẾN TRÌNH -->
       <nav class="mt-4" aria-label="Các bước đặt phòng">

@@ -38,10 +38,10 @@ const MAX_POLL_MS = 15 * 60_000;
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [UiButton, UiStatusBadge, VndCurrencyPipe],
   template: `
-    <section class="mx-auto max-w-lg rounded-lg border border-border bg-surface p-5" aria-live="polite">
+    <section class="mx-auto max-w-lg border border-border bg-surface p-5" aria-live="polite">
       <header class="mb-4 flex items-start justify-between gap-3">
         <div>
-          <h2 class="text-lg font-bold text-text">Thanh toán giữ chỗ</h2>
+          <h2 class="text-h3">Thanh toán giữ chỗ</h2>
           <p class="text-sm text-text-muted">
             Mã đơn <strong class="font-mono">{{ booking().code }}</strong>
           </p>

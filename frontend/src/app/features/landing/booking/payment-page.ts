@@ -27,7 +27,7 @@ import { PaymentQrComponent } from './payment-qr.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [PaymentQrComponent, UiInput, UiButton],
   template: `
-    <div class="mx-auto max-w-2xl px-4 py-8">
+    <div class="mx-auto max-w-2xl px-6 py-12">
       @if (booking(); as data) {
         <app-payment-qr
           [booking]="data"
@@ -35,8 +35,8 @@ import { PaymentQrComponent } from './payment-qr.component';
           (confirmed)="onConfirmed()"
           (rebook)="rebook()" />
       } @else {
-        <section class="rounded-lg border border-border bg-surface p-5">
-          <h1 class="text-h2 font-bold text-text">Mở lại đơn {{ code() }}</h1>
+        <section class="border border-border bg-surface p-5">
+          <h1>Mở lại đơn {{ code() }}</h1>
           <p class="mt-2 text-sm text-text-muted">
             Trình duyệt này chưa giữ thông tin thanh toán của đơn. Nhập số điện thoại đã dùng khi
             đặt để mở lại mã QR.

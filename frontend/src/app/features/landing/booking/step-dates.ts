@@ -23,8 +23,8 @@ const CALENDAR_DAYS = 120;
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [UiDateRangePicker, UiGuestStepper, UiButton],
   template: `
-    <section class="rounded-lg border border-border bg-surface p-4" aria-labelledby="buoc-1">
-      <h2 id="buoc-1" class="text-h2 font-bold text-text">Chọn ngày và số khách</h2>
+    <section class="border border-border bg-surface p-4" aria-labelledby="buoc-1">
+      <h2 id="buoc-1" class="text-h3">Chọn ngày và số khách</h2>
 
       <div class="mt-4 grid gap-4 md:grid-cols-2">
         <ui-date-range-picker

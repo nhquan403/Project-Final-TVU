@@ -38,8 +38,8 @@ import { BookingFlowStore } from './booking-flow.store';
   imports: [UiInput, UiButton, UiSkeleton, VndCurrencyPipe],
   template: `
     <div class="grid gap-4 lg:grid-cols-[1fr_340px]">
-      <section class="rounded-lg border border-border bg-surface p-4" aria-labelledby="buoc-3">
-        <h2 id="buoc-3" class="text-h2 font-bold text-text">Thông tin người đặt</h2>
+      <section class="border border-border bg-surface p-4" aria-labelledby="buoc-3">
+        <h2 id="buoc-3" class="text-h3">Thông tin người đặt</h2>
 
         <form class="mt-4 flex flex-col gap-3" (submit)="submit($event)">
           <ui-input
@@ -136,8 +136,8 @@ import { BookingFlowStore } from './booking-flow.store';
 
       <!-- TÓM TẮT ĐƠN -->
       <aside class="lg:sticky lg:top-24 lg:self-start">
-        <div class="rounded-lg border border-border bg-surface p-4" aria-live="polite">
-          <h2 class="text-h3 font-semibold text-text">Tóm tắt đơn</h2>
+        <div class="border border-border bg-surface p-4" aria-live="polite">
+          <h2 class="text-h3">Tóm tắt đơn</h2>
 
           @if (rechecking()) {
             <div class="mt-3 flex flex-col gap-2">
@@ -170,7 +170,7 @@ import { BookingFlowStore } from './booking-flow.store';
 
               <div class="flex justify-between border-t border-border pt-2">
                 <dt class="font-semibold text-text">Tổng cả kỳ</dt>
-                <dd class="text-h3 font-bold text-price">{{ total() | vndCurrency }}</dd>
+                <dd class="tien text-h3">{{ total() | vndCurrency }}</dd>
               </div>
 
               @if (deposit() !== null) {

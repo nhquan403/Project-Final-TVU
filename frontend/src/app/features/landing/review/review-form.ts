@@ -27,9 +27,9 @@ import { BookingFlowStore } from '../booking/booking-flow.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [RouterLink, UiStarRating, UiInput, UiButton, UiIcon],
   template: `
-    <div class="mx-auto max-w-xl px-4 py-8">
+    <div class="mx-auto max-w-xl px-6 py-12">
       @if (sent()) {
-        <div class="rounded-lg border border-border bg-surface p-6 text-center">
+        <div class="border border-border bg-surface p-6 text-center">
           <ui-icon name="thanh-cong" [size]="56" class="mx-auto text-success" />
           <h1 class="mt-2 text-h2 font-bold text-text">Cảm ơn bạn đã đánh giá</h1>
           <p class="mt-2 text-text-muted">
@@ -43,7 +43,7 @@ import { BookingFlowStore } from '../booking/booking-flow.store';
           </a>
         </div>
       } @else {
-        <h1 class="text-h1 font-bold text-text">Đánh giá chuyến nghỉ của bạn</h1>
+        <h1>Đánh giá chuyến nghỉ của bạn</h1>
         <p class="mt-2 text-text-muted">
           Đơn <strong class="font-mono">{{ code() }}</strong>
         </p>
