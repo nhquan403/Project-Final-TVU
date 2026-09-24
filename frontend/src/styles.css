@@ -1,5 +1,7 @@
-/* Thứ tự nạp có ý nghĩa: Tailwind trước, rồi token (khối @theme mở rộng và ghi
-   đè theme mặc định), rồi base dùng các token đó. */
+/* Thứ tự nạp có ý nghĩa: chữ trước (khai @font-face sớm để trình duyệt bắt đầu
+   tải ngay), rồi Tailwind, rồi token (khối @theme mở rộng và ghi đè theme mặc
+   định), rồi base dùng các token đó. */
+@import "./styles/fonts.css";
 @import "tailwindcss";
 @import "./styles/tokens.css";
 @import "./styles/base.css";

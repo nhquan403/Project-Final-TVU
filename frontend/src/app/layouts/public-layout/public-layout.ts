@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, HostListener, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { UiIcon } from '../../shared/ui';
 import { AuthService } from '../../core/services/auth.service';
 
 interface NavItem {
@@ -24,7 +25,7 @@ const NAV: NavItem[] = [
 @Component({
   selector: 'app-public-layout',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, UiIcon],
   template: `
     <div class="flex min-h-screen flex-col bg-bg">
       <header
@@ -89,7 +90,7 @@ const NAV: NavItem[] = [
               aria-controls="menu-mobile"
               aria-label="Mở menu"
               (click)="menuOpen.set(!menuOpen())">
-              ☰
+              <ui-icon name="menu" [size]="24" />
             </button>
           </div>
         </div>

@@ -21,6 +21,7 @@ export { UiLightbox, type LightboxImage } from './lightbox/lightbox';
 export { UiEmptyState } from './empty-state/empty-state';
 export { UiFilterChips, type FilterChip } from './filter-chips/filter-chips';
 export { UiConfirmDialog } from './confirm-dialog/confirm-dialog';
+export { UiIcon, laTenIcon, tenIcon, type IconName } from './icon/icon';
 
 export * from './contrast.util';
 

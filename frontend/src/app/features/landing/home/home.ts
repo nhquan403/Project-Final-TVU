@@ -8,7 +8,7 @@ import {
   type PublicAmenity,
   type PublicRoomType,
 } from '../../../core/services/room-type.service';
-import { UiEmptyState, UiSkeleton } from '../../../shared/ui';
+import { UiEmptyState, UiIcon, UiSkeleton, tenIcon } from '../../../shared/ui';
 import { RoomCatalogCard } from '../shared/room-catalog-card';
 import { GallerySection } from './gallery-section';
 import { ReviewsSection } from './reviews-section';
@@ -50,6 +50,7 @@ import { SearchBar } from './search-bar';
     ReviewsSection,
     UiSkeleton,
     UiEmptyState,
+    UiIcon,
   ],
   template: `
     <!-- HERO -->
@@ -217,7 +218,9 @@ import { SearchBar } from './search-bar';
             <li
               class="flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2
                      text-sm text-text">
-              <span aria-hidden="true">{{ amenity.icon ?? '•' }}</span>
+              @if (tenIcon(amenity.icon); as icon) {
+                <ui-icon [name]="icon" [size]="20" class="text-primary" />
+              }
               {{ amenity.name }}
             </li>
           }
@@ -334,6 +337,9 @@ import { SearchBar } from './search-bar';
   `,
 })
 export class HomePage {
+  /** Lọc tên icon từ CSDL; template gọi trực tiếp. */
+  protected readonly tenIcon = tenIcon;
+
   private readonly contentApi = inject(ContentService);
   private readonly roomTypeApi = inject(RoomTypeService);
   private readonly reviewApi = inject(ReviewService);

@@ -22,18 +22,18 @@
 
 -- ─── Tiện ích ───────────────────────────────────────────────────────────────
 INSERT INTO amenities (code, name, icon, category, display_order) VALUES
-    ('wifi',        'Wifi miễn phí',        '📶', 'ROOM',     1),
-    ('dieu-hoa',    'Điều hoà',             '❄️', 'ROOM',     2),
-    ('nuoc-nong',   'Nước nóng',            '🚿', 'ROOM',     3),
-    ('tv',          'TV màn hình phẳng',    '📺', 'ROOM',     4),
-    ('tu-lanh',     'Tủ lạnh mini',         '🧊', 'ROOM',     5),
-    ('ban-cong',    'Ban công riêng',       '🌿', 'ROOM',     6),
-    ('ban-lam-viec','Bàn làm việc',         '🪑', 'ROOM',     7),
-    ('bai-do-xe',   'Bãi đỗ xe miễn phí',   '🅿️', 'PROPERTY', 1),
-    ('bua-sang',    'Bữa sáng nhà nấu',     '🍜', 'PROPERTY', 2),
-    ('san-vuon',    'Sân vườn ven sông',    '🌳', 'PROPERTY', 3),
-    ('xe-dap',      'Cho thuê xe đạp',      '🚲', 'PROPERTY', 4),
-    ('le-tan',      'Lễ tân 24/7',          '🛎️', 'PROPERTY', 5)
+    ('wifi',         'Wifi miễn phí',         'wifi',          'ROOM',      1),
+    ('dieu-hoa',     'Điều hoà',              'dieu-hoa',      'ROOM',      2),
+    ('nuoc-nong',    'Nước nóng',             'nuoc-nong',     'ROOM',      3),
+    ('tv',           'TV màn hình phẳng',     'tv',            'ROOM',      4),
+    ('tu-lanh',      'Tủ lạnh mini',          'tu-lanh',       'ROOM',      5),
+    ('ban-cong',     'Ban công riêng',        'ban-cong',      'ROOM',      6),
+    ('ban-lam-viec', 'Bàn làm việc',          'ban-lam-viec',  'ROOM',      7),
+    ('bai-do-xe',    'Bãi đỗ xe miễn phí',    'bai-do-xe',     'PROPERTY',  1),
+    ('bua-sang',     'Bữa sáng nhà nấu',      'bua-sang',      'PROPERTY',  2),
+    ('san-vuon',     'Sân vườn ven sông',     'san-vuon',      'PROPERTY',  3),
+    ('xe-dap',       'Cho thuê xe đạp',       'xe-dap',        'PROPERTY',  4),
+    ('le-tan',       'Lễ tân 24/7',           'le-tan',        'PROPERTY',  5)
 ON CONFLICT DO NOTHING;
 
 -- ─── Loại phòng ─────────────────────────────────────────────────────────────

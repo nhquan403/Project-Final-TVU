@@ -45,8 +45,10 @@
      chọn thẩm mỹ: sáng hơn nữa thì chữ trắng tụt xuống dưới 4.5:1. */
   --color-primary: #0E5C63;       /* 7.32:1 trên bg · 7.69:1 trên surface; chữ trắng trên nó 7.69:1 */
   --color-primary-hover: #0A4348; /* chữ trắng trên nó 11.00:1 */
-  /* Gạch nung cho giá tiền. Đây là màu nhấn DUY NHẤT ngoài màu thương hiệu,
-     và nó chỉ được dùng cho con số tiền — không dùng cho nút, dải, hay nền. */
+  /* Gạch nung. Đây là màu nhấn DUY NHẤT ngoài màu thương hiệu, và nó chỉ được
+     dùng cho hai thứ cùng nói về GIÁ TRỊ: con số tiền và sao đánh giá. Không
+     dùng cho nút, dải, hay nền — làm vậy là có hai màu chính, và đó đúng là
+     lỗi của bảng màu trước. */
   --color-price: #A83E1E;         /* 5.92:1 trên bg · 6.23:1 trên surface */
 
   /* --- Trạng thái --------------------------------------------------------

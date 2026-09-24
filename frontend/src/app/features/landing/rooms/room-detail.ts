@@ -11,11 +11,13 @@ import {
   UiDateRangePicker,
   UiEmptyState,
   UiGuestStepper,
+  UiIcon,
   UiLightbox,
   UiSkeleton,
   VndCurrencyPipe,
   type AvailabilityMap,
   type DateRange,
+  tenIcon,
   type LightboxImage,
 } from '../../../shared/ui';
 import { ROOM_PLACEHOLDER_IMAGE } from '../shared/room-card.mapper';
@@ -47,6 +49,7 @@ const CALENDAR_DAYS = 120;
     UiButton,
     UiDateRangePicker,
     UiGuestStepper,
+    UiIcon,
     UiLightbox,
     UiSkeleton,
     UiEmptyState,
@@ -163,7 +166,9 @@ const CALENDAR_DAYS = 120;
                 <ul class="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
                   @for (amenity of roomAmenities(); track amenity.code) {
                     <li class="flex items-center gap-2 text-sm text-text">
-                      <span aria-hidden="true">{{ amenity.icon ?? '•' }}</span>
+                      @if (tenIcon(amenity.icon); as icon) {
+                        <ui-icon [name]="icon" [size]="20" class="text-primary" />
+                      }
                       {{ amenity.name }}
                     </li>
                   }
@@ -179,7 +184,9 @@ const CALENDAR_DAYS = 120;
                 <ul class="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">
                   @for (amenity of propertyAmenities(); track amenity.code) {
                     <li class="flex items-center gap-2 text-sm text-text">
-                      <span aria-hidden="true">{{ amenity.icon ?? '•' }}</span>
+                      @if (tenIcon(amenity.icon); as icon) {
+                        <ui-icon [name]="icon" [size]="20" class="text-primary" />
+                      }
                       {{ amenity.name }}
                     </li>
                   }
@@ -332,6 +339,9 @@ const CALENDAR_DAYS = 120;
   `,
 })
 export class RoomDetailPage {
+  /** Lọc tên icon từ CSDL; template gọi trực tiếp. */
+  protected readonly tenIcon = tenIcon;
+
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly roomTypeApi = inject(RoomTypeService);

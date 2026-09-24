@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { UiStatusBadge, VndCurrencyPipe } from '../../../shared/ui';
+import { UiIcon, UiStatusBadge, VndCurrencyPipe } from '../../../shared/ui';
 import type { Booking } from '../../../core/services/booking.service';
 import { BookingFlowStore } from './booking-flow.store';
 
@@ -20,11 +20,11 @@ import { BookingFlowStore } from './booking-flow.store';
 @Component({
   selector: 'app-booking-complete',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, UiStatusBadge, VndCurrencyPipe],
+  imports: [RouterLink, UiIcon, UiStatusBadge, VndCurrencyPipe],
   template: `
     <div class="mx-auto max-w-2xl px-4 py-12">
       <div class="rounded-lg border border-border bg-surface p-6 text-center">
-        <p class="text-4xl" aria-hidden="true">✓</p>
+        <ui-icon name="thanh-cong" [size]="56" class="mx-auto text-success" />
         <h1 class="mt-2 text-h1 font-bold text-text">Đặt phòng thành công</h1>
         <p class="mt-2 text-text-muted">
           Thư xác nhận đã được gửi tới email của bạn. Nếu không thấy, hãy kiểm tra hộp thư rác.

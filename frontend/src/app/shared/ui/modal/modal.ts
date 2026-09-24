@@ -8,6 +8,7 @@ import {
 import { FocusTrapDirective } from '../../a11y/focus-trap.directive';
 import { EscCloseDirective } from '../../a11y/esc-close.directive';
 import { UiSkeleton } from '../skeleton/skeleton';
+import { UiIcon } from '../icon/icon';
 
 let nextId = 0;
 
@@ -22,11 +23,11 @@ let nextId = 0;
 @Component({
   selector: 'ui-modal',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FocusTrapDirective, EscCloseDirective, UiSkeleton],
+  imports: [FocusTrapDirective, EscCloseDirective, UiSkeleton, UiIcon],
   template: `
     @if (open()) {
       <!-- Lớp phủ chỉ là lối tắt cho chuột. Người dùng bàn phím đã có Esc và nút
-           ✕ trong tiêu đề, nên không ai bị khoá chức năng nào ở đây — đó cũng
+           nút đóng trong tiêu đề, nên không ai bị khoá chức năng nào ở đây — đó cũng
            chính là điều hai quy tắc dưới đây bảo vệ. -->
       <!-- eslint-disable-next-line @angular-eslint/template/click-events-have-key-events, @angular-eslint/template/interactive-supports-focus -->
       <div
@@ -49,7 +50,9 @@ let nextId = 0;
                      justify-center rounded-md text-text-muted
                      transition-colors duration-[var(--dur-fast)] hover:bg-surface-2"
               aria-label="Đóng"
-              (click)="closed.emit()">✕</button>
+              (click)="closed.emit()">
+                <ui-icon name="dong" [size]="20" />
+              </button>
           </header>
 
           <div class="overflow-y-auto p-4">

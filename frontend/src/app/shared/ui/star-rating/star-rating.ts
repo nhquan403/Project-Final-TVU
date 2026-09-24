@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, input, model } from '@angular/core';
+import { UiIcon } from '../icon/icon';
 
 /**
  * Sao đánh giá, hai chế độ.
@@ -11,6 +12,7 @@ import { ChangeDetectionStrategy, Component, computed, input, model } from '@ang
 @Component({
   selector: 'ui-star-rating',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [UiIcon],
   template: `
     @if (readonly()) {
       <!--
@@ -23,7 +25,11 @@ import { ChangeDetectionStrategy, Component, computed, input, model } from '@ang
         class="inline-flex items-center gap-1"
         [attr.aria-label]="value() + ' trên 5 sao'">
         @for (star of stars; track star) {
-          <span [class]="star <= value() ? filled : empty" aria-hidden="true">★</span>
+          <ui-icon
+            name="sao"
+            [size]="18"
+            [filled]="star <= value()"
+            [class]="star <= value() ? filled : empty" />
         }
         @if (count(); as n) {
           <span class="ml-1 text-sm text-text-muted">({{ n }})</span>
@@ -45,7 +51,9 @@ import { ChangeDetectionStrategy, Component, computed, input, model } from '@ang
             [tabindex]="star === tabbableStar() ? 0 : -1"
             [class]="inputStarClasses(star)"
             (click)="value.set(star)"
-            (keydown)="onKeydown($event)">★</button>
+            (keydown)="onKeydown($event)">
+            <ui-icon name="sao" [size]="26" [filled]="star <= value()" />
+          </button>
         }
       </div>
 
@@ -57,7 +65,7 @@ import { ChangeDetectionStrategy, Component, computed, input, model } from '@ang
 })
 export class UiStarRating {
   protected readonly stars = [1, 2, 3, 4, 5] as const;
-  protected readonly filled = 'text-warning';
+  protected readonly filled = 'text-price';
   protected readonly empty = 'text-border-strong';
 
   readonly readonly = input(true);
@@ -74,8 +82,8 @@ export class UiStarRating {
   protected inputStarClasses(star: number): string {
     const base =
       'flex h-[var(--touch-min)] w-[var(--touch-min)] items-center justify-center rounded-sm ' +
-      'text-h2 leading-none transition-colors duration-[var(--dur-fast)] ' +
-      'hover:text-warning active:scale-95 disabled:cursor-not-allowed disabled:opacity-50';
+      'leading-none transition-colors duration-[var(--dur-fast)] ' +
+      'hover:text-price active:scale-95 disabled:cursor-not-allowed disabled:opacity-50';
     return `${base} ${star <= this.value() ? this.filled : this.empty}`;
   }
 

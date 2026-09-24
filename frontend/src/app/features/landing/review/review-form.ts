@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { ReviewService } from '../../../core/services/review.service';
-import { UiButton, UiInput, UiStarRating } from '../../../shared/ui';
+import { UiButton, UiIcon, UiInput, UiStarRating } from '../../../shared/ui';
 import { errorMessageOf } from '../shared/api-error';
 import { BookingFlowStore } from '../booking/booking-flow.store';
 
@@ -25,12 +25,12 @@ import { BookingFlowStore } from '../booking/booking-flow.store';
 @Component({
   selector: 'app-review-form',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [RouterLink, UiStarRating, UiInput, UiButton],
+  imports: [RouterLink, UiStarRating, UiInput, UiButton, UiIcon],
   template: `
     <div class="mx-auto max-w-xl px-4 py-8">
       @if (sent()) {
         <div class="rounded-lg border border-border bg-surface p-6 text-center">
-          <p class="text-4xl" aria-hidden="true">✓</p>
+          <ui-icon name="thanh-cong" [size]="56" class="mx-auto text-success" />
           <h1 class="mt-2 text-h2 font-bold text-text">Cảm ơn bạn đã đánh giá</h1>
           <p class="mt-2 text-text-muted">
             Đánh giá được homestay xem qua trước khi đăng công khai, thường trong một ngày làm việc.

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, computed, input, model, output } fr
 import { FocusTrapDirective } from '../../a11y/focus-trap.directive';
 import { EscCloseDirective } from '../../a11y/esc-close.directive';
 import { UiSkeleton } from '../skeleton/skeleton';
+import { UiIcon } from '../icon/icon';
 
 export interface LightboxImage {
   url: string;
@@ -21,7 +22,7 @@ export interface LightboxImage {
 @Component({
   selector: 'ui-lightbox',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FocusTrapDirective, EscCloseDirective, UiSkeleton],
+  imports: [FocusTrapDirective, EscCloseDirective, UiSkeleton, UiIcon],
   host: { '(document:keydown)': 'onKeydown($event)' },
   template: `
     @if (open()) {
@@ -41,7 +42,9 @@ export interface LightboxImage {
             type="button"
             [class]="controlClasses"
             aria-label="Đóng"
-            (click)="closed.emit()">✕</button>
+            (click)="closed.emit()">
+            <ui-icon name="dong" [size]="22" />
+          </button>
         </div>
 
         <div class="flex flex-1 items-center justify-center gap-2 px-2 pb-4">

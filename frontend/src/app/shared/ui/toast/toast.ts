@@ -8,6 +8,7 @@ import {
   output,
   signal,
 } from '@angular/core';
+import { UiIcon, type IconName } from '../icon/icon';
 
 export type ToastKind = 'success' | 'error' | 'warning' | 'info';
 
@@ -18,11 +19,14 @@ const TONES: Record<ToastKind, string> = {
   info: 'border-focus text-focus',
 };
 
-const ICONS: Record<ToastKind, string> = {
-  success: '✓',
-  error: '✕',
-  warning: '!',
-  info: 'i',
+/* Trước đây là ký tự '✓' '✕' '!' 'i' — bốn hình đến từ bốn nguồn khác nhau
+   (hai ký hiệu Unicode và hai chữ cái), nên chúng lệch nhau về cỡ và độ dày
+   ngay trong cùng một hệ thông báo. Bốn icon dưới đây cùng khung, cùng nét. */
+const ICONS: Record<ToastKind, IconName> = {
+  success: 'thanh-cong',
+  error: 'loi',
+  warning: 'canh-bao',
+  info: 'thong-tin',
 };
 
 /**
@@ -38,6 +42,7 @@ const ICONS: Record<ToastKind, string> = {
 @Component({
   selector: 'ui-toast',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [UiIcon],
   host: {
     '(mouseenter)': 'paused.set(true)',
     '(mouseleave)': 'paused.set(false)',
@@ -49,14 +54,16 @@ const ICONS: Record<ToastKind, string> = {
       [attr.role]="kind() === 'error' ? 'alert' : 'status'"
       [attr.aria-live]="kind() === 'error' ? 'assertive' : 'polite'"
       [class]="classes()">
-      <span class="font-bold" aria-hidden="true">{{ icon() }}</span>
+      <ui-icon [name]="icon()" [size]="22" />
       <p class="flex-1 text-sm text-text">{{ message() }}</p>
       <button
         type="button"
         class="flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-text-muted
                transition-colors duration-[var(--dur-fast)] hover:bg-surface-2"
         aria-label="Đóng thông báo"
-        (click)="dismissed.emit()">✕</button>
+        (click)="dismissed.emit()">
+        <ui-icon name="dong" [size]="18" />
+      </button>
     </div>
   `,
 })
