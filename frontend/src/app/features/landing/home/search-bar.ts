@@ -25,12 +25,22 @@ const CALENDAR_DAYS = 120;
   imports: [UiDateRangePicker, UiGuestStepper, UiButton],
   template: `
     <form
-      class="rounded-lg border border-border bg-surface p-4 shadow-sm"
+      class="border border-border bg-surface p-5"
       (submit)="submit($event)"
       (focusin)="focused.emit(true)"
       (focusout)="focused.emit(false)">
-      <div class="grid gap-3 md:grid-cols-[minmax(0,1fr)_auto_auto_auto] md:items-end">
+      <!--
+        Ô ngày chiếm CẢ HÀNG cho tới bề ngang lớn. Bản trước đặt bốn cột
+        ngay từ md, trong đó ba cột cuối rộng theo nội dung; khi thanh này nằm
+        trong hộp hero (rộng khoảng 660px sau khi trừ lề) thì hai ô khách và
+        nút ăn hết chỗ, ô ngày co về gần bằng không, và nhãn NGÀY NHẬN - TRẢ
+        PHÒNG xuống dòng từng chữ một.
+      -->
+      <div
+        class="grid gap-4 sm:grid-cols-2
+               lg:grid-cols-[minmax(240px,1.6fr)_auto_auto_auto] lg:items-end">
         <ui-date-range-picker
+          class="sm:col-span-2 lg:col-span-1"
           [availability]="calendar()"
           [loading]="loadingCalendar()"
           [error]="error()"
@@ -39,7 +49,7 @@ const CALENDAR_DAYS = 120;
         <ui-guest-stepper label="Người lớn" [min]="1" [max]="20" [(value)]="adults" />
         <ui-guest-stepper label="Trẻ em" [min]="0" [max]="20" [(value)]="children" />
 
-        <div class="flex items-end">
+        <div class="flex items-end sm:col-span-2 lg:col-span-1">
           <ui-button type="submit" [fullWidth]="true">Tìm phòng</ui-button>
         </div>
       </div>

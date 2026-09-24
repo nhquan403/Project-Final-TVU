@@ -47,7 +47,7 @@ export class UiButton {
 
   protected readonly classes = computed(() => {
     const base =
-      'relative inline-flex items-center justify-center gap-2 rounded-md px-5 ' +
+      'relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md px-5 ' +
       'min-h-[var(--touch-min)] text-sm font-semibold ' +
       'transition-colors duration-[var(--dur-fast)] ' +
       'disabled:opacity-50 disabled:cursor-not-allowed';

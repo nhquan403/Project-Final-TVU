@@ -16,7 +16,7 @@ let nextId = 0;
   template: `
     <div class="flex items-center justify-between gap-4">
       <span [id]="id + '-label'" class="flex flex-col">
-        <span class="text-body font-medium">{{ label() }}</span>
+        <span class="whitespace-nowrap text-body font-medium">{{ label() }}</span>
         @if (hint(); as h) {
           <span class="text-xs text-text-muted">{{ h }}</span>
         }
