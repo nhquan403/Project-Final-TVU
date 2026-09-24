@@ -1,12 +1,3 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" width="960" height="360" role="img" aria-label="Ảnh minh hoạ ưu đãi Tết đã kết thúc">
-<rect width="960" height="360" fill="#7A8E9D"/>
-<g fill="#FFFFFF" opacity="0.12">
-  <circle cx="838" cy="70" r="168"/>
-  <circle cx="96" cy="330" r="124"/>
-</g>
-<g stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" opacity="0.30">
-  <line x1="56" y1="126" x2="212" y2="126"/>
-  <line x1="56" y1="180" x2="332" y2="180"/>
-  <line x1="56" y1="234" x2="164" y2="234"/>
-</g>
+<defs><linearGradient id="troi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7E6D0"/><stop offset="1" stop-color="#E5C3A6"/></linearGradient><linearGradient id="nuoc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E757A"/><stop offset="1" stop-color="#12484F"/></linearGradient><linearGradient id="co" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#478161"/><stop offset="1" stop-color="#2C5E46"/></linearGradient></defs><rect width="960" height="360" fill="url(#troi)"/><circle cx="480" cy="95" r="99" fill="#FAEBD2" opacity=".38"/><circle cx="480" cy="95" r="58" fill="#FAEBD2"/><path d="M0 205 Q134 171 288 197 T557 193 Q710 165 845 199 T960 189 L960 275 L0 275Z" fill="#89AC96" opacity=".8"/><path d="M0 245 Q230 215 480 239 T960 227 L960 360 L0 360Z" fill="url(#co)"/><g fill="#3C7A5F"><rect x="193" y="170" width="13" height="70" fill="#5C3E29"/><circle cx="200" cy="159" r="74"/><circle cx="154" cy="179" r="50"/><circle cx="244" cy="174" r="44"/></g><g fill="#3C7A5F"><rect x="754" y="180" width="12" height="63" fill="#5C3E29"/><circle cx="760" cy="170" r="66"/><circle cx="719" cy="188" r="45"/><circle cx="800" cy="183" r="40"/></g><circle cx="180" cy="200" r="9" fill="#A83E1E"/><circle cx="224" cy="178" r="9" fill="#A83E1E"/><circle cx="742" cy="212" r="9" fill="#A83E1E"/><circle cx="786" cy="190" r="9" fill="#A83E1E"/>
 </svg>

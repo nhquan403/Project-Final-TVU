@@ -1,8 +1,21 @@
 # Ảnh minh hoạ cho dữ liệu mẫu
 
-26 tệp SVG phẳng do dự án tự vẽ, dùng đúng bảng màu trong
-`src/styles/tokens.css`. `DemoDataSeeder` trỏ dữ liệu mẫu vào những đường dẫn
-này.
+26 tệp SVG do `scripts/ve-anh-minh-hoa.py` sinh ra. `DemoDataSeeder` trỏ dữ
+liệu mẫu vào những đường dẫn này.
+
+**Đừng sửa tay từng tệp — sửa bộ sinh rồi chạy lại:**
+
+```bash
+python3 scripts/ve-anh-minh-hoa.py
+```
+
+Lý do: đổi bảng màu thì cả 26 tấm phải đổi cùng lúc. Sửa tay thì vài tấm sót
+lại màu cũ và trông như ảnh của một trang khác lọt vào. Bộ sinh giữ mọi tấm
+cùng một bảng màu, cùng cách dựng lớp xa–gần, cùng hướng nắng.
+
+Màu trong bộ sinh lấy tinh thần từ `src/styles/tokens.css` nhưng KHÔNG phải
+cùng giá trị: token là màu của giao diện và phải đạt ngưỡng tương phản với
+chữ đặt lên nó; đây là màu của cảnh vật, không có chữ nào đặt lên.
 
 **Vì sao là SVG tự vẽ, không phải ảnh chụp tải về:** bản đem đi bảo vệ không
 được phụ thuộc vào việc phòng bảo vệ có mạng hay không, cũng không được phụ

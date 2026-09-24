@@ -1,29 +1,3 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Bungalow ven sông">
-<!--
-  Bốn loại phòng nằm cạnh nhau trên cùng một lưới thẻ ở /phong và trang chủ.
-  Ảnh này trước đây là tấm DUY NHẤT có nền kín màu đậm, nên trong lưới nó trông
-  như một thẻ bị lỗi chứ không phải một loại phòng khác. Nền sáng, dải nước dồn
-  xuống đáy — giống ba tấm còn lại.
--->
-<rect width="800" height="600" fill="#E8F2F9"/>
-<rect y="432" width="800" height="168" fill="#0A6C9E"/>
-<polygon points="380,240 540,132 700,240" fill="#075474"/>
-<rect x="404" y="240" width="272" height="144" fill="#FFFFFF"/>
-<rect x="404" y="240" width="272" height="144" fill="none" stroke="#7A8E9D" stroke-width="5"/>
-<rect x="440" y="276" width="76" height="72" fill="#E8F2F9"/>
-<rect x="564" y="276" width="76" height="72" fill="#E8F2F9"/>
-<rect x="420" y="384" width="16" height="52" fill="#075474"/>
-<rect x="644" y="384" width="16" height="52" fill="#075474"/>
-<g fill="#075474">
-  <path d="M170 436c-10-84 2-154 30-214l20 10c-22 58-32 124-24 204z"/>
-  <ellipse cx="222" cy="226" rx="74" ry="17" transform="rotate(-24 222 226)"/>
-  <ellipse cx="222" cy="226" rx="74" ry="17" transform="rotate(24 222 226)"/>
-  <ellipse cx="222" cy="226" rx="68" ry="16" transform="rotate(-68 222 226)"/>
-  <ellipse cx="222" cy="226" rx="68" ry="16" transform="rotate(68 222 226)"/>
-</g>
-<g stroke="#FFFFFF" stroke-width="5" stroke-linecap="round" opacity="0.30">
-  <line x1="60" y1="480" x2="300" y2="480"/>
-  <line x1="480" y1="516" x2="740" y2="516"/>
-  <line x1="150" y1="556" x2="560" y2="556"/>
-</g>
+<defs><linearGradient id="troi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7E6D0"/><stop offset="1" stop-color="#E5C3A6"/></linearGradient><linearGradient id="nuoc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E757A"/><stop offset="1" stop-color="#12484F"/></linearGradient><linearGradient id="co" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#478161"/><stop offset="1" stop-color="#2C5E46"/></linearGradient></defs><rect width="800" height="600" fill="url(#troi)"/><circle cx="640" cy="130" r="109" fill="#FAEBD2" opacity=".38"/><circle cx="640" cy="130" r="64" fill="#FAEBD2"/><path d="M0 330 Q112 296 240 322 T464 318 Q592 290 704 324 T800 314 L800 400 L0 400Z" fill="#89AC96" opacity=".8"/><g fill="#1F5449"><path d="M142 430c-12-138 5-200 40-238l25 12c-30 70-42 140-32 225z"/><ellipse cx="150" cy="180" rx="85" ry="19" transform="rotate(-26 150 180)"/><ellipse cx="150" cy="180" rx="85" ry="19" transform="rotate(26 150 180)"/><ellipse cx="150" cy="180" rx="78" ry="17" transform="rotate(-70 150 180)"/><ellipse cx="150" cy="180" rx="78" ry="17" transform="rotate(70 150 180)"/><ellipse cx="150" cy="180" rx="75" ry="15" transform="rotate(0 150 180)"/></g><polygon points="359,300 530,192 701,300" fill="#6B4A32"/><polygon points="359,300 530,192 530,300" fill="#8A6240"/><rect x="380" y="300" width="300" height="140" fill="#F6EADA"/><rect x="380" y="300" width="300" height="140" fill="none" stroke="#6B4A32" stroke-width="5.4"/><rect x="416" y="331" width="72" height="62" fill="#0E5C63"/><rect x="572" y="331" width="72" height="62" fill="#0E5C63"/><rect x="398" y="440" width="15" height="48" fill="#5C3E29"/><rect x="647" y="440" width="15" height="48" fill="#5C3E29"/><rect y="440" width="800" height="160" fill="url(#nuoc)"/><line x1="48" y1="475" x2="272" y2="475" stroke="#FAEBD2" stroke-width="5" stroke-linecap="round" opacity=".26"/><line x1="400" y1="504" x2="688" y2="504" stroke="#FAEBD2" stroke-width="5" stroke-linecap="round" opacity=".26"/><line x1="160" y1="539" x2="576" y2="539" stroke="#FAEBD2" stroke-width="5" stroke-linecap="round" opacity=".26"/><line x1="336" y1="574" x2="760" y2="574" stroke="#FAEBD2" stroke-width="5" stroke-linecap="round" opacity=".26"/><g><path d="M120 500 q54 26 150 0 l-20 26 q-52 16 -108 0z" fill="#5C3E29"/><path d="M154 490 q39 -20 75 0" stroke="#A83E1E" stroke-width="5" fill="none" stroke-linecap="round"/></g>
 </svg>

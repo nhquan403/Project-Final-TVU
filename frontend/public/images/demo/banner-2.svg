@@ -1,12 +1,3 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 360" width="960" height="360" role="img" aria-label="Ảnh minh hoạ ưu đãi đặt ba đêm">
-<rect width="960" height="360" fill="#C2410C"/>
-<g fill="#FFFFFF" opacity="0.12">
-  <circle cx="838" cy="70" r="168"/>
-  <circle cx="96" cy="330" r="124"/>
-</g>
-<g stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" opacity="0.30">
-  <line x1="56" y1="126" x2="212" y2="126"/>
-  <line x1="56" y1="180" x2="332" y2="180"/>
-  <line x1="56" y1="234" x2="164" y2="234"/>
-</g>
+<defs><linearGradient id="troi" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F7E6D0"/><stop offset="1" stop-color="#E5C3A6"/></linearGradient><linearGradient id="nuoc" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E757A"/><stop offset="1" stop-color="#12484F"/></linearGradient><linearGradient id="co" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#478161"/><stop offset="1" stop-color="#2C5E46"/></linearGradient></defs><rect width="960" height="360" fill="url(#troi)"/><circle cx="170" cy="100" r="95" fill="#FAEBD2" opacity=".38"/><circle cx="170" cy="100" r="56" fill="#FAEBD2"/><path d="M0 200 Q134 166 288 192 T557 188 Q710 160 845 194 T960 184 L960 270 L0 270Z" fill="#89AC96" opacity=".8"/><rect y="236" width="960" height="124" fill="url(#nuoc)"/><line x1="58" y1="263" x2="326" y2="263" stroke="#FAEBD2" stroke-width="3" stroke-linecap="round" opacity=".26"/><line x1="480" y1="286" x2="826" y2="286" stroke="#FAEBD2" stroke-width="3" stroke-linecap="round" opacity=".26"/><line x1="192" y1="313" x2="691" y2="313" stroke="#FAEBD2" stroke-width="3" stroke-linecap="round" opacity=".26"/><line x1="403" y1="340" x2="912" y2="340" stroke="#FAEBD2" stroke-width="3" stroke-linecap="round" opacity=".26"/><g fill="none" stroke="#0E5C63" stroke-width="7" stroke-linecap="round"><circle cx="560" cy="268" r="44"/><circle cx="696" cy="268" r="44"/><path d="M560 268 l48 -84 h55 l37 84 M608 184 l-13 84 h68"/><path d="M657 176 h35"/></g><g fill="#1F5449"><path d="M752 250c-10-105 4-152 30-180l19 10c-23 53-32 106-25 171z"/><ellipse cx="760" cy="60" rx="65" ry="14" transform="rotate(-26 760 60)"/><ellipse cx="760" cy="60" rx="65" ry="14" transform="rotate(26 760 60)"/><ellipse cx="760" cy="60" rx="59" ry="13" transform="rotate(-70 760 60)"/><ellipse cx="760" cy="60" rx="59" ry="13" transform="rotate(70 760 60)"/><ellipse cx="760" cy="60" rx="57" ry="11" transform="rotate(0 760 60)"/></g>
 </svg>
