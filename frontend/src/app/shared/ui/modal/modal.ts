@@ -40,7 +40,7 @@ let nextId = 0;
           [attr.aria-labelledby]="id + '-title'"
           uiFocusTrap
           class="ui-modal-panel flex max-h-[90vh] w-full max-w-lg flex-col overflow-hidden
-                 rounded-t-lg bg-surface shadow-3 sm:rounded-lg">
+                 rounded-t-lg bg-surface shadow-2 sm:rounded-lg">
           <header class="flex items-start justify-between gap-4 border-b border-border p-4">
             <h2 [id]="id + '-title'" class="text-h2 font-semibold">{{ title() }}</h2>
             <button

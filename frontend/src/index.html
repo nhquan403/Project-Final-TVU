@@ -6,6 +6,14 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+
+  <!-- Nạp trước hai tệp chữ mà MỌI trang đều dùng ngay ở màn hình đầu: Be
+       Vietnam Pro 400, cả dải latin lẫn dải tiếng Việt. Không nạp trước
+       Playfair hay weight 600 — chúng chỉ xuất hiện ở tiêu đề và nhãn, tải
+       chậm hơn một nhịp không ai thấy, trong khi nạp trước mọi biến thể sẽ
+       giành băng thông của chính đoạn văn đầu trang. -->
+  <link rel="preload" href="/fonts/be-vietnam-pro-400-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/fonts/be-vietnam-pro-400-vietnamese.woff2" as="font" type="font/woff2" crossorigin>
 </head>
 <body>
   <app-root></app-root>

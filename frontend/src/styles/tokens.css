@@ -1,6 +1,10 @@
 /* ============================================================================
    Design token — nguồn sự thật duy nhất về màu, chữ, khoảng cách của dự án.
    ----------------------------------------------------------------------------
+   Hướng "Tạp chí ven sông": nền giấy ấm, mực đậm, xanh sông sâu, gạch nung cho
+   giá tiền. Viền tóc là ngôn ngữ chính của giao diện; đổ bóng chỉ dùng khi một
+   vật THẬT SỰ nổi lên khỏi mặt giấy.
+
    Homestay TVH chưa có bộ nhận diện thương hiệu, và bảng màu này đã được chốt.
    Nên file này KHÔNG phải màu tạm chờ thay — nó là định nghĩa thương hiệu.
    Đổi thương hiệu về sau = sửa đúng file này, nhưng phải TÍNH LẠI tương phản,
@@ -20,70 +24,92 @@
      và lint chặn mã màu mất hết tác dụng. */
   --color-*: initial;
 
-  /* --- Nền và bề mặt ---------------------------------------------------- */
-  /* Nền trang gần trắng, ngả xanh rất nhẹ. Nền phụ là sắc nhạt của chính màu
-     thương hiệu chứ không phải một màu trung tính riêng: nhờ vậy dải hero và
-     hàng bảng xen kẽ đọc ra là "một mảng của cùng hệ màu", không phải một
-     mảng xám dính vào trang. */
-  --color-bg: #F6FAFD;         /* nền trang */
+  /* --- Nền và bề mặt ----------------------------------------------------
+     Nền trang là màu giấy: trắng ngả vàng rất nhẹ, không phải trắng tinh.
+     Nền phụ là sắc đậm hơn của CHÍNH màu giấy đó, nên khi hai dải nằm cạnh
+     nhau chúng đọc ra là một tờ giấy có bóng, không phải hai màu khác nhau. */
+  --color-bg: #FBF9F6;         /* nền trang */
   --color-surface: #FFFFFF;    /* thẻ, modal, bảng */
-  --color-surface-2: #E8F2F9;  /* nền phụ, hàng bảng xen kẽ, dải hero */
+  --color-surface-2: #F2EEE8;  /* nền phụ, hàng bảng xen kẽ, dải giới thiệu */
 
-  /* --- Chữ -------------------------------------------------------------- */
-  --color-text: #15212B;       /* 15.58:1 trên bg · 16.35:1 trên surface · 14.40:1 trên surface-2 */
-  --color-text-muted: #5A6B7A; /*  5.24:1 trên bg ·  5.50:1 trên surface ·  4.84:1 trên surface-2 */
+  /* --- Chữ ---------------------------------------------------------------
+     Mực gần đen nhưng ngả nâu, hợp với nền giấy. Đen tuyệt đối trên nền ngà
+     tạo cảm giác lạnh và "dán lên" chứ không phải in vào giấy. */
+  --color-text: #1A1A17;       /* 16.60:1 trên bg · 17.44:1 trên surface · 15.09:1 trên surface-2 */
+  --color-text-muted: #5C574E; /*  6.82:1 trên bg ·  7.17:1 trên surface ·  6.21:1 trên surface-2 */
   --color-text-invert: #FFFFFF;
 
-  /* --- Thương hiệu và hành động ----------------------------------------- */
-  /* Màu thương hiệu buộc phải đủ tối, vì nó là NỀN của nút chính và chữ trên
-     nút là màu trắng. Đó là trần trên của độ sáng, không phải lựa chọn thẩm
-     mỹ: sáng hơn nữa thì chữ trắng tụt xuống dưới 4.5:1. */
-  --color-primary: #0A6C9E;       /* 5.48:1 trên bg · 5.75:1 trên surface; chữ trắng trên nó 5.75:1 */
-  --color-primary-hover: #075474; /* chữ trắng trên nó 8.30:1 */
-  --color-price: #C2410C;         /* 4.93:1 trên bg · 5.18:1 trên surface */
+  /* --- Thương hiệu và hành động ------------------------------------------
+     Xanh sông sâu. Màu này buộc phải đủ tối, vì nó là NỀN của nút chính và
+     chữ trên nút là màu trắng. Đó là trần trên của độ sáng, không phải lựa
+     chọn thẩm mỹ: sáng hơn nữa thì chữ trắng tụt xuống dưới 4.5:1. */
+  --color-primary: #0E5C63;       /* 7.32:1 trên bg · 7.69:1 trên surface; chữ trắng trên nó 7.69:1 */
+  --color-primary-hover: #0A4348; /* chữ trắng trên nó 11.00:1 */
+  /* Gạch nung cho giá tiền. Đây là màu nhấn DUY NHẤT ngoài màu thương hiệu,
+     và nó chỉ được dùng cho con số tiền — không dùng cho nút, dải, hay nền. */
+  --color-price: #A83E1E;         /* 5.92:1 trên bg · 6.23:1 trên surface */
 
-  /* --- Trạng thái ------------------------------------------------------- */
-  --color-success: #15803D;    /* 4.78:1 trên bg */
-  --color-warning: #9A5B08;    /* 5.17:1 trên bg */
-  --color-danger: #C02626;     /* 5.64:1 trên bg; chữ trắng trên nó 5.92:1 */
-  --color-focus: #1D4ED8;      /* 6.39:1 trên bg · 6.70:1 trên surface */
+  /* --- Trạng thái --------------------------------------------------------
+     Cả bốn đều đã được làm đậm tới mức đạt 4.5:1 trên nền PHỤ, không chỉ trên
+     nền trang — hàng bảng xen kẽ dùng nền phụ, và trạng thái hay nằm ở đó. */
+  --color-success: #126E34;    /* 6.05:1 trên bg · 5.50:1 trên surface-2 */
+  --color-warning: #8A5A05;    /* 5.64:1 trên bg · 5.13:1 trên surface-2 */
+  --color-danger: #B3261E;     /* 6.22:1 trên bg; chữ trắng trên nó 6.54:1 */
+  --color-focus: #1D4ED8;      /* 6.38:1 trên bg · 6.70:1 trên surface */
 
-  /* --- Viền: HAI token, có chủ đích ------------------------------------- */
-  /* Vạch phân cách trang trí. 1.24:1 trên bg — không đạt và không cần đạt
+  /* --- Viền: HAI token, có chủ đích --------------------------------------
+     Ở hướng này viền làm việc nhiều hơn bóng, nên phân biệt hai loại càng
+     quan trọng. */
+  /* Vạch phân cách và viền thẻ. 1.30:1 trên bg — không đạt và không cần đạt
      3:1, vì nó không phải ranh giới của thành phần tương tác. */
-  --color-border: #D6E4EE;
-  /* Viền ô nhập và nút. 3.40:1 trên surface · 3.24:1 trên bg — đạt WCAG
-     1.4.11. Dùng --color-border ở đây sẽ khiến ô nhập biến mất với người thị
-     lực kém. */
-  --color-border-strong: #7A8E9D;
+  --color-border: #E2DCD2;
+  /* Viền ô nhập và nút. 3.61:1 trên bg · 3.80:1 trên surface · 3.29:1 trên
+     surface-2 — đạt WCAG 1.4.11 ở cả ba nền. Dùng --color-border ở đây sẽ
+     khiến ô nhập biến mất với người thị lực kém. */
+  --color-border-strong: #8A8275;
 
-  /* --- Khoảng cách: thang bội số của 4px --------------------------------- */
+  /* --- Khoảng cách: thang bội số của 4px ---------------------------------- */
   /* Tailwind tính p-4 = calc(var(--spacing) * 4) = 16px. */
   --spacing: 4px;
 
-  /* --- Bo góc ----------------------------------------------------------- */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
+  /* --- Bo góc: gần như vuông ---------------------------------------------
+     Đây là lựa chọn có chủ đích, không phải quên bo. Chất in ấn đến từ góc
+     sắc; bo 12px là ngôn ngữ của ứng dụng di động, không phải của trang tạp
+     chí. Nút và ô nhập dùng 4px để vẫn còn cảm giác bấm được. */
+  --radius-sm: 2px;   /* chip, nhãn nhỏ */
+  --radius-md: 4px;   /* nút, ô nhập, thẻ */
+  --radius-lg: 8px;   /* modal, lightbox */
 
-  /* --- Đổ bóng: ba mức, không hơn --------------------------------------- */
-  --shadow-1: 0 1px 2px rgb(21 33 43 / 0.06);
-  --shadow-2: 0 4px 12px rgb(21 33 43 / 0.10);
-  --shadow-3: 0 12px 32px rgb(21 33 43 / 0.16);
+  /* --- Đổ bóng: HAI mức, không ba ----------------------------------------
+     Mức 1 cho vật dính vào mặt giấy (panel đặt phòng, thanh dính).
+     Mức 2 cho vật nhấc hẳn lên (thẻ lúc hover, modal, hộp hero).
+     Không có mức thứ ba: ở giao diện dùng viền làm ngôn ngữ chính, ba mức
+     bóng là thừa và sẽ bị dùng lẫn lộn. */
+  --shadow-1: 0 1px 2px rgb(26 26 23 / 0.05);
+  --shadow-2: 0 8px 28px rgb(26 26 23 / 0.10);
 
-  /* --- Chữ: co giãn theo màn hình bằng clamp() -------------------------- */
-  --text-display: clamp(2rem, 1.4rem + 2.6vw, 2.75rem);  /* 32 → 44px */
-  --text-h1: clamp(1.625rem, 1.35rem + 1.2vw, 2rem);      /* 26 → 32px */
-  --text-h2: clamp(1.3125rem, 1.16rem + 0.66vw, 1.5rem);  /* 21 → 24px */
-  --text-h3: clamp(1.0625rem, 1rem + 0.28vw, 1.1875rem);  /* 17 → 19px */
+  /* --- Chữ: hai họ, ba kiểu ----------------------------------------------
+     Playfair Display CHỈ dùng cho h1–h3 và con số tiền cỡ lớn. Mọi thứ còn
+     lại — đoạn văn, nhãn, ô nhập, bảng, nút — dùng Be Vietnam Pro.
+     Khai báo @font-face nằm ở styles/fonts.css, tự host, không qua CDN. */
+  --font-display: "Playfair Display", Georgia, "Times New Roman", serif;
+  --font-sans: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  /* Giữ tên cũ để mã đang dùng var(--font-serif) không gãy. */
+  --font-serif: var(--font-display);
+
+  /* --- Thang chữ: tỉ lệ 1,25, co giãn theo màn hình bằng clamp() ----------
+     Thang cũ bị nén (32/24/19/16) nên h1 chỉ gấp 2,0 lần chữ nội dung và mắt
+     không phân được cấp bậc. Thang này cho h1/body = 68/17 = 4,0 lần. */
+  --text-display: clamp(2.75rem, 1.75rem + 2.8vw, 4.25rem); /* 44 → 68px */
+  --text-h1: clamp(2.125rem, 1.6rem + 1.6vw, 3rem);          /* 34 → 48px */
+  --text-h2: clamp(1.875rem, 1.45rem + 1.2vw, 2.625rem);     /* 30 → 42px */
+  --text-h3: 1.375rem;    /* 22px */
   /* Chữ nội dung KHÔNG BAO GIỜ dưới 16px: dưới ngưỡng này iOS tự phóng to
      trang khi người dùng chạm vào ô nhập, và bố cục nhảy. */
-  --text-body: 1rem;      /* 16px */
-  --text-sm: 0.875rem;    /* 14px */
-  --text-xs: 0.75rem;     /* 12px */
-
-  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-serif: "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --text-body-lg: 1.1875rem; /* 19px — đoạn mở đầu, chữ dẫn */
+  --text-body: 1.0625rem;    /* 17px */
+  --text-sm: 0.9375rem;      /* 15px */
+  --text-xs: 0.75rem;        /* 12px — chỉ dùng cho nhãn viết hoa giãn chữ */
 
   /* --- Breakpoint: thiết kế từ 360px lên -------------------------------- */
   --breakpoint-sm: 640px;
@@ -99,9 +125,31 @@
      khi trông nhỏ hơn (nới bằng padding hoặc pseudo-element). */
   --touch-min: 44px;
 
+  /* Bề rộng: khung trang và bề rộng ĐỌC ĐƯỢC của một đoạn văn.
+     Đoạn mô tả phòng trước đây rộng 728px ≈ 91 ký tự mỗi dòng; khuyến nghị là
+     60–75. 66ch đưa nó về đúng dải đó mà không cần đoán bằng pixel. */
+  --w-page: 1200px;
+  --w-prose: 66ch;
+
+  /* Nhịp dọc giữa các khối lớn: BA trọng số, không một.
+     Trước đây 6/7 section đều padding 48px nên trang đọc ra như một danh sách
+     phẳng. Ba mức này cho phép nhấn: khối kể chuyện thở rộng, khối lưới vừa,
+     khối phụ hẹp. */
+  --sec-lg: 128px;  /* hero, dải giới thiệu */
+  --sec-md: 96px;   /* lưới phòng, đánh giá, tin tức */
+  --sec-sm: 72px;   /* khối phụ, dải liên hệ */
+
   /* Chuyển động: ba mức. */
   --dur-fast: 120ms;   /* hover, focus */
   --dur-base: 200ms;   /* mở/đóng, trượt */
   --dur-slow: 320ms;   /* modal, lightbox */
   --ease-out: cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+@media (max-width: 768px) {
+  :root {
+    --sec-lg: 80px;
+    --sec-md: 64px;
+    --sec-sm: 48px;
+  }
 }

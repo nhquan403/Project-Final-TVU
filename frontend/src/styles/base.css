@@ -27,8 +27,42 @@
     color: var(--color-text);
     font-family: var(--font-sans);
     font-size: var(--text-body);
-    line-height: 1.6;
+    line-height: 1.65;
     -webkit-font-smoothing: antialiased;
+  }
+
+  /* --- Tiêu đề: Playfair Display, và CHỈ ở đây ------------------------------
+     Serif tương phản nét cao đọc sang ở cỡ lớn nhưng mỏi mắt ở cỡ nhỏ, nên nó
+     dừng lại ở h3 (22px). h4 trở xuống, nhãn, ô nhập, bảng đều dùng Be Vietnam
+     Pro — khai ở `body` và thừa kế xuống.
+
+     letter-spacing âm là bắt buộc với serif ở cỡ lớn: mặc định Playfair giãn
+     cho cỡ chữ in 10–12pt, đem lên 48px thì các chữ rời ra. */
+  h1,
+  h2,
+  h3 {
+    margin: 0;
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 1.14;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  h1 { font-size: var(--text-h1); }
+  h2 { font-size: var(--text-h2); }
+  h3 { font-size: var(--text-h3); line-height: 1.25; }
+
+  /* h4 trở xuống KHÔNG phải tiêu đề tạp chí mà là nhãn khối — dùng sans, đậm
+     vừa, cỡ gần bằng chữ nội dung. */
+  h4,
+  h5,
+  h6 {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: var(--text-body);
+    line-height: 1.4;
   }
 
   /* Ô nhập trên mobile phải ≥16px, nếu không iOS phóng to trang khi focus. */
@@ -144,5 +178,57 @@
 
   .prose-tvh img {
     border-radius: var(--radius-md);
+  }
+}
+
+/* ============================================================================
+   Lớp dùng chung cho bố cục trang — đặt trong @layer components để utility của
+   Tailwind vẫn ghi đè được khi một chỗ cần lệch khỏi quy ước.
+   ========================================================================== */
+@layer components {
+
+  /* Khung trang. Mọi section dùng chung một bề rộng và một lề ngang, nên các
+     cột thẳng hàng xuyên suốt trang thay vì mỗi khối một kiểu. */
+  .khung {
+    width: 100%;
+    max-width: var(--w-page);
+    margin-inline: auto;
+    padding-inline: 24px;
+  }
+
+  @media (max-width: 640px) {
+    .khung { padding-inline: 16px; }
+  }
+
+  /* Ba trọng số nhịp dọc. Dùng đúng một lớp cho mỗi <section>. */
+  .sec-lg { padding-block: var(--sec-lg); }
+  .sec-md { padding-block: var(--sec-md); }
+  .sec-sm { padding-block: var(--sec-sm); }
+
+  /* Bề rộng đọc được. Đặt lên đoạn văn dài, KHÔNG đặt lên lưới hay bảng. */
+  .doc {
+    max-width: var(--w-prose);
+  }
+
+  /* Nhãn nhỏ viết hoa phía trên tiêu đề. Đây là thứ thay cho việc phóng to
+     tiêu đề để gây chú ý: một dòng ngắn, giãn chữ, màu thương hiệu. */
+  .nhan {
+    display: inline-block;
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-primary);
+  }
+
+  /* Con số tiền. Dùng Playfair để giá là thứ thứ hai mắt nhìn thấy sau ảnh,
+     và dùng font-variant-numeric để chữ số không nhảy cột khi giá đổi. */
+  .tien {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-price);
+    letter-spacing: -0.01em;
+    font-variant-numeric: tabular-nums;
   }
 }

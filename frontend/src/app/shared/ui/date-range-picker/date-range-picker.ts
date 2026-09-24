@@ -147,7 +147,7 @@ interface DayCell {
           uiEscClose
           (escape)="close()"
           class="absolute left-0 z-40 mt-2 w-[min(92vw,44rem)] rounded-lg border border-border
-                 bg-surface p-3 shadow-3">
+                 bg-surface p-3 shadow-2">
           @if (loading()) {
             <p class="p-6 text-center text-sm text-text-muted" aria-live="polite">
               Đang tải lịch giá…

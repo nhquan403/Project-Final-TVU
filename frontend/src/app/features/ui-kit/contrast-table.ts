@@ -40,6 +40,21 @@ const PAIRS: readonly Pair[] = [
     threshold: AA_NON_TEXT,
     note: 'viền ô nhập và nút — WCAG 1.4.11',
   },
+  /* Nền phụ là nền TỐI NHẤT trong ba nền, nên nó là chỗ token trạng thái rơi
+     xuống dưới ngưỡng trước tiên. Khi dựng bảng màu này, success và price
+     thật sự đã rớt (4.34 và 4.17) ở đúng ba cặp dưới đây và phải làm đậm lại.
+     Giữ chúng trong bảng để lần đổi màu sau không lặp lại lỗi đó. */
+  { label: 'text-muted trên surface-2', foreground: '--color-text-muted', background: '--color-surface-2', threshold: AA_TEXT },
+  { label: 'price trên surface-2', foreground: '--color-price', background: '--color-surface-2', threshold: AA_TEXT },
+  { label: 'success trên surface-2', foreground: '--color-success', background: '--color-surface-2', threshold: AA_TEXT },
+  { label: 'warning trên surface-2', foreground: '--color-warning', background: '--color-surface-2', threshold: AA_TEXT },
+  {
+    label: 'border-strong trên surface-2',
+    foreground: '--color-border-strong',
+    background: '--color-surface-2',
+    threshold: AA_NON_TEXT,
+    note: 'ô nhập nằm trên hàng bảng xen kẽ',
+  },
   {
     label: 'border trên bg',
     foreground: '--color-border',
