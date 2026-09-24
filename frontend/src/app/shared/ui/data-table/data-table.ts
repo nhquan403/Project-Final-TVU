@@ -9,6 +9,15 @@ export interface TableColumn<T> {
   /** Lấy giá trị hiển thị từ một hàng. */
   value: (row: T) => string | number;
   sortable?: boolean;
+  /**
+   * Cho phép ô xuống dòng.
+   *
+   * <p>Mặc định KHÔNG xuống dòng. Ở bảng quản trị, một ô như "3.000.000 đ" hay
+   * "2026-10-04 → 2026-10-06" bị bẻ làm hai dòng khiến cả hàng cao gấp đôi mà
+   * không thêm một thông tin nào; hai mươi hàng như vậy là màn hình cuộn dài
+   * gấp đôi. Bật cờ này cho cột chứa câu dài thật sự — tên khách, ghi chú.
+   */
+  wrap?: boolean;
   /** Căn phải cho cột số — mắt so sánh số theo hàng đơn vị, không theo chữ đầu. */
   numeric?: boolean;
   /**
@@ -49,7 +58,7 @@ export interface SortState {
         <p class="text-body font-semibold text-danger">{{ message }}</p>
       </div>
     } @else if (!loading() && rows().length === 0) {
-      <div class="rounded-lg border border-border bg-surface">
+      <div class="border border-border bg-surface">
         <ui-empty-state
           [title]="emptyTitle()"
           [description]="emptyDescription()"
@@ -57,16 +66,17 @@ export interface SortState {
           (action)="emptyAction.emit()" />
       </div>
     } @else {
-      <div class="overflow-x-auto rounded-lg border border-border bg-surface">
+      <div class="overflow-x-auto border border-border bg-surface">
         <table class="w-full border-collapse text-sm">
           <caption class="sr-only">{{ caption() }}</caption>
           <thead>
-            <tr class="border-b border-border bg-surface-2">
+            <tr class="border-b border-border-strong bg-surface-2">
               @for (column of columns(); track column.key) {
                 <th
                   scope="col"
                   [attr.aria-sort]="ariaSort(column)"
-                  [class]="cellClass() + ' font-semibold ' + (column.numeric ? 'text-right' : 'text-left')">
+                  [class]="cellClass() + ' whitespace-nowrap font-semibold ' +
+                           (column.numeric ? 'text-right' : 'text-left')">
                   @if (column.sortable) {
                     <button
                       type="button"
@@ -97,13 +107,19 @@ export interface SortState {
               }
             } @else {
               @for (row of rows(); track $index) {
+                <!--
+                  Hàng lẻ tô nền phụ: khi bảng rộng tới 8 cột, mắt lần theo một
+                  hàng ngang rất dễ trượt sang hàng kế. Nền xen kẽ rẻ hơn kẻ ô
+                  và không làm bảng nhìn như bảng tính.
+                -->
                 <tr
                   class="border-b border-border transition-colors duration-[var(--dur-fast)]
-                         hover:bg-surface-2">
+                         odd:bg-surface-2/60 hover:bg-surface-2">
                   @for (column of columns(); track column.key) {
                     <td
                       [attr.tabindex]="column.link ? null : 0"
-                      [class]="cellClass() + ' ' + (column.numeric ? 'text-right tabular-nums' : '')">
+                      [class]="cellClass() + (column.wrap ? '' : ' whitespace-nowrap') +
+                               (column.numeric ? ' text-right tabular-nums' : '')">
                       @if (column.link; as target) {
                         <a [routerLink]="target(row)" class="text-focus underline">
                           {{ column.value(row) }}
@@ -152,7 +168,7 @@ export class UiDataTable<T> {
   readonly emptyAction = output<void>();
 
   protected readonly cellClass = computed(() =>
-    this.density() === 'admin' ? 'px-3 py-3 leading-6' : 'px-3 py-2',
+    this.density() === 'admin' ? 'px-4 py-2.5 leading-6' : 'px-3 py-2',
   );
 
   protected ariaSort(column: TableColumn<T>): 'ascending' | 'descending' | 'none' | null {

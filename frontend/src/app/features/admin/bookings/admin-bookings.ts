@@ -121,7 +121,11 @@ export class AdminBookings {
       // câu đó đúng cho MỌI hàng, không chỉ hàng đầu.
       link: (row) => ['/admin/bookings', row.id],
     },
-    { key: 'guest', header: 'Khách', value: (row) => `${row.guestName} · ${row.guestPhone}` },
+    {
+      key: 'guest',
+      header: 'Khách',
+      value: (row) => `${row.guestName} · ${row.guestPhone}`,
+    },
     { key: 'roomType', header: 'Loại phòng', value: (row) => row.roomTypeName },
     { key: 'stay', header: 'Lưu trú', value: (row) => `${row.checkIn} → ${row.checkOut}` },
     { key: 'rooms', header: 'Số phòng', value: (row) => String(row.roomQuantity), numeric: true },

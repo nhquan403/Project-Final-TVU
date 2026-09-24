@@ -40,7 +40,7 @@ const NAV: NavItem[] = [
     <div class="min-h-screen bg-bg md:grid md:grid-cols-[240px_1fr]">
       <aside class="border-b border-border bg-surface md:border-b-0 md:border-r">
         <div class="px-4 py-4">
-          <p class="text-base font-bold text-text">Homestay TVH</p>
+          <p class="font-display text-[21px] font-bold text-text">Homestay TVH</p>
           <p class="text-xs text-text-muted">Khu quản trị</p>
         </div>
 
